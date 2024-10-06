@@ -1,7 +1,10 @@
 plugins {
+    id("kotlin-android")
+    id("com.google.relay") version "0.3.12"
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
 }
+
 
 android {
     namespace = "com.example.budgeto"
@@ -59,6 +62,9 @@ dependencies {
     implementation(libs.androidx.ui.graphics)
     implementation(libs.androidx.ui.tooling.preview)
     implementation(libs.androidx.material3)
+    implementation(libs.androidx.navigation.compose)
+
+
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)

@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">Budgeto</string>
+    <string name="SignUpLoginScreen">Sign Up or Login</string>
+    <string name="SignUpScreen">Sign Up</string>
+    <string name="LoginScreen">Login</string>
+    <string name="OpeningScreenExpensesInputScreen">Opening Screen Expenses Input</string>
 </resources>
