@@ -1,0 +1,3155 @@
+{
+  "name": "store_1",
+  "version": 33,
+  "source-key": {
+    "type": "figma",
+    "file": "HwPV2GiVp0exAR6jBRutft",
+    "node": "2072:156",
+    "version": "6790539781",
+    "component-id": "b750514e620516b0b6e666d3e6f2627f94b4d585"
+  },
+  "default": "Store - 1",
+  "design": {
+    "atoms": [
+      {
+        "type": "group",
+        "id": "top_level",
+        "root": "true"
+      },
+      {
+        "type": "group",
+        "id": "Top Nav"
+      },
+      {
+        "type": "group",
+        "id": "Frame 69"
+      },
+      {
+        "type": "text",
+        "id": "Budgeto Store"
+      },
+      {
+        "type": "group",
+        "id": "Bottom Nav"
+      },
+      {
+        "type": "group",
+        "id": "Frame 50"
+      },
+      {
+        "type": "group",
+        "id": "Frame 75"
+      },
+      {
+        "type": "group",
+        "id": "Frame 78"
+      },
+      {
+        "type": "group",
+        "id": "Frame 76"
+      },
+      {
+        "type": "group",
+        "id": "Frame 79"
+      },
+      {
+        "type": "group",
+        "id": "Frame 77"
+      },
+      {
+        "type": "group",
+        "id": "Frame 80"
+      },
+      {
+        "type": "group",
+        "id": "Group 166"
+      },
+      {
+        "type": "group",
+        "id": "Group 163"
+      },
+      {
+        "type": "group",
+        "id": "Group 164"
+      },
+      {
+        "type": "group",
+        "id": "Group 165"
+      },
+      {
+        "type": "group",
+        "id": "Group 167"
+      },
+      {
+        "type": "group",
+        "id": "B"
+      },
+      {
+        "type": "group",
+        "id": "level"
+      },
+      {
+        "type": "group",
+        "id": "Frame 33"
+      },
+      {
+        "type": "group",
+        "id": "Group 33608"
+      },
+      {
+        "type": "text",
+        "id": "10.993"
+      },
+      {
+        "type": "vector",
+        "id": "Ellipse 2"
+      },
+      {
+        "type": "text",
+        "id": "B1"
+      },
+      {
+        "type": "group",
+        "id": "Level frame"
+      },
+      {
+        "type": "vector",
+        "id": "Star 1"
+      },
+      {
+        "type": "text",
+        "id": "13"
+      },
+      {
+        "type": "vector",
+        "id": "Rectangle 58"
+      },
+      {
+        "type": "text",
+        "id": "262/500"
+      },
+      {
+        "type": "text",
+        "id": "Budgeto Pass"
+      },
+      {
+        "type": "vector",
+        "id": "Star 6"
+      },
+      {
+        "type": "vector",
+        "id": "Star 7"
+      },
+      {
+        "type": "group",
+        "id": "Frame 70"
+      },
+      {
+        "type": "group",
+        "id": "Frame 71"
+      },
+      {
+        "type": "group",
+        "id": "Frame 72"
+      },
+      {
+        "type": "group",
+        "id": "Frame 73"
+      },
+      {
+        "type": "group",
+        "id": "Frame 74"
+      },
+      {
+        "type": "text",
+        "id": "Banana go crazy!"
+      },
+      {
+        "type": "text",
+        "id": "Bimbim escape room"
+      },
+      {
+        "type": "text",
+        "id": "Bimbim escape room1"
+      },
+      {
+        "type": "text",
+        "id": "Funny Banana is going crazy. Have fun with this guys."
+      },
+      {
+        "type": "text",
+        "id": "Turning into a Bimbim during this escape attempt"
+      },
+      {
+        "type": "text",
+        "id": "Turning into a Bimbim during this escape attempt1"
+      },
+      {
+        "type": "vector",
+        "id": "Rectangle 74"
+      },
+      {
+        "type": "text",
+        "id": "txt10dolar"
+      },
+      {
+        "type": "vector",
+        "id": "Rectangle 75"
+      },
+      {
+        "type": "vector",
+        "id": "Line 12"
+      },
+      {
+        "type": "group",
+        "id": "Frame 43"
+      },
+      {
+        "type": "vector",
+        "id": "Ellipse 4"
+      },
+      {
+        "type": "group",
+        "id": "Frame 162485"
+      },
+      {
+        "type": "vector",
+        "id": "Rectangle 64"
+      },
+      {
+        "type": "group",
+        "id": "Archive"
+      },
+      {
+        "type": "vector",
+        "id": "Vector"
+      },
+      {
+        "type": "vector",
+        "id": "Vector1"
+      },
+      {
+        "type": "text",
+        "id": "txtStore"
+      },
+      {
+        "type": "group",
+        "id": "history"
+      },
+      {
+        "type": "vector",
+        "id": "Vector2"
+      },
+      {
+        "type": "vector",
+        "id": "Vector3"
+      },
+      {
+        "type": "vector",
+        "id": "Vector4"
+      },
+      {
+        "type": "vector",
+        "id": "Vector5"
+      },
+      {
+        "type": "group",
+        "id": "StoreIcon"
+      },
+      {
+        "type": "vector",
+        "id": "Vector6"
+      },
+      {
+        "type": "vector",
+        "id": "Vector7"
+      },
+      {
+        "type": "text",
+        "id": "Topup"
+      },
+      {
+        "type": "vector",
+        "id": "Rectangle 94"
+      },
+      {
+        "type": "text",
+        "id": "25 Budgeto Token"
+      },
+      {
+        "type": "text",
+        "id": "txt5dolar"
+      },
+      {
+        "type": "group",
+        "id": "Group 33609"
+      },
+      {
+        "type": "vector",
+        "id": "Ellipse 3"
+      },
+      {
+        "type": "text",
+        "id": "B2"
+      },
+      {
+        "type": "text",
+        "id": "txt100dolar"
+      },
+      {
+        "type": "text",
+        "id": "500 Budgeto Token"
+      },
+      {
+        "type": "group",
+        "id": "Group 33610"
+      },
+      {
+        "type": "vector",
+        "id": "Ellipse 5"
+      },
+      {
+        "type": "text",
+        "id": "B3"
+      },
+      {
+        "type": "text",
+        "id": "txt20dolar"
+      },
+      {
+        "type": "text",
+        "id": "100 Budgeto Token"
+      },
+      {
+        "type": "group",
+        "id": "Group 33611"
+      },
+      {
+        "type": "vector",
+        "id": "Ellipse 6"
+      },
+      {
+        "type": "text",
+        "id": "B4"
+      },
+      {
+        "type": "text",
+        "id": "txt500dolar"
+      },
+      {
+        "type": "text",
+        "id": "2500 Budgeto Token"
+      },
+      {
+        "type": "group",
+        "id": "Group 33612"
+      },
+      {
+        "type": "vector",
+        "id": "Ellipse 7"
+      },
+      {
+        "type": "text",
+        "id": "B5"
+      },
+      {
+        "type": "text",
+        "id": "txt50dolar"
+      },
+      {
+        "type": "text",
+        "id": "250 Budgeto Token"
+      },
+      {
+        "type": "group",
+        "id": "Group 33613"
+      },
+      {
+        "type": "vector",
+        "id": "Ellipse 8"
+      },
+      {
+        "type": "text",
+        "id": "B6"
+      },
+      {
+        "type": "text",
+        "id": "txt1000dolar"
+      },
+      {
+        "type": "text",
+        "id": "5000 Budgeto Token"
+      },
+      {
+        "type": "group",
+        "id": "Group 33614"
+      },
+      {
+        "type": "vector",
+        "id": "Ellipse 9"
+      },
+      {
+        "type": "text",
+        "id": "B7"
+      },
+      {
+        "type": "vector",
+        "id": "Rectangle 93"
+      },
+      {
+        "type": "text",
+        "id": "txt100"
+      },
+      {
+        "type": "vector",
+        "id": "Rectangle 95"
+      },
+      {
+        "type": "text",
+        "id": "txt50"
+      },
+      {
+        "type": "vector",
+        "id": "Rectangle 96"
+      },
+      {
+        "type": "text",
+        "id": "txt1000"
+      },
+      {
+        "type": "vector",
+        "id": "Rectangle 97"
+      },
+      {
+        "type": "text",
+        "id": "txt20"
+      },
+      {
+        "type": "vector",
+        "id": "Rectangle 98"
+      },
+      {
+        "type": "text",
+        "id": "txt500"
+      }
+    ],
+    "modes": {
+      "Store - 1": {
+        "rules": [
+          {
+            "id": "top_level",
+            "is-structured": false,
+            "children": [
+              "Top Nav",
+              "Frame 69",
+              "Budgeto Store",
+              "Bottom Nav",
+              "Frame 50",
+              "Frame 75",
+              "Frame 78",
+              "Frame 76",
+              "Frame 79",
+              "Frame 77",
+              "Frame 80",
+              "Group 166",
+              "Group 163",
+              "Group 164",
+              "Group 165",
+              "Group 167"
+            ],
+            "background-color": {
+              "alpha": 1.0,
+              "hue": 0.0,
+              "saturation": 0.0,
+              "value": 1.0
+            }
+          },
+          {
+            "id": "Top Nav",
+            "alignment": {
+              "horizontal": {
+                "attachment": "start",
+                "offset": 23.0
+              },
+              "vertical": {
+                "attachment": "start",
+                "offset": 30.0
+              }
+            },
+            "size-constraints": {
+              "width-constraints": {
+                "sizing-mode": "fixed",
+                "value": 344.0
+              },
+              "height-constraints": {
+                "sizing-mode": "fixed",
+                "value": 50.0
+              }
+            },
+            "is-structured": false,
+            "children": [
+              "B",
+              "level"
+            ]
+          },
+          {
+            "id": "Frame 69",
+            "border-radius": 5.0,
+            "alignment": {
+              "horizontal": {
+                "attachment": "center",
+                "offset": 0.0
+              },
+              "vertical": {
+                "attachment": "start",
+                "offset": 137.0
+              }
+            },
+            "size-constraints": {
+              "width-constraints": {
+                "sizing-mode": "fixed",
+                "value": 344.0
+              },
+              "height-constraints": {
+                "sizing-mode": "fixed",
+                "value": 301.0
+              }
+            },
+            "stroke-width": 1.0,
+            "stroke-color": {
+              "alpha": 1.0,
+              "hue": 0.0,
+              "saturation": 0.0,
+              "value": 0.0
+            },
+            "is-structured": false,
+            "children": [
+              "Budgeto Pass",
+              "Star 6",
+              "Star 7",
+              "Frame 70",
+              "Frame 71",
+              "Frame 72",
+              "Frame 73",
+              "Frame 74",
+              "Banana go crazy!",
+              "Bimbim escape room",
+              "Bimbim escape room1",
+              "Funny Banana is going crazy. Have fun with this guys.",
+              "Turning into a Bimbim during this escape attempt",
+              "Turning into a Bimbim during this escape attempt1",
+              "Rectangle 74",
+              "txt10dolar"
+            ],
+            "background-color": {
+              "alpha": 1.0,
+              "hue": 0.0,
+              "saturation": 0.0,
+              "value": 1.0
+            }
+          },
+          {
+            "id": "Budgeto Store",
+            "alignment": {
+              "horizontal": {
+                "attachment": "start",
+                "offset": 23.0
+              },
+              "vertical": {
+                "attachment": "start",
+                "offset": 102.0
+              }
+            },
+            "font-weight": 700.0,
+            "text-content": "Budgeto Store",
+            "overflow": "visible",
+            "text-align": "left",
+            "text-size": 16.0,
+            "line-height": 1.2102272510528564,
+            "typeface": "Inter"
+          },
+          {
+            "id": "Bottom Nav",
+            "alignment": {
+              "horizontal": {
+                "attachment": "start",
+                "offset": 0.0
+              },
+              "vertical": {
+                "attachment": "start",
+                "offset": 876.0
+              }
+            },
+            "size-constraints": {
+              "width-constraints": {
+                "sizing-mode": "fixed",
+                "value": 390.0
+              },
+              "height-constraints": {
+                "sizing-mode": "fixed",
+                "value": 113.0
+              }
+            },
+            "is-structured": false,
+            "children": [
+              "Line 12",
+              "Frame 43",
+              "Ellipse 4",
+              "Frame 162485"
+            ],
+            "background-color": {
+              "alpha": 1.0,
+              "hue": 0.0,
+              "saturation": 0.0,
+              "value": 1.0
+            }
+          },
+          {
+            "id": "Frame 50",
+            "border-radius": 5.0,
+            "alignment": {
+              "horizontal": {
+                "attachment": "start",
+                "offset": 23.0
+              },
+              "vertical": {
+                "attachment": "start",
+                "offset": 460.0
+              }
+            },
+            "size-constraints": {
+              "width-constraints": {
+                "sizing-mode": "fixed",
+                "value": 344.0
+              },
+              "height-constraints": {
+                "sizing-mode": "fixed",
+                "value": 41.0
+              }
+            },
+            "stroke-width": 1.0,
+            "stroke-color": {
+              "alpha": 1.0,
+              "hue": 0.0,
+              "saturation": 0.0,
+              "value": 0.0
+            },
+            "is-structured": false,
+            "children": [
+              "Topup"
+            ],
+            "background-color": {
+              "alpha": 1.0,
+              "hue": 0.0,
+              "saturation": 0.0,
+              "value": 0.0
+            }
+          },
+          {
+            "id": "Frame 75",
+            "border-radius": 5.0,
+            "alignment": {
+              "horizontal": {
+                "attachment": "start",
+                "offset": 23.0
+              },
+              "vertical": {
+                "attachment": "start",
+                "offset": 517.0
+              }
+            },
+            "size-constraints": {
+              "width-constraints": {
+                "sizing-mode": "fixed",
+                "value": 107.0
+              },
+              "height-constraints": {
+                "sizing-mode": "fixed",
+                "value": 166.0
+              }
+            },
+            "stroke-width": 1.0,
+            "stroke-color": {
+              "alpha": 1.0,
+              "hue": 0.0,
+              "saturation": 0.0,
+              "value": 0.0
+            },
+            "is-structured": false,
+            "children": [
+              "Rectangle 94",
+              "25 Budgeto Token",
+              "txt5dolar",
+              "Group 33609"
+            ]
+          },
+          {
+            "id": "Frame 78",
+            "border-radius": 5.0,
+            "alignment": {
+              "horizontal": {
+                "attachment": "start",
+                "offset": 23.0
+              },
+              "vertical": {
+                "attachment": "start",
+                "offset": 694.0
+              }
+            },
+            "size-constraints": {
+              "width-constraints": {
+                "sizing-mode": "fixed",
+                "value": 107.0
+              },
+              "height-constraints": {
+                "sizing-mode": "fixed",
+                "value": 166.0
+              }
+            },
+            "stroke-width": 1.0,
+            "stroke-color": {
+              "alpha": 1.0,
+              "hue": 0.0,
+              "saturation": 0.0,
+              "value": 0.0
+            },
+            "is-structured": false,
+            "children": [
+              "txt100dolar",
+              "500 Budgeto Token",
+              "Group 33610"
+            ]
+          },
+          {
+            "id": "Frame 76",
+            "border-radius": 5.0,
+            "alignment": {
+              "horizontal": {
+                "attachment": "center",
+                "offset": -0.5
+              },
+              "vertical": {
+                "attachment": "start",
+                "offset": 517.0
+              }
+            },
+            "size-constraints": {
+              "width-constraints": {
+                "sizing-mode": "fixed",
+                "value": 107.0
+              },
+              "height-constraints": {
+                "sizing-mode": "fixed",
+                "value": 166.0
+              }
+            },
+            "stroke-width": 1.0,
+            "stroke-color": {
+              "alpha": 1.0,
+              "hue": 0.0,
+              "saturation": 0.0,
+              "value": 0.0
+            },
+            "is-structured": false,
+            "children": [
+              "txt20dolar",
+              "100 Budgeto Token",
+              "Group 33611"
+            ],
+            "background-color": {
+              "alpha": 1.0,
+              "hue": 0.0,
+              "saturation": 0.0,
+              "value": 1.0
+            }
+          },
+          {
+            "id": "Frame 79",
+            "border-radius": 5.0,
+            "alignment": {
+              "horizontal": {
+                "attachment": "center",
+                "offset": -0.5
+              },
+              "vertical": {
+                "attachment": "start",
+                "offset": 694.0
+              }
+            },
+            "size-constraints": {
+              "width-constraints": {
+                "sizing-mode": "fixed",
+                "value": 107.0
+              },
+              "height-constraints": {
+                "sizing-mode": "fixed",
+                "value": 166.0
+              }
+            },
+            "stroke-width": 1.0,
+            "stroke-color": {
+              "alpha": 1.0,
+              "hue": 0.0,
+              "saturation": 0.0,
+              "value": 0.0
+            },
+            "is-structured": false,
+            "children": [
+              "txt500dolar",
+              "2500 Budgeto Token",
+              "Group 33612"
+            ]
+          },
+          {
+            "id": "Frame 77",
+            "border-radius": 5.0,
+            "alignment": {
+              "horizontal": {
+                "attachment": "start",
+                "offset": 260.0
+              },
+              "vertical": {
+                "attachment": "start",
+                "offset": 517.0
+              }
+            },
+            "size-constraints": {
+              "width-constraints": {
+                "sizing-mode": "fixed",
+                "value": 107.0
+              },
+              "height-constraints": {
+                "sizing-mode": "fixed",
+                "value": 166.0
+              }
+            },
+            "stroke-width": 1.0,
+            "stroke-color": {
+              "alpha": 1.0,
+              "hue": 0.0,
+              "saturation": 0.0,
+              "value": 0.0
+            },
+            "is-structured": false,
+            "children": [
+              "txt50dolar",
+              "250 Budgeto Token",
+              "Group 33613"
+            ]
+          },
+          {
+            "id": "Frame 80",
+            "border-radius": 5.0,
+            "alignment": {
+              "horizontal": {
+                "attachment": "start",
+                "offset": 260.0
+              },
+              "vertical": {
+                "attachment": "start",
+                "offset": 694.0
+              }
+            },
+            "size-constraints": {
+              "width-constraints": {
+                "sizing-mode": "fixed",
+                "value": 107.0
+              },
+              "height-constraints": {
+                "sizing-mode": "fixed",
+                "value": 166.0
+              }
+            },
+            "stroke-width": 1.0,
+            "stroke-color": {
+              "alpha": 1.0,
+              "hue": 0.0,
+              "saturation": 0.0,
+              "value": 0.0
+            },
+            "is-structured": false,
+            "children": [
+              "txt1000dolar",
+              "5000 Budgeto Token",
+              "Group 33614"
+            ]
+          },
+          {
+            "id": "Group 166",
+            "border-radius": 30.0,
+            "alignment": {
+              "horizontal": {
+                "attachment": "start",
+                "offset": 102.0
+              },
+              "vertical": {
+                "attachment": "start",
+                "offset": 690.0
+              }
+            },
+            "size-constraints": {
+              "width-constraints": {
+                "sizing-mode": "fixed",
+                "value": 35.0
+              },
+              "height-constraints": {
+                "sizing-mode": "fixed",
+                "value": 35.0
+              }
+            },
+            "is-structured": false,
+            "children": [
+              "Rectangle 93",
+              "txt100"
+            ],
+            "clip-content": false
+          },
+          {
+            "id": "Group 163",
+            "border-radius": 30.0,
+            "alignment": {
+              "horizontal": {
+                "attachment": "start",
+                "offset": 342.0
+              },
+              "vertical": {
+                "attachment": "start",
+                "offset": 513.0
+              }
+            },
+            "size-constraints": {
+              "width-constraints": {
+                "sizing-mode": "fixed",
+                "value": 35.0
+              },
+              "height-constraints": {
+                "sizing-mode": "fixed",
+                "value": 35.0
+              }
+            },
+            "is-structured": false,
+            "children": [
+              "Rectangle 95",
+              "txt50"
+            ],
+            "clip-content": false
+          },
+          {
+            "id": "Group 164",
+            "border-radius": 30.0,
+            "alignment": {
+              "horizontal": {
+                "attachment": "start",
+                "offset": 342.0
+              },
+              "vertical": {
+                "attachment": "start",
+                "offset": 690.0
+              }
+            },
+            "size-constraints": {
+              "width-constraints": {
+                "sizing-mode": "fixed",
+                "value": 35.0
+              },
+              "height-constraints": {
+                "sizing-mode": "fixed",
+                "value": 35.0
+              }
+            },
+            "is-structured": false,
+            "children": [
+              "Rectangle 96",
+              "txt1000"
+            ],
+            "clip-content": false
+          },
+          {
+            "id": "Group 165",
+            "border-radius": 30.0,
+            "alignment": {
+              "horizontal": {
+                "attachment": "start",
+                "offset": 219.0
+              },
+              "vertical": {
+                "attachment": "start",
+                "offset": 513.0
+              }
+            },
+            "size-constraints": {
+              "width-constraints": {
+                "sizing-mode": "fixed",
+                "value": 35.0
+              },
+              "height-constraints": {
+                "sizing-mode": "fixed",
+                "value": 35.0
+              }
+            },
+            "is-structured": false,
+            "children": [
+              "Rectangle 97",
+              "txt20"
+            ],
+            "clip-content": false
+          },
+          {
+            "id": "Group 167",
+            "border-radius": 30.0,
+            "alignment": {
+              "horizontal": {
+                "attachment": "start",
+                "offset": 219.0
+              },
+              "vertical": {
+                "attachment": "start",
+                "offset": 690.0
+              }
+            },
+            "size-constraints": {
+              "width-constraints": {
+                "sizing-mode": "fixed",
+                "value": 35.0
+              },
+              "height-constraints": {
+                "sizing-mode": "fixed",
+                "value": 35.0
+              }
+            },
+            "is-structured": false,
+            "children": [
+              "Rectangle 98",
+              "txt500"
+            ],
+            "clip-content": false
+          },
+          {
+            "id": "B",
+            "alignment": {
+              "horizontal": {
+                "attachment": "start",
+                "offset": 240.0
+              },
+              "vertical": {
+                "attachment": "start",
+                "offset": 10.0
+              }
+            },
+            "size-constraints": {
+              "width-constraints": {
+                "sizing-mode": "fixed",
+                "value": 104.0
+              },
+              "height-constraints": {
+                "sizing-mode": "fixed",
+                "value": 32.0
+              }
+            },
+            "is-structured": false,
+            "children": [
+              "Frame 33",
+              "Group 33608"
+            ],
+            "clip-content": false
+          },
+          {
+            "id": "level",
+            "alignment": {
+              "horizontal": {
+                "attachment": "start",
+                "offset": -2.0
+              },
+              "vertical": {
+                "attachment": "start",
+                "offset": 5.0
+              }
+            },
+            "size-constraints": {
+              "width-constraints": {
+                "sizing-mode": "fixed",
+                "value": 219.0
+              },
+              "height-constraints": {
+                "sizing-mode": "fixed",
+                "value": 45.0
+              }
+            },
+            "is-structured": false,
+            "children": [
+              "Level frame",
+              "Star 1",
+              "13"
+            ],
+            "clip-content": false
+          },
+          {
+            "id": "Frame 33",
+            "border-radius": 5.0,
+            "alignment": {
+              "horizontal": {
+                "attachment": "start",
+                "offset": 18.0
+              },
+              "vertical": {
+                "attachment": "start",
+                "offset": 5.0
+              }
+            },
+            "size-constraints": {
+              "width-constraints": {
+                "sizing-mode": "fixed",
+                "value": 86.0
+              },
+              "height-constraints": {
+                "sizing-mode": "fixed",
+                "value": 25.0
+              }
+            },
+            "stroke-width": 1.0,
+            "stroke-color": {
+              "alpha": 1.0,
+              "hue": 0.0,
+              "saturation": 0.0,
+              "value": 0.0
+            },
+            "is-structured": false,
+            "children": [
+              "10.993"
+            ]
+          },
+          {
+            "id": "Group 33608",
+            "size-constraints": {
+              "width-constraints": {
+                "sizing-mode": "fixed",
+                "value": 32.0
+              },
+              "height-constraints": {
+                "sizing-mode": "fixed",
+                "value": 32.0
+              }
+            },
+            "is-structured": false,
+            "children": [
+              "Ellipse 2",
+              "B1"
+            ],
+            "clip-content": false
+          },
+          {
+            "id": "10.993",
+            "alignment": {
+              "horizontal": {
+                "attachment": "start",
+                "offset": 20.0
+              },
+              "vertical": {
+                "attachment": "start",
+                "offset": 3.0
+              }
+            },
+            "font-weight": 700.0,
+            "text-content": "10.993",
+            "overflow": "visible",
+            "text-align": "left",
+            "text-size": 16.0,
+            "line-height": 1.2102272510528564,
+            "typeface": "Inter"
+          },
+          {
+            "id": "Ellipse 2",
+            "size-constraints": {
+              "width-constraints": {
+                "sizing-mode": "fixed",
+                "value": 32.0
+              },
+              "height-constraints": {
+                "sizing-mode": "fixed",
+                "value": 32.0
+              }
+            },
+            "vector-content": "ellipse_2.svg"
+          },
+          {
+            "id": "B1",
+            "alignment": {
+              "horizontal": {
+                "attachment": "start",
+                "offset": 11.0
+              },
+              "vertical": {
+                "attachment": "start",
+                "offset": 7.0
+              }
+            },
+            "font-weight": 700.0,
+            "color": {
+              "alpha": 1.0,
+              "hue": 0.0,
+              "saturation": 0.0,
+              "value": 1.0
+            },
+            "text-content": "B",
+            "overflow": "visible",
+            "text-align": "left",
+            "text-size": 16.0,
+            "line-height": 1.2102272510528564,
+            "typeface": "Inter"
+          },
+          {
+            "id": "Level frame",
+            "border-radius": 5.0,
+            "alignment": {
+              "horizontal": {
+                "attachment": "start",
+                "offset": 18.0
+              },
+              "vertical": {
+                "attachment": "start",
+                "offset": 10.0
+              }
+            },
+            "size-constraints": {
+              "width-constraints": {
+                "sizing-mode": "fixed",
+                "value": 201.0
+              },
+              "height-constraints": {
+                "sizing-mode": "fixed",
+                "value": 25.0
+              }
+            },
+            "stroke-width": 1.0,
+            "stroke-color": {
+              "alpha": 1.0,
+              "hue": 0.0,
+              "saturation": 0.0,
+              "value": 0.0
+            },
+            "is-structured": false,
+            "children": [
+              "Rectangle 58",
+              "262/500"
+            ]
+          },
+          {
+            "id": "Star 1",
+            "border-radius": 1.0,
+            "alignment": {
+              "horizontal": {
+                "attachment": "start",
+                "offset": 2.14300537109375
+              },
+              "vertical": {
+                "attachment": "start",
+                "offset": 1.1478271484375
+              }
+            },
+            "size-constraints": {
+              "width-constraints": {
+                "sizing-mode": "fixed",
+                "value": 45.0
+              },
+              "height-constraints": {
+                "sizing-mode": "fixed",
+                "value": 45.0
+              }
+            },
+            "vector-content": "star_1.svg"
+          },
+          {
+            "id": "13",
+            "alignment": {
+              "horizontal": {
+                "attachment": "start",
+                "offset": 13.0
+              },
+              "vertical": {
+                "attachment": "start",
+                "offset": 13.0
+              }
+            },
+            "font-weight": 700.0,
+            "color": {
+              "alpha": 1.0,
+              "hue": 0.0,
+              "saturation": 0.0,
+              "value": 1.0
+            },
+            "text-content": "13",
+            "overflow": "visible",
+            "text-align": "left",
+            "text-size": 16.0,
+            "line-height": 1.2102272510528564,
+            "typeface": "Inter"
+          },
+          {
+            "id": "Rectangle 58",
+            "size-constraints": {
+              "width-constraints": {
+                "sizing-mode": "fixed",
+                "value": 131.0
+              },
+              "height-constraints": {
+                "sizing-mode": "fixed",
+                "value": 32.0
+              }
+            },
+            "vector-content": "rectangle_58.svg"
+          },
+          {
+            "id": "262/500",
+            "alignment": {
+              "horizontal": {
+                "attachment": "start",
+                "offset": 142.0
+              },
+              "vertical": {
+                "attachment": "start",
+                "offset": 5.0
+              }
+            },
+            "font-weight": 500.0,
+            "text-content": "262/500",
+            "overflow": "visible",
+            "text-align": "left",
+            "text-size": 12.0,
+            "line-height": 1.2102272510528564,
+            "typeface": "Inter"
+          },
+          {
+            "id": "Budgeto Pass",
+            "alignment": {
+              "horizontal": {
+                "attachment": "center",
+                "offset": 0.0
+              },
+              "vertical": {
+                "attachment": "start",
+                "offset": 21.0
+              }
+            },
+            "font-weight": 700.0,
+            "text-content": "Budgeto Pass",
+            "overflow": "visible",
+            "text-align": "left",
+            "text-size": 16.0,
+            "line-height": 1.2102272510528564,
+            "typeface": "Inter"
+          },
+          {
+            "id": "Star 6",
+            "border-radius": 1.0,
+            "alignment": {
+              "horizontal": {
+                "attachment": "start",
+                "offset": 37.423919677734375
+              },
+              "vertical": {
+                "attachment": "start",
+                "offset": 23.6439208984375
+              }
+            },
+            "size-constraints": {
+              "width-constraints": {
+                "sizing-mode": "fixed",
+                "value": 19.0
+              },
+              "height-constraints": {
+                "sizing-mode": "fixed",
+                "value": 19.0
+              }
+            },
+            "vector-content": "star_6.svg"
+          },
+          {
+            "id": "Star 7",
+            "border-radius": 1.0,
+            "alignment": {
+              "horizontal": {
+                "attachment": "start",
+                "offset": 294.4239196777344
+              },
+              "vertical": {
+                "attachment": "start",
+                "offset": 23.6439208984375
+              }
+            },
+            "size-constraints": {
+              "width-constraints": {
+                "sizing-mode": "fixed",
+                "value": 19.0
+              },
+              "height-constraints": {
+                "sizing-mode": "fixed",
+                "value": 19.0
+              }
+            },
+            "vector-content": "star_7.svg"
+          },
+          {
+            "id": "Frame 70",
+            "border-radius": 5.0,
+            "alignment": {
+              "horizontal": {
+                "attachment": "center",
+                "offset": -0.5
+              },
+              "vertical": {
+                "attachment": "start",
+                "offset": 55.0
+              }
+            },
+            "size-constraints": {
+              "width-constraints": {
+                "sizing-mode": "fixed",
+                "value": 361.0
+              },
+              "height-constraints": {
+                "sizing-mode": "fixed",
+                "value": 8.0
+              }
+            },
+            "stroke-width": 1.0,
+            "stroke-color": {
+              "alpha": 1.0,
+              "hue": 0.0,
+              "saturation": 0.0,
+              "value": 0.0
+            },
+            "is-structured": false,
+            "background-color": {
+              "alpha": 1.0,
+              "hue": 8.771929824561404,
+              "saturation": 0.7339055793991416,
+              "value": 0.9137254901960784
+            }
+          },
+          {
+            "id": "Frame 71",
+            "border-radius": 5.0,
+            "alignment": {
+              "horizontal": {
+                "attachment": "start",
+                "offset": 18.0
+              },
+              "vertical": {
+                "attachment": "start",
+                "offset": 78.0
+              }
+            },
+            "size-constraints": {
+              "width-constraints": {
+                "sizing-mode": "fixed",
+                "value": 60.0
+              },
+              "height-constraints": {
+                "sizing-mode": "fixed",
+                "value": 60.0
+              }
+            },
+            "stroke-width": 1.0,
+            "stroke-color": {
+              "alpha": 1.0,
+              "hue": 0.0,
+              "saturation": 0.0,
+              "value": 0.0
+            },
+            "is-structured": false,
+            "background-color": {
+              "alpha": 1.0,
+              "hue": 0.0,
+              "saturation": 0.0,
+              "value": 1.0
+            }
+          },
+          {
+            "id": "Frame 72",
+            "border-radius": 5.0,
+            "alignment": {
+              "horizontal": {
+                "attachment": "start",
+                "offset": 18.0
+              },
+              "vertical": {
+                "attachment": "start",
+                "offset": 153.0
+              }
+            },
+            "size-constraints": {
+              "width-constraints": {
+                "sizing-mode": "fixed",
+                "value": 60.0
+              },
+              "height-constraints": {
+                "sizing-mode": "fixed",
+                "value": 60.0
+              }
+            },
+            "stroke-width": 1.0,
+            "stroke-color": {
+              "alpha": 1.0,
+              "hue": 0.0,
+              "saturation": 0.0,
+              "value": 0.0
+            },
+            "is-structured": false,
+            "background-color": {
+              "alpha": 1.0,
+              "hue": 0.0,
+              "saturation": 0.0,
+              "value": 1.0
+            }
+          },
+          {
+            "id": "Frame 73",
+            "border-radius": 5.0,
+            "alignment": {
+              "horizontal": {
+                "attachment": "start",
+                "offset": 18.0
+              },
+              "vertical": {
+                "attachment": "start",
+                "offset": 228.0
+              }
+            },
+            "size-constraints": {
+              "width-constraints": {
+                "sizing-mode": "fixed",
+                "value": 60.0
+              },
+              "height-constraints": {
+                "sizing-mode": "fixed",
+                "value": 60.0
+              }
+            },
+            "stroke-width": 1.0,
+            "stroke-color": {
+              "alpha": 1.0,
+              "hue": 0.0,
+              "saturation": 0.0,
+              "value": 0.0
+            },
+            "is-structured": false,
+            "background-color": {
+              "alpha": 1.0,
+              "hue": 0.0,
+              "saturation": 0.0,
+              "value": 1.0
+            }
+          },
+          {
+            "id": "Frame 74",
+            "alignment": {
+              "horizontal": {
+                "attachment": "start",
+                "offset": 336.0
+              },
+              "vertical": {
+                "attachment": "start",
+                "offset": 63.0
+              }
+            },
+            "size-constraints": {
+              "width-constraints": {
+                "sizing-mode": "fixed",
+                "value": 8.0
+              },
+              "height-constraints": {
+                "sizing-mode": "fixed",
+                "value": 216.0
+              }
+            },
+            "is-structured": false,
+            "children": [
+              "Rectangle 75"
+            ],
+            "background-color": {
+              "alpha": 1.0,
+              "hue": 0.0,
+              "saturation": 0.0,
+              "value": 0.9568627450980393
+            }
+          },
+          {
+            "id": "Banana go crazy!",
+            "alignment": {
+              "horizontal": {
+                "attachment": "start",
+                "offset": 95.0
+              },
+              "vertical": {
+                "attachment": "start",
+                "offset": 78.0
+              }
+            },
+            "font-weight": 700.0,
+            "text-content": "Banana go crazy!",
+            "overflow": "visible",
+            "text-align": "left",
+            "line-height": 1.2102272851126534,
+            "typeface": "Inter"
+          },
+          {
+            "id": "Bimbim escape room",
+            "alignment": {
+              "horizontal": {
+                "attachment": "start",
+                "offset": 95.0
+              },
+              "vertical": {
+                "attachment": "start",
+                "offset": 153.0
+              }
+            },
+            "font-weight": 700.0,
+            "text-content": "Bimbim escape room ",
+            "overflow": "visible",
+            "text-align": "left",
+            "line-height": 1.2102272851126534,
+            "typeface": "Inter"
+          },
+          {
+            "id": "Bimbim escape room1",
+            "alignment": {
+              "horizontal": {
+                "attachment": "start",
+                "offset": 95.0
+              },
+              "vertical": {
+                "attachment": "start",
+                "offset": 228.0
+              }
+            },
+            "font-weight": 700.0,
+            "text-content": "Bimbim escape room ",
+            "overflow": "visible",
+            "text-align": "left",
+            "line-height": 1.2102272851126534,
+            "typeface": "Inter"
+          },
+          {
+            "id": "Funny Banana is going crazy. Have fun with this guys.",
+            "alignment": {
+              "horizontal": {
+                "attachment": "start",
+                "offset": 95.0
+              },
+              "vertical": {
+                "attachment": "start",
+                "offset": 102.0
+              }
+            },
+            "font-weight": 500.0,
+            "text-content": "Funny Banana is going crazy.\nHave fun with this guys.",
+            "overflow": "visible",
+            "text-align": "left",
+            "line-height": 1.2102272851126534,
+            "typeface": "Inter"
+          },
+          {
+            "id": "Turning into a Bimbim during this escape attempt",
+            "alignment": {
+              "horizontal": {
+                "attachment": "start",
+                "offset": 95.0
+              },
+              "vertical": {
+                "attachment": "start",
+                "offset": 177.0
+              }
+            },
+            "font-weight": 500.0,
+            "text-content": "Turning into a Bimbim during \nthis escape attempt",
+            "overflow": "visible",
+            "text-align": "left",
+            "line-height": 1.2102272851126534,
+            "typeface": "Inter"
+          },
+          {
+            "id": "Turning into a Bimbim during this escape attempt1",
+            "alignment": {
+              "horizontal": {
+                "attachment": "start",
+                "offset": 95.0
+              },
+              "vertical": {
+                "attachment": "start",
+                "offset": 252.0
+              }
+            },
+            "font-weight": 500.0,
+            "text-content": "Turning into a Bimbim during \nthis escape attempt",
+            "overflow": "visible",
+            "text-align": "left",
+            "line-height": 1.2102272851126534,
+            "typeface": "Inter"
+          },
+          {
+            "id": "Rectangle 74",
+            "alignment": {
+              "horizontal": {
+                "attachment": "start",
+                "offset": 0.0
+              },
+              "vertical": {
+                "attachment": "start",
+                "offset": 246.0
+              }
+            },
+            "size-constraints": {
+              "width-constraints": {
+                "sizing-mode": "fixed",
+                "value": 357.0
+              },
+              "height-constraints": {
+                "sizing-mode": "fixed",
+                "value": 44.0
+              }
+            },
+            "vector-content": "rectangle_74.svg"
+          },
+          {
+            "id": "txt10dolar",
+            "alignment": {
+              "horizontal": {
+                "attachment": "center",
+                "offset": 0.0
+              },
+              "vertical": {
+                "attachment": "start",
+                "offset": 260.0
+              }
+            },
+            "font-weight": 700.0,
+            "text-content": "\\$10",
+            "overflow": "visible",
+            "text-align-vertical": "center",
+            "text-size": 16.0,
+            "line-height": 1.2102272510528564,
+            "typeface": "Inter"
+          },
+          {
+            "id": "Rectangle 75",
+            "border-radius": 5.0,
+            "alignment": {
+              "horizontal": {
+                "attachment": "start",
+                "offset": 0.0
+              },
+              "vertical": {
+                "attachment": "start",
+                "offset": 87.0
+              }
+            },
+            "size-constraints": {
+              "width-constraints": {
+                "sizing-mode": "fixed",
+                "value": 8.0
+              },
+              "height-constraints": {
+                "sizing-mode": "fixed",
+                "value": 78.0
+              }
+            },
+            "vector-content": "rectangle_75.svg"
+          },
+          {
+            "id": "Line 12",
+            "alignment": {
+              "horizontal": {
+                "attachment": "center",
+                "offset": -2.0
+              },
+              "vertical": {
+                "attachment": "start",
+                "offset": 101.0
+              }
+            },
+            "size-constraints": {
+              "width-constraints": {
+                "sizing-mode": "fixed",
+                "value": 150.0
+              },
+              "height-constraints": {
+                "sizing-mode": "fixed",
+                "value": 0.0
+              }
+            },
+            "vector-content": "line_12.svg"
+          },
+          {
+            "id": "Frame 43",
+            "border-radius": 5.0,
+            "alignment": {
+              "horizontal": {
+                "attachment": "center",
+                "offset": -0.5
+              },
+              "vertical": {
+                "attachment": "start",
+                "offset": 24.0
+              }
+            },
+            "size-constraints": {
+              "width-constraints": {
+                "sizing-mode": "fixed",
+                "value": 345.0
+              },
+              "height-constraints": {
+                "sizing-mode": "fixed",
+                "value": 57.0
+              }
+            },
+            "stroke-width": 1.0,
+            "stroke-color": {
+              "alpha": 1.0,
+              "hue": 0.0,
+              "saturation": 0.0,
+              "value": 0.0
+            },
+            "is-structured": false,
+            "children": [
+              "Rectangle 64",
+              "Archive",
+              "Vector",
+              "Vector1",
+              "txtStore",
+              "history"
+            ],
+            "background-color": {
+              "alpha": 1.0,
+              "hue": 0.0,
+              "saturation": 0.0,
+              "value": 1.0
+            }
+          },
+          {
+            "id": "Ellipse 4",
+            "presence": false,
+            "alignment": {
+              "horizontal": {
+                "attachment": "center",
+                "offset": 0.0
+              },
+              "vertical": {
+                "attachment": "start",
+                "offset": 2.0
+              }
+            },
+            "size-constraints": {
+              "width-constraints": {
+                "sizing-mode": "fixed",
+                "value": 70.0
+              },
+              "height-constraints": {
+                "sizing-mode": "fixed",
+                "value": 70.0
+              }
+            }
+          },
+          {
+            "id": "Frame 162485",
+            "border-radius": 50.0,
+            "alignment": {
+              "horizontal": {
+                "attachment": "start",
+                "offset": 42.0
+              },
+              "vertical": {
+                "attachment": "start",
+                "offset": 6.0
+              }
+            },
+            "tap-handler": "$on store button tapped",
+            "size-constraints": {
+              "width-constraints": {
+                "sizing-mode": "fixed",
+                "value": 54.0
+              },
+              "height-constraints": {
+                "sizing-mode": "fixed",
+                "value": 54.0
+              }
+            },
+            "stroke-width": 1.0,
+            "stroke-color": {
+              "alpha": 1.0,
+              "hue": 0.0,
+              "saturation": 0.0,
+              "value": 0.0
+            },
+            "is-structured": false,
+            "children": [
+              "StoreIcon"
+            ],
+            "background-color": {
+              "alpha": 1.0,
+              "hue": 0.0,
+              "saturation": 0.0,
+              "value": 0.0
+            }
+          },
+          {
+            "id": "Rectangle 64",
+            "presence": false,
+            "border-radius": 50.0,
+            "alignment": {
+              "horizontal": {
+                "attachment": "start",
+                "offset": 137.0
+              },
+              "vertical": {
+                "attachment": "start",
+                "offset": -23.0
+              }
+            },
+            "size-constraints": {
+              "width-constraints": {
+                "sizing-mode": "fixed",
+                "value": 72.0
+              },
+              "height-constraints": {
+                "sizing-mode": "fixed",
+                "value": 72.0
+              }
+            }
+          },
+          {
+            "id": "Archive",
+            "alignment": {
+              "horizontal": {
+                "attachment": "start",
+                "offset": 98.0
+              },
+              "vertical": {
+                "attachment": "start",
+                "offset": 14.0
+              }
+            },
+            "tap-handler": "$on inventory button tapped",
+            "size-constraints": {
+              "width-constraints": {
+                "sizing-mode": "fixed",
+                "value": 30.0
+              },
+              "height-constraints": {
+                "sizing-mode": "fixed",
+                "value": 30.0
+              }
+            },
+            "is-structured": false,
+            "children": [
+              "Vector2",
+              "Vector3"
+            ]
+          },
+          {
+            "id": "Vector",
+            "margin": {
+              "left": 289.0,
+              "top": 16.0,
+              "right": 24.01999855041504,
+              "bottom": 15.533000946044922
+            },
+            "tap-handler": "$on statistic button tapped",
+            "size-constraints": {
+              "width-constraints": {
+                "sizing-mode": "proportional",
+                "value": 1.0
+              },
+              "height-constraints": {
+                "sizing-mode": "proportional",
+                "value": 1.0
+              }
+            },
+            "vector-content": "vector.svg"
+          },
+          {
+            "id": "Vector1",
+            "margin": {
+              "left": 162.0,
+              "top": 14.0,
+              "right": 152.0,
+              "bottom": 17.0
+            },
+            "tap-handler": "$on homepage button tapped",
+            "size-constraints": {
+              "width-constraints": {
+                "sizing-mode": "proportional",
+                "value": 1.0
+              },
+              "height-constraints": {
+                "sizing-mode": "proportional",
+                "value": 1.0
+              }
+            },
+            "vector-content": "vector1.svg"
+          },
+          {
+            "id": "txtStore",
+            "alignment": {
+              "horizontal": {
+                "attachment": "start",
+                "offset": 33.0
+              },
+              "vertical": {
+                "attachment": "start",
+                "offset": 38.0
+              }
+            },
+            "font-weight": 500.0,
+            "text-content": "Store",
+            "overflow": "visible",
+            "text-align-vertical": "center",
+            "text-size": 11.0,
+            "line-height": 1.2102272727272727,
+            "typeface": "Inter"
+          },
+          {
+            "id": "history",
+            "alignment": {
+              "horizontal": {
+                "attachment": "start",
+                "offset": 228.0
+              },
+              "vertical": {
+                "attachment": "start",
+                "offset": 16.0
+              }
+            },
+            "tap-handler": "$on history button tapped",
+            "size-constraints": {
+              "width-constraints": {
+                "sizing-mode": "fixed",
+                "value": 26.0
+              },
+              "height-constraints": {
+                "sizing-mode": "fixed",
+                "value": 26.0
+              }
+            },
+            "is-structured": false,
+            "children": [
+              "Vector4",
+              "Vector5"
+            ]
+          },
+          {
+            "id": "Vector2",
+            "margin": {
+              "left": 3.75,
+              "top": 11.25,
+              "right": 3.75,
+              "bottom": 3.75
+            },
+            "size-constraints": {
+              "width-constraints": {
+                "sizing-mode": "proportional",
+                "value": 1.0
+              },
+              "height-constraints": {
+                "sizing-mode": "proportional",
+                "value": 1.0
+              }
+            },
+            "vector-content": "vector2.svg"
+          },
+          {
+            "id": "Vector3",
+            "margin": {
+              "left": 1.875,
+              "top": 3.75,
+              "right": 1.875,
+              "bottom": 13.125
+            },
+            "size-constraints": {
+              "width-constraints": {
+                "sizing-mode": "proportional",
+                "value": 1.0
+              },
+              "height-constraints": {
+                "sizing-mode": "proportional",
+                "value": 1.0
+              }
+            },
+            "vector-content": "vector3.svg"
+          },
+          {
+            "id": "Vector4",
+            "margin": {
+              "left": 1.083343505859375,
+              "top": 1.083251953125,
+              "right": 1.0833187103271484,
+              "bottom": 1.0834102630615234
+            },
+            "size-constraints": {
+              "width-constraints": {
+                "sizing-mode": "proportional",
+                "value": 1.0
+              },
+              "height-constraints": {
+                "sizing-mode": "proportional",
+                "value": 1.0
+              }
+            },
+            "vector-content": "vector4.svg"
+          },
+          {
+            "id": "Vector5",
+            "margin": {
+              "left": 7.583343505859375,
+              "top": 5.416748046875,
+              "right": 11.916656494140625,
+              "bottom": 11.916584968566895
+            },
+            "size-constraints": {
+              "width-constraints": {
+                "sizing-mode": "proportional",
+                "value": 1.0
+              },
+              "height-constraints": {
+                "sizing-mode": "proportional",
+                "value": 1.0
+              }
+            },
+            "vector-content": "vector5.svg"
+          },
+          {
+            "id": "StoreIcon",
+            "margin": {
+              "left": 10.52947998046875,
+              "top": 7.428466796875,
+              "right": 10.374591827392578,
+              "bottom": 13.571533203125
+            },
+            "is-structured": false,
+            "children": [
+              "Vector6",
+              "Vector7"
+            ]
+          },
+          {
+            "id": "Vector6",
+            "margin": {
+              "left": 11.031982421875,
+              "top": 2.75,
+              "right": 11.031970024108887,
+              "bottom": 12.374998092651367
+            },
+            "alignment": {
+              "horizontal": {
+                "attachment": "start",
+                "offset": -0.875
+              },
+              "vertical": {
+                "attachment": "start",
+                "offset": -0.875
+              }
+            },
+            "size-constraints": {
+              "width-constraints": {
+                "sizing-mode": "proportional",
+                "value": 1.0
+              },
+              "height-constraints": {
+                "sizing-mode": "proportional",
+                "value": 1.0
+              }
+            },
+            "vector-content": "vector6.svg"
+          },
+          {
+            "id": "Vector7",
+            "margin": {
+              "left": 5.5159912109375,
+              "top": 9.625,
+              "right": 4.324701309204102,
+              "bottom": 2.75
+            },
+            "alignment": {
+              "horizontal": {
+                "attachment": "start",
+                "offset": -0.87518310546875
+              },
+              "vertical": {
+                "attachment": "start",
+                "offset": -0.875
+              }
+            },
+            "size-constraints": {
+              "width-constraints": {
+                "sizing-mode": "proportional",
+                "value": 1.0
+              },
+              "height-constraints": {
+                "sizing-mode": "proportional",
+                "value": 1.0
+              }
+            },
+            "vector-content": "vector7.svg"
+          },
+          {
+            "id": "Topup",
+            "alignment": {
+              "horizontal": {
+                "attachment": "center",
+                "offset": -7.0
+              },
+              "vertical": {
+                "attachment": "start",
+                "offset": 11.0
+              }
+            },
+            "font-weight": 700.0,
+            "color": {
+              "alpha": 1.0,
+              "hue": 0.0,
+              "saturation": 0.0,
+              "value": 1.0
+            },
+            "text-content": "Topup",
+            "overflow": "visible",
+            "text-align": "left",
+            "text-size": 16.0,
+            "line-height": 1.2102272510528564,
+            "typeface": "Inter"
+          },
+          {
+            "id": "Rectangle 94",
+            "alignment": {
+              "horizontal": {
+                "attachment": "start",
+                "offset": -4.0
+              },
+              "vertical": {
+                "attachment": "start",
+                "offset": 129.0
+              }
+            },
+            "size-constraints": {
+              "width-constraints": {
+                "sizing-mode": "fixed",
+                "value": 118.0
+              },
+              "height-constraints": {
+                "sizing-mode": "fixed",
+                "value": 37.0
+              }
+            }
+          },
+          {
+            "id": "25 Budgeto Token",
+            "alignment": {
+              "horizontal": {
+                "attachment": "start",
+                "offset": 3.0
+              },
+              "vertical": {
+                "attachment": "start",
+                "offset": 16.0
+              }
+            },
+            "size-constraints": {
+              "width-constraints": {
+                "sizing-mode": "fixed",
+                "value": 100.0
+              },
+              "height-constraints": {
+                "sizing-mode": "shrink"
+              }
+            },
+            "font-weight": 700.0,
+            "text-content": "25\nBudgeto Token",
+            "overflow": "visible",
+            "max-lines": -1,
+            "line-height": 1.2102272851126534,
+            "typeface": "Inter"
+          },
+          {
+            "id": "txt5dolar",
+            "alignment": {
+              "horizontal": {
+                "attachment": "center",
+                "offset": 0.0
+              },
+              "vertical": {
+                "attachment": "start",
+                "offset": 136.0
+              }
+            },
+            "font-weight": 700.0,
+            "text-content": "5$",
+            "overflow": "visible",
+            "text-align": "left",
+            "text-size": 16.0,
+            "line-height": 1.2102272510528564,
+            "typeface": "Inter"
+          },
+          {
+            "id": "Group 33609",
+            "alignment": {
+              "horizontal": {
+                "attachment": "start",
+                "offset": 37.0
+              },
+              "vertical": {
+                "attachment": "start",
+                "offset": 82.0
+              }
+            },
+            "size-constraints": {
+              "width-constraints": {
+                "sizing-mode": "fixed",
+                "value": 32.0
+              },
+              "height-constraints": {
+                "sizing-mode": "fixed",
+                "value": 32.0
+              }
+            },
+            "is-structured": false,
+            "children": [
+              "Ellipse 3",
+              "B2"
+            ],
+            "clip-content": false
+          },
+          {
+            "id": "Ellipse 3",
+            "size-constraints": {
+              "width-constraints": {
+                "sizing-mode": "fixed",
+                "value": 32.0
+              },
+              "height-constraints": {
+                "sizing-mode": "fixed",
+                "value": 32.0
+              }
+            },
+            "vector-content": "ellipse_3.svg"
+          },
+          {
+            "id": "B2",
+            "alignment": {
+              "horizontal": {
+                "attachment": "start",
+                "offset": 11.0
+              },
+              "vertical": {
+                "attachment": "start",
+                "offset": 7.0
+              }
+            },
+            "font-weight": 700.0,
+            "color": {
+              "alpha": 1.0,
+              "hue": 0.0,
+              "saturation": 0.0,
+              "value": 1.0
+            },
+            "text-content": "B",
+            "overflow": "visible",
+            "text-align": "left",
+            "text-size": 16.0,
+            "line-height": 1.2102272510528564,
+            "typeface": "Inter"
+          },
+          {
+            "id": "txt100dolar",
+            "alignment": {
+              "horizontal": {
+                "attachment": "center",
+                "offset": 0.0
+              },
+              "vertical": {
+                "attachment": "start",
+                "offset": 133.0
+              }
+            },
+            "font-weight": 700.0,
+            "text-content": "100$",
+            "overflow": "visible",
+            "text-size": 16.0,
+            "line-height": 1.2102272510528564,
+            "typeface": "Inter"
+          },
+          {
+            "id": "500 Budgeto Token",
+            "alignment": {
+              "horizontal": {
+                "attachment": "start",
+                "offset": 3.0
+              },
+              "vertical": {
+                "attachment": "start",
+                "offset": 15.0
+              }
+            },
+            "size-constraints": {
+              "width-constraints": {
+                "sizing-mode": "fixed",
+                "value": 100.0
+              },
+              "height-constraints": {
+                "sizing-mode": "shrink"
+              }
+            },
+            "font-weight": 700.0,
+            "text-content": "500\nBudgeto Token",
+            "overflow": "visible",
+            "max-lines": -1,
+            "line-height": 1.2102272851126534,
+            "typeface": "Inter"
+          },
+          {
+            "id": "Group 33610",
+            "alignment": {
+              "horizontal": {
+                "attachment": "start",
+                "offset": 37.0
+              },
+              "vertical": {
+                "attachment": "start",
+                "offset": 80.0
+              }
+            },
+            "size-constraints": {
+              "width-constraints": {
+                "sizing-mode": "fixed",
+                "value": 32.0
+              },
+              "height-constraints": {
+                "sizing-mode": "fixed",
+                "value": 32.0
+              }
+            },
+            "is-structured": false,
+            "children": [
+              "Ellipse 5",
+              "B3"
+            ],
+            "clip-content": false
+          },
+          {
+            "id": "Ellipse 5",
+            "size-constraints": {
+              "width-constraints": {
+                "sizing-mode": "fixed",
+                "value": 32.0
+              },
+              "height-constraints": {
+                "sizing-mode": "fixed",
+                "value": 32.0
+              }
+            },
+            "vector-content": "ellipse_4.svg"
+          },
+          {
+            "id": "B3",
+            "alignment": {
+              "horizontal": {
+                "attachment": "start",
+                "offset": 11.0
+              },
+              "vertical": {
+                "attachment": "start",
+                "offset": 7.0
+              }
+            },
+            "font-weight": 700.0,
+            "color": {
+              "alpha": 1.0,
+              "hue": 0.0,
+              "saturation": 0.0,
+              "value": 1.0
+            },
+            "text-content": "B",
+            "overflow": "visible",
+            "text-align": "left",
+            "text-size": 16.0,
+            "line-height": 1.2102272510528564,
+            "typeface": "Inter"
+          },
+          {
+            "id": "txt20dolar",
+            "alignment": {
+              "horizontal": {
+                "attachment": "center",
+                "offset": 0.5
+              },
+              "vertical": {
+                "attachment": "start",
+                "offset": 135.0
+              }
+            },
+            "font-weight": 700.0,
+            "text-content": "20$",
+            "overflow": "visible",
+            "text-align": "left",
+            "text-size": 16.0,
+            "line-height": 1.2102272510528564,
+            "typeface": "Inter"
+          },
+          {
+            "id": "100 Budgeto Token",
+            "alignment": {
+              "horizontal": {
+                "attachment": "start",
+                "offset": 4.0
+              },
+              "vertical": {
+                "attachment": "start",
+                "offset": 16.0
+              }
+            },
+            "size-constraints": {
+              "width-constraints": {
+                "sizing-mode": "fixed",
+                "value": 100.0
+              },
+              "height-constraints": {
+                "sizing-mode": "shrink"
+              }
+            },
+            "font-weight": 700.0,
+            "text-content": "100\nBudgeto Token",
+            "overflow": "visible",
+            "max-lines": -1,
+            "line-height": 1.2102272851126534,
+            "typeface": "Inter"
+          },
+          {
+            "id": "Group 33611",
+            "alignment": {
+              "horizontal": {
+                "attachment": "start",
+                "offset": 37.0
+              },
+              "vertical": {
+                "attachment": "start",
+                "offset": 82.0
+              }
+            },
+            "size-constraints": {
+              "width-constraints": {
+                "sizing-mode": "fixed",
+                "value": 32.0
+              },
+              "height-constraints": {
+                "sizing-mode": "fixed",
+                "value": 32.0
+              }
+            },
+            "is-structured": false,
+            "children": [
+              "Ellipse 6",
+              "B4"
+            ],
+            "clip-content": false
+          },
+          {
+            "id": "Ellipse 6",
+            "size-constraints": {
+              "width-constraints": {
+                "sizing-mode": "fixed",
+                "value": 32.0
+              },
+              "height-constraints": {
+                "sizing-mode": "fixed",
+                "value": 32.0
+              }
+            },
+            "vector-content": "ellipse_5.svg"
+          },
+          {
+            "id": "B4",
+            "alignment": {
+              "horizontal": {
+                "attachment": "start",
+                "offset": 11.0
+              },
+              "vertical": {
+                "attachment": "start",
+                "offset": 7.0
+              }
+            },
+            "font-weight": 700.0,
+            "color": {
+              "alpha": 1.0,
+              "hue": 0.0,
+              "saturation": 0.0,
+              "value": 1.0
+            },
+            "text-content": "B",
+            "overflow": "visible",
+            "text-align": "left",
+            "text-size": 16.0,
+            "line-height": 1.2102272510528564,
+            "typeface": "Inter"
+          },
+          {
+            "id": "txt500dolar",
+            "alignment": {
+              "horizontal": {
+                "attachment": "center",
+                "offset": 1.0
+              },
+              "vertical": {
+                "attachment": "start",
+                "offset": 133.0
+              }
+            },
+            "font-weight": 700.0,
+            "text-content": "500$",
+            "overflow": "visible",
+            "text-size": 16.0,
+            "line-height": 1.2102272510528564,
+            "typeface": "Inter"
+          },
+          {
+            "id": "2500 Budgeto Token",
+            "alignment": {
+              "horizontal": {
+                "attachment": "start",
+                "offset": 4.0
+              },
+              "vertical": {
+                "attachment": "start",
+                "offset": 15.0
+              }
+            },
+            "size-constraints": {
+              "width-constraints": {
+                "sizing-mode": "fixed",
+                "value": 100.0
+              },
+              "height-constraints": {
+                "sizing-mode": "shrink"
+              }
+            },
+            "font-weight": 700.0,
+            "text-content": "2500\nBudgeto Token",
+            "overflow": "visible",
+            "max-lines": -1,
+            "line-height": 1.2102272851126534,
+            "typeface": "Inter"
+          },
+          {
+            "id": "Group 33612",
+            "alignment": {
+              "horizontal": {
+                "attachment": "start",
+                "offset": 37.0
+              },
+              "vertical": {
+                "attachment": "start",
+                "offset": 80.0
+              }
+            },
+            "size-constraints": {
+              "width-constraints": {
+                "sizing-mode": "fixed",
+                "value": 32.0
+              },
+              "height-constraints": {
+                "sizing-mode": "fixed",
+                "value": 32.0
+              }
+            },
+            "is-structured": false,
+            "children": [
+              "Ellipse 7",
+              "B5"
+            ],
+            "clip-content": false
+          },
+          {
+            "id": "Ellipse 7",
+            "size-constraints": {
+              "width-constraints": {
+                "sizing-mode": "fixed",
+                "value": 32.0
+              },
+              "height-constraints": {
+                "sizing-mode": "fixed",
+                "value": 32.0
+              }
+            },
+            "vector-content": "ellipse_6.svg"
+          },
+          {
+            "id": "B5",
+            "alignment": {
+              "horizontal": {
+                "attachment": "start",
+                "offset": 11.0
+              },
+              "vertical": {
+                "attachment": "start",
+                "offset": 7.0
+              }
+            },
+            "font-weight": 700.0,
+            "color": {
+              "alpha": 1.0,
+              "hue": 0.0,
+              "saturation": 0.0,
+              "value": 1.0
+            },
+            "text-content": "B",
+            "overflow": "visible",
+            "text-align": "left",
+            "text-size": 16.0,
+            "line-height": 1.2102272510528564,
+            "typeface": "Inter"
+          },
+          {
+            "id": "txt50dolar",
+            "alignment": {
+              "horizontal": {
+                "attachment": "center",
+                "offset": 0.5
+              },
+              "vertical": {
+                "attachment": "start",
+                "offset": 134.0
+              }
+            },
+            "font-weight": 700.0,
+            "text-content": "50$",
+            "overflow": "visible",
+            "text-align": "left",
+            "text-size": 16.0,
+            "line-height": 1.2102272510528564,
+            "typeface": "Inter"
+          },
+          {
+            "id": "250 Budgeto Token",
+            "alignment": {
+              "horizontal": {
+                "attachment": "start",
+                "offset": 4.0
+              },
+              "vertical": {
+                "attachment": "start",
+                "offset": 16.0
+              }
+            },
+            "size-constraints": {
+              "width-constraints": {
+                "sizing-mode": "fixed",
+                "value": 100.0
+              },
+              "height-constraints": {
+                "sizing-mode": "shrink"
+              }
+            },
+            "font-weight": 700.0,
+            "text-content": "250\nBudgeto Token",
+            "overflow": "visible",
+            "max-lines": -1,
+            "line-height": 1.2102272851126534,
+            "typeface": "Inter"
+          },
+          {
+            "id": "Group 33613",
+            "alignment": {
+              "horizontal": {
+                "attachment": "start",
+                "offset": 38.0
+              },
+              "vertical": {
+                "attachment": "start",
+                "offset": 82.0
+              }
+            },
+            "size-constraints": {
+              "width-constraints": {
+                "sizing-mode": "fixed",
+                "value": 32.0
+              },
+              "height-constraints": {
+                "sizing-mode": "fixed",
+                "value": 32.0
+              }
+            },
+            "is-structured": false,
+            "children": [
+              "Ellipse 8",
+              "B6"
+            ],
+            "clip-content": false
+          },
+          {
+            "id": "Ellipse 8",
+            "size-constraints": {
+              "width-constraints": {
+                "sizing-mode": "fixed",
+                "value": 32.0
+              },
+              "height-constraints": {
+                "sizing-mode": "fixed",
+                "value": 32.0
+              }
+            },
+            "vector-content": "ellipse_7.svg"
+          },
+          {
+            "id": "B6",
+            "alignment": {
+              "horizontal": {
+                "attachment": "start",
+                "offset": 11.0
+              },
+              "vertical": {
+                "attachment": "start",
+                "offset": 7.0
+              }
+            },
+            "font-weight": 700.0,
+            "color": {
+              "alpha": 1.0,
+              "hue": 0.0,
+              "saturation": 0.0,
+              "value": 1.0
+            },
+            "text-content": "B",
+            "overflow": "visible",
+            "text-align": "left",
+            "text-size": 16.0,
+            "line-height": 1.2102272510528564,
+            "typeface": "Inter"
+          },
+          {
+            "id": "txt1000dolar",
+            "alignment": {
+              "horizontal": {
+                "attachment": "center",
+                "offset": 0.5
+              },
+              "vertical": {
+                "attachment": "start",
+                "offset": 133.0
+              }
+            },
+            "font-weight": 700.0,
+            "text-content": "1000$",
+            "overflow": "visible",
+            "text-size": 16.0,
+            "line-height": 1.2102272510528564,
+            "typeface": "Inter"
+          },
+          {
+            "id": "5000 Budgeto Token",
+            "alignment": {
+              "horizontal": {
+                "attachment": "start",
+                "offset": 4.0
+              },
+              "vertical": {
+                "attachment": "start",
+                "offset": 15.0
+              }
+            },
+            "size-constraints": {
+              "width-constraints": {
+                "sizing-mode": "fixed",
+                "value": 100.0
+              },
+              "height-constraints": {
+                "sizing-mode": "shrink"
+              }
+            },
+            "font-weight": 700.0,
+            "text-content": "5000\nBudgeto Token",
+            "overflow": "visible",
+            "max-lines": -1,
+            "line-height": 1.2102272851126534,
+            "typeface": "Inter"
+          },
+          {
+            "id": "Group 33614",
+            "alignment": {
+              "horizontal": {
+                "attachment": "start",
+                "offset": 38.0
+              },
+              "vertical": {
+                "attachment": "start",
+                "offset": 80.0
+              }
+            },
+            "size-constraints": {
+              "width-constraints": {
+                "sizing-mode": "fixed",
+                "value": 32.0
+              },
+              "height-constraints": {
+                "sizing-mode": "fixed",
+                "value": 32.0
+              }
+            },
+            "is-structured": false,
+            "children": [
+              "Ellipse 9",
+              "B7"
+            ],
+            "clip-content": false
+          },
+          {
+            "id": "Ellipse 9",
+            "size-constraints": {
+              "width-constraints": {
+                "sizing-mode": "fixed",
+                "value": 32.0
+              },
+              "height-constraints": {
+                "sizing-mode": "fixed",
+                "value": 32.0
+              }
+            },
+            "vector-content": "ellipse_8.svg"
+          },
+          {
+            "id": "B7",
+            "alignment": {
+              "horizontal": {
+                "attachment": "start",
+                "offset": 11.0
+              },
+              "vertical": {
+                "attachment": "start",
+                "offset": 7.0
+              }
+            },
+            "font-weight": 700.0,
+            "color": {
+              "alpha": 1.0,
+              "hue": 0.0,
+              "saturation": 0.0,
+              "value": 1.0
+            },
+            "text-content": "B",
+            "overflow": "visible",
+            "text-align": "left",
+            "text-size": 16.0,
+            "line-height": 1.2102272510528564,
+            "typeface": "Inter"
+          },
+          {
+            "id": "Rectangle 93",
+            "border-radius": 30.0,
+            "size-constraints": {
+              "width-constraints": {
+                "sizing-mode": "fixed",
+                "value": 35.0
+              },
+              "height-constraints": {
+                "sizing-mode": "fixed",
+                "value": 35.0
+              }
+            },
+            "vector-content": "rectangle_93.svg"
+          },
+          {
+            "id": "txt100",
+            "alignment": {
+              "horizontal": {
+                "attachment": "start",
+                "offset": 4.0
+              },
+              "vertical": {
+                "attachment": "start",
+                "offset": 11.0
+              }
+            },
+            "font-weight": 700.0,
+            "text-content": "+100",
+            "overflow": "visible",
+            "text-size": 10.0,
+            "line-height": 1.2102272033691406,
+            "typeface": "Inter"
+          },
+          {
+            "id": "Rectangle 95",
+            "border-radius": 30.0,
+            "size-constraints": {
+              "width-constraints": {
+                "sizing-mode": "fixed",
+                "value": 35.0
+              },
+              "height-constraints": {
+                "sizing-mode": "fixed",
+                "value": 35.0
+              }
+            },
+            "vector-content": "rectangle_94.svg"
+          },
+          {
+            "id": "txt50",
+            "alignment": {
+              "horizontal": {
+                "attachment": "start",
+                "offset": 6.0
+              },
+              "vertical": {
+                "attachment": "start",
+                "offset": 10.0
+              }
+            },
+            "font-weight": 700.0,
+            "text-content": "+50",
+            "overflow": "visible",
+            "text-size": 10.0,
+            "line-height": 1.2102272033691406,
+            "typeface": "Inter"
+          },
+          {
+            "id": "Rectangle 96",
+            "border-radius": 30.0,
+            "size-constraints": {
+              "width-constraints": {
+                "sizing-mode": "fixed",
+                "value": 35.0
+              },
+              "height-constraints": {
+                "sizing-mode": "fixed",
+                "value": 35.0
+              }
+            },
+            "vector-content": "rectangle_95.svg"
+          },
+          {
+            "id": "txt1000",
+            "alignment": {
+              "horizontal": {
+                "attachment": "start",
+                "offset": 0.0
+              },
+              "vertical": {
+                "attachment": "start",
+                "offset": 11.0
+              }
+            },
+            "font-weight": 700.0,
+            "text-content": "+1000",
+            "overflow": "visible",
+            "text-size": 10.0,
+            "line-height": 1.2102272033691406,
+            "typeface": "Inter"
+          },
+          {
+            "id": "Rectangle 97",
+            "border-radius": 30.0,
+            "size-constraints": {
+              "width-constraints": {
+                "sizing-mode": "fixed",
+                "value": 35.0
+              },
+              "height-constraints": {
+                "sizing-mode": "fixed",
+                "value": 35.0
+              }
+            },
+            "vector-content": "rectangle_96.svg"
+          },
+          {
+            "id": "txt20",
+            "alignment": {
+              "horizontal": {
+                "attachment": "start",
+                "offset": 7.0
+              },
+              "vertical": {
+                "attachment": "start",
+                "offset": 10.0
+              }
+            },
+            "font-weight": 700.0,
+            "text-content": "+20",
+            "overflow": "visible",
+            "text-size": 10.0,
+            "line-height": 1.2102272033691406,
+            "typeface": "Inter"
+          },
+          {
+            "id": "Rectangle 98",
+            "border-radius": 30.0,
+            "size-constraints": {
+              "width-constraints": {
+                "sizing-mode": "fixed",
+                "value": 35.0
+              },
+              "height-constraints": {
+                "sizing-mode": "fixed",
+                "value": 35.0
+              }
+            },
+            "vector-content": "rectangle_97.svg"
+          },
+          {
+            "id": "txt500",
+            "alignment": {
+              "horizontal": {
+                "attachment": "start",
+                "offset": 3.0
+              },
+              "vertical": {
+                "attachment": "start",
+                "offset": 11.0
+              }
+            },
+            "font-weight": 700.0,
+            "text-content": "+500",
+            "overflow": "visible",
+            "text-size": 10.0,
+            "line-height": 1.2102272033691406,
+            "typeface": "Inter"
+          }
+        ]
+      }
+    }
+  },
+  "parameters": {
+    "on store button tapped": {
+      "data-type": "void-callback",
+      "required": false,
+      "description": ""
+    },
+    "on inventory button tapped": {
+      "data-type": "void-callback",
+      "required": false,
+      "description": ""
+    },
+    "on statistic button tapped": {
+      "data-type": "void-callback",
+      "required": false,
+      "description": ""
+    },
+    "on homepage button tapped": {
+      "data-type": "void-callback",
+      "required": false,
+      "description": ""
+    },
+    "on history button tapped": {
+      "data-type": "void-callback",
+      "required": false,
+      "description": ""
+    }
+  },
+  "previews": [
+    {
+      "design": "Store - 1",
+      "size": {
+        "width": 390.0,
+        "height": 989.0
+      }
+    }
+  ],
+  "adin-component-search-paths": [],
+  "image-search-paths": [],
+  "vector-search-paths": []
+}

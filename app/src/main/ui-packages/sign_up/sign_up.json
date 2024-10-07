@@ -5,7 +5,7 @@
     "type": "figma",
     "file": "HwPV2GiVp0exAR6jBRutft",
     "node": "2016:163",
-    "version": "6785234902",
+    "version": "6790539781",
     "component-id": "88f67b26f1dbf46ad73e4557ade136549679325a"
   },
   "default": "Sign up",
@@ -372,7 +372,7 @@
                 "offset": 478.0
               }
             },
-            "tap-handler": "$Sign up",
+            "tap-handler": "$on sign up button tapped",
             "size-constraints": {
               "width-constraints": {
                 "sizing-mode": "fixed",
@@ -519,7 +519,7 @@
           },
           {
             "id": "Login Button",
-            "tap-handler": "$on Login Button tapped",
+            "tap-handler": "$on login button tapped",
             "font-weight": 500.0,
             "color": {
               "alpha": 1.0,
@@ -663,7 +663,7 @@
               }
             },
             "font-weight": 500.0,
-            "text-content": "$Full Name",
+            "text-content": "$fullName",
             "overflow": "visible",
             "max-lines": -1,
             "text-align": "left",
@@ -755,7 +755,7 @@
               }
             },
             "font-weight": 500.0,
-            "text-content": "$Email",
+            "text-content": "$email",
             "overflow": "visible",
             "max-lines": -1,
             "text-align": "left",
@@ -906,7 +906,7 @@
               }
             },
             "font-weight": 500.0,
-            "text-content": "$Password",
+            "text-content": "$password",
             "overflow": "visible",
             "max-lines": -1,
             "text-align": "left",
@@ -1169,22 +1169,22 @@
     }
   },
   "parameters": {
-    "Sign up": {
+    "on sign up button tapped": {
       "data-type": "void-callback",
       "required": false,
       "description": ""
     },
-    "on Login Button tapped": {
+    "on login button tapped": {
       "data-type": "void-callback",
       "required": false,
       "description": ""
     },
-    "Full Name": {
+    "fullName": {
       "data-type": "text",
       "required": false,
       "description": ""
     },
-    "Email": {
+    "email": {
       "data-type": "text",
       "required": false,
       "description": ""
@@ -1194,7 +1194,7 @@
       "required": false,
       "description": ""
     },
-    "Password": {
+    "password": {
       "data-type": "text",
       "required": false,
       "description": ""
@@ -1223,9 +1223,9 @@
         "height": 844.0
       },
       "parameters": {
-        "Full Name": "Full Name",
-        "Email": "Email",
-        "Password": "Password"
+        "fullName": "Full Name",
+        "email": "Email",
+        "password": "Password"
       }
     }
   ],

@@ -8,19 +8,20 @@ import com.google.relay.compose.BoxScopeInstance.rowWeight
 
 @Composable
 fun SignUpScreen(
+    onSignUpButtonTapped: () -> Unit = {},
     modifier: Modifier = Modifier
 ){
     SignUp(
-        signUp = {},
-        onLoginButtonTapped = {},
+        onSignUpButtonTapped = onSignUpButtonTapped,
         fullName = "Full Name",
         email = "Email",
         onForgotPasswordLinkTapped = {},
         password = "Password",
+        onLoginButtonTapped = {},
         onIconEyeTapped = {},
         onLoginWithFacebookTapped = {},
         onLoginWithGoogleTapped = {},
-        modifier = Modifier.rowWeight(1.0f).columnWeight(1.0f)
+        modifier = modifier.rowWeight(1.0f).columnWeight(1.0f)
     )
 
 }

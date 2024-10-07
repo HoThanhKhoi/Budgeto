@@ -15,16 +15,25 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.budgeto.R
+import com.example.budgeto.screens.HomepageScreen
 import com.example.budgeto.screens.LoginScreen
 import com.example.budgeto.screens.OpeningScreenExpensesInputScreen
+import com.example.budgeto.screens.ProfileScreen
 import com.example.budgeto.screens.SignUpLoginScreen
 import com.example.budgeto.screens.SignUpScreen
+import com.example.budgeto.screens.StoreScreen
 
 enum class BudgetoScreenEnum(@StringRes val title: Int) {
     Start(title = R.string.SignUpLoginScreen),
     Login(title = R.string.LoginScreen),
     SignUp(title = R.string.SignUpScreen),
-    OpeningScreen(title = R.string.OpeningScreenExpensesInputScreen)
+    OpeningScreen(title = R.string.OpeningScreenExpensesInputScreen),
+    HomepageScreen(title = R.string.HomepageScreen),
+    ProfileScreen(title = R.string.ProfileScreen),
+    StoreScreen(title = R.string.StoreScreen),
+    InventoryScreen(title = R.string.InventoryScreen),
+    HistoryScreen(title = R.string.HistoryScreen),
+    StatisticScreen(title = R.string.StatisticScreen),
 }
 
 @Composable
@@ -49,6 +58,7 @@ fun BudgetoApp(
             }
             composable(route = BudgetoScreenEnum.SignUp.name) {
                 SignUpScreen(
+                    onSignUpButtonTapped = { navController.navigate(BudgetoScreenEnum.HomepageScreen.name) },
                 )
             }
             composable(route = BudgetoScreenEnum.Login.name) {
@@ -58,6 +68,29 @@ fun BudgetoApp(
             }
             composable(route = BudgetoScreenEnum.OpeningScreen.name) {
                 OpeningScreenExpensesInputScreen(
+                )
+            }
+            composable(route = BudgetoScreenEnum.HomepageScreen.name) {
+                HomepageScreen(
+                    onProfileButtonTapped = { navController.navigate(BudgetoScreenEnum.ProfileScreen.name) },
+                    onStoreButtonTapped = { navController.navigate(BudgetoScreenEnum.StoreScreen.name) },
+                    onInventoryButtonTapped = { navController.navigate(BudgetoScreenEnum.InventoryScreen.name) },
+                    onHistoryButtonTapped = { navController.navigate(BudgetoScreenEnum.HistoryScreen.name) },
+                    onStatisticButtonTapped = { navController.navigate(BudgetoScreenEnum.StatisticScreen.name) },
+
+                )
+            }
+            composable(route = BudgetoScreenEnum.ProfileScreen.name) {
+                ProfileScreen(
+                )
+            }
+            composable(route = BudgetoScreenEnum.StoreScreen.name) {
+                StoreScreen(
+                    onHomepageButtonTapped = { navController.navigate(BudgetoScreenEnum.HomepageScreen.name) },
+                    onStoreButtonTapped = { navController.navigate(BudgetoScreenEnum.StoreScreen.name) },
+                    onInventoryButtonTapped = { navController.navigate(BudgetoScreenEnum.InventoryScreen.name) },
+                    onHistoryButtonTapped = { navController.navigate(BudgetoScreenEnum.HistoryScreen.name) },
+                    onStatisticButtonTapped = { navController.navigate(BudgetoScreenEnum.StatisticScreen.name) },
                 )
             }
         }

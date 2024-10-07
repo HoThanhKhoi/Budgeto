@@ -4,4 +4,10 @@
     <string name="SignUpScreen">Sign Up</string>
     <string name="LoginScreen">Login</string>
     <string name="OpeningScreenExpensesInputScreen">Opening Screen Expenses Input</string>
+    <string name="HomepageScreen">Homepage</string>
+    <string name="ProfileScreen">Profile</string>
+    <string name="StoreScreen">Store</string>
+    <string name="InventoryScreen">Inventory</string>
+    <string name="HistoryScreen">History</string>
+    <string name="StatisticScreen">Statistic</string>
 </resources>
