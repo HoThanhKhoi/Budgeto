@@ -55,12 +55,38 @@ fun BudgetoApp(
             }
             composable(route = BudgetoScreenEnum.SignUp.name) {
                 SignUpScreen(
-                    onSignUpButtonTapped = { navController.navigate(BudgetoScreenEnum.HomepageScreen.name) },
+                    fullName = "Full Name" ,
+                    email = "Email" ,
+                    password = "Password" ,
+                    onSignUpButtonTapped = { navController.navigate(BudgetoScreenEnum.Login.name) },
+
+                    onLoginButtonTapped = { navController.navigate(BudgetoScreenEnum.Login.name) },
+                    onForgotPasswordLinkTapped = {},
+                    onIconEyeTapped = {},
+                    onLoginWithFacebookTapped = {},
+                    onLoginWithGoogleTapped = {},
                 )
             }
             composable(route = BudgetoScreenEnum.Login.name) {
                 LoginScreen(
-                    onLoginButtonTapped = { navController.navigate(BudgetoScreenEnum.OpeningScreen.name) },
+                    email = "Email" ,
+                    password = "Password" ,
+                    onLoginButtonTapped = {
+                        if(1 == 1)
+                        {
+                            navController.navigate(BudgetoScreenEnum.OpeningScreen.name)
+                        }
+                        else
+                        {
+                            navController.navigate(BudgetoScreenEnum.Login.name)
+                        }
+                                          },
+
+                    onSignUpTapped = { navController.navigate(BudgetoScreenEnum.SignUp.name) },
+                    onForgotPasswordTapped = {},
+                    onIconEyeTapped = {},
+                    onLoginWithFacebookTapped = {},
+                    onLoginWithGoogleTapped = {},
                 )
             }
             composable(route = BudgetoScreenEnum.OpeningScreen.name) {
