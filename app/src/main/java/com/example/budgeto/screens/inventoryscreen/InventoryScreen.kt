@@ -1458,7 +1458,7 @@ fun Inventory(modifier: Modifier = Modifier) {
     RelayText(
         content = "Inventory",
         fontSize = 11.0.sp,
-        fontFamily = com.example.budgeto.inventory1.inter,
+        fontFamily = com.example.budgeto.screensfonts.inter,
         height = 1.2102272727272727.em,
         fontWeight = FontWeight(500.0.toInt()),
         modifier = modifier.wrapContentHeight(
@@ -1635,7 +1635,7 @@ fun Using(modifier: Modifier = Modifier) {
     RelayText(
         content = "Using",
         fontSize = 16.0.sp,
-        fontFamily = com.example.budgeto.inventory1.inter,
+        fontFamily = com.example.budgeto.screensfonts.inter,
         height = 1.2102272510528564.em,
         textAlign = TextAlign.Left,
         fontWeight = FontWeight(700.0.toInt()),
@@ -1648,7 +1648,7 @@ fun Idle(modifier: Modifier = Modifier) {
     RelayText(
         content = "Idle",
         fontSize = 16.0.sp,
-        fontFamily = com.example.budgeto.inventory1.inter,
+        fontFamily = com.example.budgeto.screensfonts.inter,
         height = 1.2102272510528564.em,
         textAlign = TextAlign.Left,
         fontWeight = FontWeight(700.0.toInt()),
@@ -1695,7 +1695,7 @@ fun All(modifier: Modifier = Modifier) {
     RelayText(
         content = "All",
         fontSize = 16.0.sp,
-        fontFamily = com.example.budgeto.inventory1.inter,
+        fontFamily = com.example.budgeto.screensfonts.inter,
         color = Color(
             alpha = 255,
             red = 255,
@@ -1752,7 +1752,7 @@ fun BigButton(modifier: Modifier = Modifier) {
     RelayText(
         content = "Big Button",
         fontSize = 16.0.sp,
-        fontFamily = com.example.budgeto.inventory1.inter,
+        fontFamily = com.example.budgeto.screensfonts.inter,
         height = 1.2102272510528564.em,
         textAlign = TextAlign.Left,
         fontWeight = FontWeight(700.0.toInt()),
@@ -1772,7 +1772,7 @@ fun Rectangle67(modifier: Modifier = Modifier) {
 fun Have3Using2(modifier: Modifier = Modifier) {
     RelayText(
         content = "Have: 3 | Using: 2",
-        fontFamily = com.example.budgeto.inventory1.inter,
+        fontFamily = com.example.budgeto.screensfonts.inter,
         height = 1.2102272851126534.em,
         textAlign = TextAlign.Left,
         fontWeight = FontWeight(500.0.toInt()),
@@ -1861,7 +1861,7 @@ fun Frame162484(
 fun Have4Using1(modifier: Modifier = Modifier) {
     RelayText(
         content = "Have: 4 | Using: 1",
-        fontFamily = com.example.budgeto.inventory1.inter,
+        fontFamily = com.example.budgeto.screensfonts.inter,
         height = 1.2102272851126534.em,
         textAlign = TextAlign.Left,
         fontWeight = FontWeight(500.0.toInt()),
@@ -1962,7 +1962,7 @@ fun Frame162497(
 fun Have2Using1(modifier: Modifier = Modifier) {
     RelayText(
         content = "Have: 2 | Using: 1",
-        fontFamily = com.example.budgeto.inventory1.inter,
+        fontFamily = com.example.budgeto.screensfonts.inter,
         height = 1.2102272851126534.em,
         textAlign = TextAlign.Left,
         fontWeight = FontWeight(500.0.toInt()),
@@ -2059,7 +2059,7 @@ fun Frame162498(
 fun Have3Using0(modifier: Modifier = Modifier) {
     RelayText(
         content = "Have: 3 | Using: 0",
-        fontFamily = com.example.budgeto.inventory1.inter,
+        fontFamily = com.example.budgeto.screensfonts.inter,
         height = 1.2102272851126534.em,
         textAlign = TextAlign.Left,
         fontWeight = FontWeight(500.0.toInt()),
@@ -2158,7 +2158,7 @@ fun Frame162499(
 fun Have2Using0(modifier: Modifier = Modifier) {
     RelayText(
         content = "Have: 2 | Using: 0",
-        fontFamily = com.example.budgeto.inventory1.inter,
+        fontFamily = com.example.budgeto.screensfonts.inter,
         height = 1.2102272851126534.em,
         textAlign = TextAlign.Left,
         fontWeight = FontWeight(500.0.toInt()),
@@ -2240,7 +2240,7 @@ fun Frame162500(
 fun Have2Using2(modifier: Modifier = Modifier) {
     RelayText(
         content = "Have: 2 | Using: 0",
-        fontFamily = com.example.budgeto.inventory1.inter,
+        fontFamily = com.example.budgeto.screensfonts.inter,
         height = 1.2102272851126534.em,
         textAlign = TextAlign.Left,
         fontWeight = FontWeight(500.0.toInt()),
@@ -2322,7 +2322,7 @@ fun Frame162501(
 fun Have2Using3(modifier: Modifier = Modifier) {
     RelayText(
         content = "Have: 2 | Using: 0",
-        fontFamily = com.example.budgeto.inventory1.inter,
+        fontFamily = com.example.budgeto.screensfonts.inter,
         height = 1.2102272851126534.em,
         textAlign = TextAlign.Left,
         fontWeight = FontWeight(500.0.toInt()),
@@ -2343,7 +2343,7 @@ fun Text(modifier: Modifier = Modifier) {
     RelayText(
         content = "\n",
         fontSize = 20.0.sp,
-        fontFamily = com.example.budgeto.inventory1.inter,
+        fontFamily = com.example.budgeto.screensfonts.inter,
         height = 1.2102272033691406.em,
         textAlign = TextAlign.Left,
         fontWeight = FontWeight(700.0.toInt()),
@@ -2432,7 +2432,7 @@ fun Frame162502(
 fun Have2Using4(modifier: Modifier = Modifier) {
     RelayText(
         content = "Have: 2 | Using: 0",
-        fontFamily = com.example.budgeto.inventory1.inter,
+        fontFamily = com.example.budgeto.screensfonts.inter,
         height = 1.2102272851126534.em,
         textAlign = TextAlign.Left,
         fontWeight = FontWeight(500.0.toInt()),
@@ -2570,7 +2570,7 @@ fun SmallButton(modifier: Modifier = Modifier) {
     RelayText(
         content = "Small Button",
         fontSize = 16.0.sp,
-        fontFamily = com.example.budgeto.inventory1.inter,
+        fontFamily = com.example.budgeto.screensfonts.inter,
         height = 1.2102272510528564.em,
         textAlign = TextAlign.Left,
         fontWeight = FontWeight(700.0.toInt()),
@@ -2590,7 +2590,7 @@ fun Rectangle68(modifier: Modifier = Modifier) {
 fun Have5Using2(modifier: Modifier = Modifier) {
     RelayText(
         content = "Have: 5 | Using: 2",
-        fontFamily = com.example.budgeto.inventory1.inter,
+        fontFamily = com.example.budgeto.screensfonts.inter,
         height = 1.2102272851126534.em,
         textAlign = TextAlign.Left,
         fontWeight = FontWeight(500.0.toInt()),
@@ -2631,7 +2631,7 @@ fun Frame162504(
 fun Have4Using2(modifier: Modifier = Modifier) {
     RelayText(
         content = "Have: 4 | Using: 1",
-        fontFamily = com.example.budgeto.inventory1.inter,
+        fontFamily = com.example.budgeto.screensfonts.inter,
         height = 1.2102272851126534.em,
         textAlign = TextAlign.Left,
         fontWeight = FontWeight(500.0.toInt()),
@@ -2671,7 +2671,7 @@ fun Frame162505(
 fun Have2Using5(modifier: Modifier = Modifier) {
     RelayText(
         content = "Have: 2 | Using: 1",
-        fontFamily = com.example.budgeto.inventory1.inter,
+        fontFamily = com.example.budgeto.screensfonts.inter,
         height = 1.2102272851126534.em,
         textAlign = TextAlign.Left,
         fontWeight = FontWeight(500.0.toInt()),
@@ -2711,7 +2711,7 @@ fun Frame162506(
 fun Have2Using6(modifier: Modifier = Modifier) {
     RelayText(
         content = "Have: 2 | Using: 0",
-        fontFamily = com.example.budgeto.inventory1.inter,
+        fontFamily = com.example.budgeto.screensfonts.inter,
         height = 1.2102272851126534.em,
         textAlign = TextAlign.Left,
         fontWeight = FontWeight(500.0.toInt()),
@@ -2769,7 +2769,7 @@ fun Frame162507(
 fun Have2Using7(modifier: Modifier = Modifier) {
     RelayText(
         content = "Have: 2 | Using: 0",
-        fontFamily = com.example.budgeto.inventory1.inter,
+        fontFamily = com.example.budgeto.screensfonts.inter,
         height = 1.2102272851126534.em,
         textAlign = TextAlign.Left,
         fontWeight = FontWeight(500.0.toInt()),
@@ -2827,7 +2827,7 @@ fun Frame162508(
 fun Have1Using0(modifier: Modifier = Modifier) {
     RelayText(
         content = "Have: 1 | Using: 0",
-        fontFamily = com.example.budgeto.inventory1.inter,
+        fontFamily = com.example.budgeto.screensfonts.inter,
         height = 1.2102272851126534.em,
         textAlign = TextAlign.Left,
         fontWeight = FontWeight(500.0.toInt()),
@@ -2958,7 +2958,7 @@ fun Icon(modifier: Modifier = Modifier) {
     RelayText(
         content = "Icon",
         fontSize = 16.0.sp,
-        fontFamily = com.example.budgeto.inventory1.inter,
+        fontFamily = com.example.budgeto.screensfonts.inter,
         height = 1.2102272510528564.em,
         textAlign = TextAlign.Left,
         fontWeight = FontWeight(700.0.toInt()),
@@ -2978,7 +2978,7 @@ fun Rectangle69(modifier: Modifier = Modifier) {
 fun Have5Using3(modifier: Modifier = Modifier) {
     RelayText(
         content = "Have: 5 | Using: 2",
-        fontFamily = com.example.budgeto.inventory1.inter,
+        fontFamily = com.example.budgeto.screensfonts.inter,
         height = 1.2102272851126534.em,
         textAlign = TextAlign.Left,
         fontWeight = FontWeight(500.0.toInt()),
@@ -3019,7 +3019,7 @@ fun Frame162510(
 fun Have4Using3(modifier: Modifier = Modifier) {
     RelayText(
         content = "Have: 4 | Using: 1",
-        fontFamily = com.example.budgeto.inventory1.inter,
+        fontFamily = com.example.budgeto.screensfonts.inter,
         height = 1.2102272851126534.em,
         textAlign = TextAlign.Left,
         fontWeight = FontWeight(500.0.toInt()),
@@ -3094,7 +3094,7 @@ fun Frame162511(
 fun Have2Using8(modifier: Modifier = Modifier) {
     RelayText(
         content = "Have: 2 | Using: 1",
-        fontFamily = com.example.budgeto.inventory1.inter,
+        fontFamily = com.example.budgeto.screensfonts.inter,
         height = 1.2102272851126534.em,
         textAlign = TextAlign.Left,
         fontWeight = FontWeight(500.0.toInt()),
@@ -3141,7 +3141,7 @@ fun Frame162512(
 fun Have2Using9(modifier: Modifier = Modifier) {
     RelayText(
         content = "Have: 2 | Using: 0",
-        fontFamily = com.example.budgeto.inventory1.inter,
+        fontFamily = com.example.budgeto.screensfonts.inter,
         height = 1.2102272851126534.em,
         textAlign = TextAlign.Left,
         fontWeight = FontWeight(500.0.toInt()),
@@ -3188,7 +3188,7 @@ fun Frame162513(
 fun Have2Using10(modifier: Modifier = Modifier) {
     RelayText(
         content = "Have: 2 | Using: 0",
-        fontFamily = com.example.budgeto.inventory1.inter,
+        fontFamily = com.example.budgeto.screensfonts.inter,
         height = 1.2102272851126534.em,
         textAlign = TextAlign.Left,
         fontWeight = FontWeight(500.0.toInt()),
@@ -3242,7 +3242,7 @@ fun Frame162514(
 fun Have1Using1(modifier: Modifier = Modifier) {
     RelayText(
         content = "Have: 1 | Using: 0",
-        fontFamily = com.example.budgeto.inventory1.inter,
+        fontFamily = com.example.budgeto.screensfonts.inter,
         height = 1.2102272851126534.em,
         textAlign = TextAlign.Left,
         fontWeight = FontWeight(500.0.toInt()),
@@ -3349,7 +3349,7 @@ fun Background(modifier: Modifier = Modifier) {
     RelayText(
         content = "Background",
         fontSize = 16.0.sp,
-        fontFamily = com.example.budgeto.inventory1.inter,
+        fontFamily = com.example.budgeto.screensfonts.inter,
         height = 1.2102272510528564.em,
         textAlign = TextAlign.Left,
         fontWeight = FontWeight(700.0.toInt()),
@@ -3369,7 +3369,7 @@ fun Rectangle70(modifier: Modifier = Modifier) {
 fun Have5Using4(modifier: Modifier = Modifier) {
     RelayText(
         content = "Have: 5 | Using: 2",
-        fontFamily = com.example.budgeto.inventory1.inter,
+        fontFamily = com.example.budgeto.screensfonts.inter,
         height = 1.2102272851126534.em,
         textAlign = TextAlign.Left,
         fontWeight = FontWeight(500.0.toInt()),
@@ -3410,7 +3410,7 @@ fun Frame162519(
 fun Have4Using4(modifier: Modifier = Modifier) {
     RelayText(
         content = "Have: 4 | Using: 1",
-        fontFamily = com.example.budgeto.inventory1.inter,
+        fontFamily = com.example.budgeto.screensfonts.inter,
         height = 1.2102272851126534.em,
         textAlign = TextAlign.Left,
         fontWeight = FontWeight(500.0.toInt()),
@@ -3451,7 +3451,7 @@ fun Frame162520(
 fun Have2Using11(modifier: Modifier = Modifier) {
     RelayText(
         content = "Have: 2 | Using: 0",
-        fontFamily = com.example.budgeto.inventory1.inter,
+        fontFamily = com.example.budgeto.screensfonts.inter,
         height = 1.2102272851126534.em,
         textAlign = TextAlign.Left,
         fontWeight = FontWeight(500.0.toInt()),
@@ -3531,7 +3531,7 @@ fun Font(modifier: Modifier = Modifier) {
     RelayText(
         content = "Font",
         fontSize = 16.0.sp,
-        fontFamily = com.example.budgeto.inventory1.inter,
+        fontFamily = com.example.budgeto.screensfonts.inter,
         height = 1.2102272510528564.em,
         textAlign = TextAlign.Left,
         fontWeight = FontWeight(700.0.toInt()),
@@ -3602,7 +3602,7 @@ fun AaBbCcDd1(modifier: Modifier = Modifier) {
     RelayText(
         content = "AaBbCcDd",
         fontSize = 16.0.sp,
-        fontFamily = com.example.budgeto.inventory1.kurale,
+        fontFamily = com.example.budgeto.screensfonts.kurale,
         color = Color(
             alpha = 127,
             red = 0,
@@ -3620,7 +3620,7 @@ fun Kurale(modifier: Modifier = Modifier) {
     RelayText(
         content = "Kurale",
         fontSize = 16.0.sp,
-        fontFamily = com.example.budgeto.inventory1.kurale,
+        fontFamily = com.example.budgeto.screensfonts.kurale,
         height = 1.4780000448226929.em,
         textAlign = TextAlign.Left,
         modifier = modifier

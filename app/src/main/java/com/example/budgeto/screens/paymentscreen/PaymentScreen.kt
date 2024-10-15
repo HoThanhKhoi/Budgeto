@@ -22,7 +22,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.em
 import androidx.compose.ui.unit.sp
 import com.example.budgeto.R
-import com.example.budgeto.payment1.poppins
+import com.example.budgeto.screensfonts.poppins
 import com.google.relay.compose.BoxScopeInstance.columnWeight
 import com.google.relay.compose.BoxScopeInstance.rowWeight
 import com.google.relay.compose.RelayContainer
@@ -413,7 +413,7 @@ fun Payment(modifier: Modifier = Modifier) {
     RelayText(
         content = "Payment",
         fontSize = 16.0.sp,
-        fontFamily = com.example.budgeto.payment1.inter,
+        fontFamily = com.example.budgeto.screensfonts.inter,
         height = 1.2102272510528564.em,
         textAlign = TextAlign.Left,
         fontWeight = FontWeight(700.0.toInt()),
@@ -482,7 +482,7 @@ fun PaymentMethod(modifier: Modifier = Modifier) {
     RelayText(
         content = "Payment Method",
         fontSize = 16.0.sp,
-        fontFamily = com.example.budgeto.payment1.inter,
+        fontFamily = com.example.budgeto.screensfonts.inter,
         height = 1.2102272510528564.em,
         textAlign = TextAlign.Left,
         fontWeight = FontWeight(700.0.toInt()),
@@ -495,7 +495,7 @@ fun EXISTINGCARDS(modifier: Modifier = Modifier) {
     RelayText(
         content = "EXISTING CARDS",
         fontSize = 12.0.sp,
-        fontFamily = com.example.budgeto.payment1.inter,
+        fontFamily = com.example.budgeto.screensfonts.inter,
         height = 1.2102272510528564.em,
         textAlign = TextAlign.Left,
         fontWeight = FontWeight(200.0.toInt()),
@@ -865,7 +865,7 @@ fun AddACard(modifier: Modifier = Modifier) {
     RelayText(
         content = "Add a card",
         fontSize = 16.0.sp,
-        fontFamily = com.example.budgeto.payment1.inter,
+        fontFamily = com.example.budgeto.screensfonts.inter,
         color = Color(
             alpha = 255,
             red = 255,

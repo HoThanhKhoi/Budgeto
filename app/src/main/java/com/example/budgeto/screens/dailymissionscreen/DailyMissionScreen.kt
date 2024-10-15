@@ -982,7 +982,7 @@ fun OpenningScreen(modifier: Modifier = Modifier) {
     RelayText(
         content = "Openning Screen",
         fontSize = 16.0.sp,
-        fontFamily = com.example.budgeto.dailymission1.inter,
+        fontFamily = com.example.budgeto.screensfonts.inter,
         color = Color(
             alpha = 255,
             red = 255,
@@ -1113,7 +1113,7 @@ fun Christmas(modifier: Modifier = Modifier) {
     RelayText(
         content = "Christmas",
         fontSize = 16.0.sp,
-        fontFamily = com.example.budgeto.dailymission1.inter,
+        fontFamily = com.example.budgeto.screensfonts.inter,
         height = 1.2102272510528564.em,
         textAlign = TextAlign.Left,
         fontWeight = FontWeight(700.0.toInt()),
@@ -1212,7 +1212,7 @@ fun WishBanner1(modifier: Modifier = Modifier) {
     RelayText(
         content = "Wish banner",
         fontSize = 16.0.sp,
-        fontFamily = com.example.budgeto.dailymission1.inter,
+        fontFamily = com.example.budgeto.screensfonts.inter,
         height = 1.2102272510528564.em,
         textAlign = TextAlign.Left,
         fontWeight = FontWeight(700.0.toInt()),
@@ -1244,7 +1244,7 @@ fun Rectangle63(modifier: Modifier = Modifier) {
 fun OverallBalance(modifier: Modifier = Modifier) {
     RelayText(
         content = "Overall Balance",
-        fontFamily = com.example.budgeto.dailymission1.inter,
+        fontFamily = com.example.budgeto.screensfonts.inter,
         height = 1.2102272851126534.em,
         textAlign = TextAlign.Left,
         fontWeight = FontWeight(500.0.toInt()),
@@ -1257,7 +1257,7 @@ fun Class101000000VN(modifier: Modifier = Modifier) {
     RelayText(
         content = "101.000.000 VNĐ",
         fontSize = 20.0.sp,
-        fontFamily = com.example.budgeto.dailymission1.inter,
+        fontFamily = com.example.budgeto.screensfonts.inter,
         height = 1.2102272033691406.em,
         textAlign = TextAlign.Left,
         fontWeight = FontWeight(700.0.toInt()),
@@ -1290,7 +1290,7 @@ fun DailyMission(modifier: Modifier = Modifier) {
     RelayText(
         content = "Daily\nMission",
         fontSize = 16.0.sp,
-        fontFamily = com.example.budgeto.dailymission1.inter,
+        fontFamily = com.example.budgeto.screensfonts.inter,
         color = Color(
             alpha = 255,
             red = 255,
@@ -1351,7 +1351,7 @@ fun EI(modifier: Modifier = Modifier) {
     RelayText(
         content = "E/I",
         fontSize = 12.0.sp,
-        fontFamily = com.example.budgeto.dailymission1.inter,
+        fontFamily = com.example.budgeto.screensfonts.inter,
         color = Color(
             alpha = 255,
             red = 255,
@@ -1647,7 +1647,7 @@ fun Class993(modifier: Modifier = Modifier) {
     RelayText(
         content = "993",
         fontSize = 16.0.sp,
-        fontFamily = com.example.budgeto.dailymission1.inter,
+        fontFamily = com.example.budgeto.screensfonts.inter,
         color = Color(
             alpha = 255,
             red = 255,
@@ -2102,7 +2102,7 @@ fun Abrabra(modifier: Modifier = Modifier) {
     RelayText(
         content = "Abrabra",
         fontSize = 16.0.sp,
-        fontFamily = com.example.budgeto.dailymission1.inter,
+        fontFamily = com.example.budgeto.screensfonts.inter,
         height = 1.2102272510528564.em,
         textAlign = TextAlign.Left,
         fontWeight = FontWeight(700.0.toInt()),
@@ -2614,7 +2614,7 @@ fun Txt10993(modifier: Modifier = Modifier) {
     RelayText(
         content = "10.993",
         fontSize = 16.0.sp,
-        fontFamily = com.example.budgeto.dailymission1.inter,
+        fontFamily = com.example.budgeto.screensfonts.inter,
         height = 1.2102272510528564.em,
         textAlign = TextAlign.Left,
         fontWeight = FontWeight(700.0.toInt()),
@@ -2655,7 +2655,7 @@ fun TxtBudgetoken(modifier: Modifier = Modifier) {
     RelayText(
         content = "B",
         fontSize = 16.0.sp,
-        fontFamily = com.example.budgeto.dailymission1.inter,
+        fontFamily = com.example.budgeto.screensfonts.inter,
         color = Color(
             alpha = 255,
             red = 255,
@@ -2695,7 +2695,7 @@ fun Txt262over500(modifier: Modifier = Modifier) {
     RelayText(
         content = "262/500",
         fontSize = 12.0.sp,
-        fontFamily = com.example.budgeto.dailymission1.inter,
+        fontFamily = com.example.budgeto.screensfonts.inter,
         height = 1.2102272510528564.em,
         textAlign = TextAlign.Left,
         fontWeight = FontWeight(500.0.toInt()),
@@ -2736,7 +2736,7 @@ fun Txt13(modifier: Modifier = Modifier) {
     RelayText(
         content = "13",
         fontSize = 16.0.sp,
-        fontFamily = com.example.budgeto.dailymission1.inter,
+        fontFamily = com.example.budgeto.screensfonts.inter,
         color = Color(
             alpha = 255,
             red = 255,
@@ -2788,7 +2788,7 @@ fun ClaimBonus(modifier: Modifier = Modifier) {
     RelayText(
         content = "Claim Bonus",
         fontSize = 16.0.sp,
-        fontFamily = com.example.budgeto.dailymission1.inter,
+        fontFamily = com.example.budgeto.screensfonts.inter,
         height = 1.2102272510528564.em,
         textAlign = TextAlign.Left,
         fontWeight = FontWeight(700.0.toInt()),
@@ -2828,7 +2828,7 @@ fun InputExpense(modifier: Modifier = Modifier) {
     RelayText(
         content = "Input Expense",
         fontSize = 16.0.sp,
-        fontFamily = com.example.budgeto.dailymission1.inter,
+        fontFamily = com.example.budgeto.screensfonts.inter,
         height = 1.2102272510528564.em,
         textAlign = TextAlign.Left,
         fontWeight = FontWeight(500.0.toInt()),
@@ -2841,7 +2841,7 @@ fun InputIncome(modifier: Modifier = Modifier) {
     RelayText(
         content = "Input Income",
         fontSize = 16.0.sp,
-        fontFamily = com.example.budgeto.dailymission1.inter,
+        fontFamily = com.example.budgeto.screensfonts.inter,
         height = 1.2102272510528564.em,
         textAlign = TextAlign.Left,
         fontWeight = FontWeight(500.0.toInt()),
@@ -2878,7 +2878,7 @@ fun Class01(modifier: Modifier = Modifier) {
     RelayText(
         content = "0/1",
         fontSize = 11.0.sp,
-        fontFamily = com.example.budgeto.dailymission1.inter,
+        fontFamily = com.example.budgeto.screensfonts.inter,
         height = 1.2102272727272727.em,
         textAlign = TextAlign.Left,
         fontWeight = FontWeight(500.0.toInt()),
@@ -2911,7 +2911,7 @@ fun Class11(modifier: Modifier = Modifier) {
     RelayText(
         content = "1/1",
         fontSize = 11.0.sp,
-        fontFamily = com.example.budgeto.dailymission1.inter,
+        fontFamily = com.example.budgeto.screensfonts.inter,
         height = 1.2102272727272727.em,
         textAlign = TextAlign.Left,
         fontWeight = FontWeight(500.0.toInt()),
@@ -3808,7 +3808,7 @@ fun DailyMissions(modifier: Modifier = Modifier) {
     RelayText(
         content = "Daily Missions",
         fontSize = 16.0.sp,
-        fontFamily = com.example.budgeto.dailymission1.inter,
+        fontFamily = com.example.budgeto.screensfonts.inter,
         height = 1.2102272510528564.em,
         textAlign = TextAlign.Left,
         fontWeight = FontWeight(700.0.toInt()),

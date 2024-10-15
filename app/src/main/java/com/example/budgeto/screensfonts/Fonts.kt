@@ -32,4 +32,7 @@ val milonga: FontFamily = FontFamily(
 val kurale: FontFamily = FontFamily(
     Font(R.font.relay_kurale_regular, weight = FontWeight.W400, style = FontStyle.Normal)
 )
+val poppins: FontFamily = FontFamily(
+    Font(R.font.relay_poppins_regular, weight = FontWeight.W400, style = FontStyle.Normal)
+)
 val kyivTypeSerif: FontFamily = FontFamily.Default

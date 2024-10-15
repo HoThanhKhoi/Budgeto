@@ -937,7 +937,7 @@ fun June(modifier: Modifier = Modifier) {
     RelayText(
         content = "June",
         fontSize = 16.0.sp,
-        fontFamily = com.example.budgeto.statistics2.inter,
+        fontFamily = com.example.budgeto.screensfonts.inter,
         color = Color(
             alpha = 255,
             red = 255,
@@ -996,7 +996,7 @@ fun Frame63(
 fun OverallBalance(modifier: Modifier = Modifier) {
     RelayText(
         content = "Overall Balance",
-        fontFamily = com.example.budgeto.statistics2.inter,
+        fontFamily = com.example.budgeto.screensfonts.inter,
         color = Color(
             alpha = 255,
             red = 255,
@@ -1015,7 +1015,7 @@ fun Txt101000VND(modifier: Modifier = Modifier) {
     RelayText(
         content = "101.000 VNĐ",
         fontSize = 32.0.sp,
-        fontFamily = com.example.budgeto.statistics2.inter,
+        fontFamily = com.example.budgeto.screensfonts.inter,
         color = Color(
             alpha = 255,
             red = 255,
@@ -1059,7 +1059,7 @@ fun Expenses(modifier: Modifier = Modifier) {
     RelayText(
         content = "Expenses",
         fontSize = 16.0.sp,
-        fontFamily = com.example.budgeto.statistics2.inter,
+        fontFamily = com.example.budgeto.screensfonts.inter,
         height = 1.2102272510528564.em,
         textAlign = TextAlign.Left,
         fontWeight = FontWeight(700.0.toInt()),
@@ -1116,7 +1116,7 @@ fun Frame54(
 fun Food(modifier: Modifier = Modifier) {
     RelayText(
         content = "Food",
-        fontFamily = com.example.budgeto.statistics2.inter,
+        fontFamily = com.example.budgeto.screensfonts.inter,
         height = 1.2102272851126534.em,
         letterSpacing = -0.28.sp,
         textAlign = TextAlign.Left,
@@ -1129,7 +1129,7 @@ fun Food(modifier: Modifier = Modifier) {
 fun Txt3054000VND(modifier: Modifier = Modifier) {
     RelayText(
         content = "3.054.000 VNĐ",
-        fontFamily = com.example.budgeto.statistics2.inter,
+        fontFamily = com.example.budgeto.screensfonts.inter,
         height = 1.2102272851126534.em,
         letterSpacing = -0.28.sp,
         textAlign = TextAlign.Right,
@@ -1142,7 +1142,7 @@ fun Txt3054000VND(modifier: Modifier = Modifier) {
 fun Txt41percent(modifier: Modifier = Modifier) {
     RelayText(
         content = "41%",
-        fontFamily = com.example.budgeto.statistics2.inter,
+        fontFamily = com.example.budgeto.screensfonts.inter,
         color = Color(
             alpha = 255,
             red = 98,
@@ -1230,7 +1230,7 @@ fun Frame49(
 fun Health(modifier: Modifier = Modifier) {
     RelayText(
         content = "Health",
-        fontFamily = com.example.budgeto.statistics2.inter,
+        fontFamily = com.example.budgeto.screensfonts.inter,
         height = 1.2102272851126534.em,
         letterSpacing = -0.28.sp,
         textAlign = TextAlign.Left,
@@ -1243,7 +1243,7 @@ fun Health(modifier: Modifier = Modifier) {
 fun Txt2005000VND(modifier: Modifier = Modifier) {
     RelayText(
         content = "2.005.000 VNĐ",
-        fontFamily = com.example.budgeto.statistics2.inter,
+        fontFamily = com.example.budgeto.screensfonts.inter,
         height = 1.2102272851126534.em,
         letterSpacing = -0.28.sp,
         textAlign = TextAlign.Right,
@@ -1256,7 +1256,7 @@ fun Txt2005000VND(modifier: Modifier = Modifier) {
 fun Txt24percent1(modifier: Modifier = Modifier) {
     RelayText(
         content = "24%",
-        fontFamily = com.example.budgeto.statistics2.inter,
+        fontFamily = com.example.budgeto.screensfonts.inter,
         color = Color(
             alpha = 255,
             red = 98,
@@ -1344,7 +1344,7 @@ fun Frame51(
 fun Transport(modifier: Modifier = Modifier) {
     RelayText(
         content = "Transport",
-        fontFamily = com.example.budgeto.statistics2.inter,
+        fontFamily = com.example.budgeto.screensfonts.inter,
         height = 1.2102272851126534.em,
         letterSpacing = -0.28.sp,
         textAlign = TextAlign.Left,
@@ -1357,7 +1357,7 @@ fun Transport(modifier: Modifier = Modifier) {
 fun Txt2458000VND(modifier: Modifier = Modifier) {
     RelayText(
         content = "2.458.000 VNĐ",
-        fontFamily = com.example.budgeto.statistics2.inter,
+        fontFamily = com.example.budgeto.screensfonts.inter,
         height = 1.2102272851126534.em,
         letterSpacing = -0.28.sp,
         textAlign = TextAlign.Right,
@@ -1370,7 +1370,7 @@ fun Txt2458000VND(modifier: Modifier = Modifier) {
 fun Txt28percent(modifier: Modifier = Modifier) {
     RelayText(
         content = "28%",
-        fontFamily = com.example.budgeto.statistics2.inter,
+        fontFamily = com.example.budgeto.screensfonts.inter,
         color = Color(
             alpha = 255,
             red = 98,
@@ -1458,7 +1458,7 @@ fun Frame50(
 fun Cafe(modifier: Modifier = Modifier) {
     RelayText(
         content = "Cafe",
-        fontFamily = com.example.budgeto.statistics2.inter,
+        fontFamily = com.example.budgeto.screensfonts.inter,
         height = 1.2102272851126534.em,
         letterSpacing = -0.28.sp,
         textAlign = TextAlign.Left,
@@ -1471,7 +1471,7 @@ fun Cafe(modifier: Modifier = Modifier) {
 fun Txt995000VND(modifier: Modifier = Modifier) {
     RelayText(
         content = "995.000 VNĐ",
-        fontFamily = com.example.budgeto.statistics2.inter,
+        fontFamily = com.example.budgeto.screensfonts.inter,
         height = 1.2102272851126534.em,
         letterSpacing = -0.28.sp,
         textAlign = TextAlign.Right,
@@ -1484,7 +1484,7 @@ fun Txt995000VND(modifier: Modifier = Modifier) {
 fun Txt11percent(modifier: Modifier = Modifier) {
     RelayText(
         content = "11%",
-        fontFamily = com.example.budgeto.statistics2.inter,
+        fontFamily = com.example.budgeto.screensfonts.inter,
         color = Color(
             alpha = 255,
             red = 98,
@@ -1572,7 +1572,7 @@ fun Frame52(
 fun Entertainment(modifier: Modifier = Modifier) {
     RelayText(
         content = "Entertainment",
-        fontFamily = com.example.budgeto.statistics2.inter,
+        fontFamily = com.example.budgeto.screensfonts.inter,
         height = 1.2102272851126534.em,
         letterSpacing = -0.28.sp,
         textAlign = TextAlign.Left,
@@ -1585,7 +1585,7 @@ fun Entertainment(modifier: Modifier = Modifier) {
 fun Txt723000VND(modifier: Modifier = Modifier) {
     RelayText(
         content = "723.000 VNĐ",
-        fontFamily = com.example.budgeto.statistics2.inter,
+        fontFamily = com.example.budgeto.screensfonts.inter,
         height = 1.2102272851126534.em,
         letterSpacing = -0.28.sp,
         textAlign = TextAlign.Right,
@@ -1598,7 +1598,7 @@ fun Txt723000VND(modifier: Modifier = Modifier) {
 fun Txt8percent(modifier: Modifier = Modifier) {
     RelayText(
         content = "8%",
-        fontFamily = com.example.budgeto.statistics2.inter,
+        fontFamily = com.example.budgeto.screensfonts.inter,
         color = Color(
             alpha = 255,
             red = 98,
@@ -1686,7 +1686,7 @@ fun Frame53(
 fun Pets(modifier: Modifier = Modifier) {
     RelayText(
         content = "Pets",
-        fontFamily = com.example.budgeto.statistics2.inter,
+        fontFamily = com.example.budgeto.screensfonts.inter,
         height = 1.2102272851126534.em,
         letterSpacing = -0.28.sp,
         textAlign = TextAlign.Left,
@@ -1699,7 +1699,7 @@ fun Pets(modifier: Modifier = Modifier) {
 fun Txt0VND(modifier: Modifier = Modifier) {
     RelayText(
         content = "0 VNĐ",
-        fontFamily = com.example.budgeto.statistics2.inter,
+        fontFamily = com.example.budgeto.screensfonts.inter,
         height = 1.2102272851126534.em,
         letterSpacing = -0.28.sp,
         textAlign = TextAlign.Right,
@@ -1712,7 +1712,7 @@ fun Txt0VND(modifier: Modifier = Modifier) {
 fun Txt0percent(modifier: Modifier = Modifier) {
     RelayText(
         content = "0%",
-        fontFamily = com.example.budgeto.statistics2.inter,
+        fontFamily = com.example.budgeto.screensfonts.inter,
         color = Color(
             alpha = 255,
             red = 98,
@@ -1792,7 +1792,7 @@ fun Frame55(
 fun Family(modifier: Modifier = Modifier) {
     RelayText(
         content = "Family",
-        fontFamily = com.example.budgeto.statistics2.inter,
+        fontFamily = com.example.budgeto.screensfonts.inter,
         height = 1.2102272851126534.em,
         letterSpacing = -0.28.sp,
         textAlign = TextAlign.Left,
@@ -1805,7 +1805,7 @@ fun Family(modifier: Modifier = Modifier) {
 fun Txt0VND1(modifier: Modifier = Modifier) {
     RelayText(
         content = "0 VNĐ",
-        fontFamily = com.example.budgeto.statistics2.inter,
+        fontFamily = com.example.budgeto.screensfonts.inter,
         height = 1.2102272851126534.em,
         letterSpacing = -0.28.sp,
         textAlign = TextAlign.Right,
@@ -1818,7 +1818,7 @@ fun Txt0VND1(modifier: Modifier = Modifier) {
 fun Txt0percent1(modifier: Modifier = Modifier) {
     RelayText(
         content = "0%",
-        fontFamily = com.example.budgeto.statistics2.inter,
+        fontFamily = com.example.budgeto.screensfonts.inter,
         color = Color(
             alpha = 255,
             red = 98,
@@ -1898,7 +1898,7 @@ fun Frame56(
 fun Clothes(modifier: Modifier = Modifier) {
     RelayText(
         content = "Clothes",
-        fontFamily = com.example.budgeto.statistics2.inter,
+        fontFamily = com.example.budgeto.screensfonts.inter,
         height = 1.2102272851126534.em,
         letterSpacing = -0.28.sp,
         textAlign = TextAlign.Left,
@@ -1911,7 +1911,7 @@ fun Clothes(modifier: Modifier = Modifier) {
 fun Txt0VND2(modifier: Modifier = Modifier) {
     RelayText(
         content = "0 VNĐ",
-        fontFamily = com.example.budgeto.statistics2.inter,
+        fontFamily = com.example.budgeto.screensfonts.inter,
         height = 1.2102272851126534.em,
         letterSpacing = -0.28.sp,
         textAlign = TextAlign.Right,
@@ -1924,7 +1924,7 @@ fun Txt0VND2(modifier: Modifier = Modifier) {
 fun Txt0percent2(modifier: Modifier = Modifier) {
     RelayText(
         content = "0%",
-        fontFamily = com.example.budgeto.statistics2.inter,
+        fontFamily = com.example.budgeto.screensfonts.inter,
         color = Color(
             alpha = 255,
             red = 98,
@@ -2419,7 +2419,7 @@ fun Statistic(modifier: Modifier = Modifier) {
     RelayText(
         content = "Statistic",
         fontSize = 11.0.sp,
-        fontFamily = com.example.budgeto.statistics2.inter,
+        fontFamily = com.example.budgeto.screensfonts.inter,
         height = 1.2102272727272727.em,
         fontWeight = FontWeight(500.0.toInt()),
         modifier = modifier.wrapContentHeight(

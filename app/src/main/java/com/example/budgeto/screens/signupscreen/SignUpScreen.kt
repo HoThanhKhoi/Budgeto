@@ -334,7 +334,7 @@ fun SignUp(modifier: Modifier = Modifier) {
     RelayText(
         content = "Sign up",
         fontSize = 24.0.sp,
-        fontFamily = com.example.budgeto.signup.inter,
+        fontFamily = com.example.budgeto.screensfonts.inter,
         height = 1.2102272510528564.em,
         textAlign = TextAlign.Left,
         fontWeight = FontWeight(700.0.toInt()),
@@ -346,7 +346,7 @@ fun SignUp(modifier: Modifier = Modifier) {
 fun DonTHaveAnAccount(modifier: Modifier = Modifier) {
     RelayText(
         content = "Already have an account?",
-        fontFamily = com.example.budgeto.signup.inter,
+        fontFamily = com.example.budgeto.screensfonts.inter,
         color = Color(
             alpha = 255,
             red = 130,
@@ -367,7 +367,7 @@ fun LoginButton(
 ) {
     RelayText(
         content = "Login",
-        fontFamily = com.example.budgeto.signup.inter,
+        fontFamily = com.example.budgeto.screensfonts.inter,
         color = Color(
             alpha = 255,
             red = 0,
@@ -403,7 +403,7 @@ fun Label(
     RelayText(
         content = fullName,
         fontSize = 16.0.sp,
-        fontFamily = com.example.budgeto.signup.inter,
+        fontFamily = com.example.budgeto.screensfonts.inter,
         height = 1.625.em,
         letterSpacing = -0.5.sp,
         textAlign = TextAlign.Left,
@@ -471,7 +471,7 @@ fun Label1(
     RelayText(
         content = email,
         fontSize = 16.0.sp,
-        fontFamily = com.example.budgeto.signup.inter,
+        fontFamily = com.example.budgeto.screensfonts.inter,
         height = 1.625.em,
         letterSpacing = -0.5.sp,
         textAlign = TextAlign.Left,
@@ -539,7 +539,7 @@ fun Label2(
     RelayText(
         content = password,
         fontSize = 16.0.sp,
-        fontFamily = com.example.budgeto.signup.inter,
+        fontFamily = com.example.budgeto.screensfonts.inter,
         height = 1.625.em,
         letterSpacing = -0.5.sp,
         textAlign = TextAlign.Left,
@@ -639,7 +639,7 @@ fun ForgotPasswordLink(
 ) {
     RelayText(
         content = "Forgot Password?",
-        fontFamily = com.example.budgeto.signup.inter,
+        fontFamily = com.example.budgeto.screensfonts.inter,
         height = 1.5.em,
         textAlign = TextAlign.Right,
         italic = true,
@@ -683,7 +683,7 @@ fun SignUp1(modifier: Modifier = Modifier) {
     RelayText(
         content = "Sign up",
         fontSize = 16.0.sp,
-        fontFamily = com.example.budgeto.signup.inter,
+        fontFamily = com.example.budgeto.screensfonts.inter,
         color = Color(
             alpha = 255,
             red = 255,
@@ -816,7 +816,7 @@ fun OrSignUpWith(modifier: Modifier = Modifier) {
     RelayText(
         content = "or sign up with",
         fontSize = 16.0.sp,
-        fontFamily = com.example.budgeto.signup.inter,
+        fontFamily = com.example.budgeto.screensfonts.inter,
         height = 1.2102272510528564.em,
         fontWeight = FontWeight(300.0.toInt()),
         maxLines = -1,

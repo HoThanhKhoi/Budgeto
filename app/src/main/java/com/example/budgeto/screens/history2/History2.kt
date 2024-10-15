@@ -611,7 +611,7 @@ fun June(modifier: Modifier = Modifier) {
     RelayText(
         content = "June",
         fontSize = 16.0.sp,
-        fontFamily = com.example.budgeto.history2.inter,
+        fontFamily = com.example.budgeto.screensfonts.inter,
         height = 1.2102272510528564.em,
         fontWeight = FontWeight(600.0.toInt()),
         modifier = modifier
@@ -664,7 +664,7 @@ fun Frame51(
 fun June29thSaturday(modifier: Modifier = Modifier) {
     RelayText(
         content = "June 29th, Saturday",
-        fontFamily = com.example.budgeto.history2.inter,
+        fontFamily = com.example.budgeto.screensfonts.inter,
         height = 1.2102272851126534.em,
         textAlign = TextAlign.Left,
         fontWeight = FontWeight(500.0.toInt()),
@@ -677,7 +677,7 @@ fun TxtMinus70000VND(modifier: Modifier = Modifier) {
     RelayText(
         content = "- 70.000 VNĐ",
         fontSize = 16.0.sp,
-        fontFamily = com.example.budgeto.history2.inter,
+        fontFamily = com.example.budgeto.screensfonts.inter,
         height = 1.2102272510528564.em,
         textAlign = TextAlign.Right,
         fontWeight = FontWeight(500.0.toInt()),
@@ -715,7 +715,7 @@ fun Frame48(
 fun June15thTuesday(modifier: Modifier = Modifier) {
     RelayText(
         content = "June 15th, Tuesday",
-        fontFamily = com.example.budgeto.history2.inter,
+        fontFamily = com.example.budgeto.screensfonts.inter,
         height = 1.2102272851126534.em,
         textAlign = TextAlign.Left,
         fontWeight = FontWeight(500.0.toInt()),
@@ -728,7 +728,7 @@ fun Txt100000VND(modifier: Modifier = Modifier) {
     RelayText(
         content = "+ 100.000 VNĐ",
         fontSize = 16.0.sp,
-        fontFamily = com.example.budgeto.history2.inter,
+        fontFamily = com.example.budgeto.screensfonts.inter,
         height = 1.2102272510528564.em,
         textAlign = TextAlign.Right,
         fontWeight = FontWeight(500.0.toInt()),
@@ -766,7 +766,7 @@ fun Frame52(
 fun June13thSunday(modifier: Modifier = Modifier) {
     RelayText(
         content = "June 13th, Sunday",
-        fontFamily = com.example.budgeto.history2.inter,
+        fontFamily = com.example.budgeto.screensfonts.inter,
         height = 1.2102272851126534.em,
         textAlign = TextAlign.Left,
         fontWeight = FontWeight(500.0.toInt()),
@@ -779,7 +779,7 @@ fun TxtMinus330000VND(modifier: Modifier = Modifier) {
     RelayText(
         content = "-330.000 VNĐ",
         fontSize = 16.0.sp,
-        fontFamily = com.example.budgeto.history2.inter,
+        fontFamily = com.example.budgeto.screensfonts.inter,
         height = 1.2102272510528564.em,
         textAlign = TextAlign.Right,
         fontWeight = FontWeight(500.0.toInt()),
@@ -817,7 +817,7 @@ fun Frame55(
 fun June7thModay(modifier: Modifier = Modifier) {
     RelayText(
         content = "June 7th, Moday",
-        fontFamily = com.example.budgeto.history2.inter,
+        fontFamily = com.example.budgeto.screensfonts.inter,
         height = 1.2102272851126534.em,
         textAlign = TextAlign.Left,
         fontWeight = FontWeight(500.0.toInt()),
@@ -830,7 +830,7 @@ fun TxtMinus1000000VND(modifier: Modifier = Modifier) {
     RelayText(
         content = "- 1.000.000 VNĐ",
         fontSize = 16.0.sp,
-        fontFamily = com.example.budgeto.history2.inter,
+        fontFamily = com.example.budgeto.screensfonts.inter,
         height = 1.2102272510528564.em,
         textAlign = TextAlign.Right,
         fontWeight = FontWeight(500.0.toInt()),
@@ -868,7 +868,7 @@ fun Frame53(
 fun June2ndModay(modifier: Modifier = Modifier) {
     RelayText(
         content = "June 2nd, Moday",
-        fontFamily = com.example.budgeto.history2.inter,
+        fontFamily = com.example.budgeto.screensfonts.inter,
         height = 1.2102272851126534.em,
         textAlign = TextAlign.Left,
         fontWeight = FontWeight(500.0.toInt()),
@@ -881,7 +881,7 @@ fun Txt5000000VND(modifier: Modifier = Modifier) {
     RelayText(
         content = "+ 5.000.000 VNĐ",
         fontSize = 16.0.sp,
-        fontFamily = com.example.budgeto.history2.inter,
+        fontFamily = com.example.budgeto.screensfonts.inter,
         height = 1.2102272510528564.em,
         textAlign = TextAlign.Right,
         fontWeight = FontWeight(500.0.toInt()),
@@ -931,7 +931,7 @@ fun Frame62(
 fun TxtCategory(modifier: Modifier = Modifier) {
     RelayText(
         content = "Category",
-        fontFamily = com.example.budgeto.history2.inter,
+        fontFamily = com.example.budgeto.screensfonts.inter,
         color = Color(
             alpha = 255,
             red = 255,
@@ -950,7 +950,7 @@ fun TxtDefault(modifier: Modifier = Modifier) {
     RelayText(
         content = "Default",
         fontSize = 16.0.sp,
-        fontFamily = com.example.budgeto.history2.inter,
+        fontFamily = com.example.budgeto.screensfonts.inter,
         color = Color(
             alpha = 255,
             red = 255,
@@ -989,7 +989,7 @@ fun TxtDetails(modifier: Modifier = Modifier) {
     RelayText(
         content = "Details",
         fontSize = 16.0.sp,
-        fontFamily = com.example.budgeto.history2.inter,
+        fontFamily = com.example.budgeto.screensfonts.inter,
         color = Color(
             alpha = 255,
             red = 255,
@@ -1007,7 +1007,7 @@ fun TxtDetails(modifier: Modifier = Modifier) {
 fun TxtAccount(modifier: Modifier = Modifier) {
     RelayText(
         content = "Account",
-        fontFamily = com.example.budgeto.history2.inter,
+        fontFamily = com.example.budgeto.screensfonts.inter,
         color = Color(
             alpha = 255,
             red = 255,
@@ -1026,7 +1026,7 @@ fun TxtDefault1(modifier: Modifier = Modifier) {
     RelayText(
         content = "Default",
         fontSize = 16.0.sp,
-        fontFamily = com.example.budgeto.history2.inter,
+        fontFamily = com.example.budgeto.screensfonts.inter,
         color = Color(
             alpha = 255,
             red = 255,
@@ -1065,7 +1065,7 @@ fun Txt100000VND1(modifier: Modifier = Modifier) {
     RelayText(
         content = "+ 100.000 VNĐ",
         fontSize = 16.0.sp,
-        fontFamily = com.example.budgeto.history2.inter,
+        fontFamily = com.example.budgeto.screensfonts.inter,
         height = 1.2102272510528564.em,
         textAlign = TextAlign.Left,
         fontWeight = FontWeight(700.0.toInt()),
@@ -1104,7 +1104,7 @@ fun NOTE(modifier: Modifier = Modifier) {
     RelayText(
         content = "NOTE",
         fontSize = 16.0.sp,
-        fontFamily = com.example.budgeto.history2.inter,
+        fontFamily = com.example.budgeto.screensfonts.inter,
         height = 1.2102272510528564.em,
         fontWeight = FontWeight(700.0.toInt()),
         modifier = modifier
@@ -1116,7 +1116,7 @@ fun TxtExpensesAt1435(modifier: Modifier = Modifier) {
     RelayText(
         content = "Expenses at 14:35’",
         fontSize = 12.0.sp,
-        fontFamily = com.example.budgeto.history2.inter,
+        fontFamily = com.example.budgeto.screensfonts.inter,
         height = 1.2102272510528564.em,
         textAlign = TextAlign.Left,
         fontWeight = FontWeight(300.0.toInt()),
@@ -1130,7 +1130,7 @@ fun TxtExpensesAt2120(modifier: Modifier = Modifier) {
     RelayText(
         content = "Expenses at 21:20’",
         fontSize = 12.0.sp,
-        fontFamily = com.example.budgeto.history2.inter,
+        fontFamily = com.example.budgeto.screensfonts.inter,
         height = 1.2102272510528564.em,
         textAlign = TextAlign.Left,
         fontWeight = FontWeight(300.0.toInt()),
@@ -1201,7 +1201,7 @@ fun Note(
 fun June15th2024(modifier: Modifier = Modifier) {
     RelayText(
         content = "June, 15th 2024",
-        fontFamily = com.example.budgeto.history2.inter,
+        fontFamily = com.example.budgeto.screensfonts.inter,
         color = Color(
             alpha = 255,
             red = 255,
@@ -1566,7 +1566,7 @@ fun History(modifier: Modifier = Modifier) {
     RelayText(
         content = "History",
         fontSize = 11.0.sp,
-        fontFamily = com.example.budgeto.history2.inter,
+        fontFamily = com.example.budgeto.screensfonts.inter,
         height = 1.2102272727272727.em,
         fontWeight = FontWeight(500.0.toInt()),
         modifier = modifier.wrapContentHeight(

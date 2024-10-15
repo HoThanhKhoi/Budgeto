@@ -868,7 +868,7 @@ fun Txt101000(modifier: Modifier = Modifier) {
     RelayText(
         content = "101.000 VNĐ",
         fontSize = 32.0.sp,
-        fontFamily = com.example.budgeto.account3.inter,
+        fontFamily = com.example.budgeto.screensfonts.inter,
         color = Color(
             alpha = 255,
             red = 255,
@@ -886,7 +886,7 @@ fun Txt101000(modifier: Modifier = Modifier) {
 fun TotalBalance(modifier: Modifier = Modifier) {
     RelayText(
         content = "Total Balance",
-        fontFamily = com.example.budgeto.account3.inter,
+        fontFamily = com.example.budgeto.screensfonts.inter,
         color = Color(
             alpha = 255,
             red = 255,
@@ -938,7 +938,7 @@ fun ViewTransactionHistory(modifier: Modifier = Modifier) {
     RelayText(
         content = "View transaction History",
         fontSize = 16.0.sp,
-        fontFamily = com.example.budgeto.account3.inter,
+        fontFamily = com.example.budgeto.screensfonts.inter,
         color = Color(
             alpha = 255,
             red = 255,
@@ -983,7 +983,7 @@ fun Transfer(modifier: Modifier = Modifier) {
     RelayText(
         content = "Transfer",
         fontSize = 16.0.sp,
-        fontFamily = com.example.budgeto.account3.inter,
+        fontFamily = com.example.budgeto.screensfonts.inter,
         color = Color(
             alpha = 255,
             red = 255,
@@ -1029,7 +1029,7 @@ fun Expenses(modifier: Modifier = Modifier) {
     RelayText(
         content = "Expenses",
         fontSize = 16.0.sp,
-        fontFamily = com.example.budgeto.account3.inter,
+        fontFamily = com.example.budgeto.screensfonts.inter,
         height = 1.2102272510528564.em,
         fontWeight = FontWeight(500.0.toInt()),
         modifier = modifier.wrapContentHeight(
@@ -1044,7 +1044,7 @@ fun Txt400000(modifier: Modifier = Modifier) {
     RelayText(
         content = "400.000 VNĐ",
         fontSize = 16.0.sp,
-        fontFamily = com.example.budgeto.account3.inter,
+        fontFamily = com.example.budgeto.screensfonts.inter,
         height = 1.2102272510528564.em,
         fontWeight = FontWeight(700.0.toInt()),
         modifier = modifier.wrapContentHeight(
@@ -1059,7 +1059,7 @@ fun Txt501000(modifier: Modifier = Modifier) {
     RelayText(
         content = "501.000 VNĐ",
         fontSize = 16.0.sp,
-        fontFamily = com.example.budgeto.account3.inter,
+        fontFamily = com.example.budgeto.screensfonts.inter,
         height = 1.2102272510528564.em,
         fontWeight = FontWeight(700.0.toInt()),
         modifier = modifier.wrapContentHeight(
@@ -1074,7 +1074,7 @@ fun Incomes(modifier: Modifier = Modifier) {
     RelayText(
         content = "Incomes",
         fontSize = 16.0.sp,
-        fontFamily = com.example.budgeto.account3.inter,
+        fontFamily = com.example.budgeto.screensfonts.inter,
         height = 1.2102272510528564.em,
         fontWeight = FontWeight(500.0.toInt()),
         modifier = modifier.wrapContentHeight(
@@ -1096,7 +1096,7 @@ fun Line13(modifier: Modifier = Modifier) {
 fun AddExpense(modifier: Modifier = Modifier) {
     RelayText(
         content = "Add expense",
-        fontFamily = com.example.budgeto.account3.inter,
+        fontFamily = com.example.budgeto.screensfonts.inter,
         height = 1.2102272851126534.em,
         fontWeight = FontWeight(600.0.toInt()),
         modifier = modifier
@@ -1133,7 +1133,7 @@ fun Frame51(
 fun AddIncome(modifier: Modifier = Modifier) {
     RelayText(
         content = "Add income",
-        fontFamily = com.example.budgeto.account3.inter,
+        fontFamily = com.example.budgeto.screensfonts.inter,
         height = 1.2102272851126534.em,
         fontWeight = FontWeight(600.0.toInt()),
         modifier = modifier
@@ -1197,7 +1197,7 @@ fun Balance(modifier: Modifier = Modifier) {
     RelayText(
         content = "Balance",
         fontSize = 16.0.sp,
-        fontFamily = com.example.budgeto.account3.inter,
+        fontFamily = com.example.budgeto.screensfonts.inter,
         height = 1.2102272510528564.em,
         textAlign = TextAlign.Left,
         fontWeight = FontWeight(500.0.toInt()),
@@ -1210,7 +1210,7 @@ fun Txt40000000(modifier: Modifier = Modifier) {
     RelayText(
         content = "40.000.000 VNĐ",
         fontSize = 16.0.sp,
-        fontFamily = com.example.budgeto.account3.inter,
+        fontFamily = com.example.budgeto.screensfonts.inter,
         height = 1.2102272510528564.em,
         textAlign = TextAlign.Left,
         fontWeight = FontWeight(600.0.toInt()),
@@ -1249,7 +1249,7 @@ fun Default(modifier: Modifier = Modifier) {
     RelayText(
         content = "Default",
         fontSize = 16.0.sp,
-        fontFamily = com.example.budgeto.account3.inter,
+        fontFamily = com.example.budgeto.screensfonts.inter,
         height = 1.2102272510528564.em,
         textAlign = TextAlign.Left,
         fontWeight = FontWeight(500.0.toInt()),
@@ -1288,7 +1288,7 @@ fun Delete(modifier: Modifier = Modifier) {
     RelayText(
         content = "Delete",
         fontSize = 16.0.sp,
-        fontFamily = com.example.budgeto.account3.inter,
+        fontFamily = com.example.budgeto.screensfonts.inter,
         height = 1.2102272510528564.em,
         textAlign = TextAlign.Left,
         fontWeight = FontWeight(500.0.toInt()),
@@ -1327,7 +1327,7 @@ fun Archieve(modifier: Modifier = Modifier) {
     RelayText(
         content = "Archieve",
         fontSize = 16.0.sp,
-        fontFamily = com.example.budgeto.account3.inter,
+        fontFamily = com.example.budgeto.screensfonts.inter,
         height = 1.2102272510528564.em,
         textAlign = TextAlign.Left,
         fontWeight = FontWeight(500.0.toInt()),
@@ -1366,7 +1366,7 @@ fun Save(modifier: Modifier = Modifier) {
     RelayText(
         content = "Save",
         fontSize = 16.0.sp,
-        fontFamily = com.example.budgeto.account3.inter,
+        fontFamily = com.example.budgeto.screensfonts.inter,
         height = 1.2102272510528564.em,
         textAlign = TextAlign.Left,
         fontWeight = FontWeight(500.0.toInt()),
@@ -1405,7 +1405,7 @@ fun Icon(modifier: Modifier = Modifier) {
     RelayText(
         content = "Icon",
         fontSize = 16.0.sp,
-        fontFamily = com.example.budgeto.account3.inter,
+        fontFamily = com.example.budgeto.screensfonts.inter,
         height = 1.2102272510528564.em,
         textAlign = TextAlign.Left,
         fontWeight = FontWeight(500.0.toInt()),
@@ -1473,7 +1473,7 @@ fun Currency(modifier: Modifier = Modifier) {
     RelayText(
         content = "Currency",
         fontSize = 16.0.sp,
-        fontFamily = com.example.budgeto.account3.inter,
+        fontFamily = com.example.budgeto.screensfonts.inter,
         height = 1.2102272510528564.em,
         textAlign = TextAlign.Left,
         fontWeight = FontWeight(500.0.toInt()),
@@ -1486,7 +1486,7 @@ fun VN(modifier: Modifier = Modifier) {
     RelayText(
         content = "VNĐ",
         fontSize = 16.0.sp,
-        fontFamily = com.example.budgeto.account3.inter,
+        fontFamily = com.example.budgeto.screensfonts.inter,
         height = 1.2102272510528564.em,
         textAlign = TextAlign.Left,
         fontWeight = FontWeight(700.0.toInt()),
@@ -1525,7 +1525,7 @@ fun Account(modifier: Modifier = Modifier) {
     RelayText(
         content = "Account",
         fontSize = 16.0.sp,
-        fontFamily = com.example.budgeto.account3.inter,
+        fontFamily = com.example.budgeto.screensfonts.inter,
         height = 1.2102272510528564.em,
         textAlign = TextAlign.Left,
         fontWeight = FontWeight(700.0.toInt()),
