@@ -3,6 +3,13 @@ plugins {
     id("com.google.relay") version "0.3.12"
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
+
+    //Hilt
+    id("kotlin-kapt")
+    id("com.google.dagger.hilt.android")
+
+    //Google services
+    alias(libs.plugins.google.gms.google.services)
 }
 
 
@@ -63,6 +70,7 @@ dependencies {
     implementation(libs.androidx.ui.tooling.preview)
     implementation(libs.androidx.material3)
     implementation(libs.androidx.navigation.compose)
+    implementation(libs.firebase.auth)
 
 
     testImplementation(libs.junit)
@@ -72,4 +80,19 @@ dependencies {
     androidTestImplementation(libs.androidx.ui.test.junit4)
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
+
+    //Hilt
+    implementation("com.google.dagger:hilt-android:2.51.1")
+    kapt("com.google.dagger:hilt-android-compiler:2.51.1")
+    kapt("androidx.hilt:hilt-compiler:1.0.0")
+    implementation("androidx.hilt:hilt-navigation-compose:1.0.0")
+
+    implementation("com.google.android.gms:play-services-auth:20.4.0")
+
+    implementation ("com.firebaseui:firebase-ui-auth:7.2.0")
+    implementation ("com.facebook.android:facebook-android-sdk:17.0.2")
+}
+
+kapt {
+    correctErrorTypes = true
 }
