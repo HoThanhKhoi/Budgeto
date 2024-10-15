@@ -9,11 +9,13 @@ import com.example.budgeto.state.GoogleLoginState
 import com.example.budgeto.state.LoginState
 import com.example.budgeto.utils.Resource
 import com.google.firebase.auth.AuthCredential
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
+@HiltViewModel
 class LoginViewModel @Inject constructor(private val repository: AuthRepository) : ViewModel() {
     val _loginState = Channel<LoginState>()
     val loginState = _loginState.receiveAsFlow()
