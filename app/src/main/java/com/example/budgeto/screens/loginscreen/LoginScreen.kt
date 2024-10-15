@@ -40,17 +40,24 @@ import com.google.relay.compose.tappable
 @Composable
 fun LoginScreen(
     onLoginButtonTapped: () -> Unit = {},
+    onSignUpTapped: () -> Unit,
+    email: String,
+    onForgotPasswordTapped: () -> Unit,
+    password: String,
+    onIconEyeTapped: () -> Unit,
+    onLoginWithGoogleTapped: () -> Unit,
+    onLoginWithFacebookTapped: () -> Unit,
     modifier: Modifier = Modifier
 ){
     Login(
         onLoginTapped = onLoginButtonTapped,
-        onSignUpTapped = {},
-        email = "Email",
-        onForgotPasswordTapped = {},
-        password = "Password",
-        onIconEyeTapped = {},
-        onLoginWithGoogleTapped = {},
-        onLoginWithFacebookTapped = {},
+        onSignUpTapped = onSignUpTapped,
+        email = email,
+        onForgotPasswordTapped = onForgotPasswordTapped,
+        password = password,
+        onIconEyeTapped = onIconEyeTapped,
+        onLoginWithGoogleTapped = onLoginWithGoogleTapped,
+        onLoginWithFacebookTapped = onLoginWithFacebookTapped,
         modifier = Modifier.rowWeight(1.0f).columnWeight(1.0f)
     )
 }
