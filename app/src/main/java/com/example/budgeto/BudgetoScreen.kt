@@ -1,4 +1,4 @@
-package com.example.budgeto_figma_to_code_test01
+package com.example.budgeto
 
 import androidx.annotation.StringRes
 import androidx.compose.foundation.layout.fillMaxSize
@@ -8,20 +8,17 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.dimensionResource
-import androidx.compose.ui.unit.dp
-import androidx.navigation.compose.NavHost
 import androidx.navigation.NavHostController
+import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import com.example.budgeto.R
-import com.example.budgeto.screens.HomepageScreen
-import com.example.budgeto.screens.LoginScreen
-import com.example.budgeto.screens.OpeningScreenExpensesInputScreen
-import com.example.budgeto.screens.ProfileScreen
-import com.example.budgeto.screens.SignUpLoginScreen
-import com.example.budgeto.screens.SignUpScreen
-import com.example.budgeto.screens.StoreScreen
+import com.example.budgeto.screens.homepagescreen.HomepageScreen
+import com.example.budgeto.screens.loginscreen.LoginScreen
+import com.example.budgeto.screens.openingscreen.OpeningScreenExpensesInputScreen
+import com.example.budgeto.screens.profilescreen.ProfileScreen
+import com.example.budgeto.screens.signuploginscreen.SignUpLoginScreen
+import com.example.budgeto.screens.signupscreen.SignUpScreen
+import com.example.budgeto.screens.storescreen.StoreScreen
 
 enum class BudgetoScreenEnum(@StringRes val title: Int) {
     Start(title = R.string.SignUpLoginScreen),
@@ -58,12 +55,38 @@ fun BudgetoApp(
             }
             composable(route = BudgetoScreenEnum.SignUp.name) {
                 SignUpScreen(
-                    onSignUpButtonTapped = { navController.navigate(BudgetoScreenEnum.HomepageScreen.name) },
+                    fullName = "Full Name" ,
+                    email = "Email" ,
+                    password = "Password" ,
+                    onSignUpButtonTapped = { navController.navigate(BudgetoScreenEnum.Login.name) },
+
+                    onLoginButtonTapped = { navController.navigate(BudgetoScreenEnum.Login.name) },
+                    onForgotPasswordLinkTapped = {},
+                    onIconEyeTapped = {},
+                    onLoginWithFacebookTapped = {},
+                    onLoginWithGoogleTapped = {},
                 )
             }
             composable(route = BudgetoScreenEnum.Login.name) {
                 LoginScreen(
-                    onLoginButtonTapped = { navController.navigate(BudgetoScreenEnum.OpeningScreen.name) },
+                    email = "Email" ,
+                    password = "Password" ,
+                    onLoginButtonTapped = {
+                        if(1 == 1)
+                        {
+                            navController.navigate(BudgetoScreenEnum.OpeningScreen.name)
+                        }
+                        else
+                        {
+                            navController.navigate(BudgetoScreenEnum.Login.name)
+                        }
+                                          },
+
+                    onSignUpTapped = { navController.navigate(BudgetoScreenEnum.SignUp.name) },
+                    onForgotPasswordTapped = {},
+                    onIconEyeTapped = {},
+                    onLoginWithFacebookTapped = {},
+                    onLoginWithGoogleTapped = {},
                 )
             }
             composable(route = BudgetoScreenEnum.OpeningScreen.name) {
