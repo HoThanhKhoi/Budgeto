@@ -1,14 +1,17 @@
 package com.example.budgeto.screens.loginscreen
 
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.requiredHeight
 import androidx.compose.foundation.layout.requiredWidth
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -16,7 +19,6 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.DpOffset
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.em
@@ -26,6 +28,7 @@ import com.example.budgeto.screensfonts.inter
 import com.google.relay.compose.BorderAlignment
 import com.google.relay.compose.BoxScopeInstance.columnWeight
 import com.google.relay.compose.BoxScopeInstance.rowWeight
+import com.google.relay.compose.ColumnScopeInstanceImpl.weight
 import com.google.relay.compose.CrossAxisAlignment
 import com.google.relay.compose.MainAxisAlignment
 import com.google.relay.compose.RelayContainer
@@ -80,7 +83,7 @@ fun Login(
             modifier = Modifier.boxAlign(
                 alignment = Alignment.TopStart,
                 offset = DpOffset(
-                    x = -2.0.dp,
+                    x = 0.0.dp,
                     y = 795.0.dp
                 )
             )
@@ -98,7 +101,7 @@ fun Login(
                 modifier = Modifier.boxAlign(
                     alignment = Alignment.TopCenter,
                     offset = DpOffset(
-                        x = -2.0.dp,
+                        x = 0.0.dp,
                         y = 101.0.dp
                     )
                 )
@@ -108,7 +111,7 @@ fun Login(
             modifier = Modifier.boxAlign(
                 alignment = Alignment.TopCenter,
                 offset = DpOffset(
-                    x = 0.5.dp,
+                    x = 0.0.dp,
                     y = 84.0.dp
                 )
             )
@@ -129,7 +132,7 @@ fun Login(
             modifier = Modifier.boxAlign(
                 alignment = Alignment.TopCenter,
                 offset = DpOffset(
-                    x = -0.5.dp,
+                    x = 0.0.dp,
                     y = 274.0.dp
                 )
             )
@@ -166,7 +169,7 @@ fun Login(
             modifier = Modifier.boxAlign(
                 alignment = Alignment.TopCenter,
                 offset = DpOffset(
-                    x = 0.5.dp,
+                    x = 0.0.dp,
                     y = 432.0.dp
                 )
             )
@@ -260,26 +263,129 @@ fun Login(
         )
     }
 }
+//
+//@Composable
+//fun Login(
+//    modifier: Modifier = Modifier,
+//    email: String = "",
+//    password: String = "",
+//    onLoginTapped: () -> Unit = {},
+//    onSignUpTapped: () -> Unit = {},
+//    onForgotPasswordTapped: () -> Unit = {},
+//    onIconEyeTapped: () -> Unit = {},
+//    onLoginWithGoogleTapped: () -> Unit = {},
+//    onLoginWithFacebookTapped: () -> Unit = {}
+//) {
+//    // Use BoxWithConstraints to access screen dimensions dynamically
+//    BoxWithConstraints(modifier = modifier.fillMaxSize()) {
+//        val screenHeight = maxHeight
+//        val screenWidth = maxWidth
+//
+//        // Calculate dynamic offsets based on screen size
+//        val bottomNavOffsetY = screenHeight * 0.9f  // 90% from the top
+//        val signUpFormOffsetY = screenHeight * 0.35f
+//        val loginButtonOffsetY = screenHeight * 0.6f
+//        val googleLoginOffsetY = screenHeight * 0.75f
+//        val facebookLoginOffsetY = googleLoginOffsetY + 40.dp
+//
+//        Box(modifier = Modifier.fillMaxSize()) {
+//            // Statistics Section at the Top Start
+//            Statistics(
+//                modifier = Modifier
+//                    .align(Alignment.TopStart)
+//            ){}
+//
+//            // Bottom Navigation dynamically offset near the bottom
+//            BottomNav(
+//                modifier = Modifier
+//                    .align(Alignment.BottomCenter)
+//                    .offset(y = bottomNavOffsetY)
+//            ) {
+//                Line12(
+//                    modifier = Modifier.fillMaxWidth()
+//                )
+//            }
+//
+//            // Sign-Up Form dynamically centered
+//            SignUpForm(
+//                modifier = Modifier
+//                    .offset(y = signUpFormOffsetY)
+//            ) {
+//                EmailTextBox(modifier = Modifier.weight(1f)) {
+//                    PlaceholderRightIcon {
+//                        Label(email = email)
+//                    }
+//                }
+//                PasswordWrapper {
+//                    PasswordTextBox {
+//                        PlaceholderRightIcon1 {
+//                            Label1(password = password)
+//                            IconEye1(onIconEyeTapped = onIconEyeTapped){}
+//                        }
+//                    }
+//                    ForgotPasswordLink(onForgotPasswordTapped)
+//                }
+//            }
+//
+//            // Login Button with dynamic offset
+//            Frame162475(
+//                onLoginTapped = onLoginTapped,
+//                modifier = Modifier
+//                    .offset(y = loginButtonOffsetY)
+//            ) {
+//                Login1(
+//                )
+//            }
+//
+//            // Google and Facebook Login Buttons
+//            Group99(
+//                modifier = Modifier
+//                    .offset(y = googleLoginOffsetY)
+//            ) {
+//                LoginWithGoogle(onLoginWithGoogleTapped) {
+//                    Ellipse1()
+//                    Ellipse35(
+//                        modifier = Modifier
+//                            .offset(x = 10.dp, y = 10.dp)
+//                    )
+//                }
+//                LoginWithFacebook(
+//                    onLoginWithFacebookTapped = onLoginWithFacebookTapped,
+//                    modifier = Modifier
+//                        .offset(x = 49.dp)
+//                ) {
+//                    Ellipse2()
+//                    Ellipse36(
+//                        modifier = Modifier
+//                            .offset(x = -1.dp, y = -1.dp)
+//                    )
+//                    Vector161(
+//                        modifier = Modifier
+//                            .offset(x = 15.dp, y = 11.dp)
+//                    )
+//                }
+//            }
+//
+//            // Bottom Link with Sign-Up Option
+//            BottomLink(
+//                modifier = Modifier
+//                    .align(Alignment.BottomStart)
+//                    .padding(start = 31.dp, bottom = 20.dp)
+//            ) {
+//                DonTHaveAnAccount()
+//                SignUp(onSignUpTapped = onSignUpTapped)
+//            }
+//
+//            // "Or Sign-Up With" Text near Google Login
+//            OrSignUpWith(
+//                modifier = Modifier
+//                    .offset(x = 58.dp, y = googleLoginOffsetY - 30.dp)
+//            )
+//        }
+//    }
+//}
 
-@Preview(widthDp = 390, heightDp = 844)
-@Composable
-private fun LoginPreview() {
-    MaterialTheme {
-        RelayContainer {
-            Login(
-                onLoginTapped = {},
-                onSignUpTapped = {},
-                email = "Email",
-                onForgotPasswordTapped = {},
-                password = "Password",
-                onIconEyeTapped = {},
-                onLoginWithGoogleTapped = {},
-                onLoginWithFacebookTapped = {},
-                modifier = Modifier.rowWeight(1.0f).columnWeight(1.0f)
-            )
-        }
-    }
-}
+
 
 @Composable
 fun Statistics(
