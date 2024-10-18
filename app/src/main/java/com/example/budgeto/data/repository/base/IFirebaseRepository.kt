@@ -1,4 +1,4 @@
-package com.example.budgeto.data.repository
+package com.example.budgeto.data.repository.base
 
 interface IFirebaseRepository<T> {
     suspend fun getAll(): List<T>

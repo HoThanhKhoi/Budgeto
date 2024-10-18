@@ -1,4 +1,5 @@
-import com.example.budgeto.data.repository.IFirebaseRepository
+package com.example.budgeto.data.repository.base
+
 import com.google.firebase.firestore.CollectionReference
 import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.coroutines.tasks.await
