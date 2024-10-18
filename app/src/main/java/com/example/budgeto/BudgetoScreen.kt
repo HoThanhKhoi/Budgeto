@@ -12,6 +12,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.example.budgeto.screens.demo.SignInScreen
 import com.example.budgeto.screens.homepagescreen.HomepageScreen
 import com.example.budgeto.screens.loginscreen.LoginScreen
 import com.example.budgeto.screens.openingscreen.OpeningScreenExpensesInputScreen
@@ -80,13 +81,13 @@ fun BudgetoApp(
                         {
                             navController.navigate(BudgetoScreenEnum.Login.name)
                         }
-                                          },
+                    },
 
                     onSignUpTapped = { navController.navigate(BudgetoScreenEnum.SignUp.name) },
                     onForgotPasswordTapped = {},
                     onIconEyeTapped = {},
                     onLoginWithFacebookTapped = {},
-                    onLoginWithGoogleTapped = {},
+                    onLoginWithGoogleTapped = {}
                 )
             }
             composable(route = BudgetoScreenEnum.OpeningScreen.name) {
