@@ -10,6 +10,11 @@ import androidx.compose.foundation.layout.requiredHeight
 import androidx.compose.foundation.layout.requiredWidth
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -21,7 +26,10 @@ import androidx.compose.ui.unit.DpOffset
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.em
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.budgeto.R
+import com.example.budgeto.state.SignUpState
+import com.example.budgeto.viewmodel.SignUpViewModel
 import com.google.relay.compose.BorderAlignment
 import com.google.relay.compose.BoxScopeInstance.columnWeight
 import com.google.relay.compose.BoxScopeInstance.rowWeight
@@ -48,10 +56,19 @@ fun SignUpScreen(
     onIconEyeTapped: () -> Unit = {},
     onLoginWithFacebookTapped: () -> Unit = {},
     onLoginWithGoogleTapped: () -> Unit = {},
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    signUpViewModel: SignUpViewModel// inject view model
 ){
+    var localFullName by remember { mutableStateOf(fullName) }
+    var localEmail by remember { mutableStateOf(email) }
+    val localPassword by remember { mutableStateOf(password) }
+
+    val signUpState by signUpViewModel.signUpState.collectAsState(initial = SignUpState())
+
     SignUp(
-        onSignUpButtonTapped = onSignUpButtonTapped,
+        onSignUpButtonTapped = {
+            signUpViewModel.registerUser(localEmail, localPassword)
+        },
         fullName = fullName,
         email = email,
         onForgotPasswordLinkTapped = onForgotPasswordLinkTapped,
@@ -60,7 +77,9 @@ fun SignUpScreen(
         onIconEyeTapped = onIconEyeTapped,
         onLoginWithFacebookTapped = onLoginWithFacebookTapped,
         onLoginWithGoogleTapped = onLoginWithGoogleTapped,
-        modifier = modifier.rowWeight(1.0f).columnWeight(1.0f)
+        modifier = modifier
+            .rowWeight(1.0f)
+            .columnWeight(1.0f)
     )
 }
 
@@ -161,8 +180,12 @@ fun SignUp(
                             modifier = Modifier.rowWeight(1.0f)
                         )
                         IconEye2(onIconEyeTapped = onIconEyeTapped) {
-                            Vector4(modifier = Modifier.rowWeight(1.0f).columnWeight(1.0f))
-                            Vector5(modifier = Modifier.rowWeight(1.0f).columnWeight(1.0f))
+                            Vector4(modifier = Modifier
+                                .rowWeight(1.0f)
+                                .columnWeight(1.0f))
+                            Vector5(modifier = Modifier
+                                .rowWeight(1.0f)
+                                .columnWeight(1.0f))
                         }
                     }
                 }
@@ -287,7 +310,9 @@ private fun SignUpPreview() {
                 onIconEyeTapped = {},
                 onLoginWithFacebookTapped = {},
                 onLoginWithGoogleTapped = {},
-                modifier = Modifier.rowWeight(1.0f).columnWeight(1.0f)
+                modifier = Modifier
+                    .rowWeight(1.0f)
+                    .columnWeight(1.0f)
             )
         }
     }
@@ -307,7 +332,9 @@ fun Statistics(
         ),
         isStructured = false,
         content = content,
-        modifier = modifier.requiredWidth(392.0.dp).requiredHeight(49.0.dp)
+        modifier = modifier
+            .requiredWidth(392.0.dp)
+            .requiredHeight(49.0.dp)
     )
 }
 
@@ -315,7 +342,9 @@ fun Statistics(
 fun Line12(modifier: Modifier = Modifier) {
     RelayVector(
         vector = painterResource(R.drawable.sign_up_line_12),
-        modifier = modifier.requiredWidth(150.0.dp).requiredHeight(0.0.dp)
+        modifier = modifier
+            .requiredWidth(150.0.dp)
+            .requiredHeight(0.0.dp)
     )
 }
 
@@ -333,7 +362,9 @@ fun BottomNav(
         ),
         isStructured = false,
         content = content,
-        modifier = modifier.requiredWidth(390.0.dp).requiredHeight(113.0.dp)
+        modifier = modifier
+            .requiredWidth(390.0.dp)
+            .requiredHeight(113.0.dp)
     )
 }
 
@@ -399,7 +430,9 @@ fun BottomLink(
         itemSpacing = 8.0,
         clipToParent = false,
         content = content,
-        modifier = modifier.height(IntrinsicSize.Min).requiredWidth(327.0.dp)
+        modifier = modifier
+            .height(IntrinsicSize.Min)
+            .requiredWidth(327.0.dp)
     )
 }
 
@@ -432,7 +465,9 @@ fun PlaceholderRightIcon(
         itemSpacing = 24.0,
         clipToParent = false,
         content = content,
-        modifier = modifier.height(IntrinsicSize.Min).fillMaxWidth(1.0f)
+        modifier = modifier
+            .height(IntrinsicSize.Min)
+            .fillMaxWidth(1.0f)
     )
 }
 
@@ -500,7 +535,9 @@ fun PlaceholderRightIcon1(
         itemSpacing = 24.0,
         clipToParent = false,
         content = content,
-        modifier = modifier.height(IntrinsicSize.Min).fillMaxWidth(1.0f)
+        modifier = modifier
+            .height(IntrinsicSize.Min)
+            .fillMaxWidth(1.0f)
     )
 }
 
@@ -559,21 +596,26 @@ fun Label2(
 
 @Composable
 fun Vector4(modifier: Modifier = Modifier) {
-    RelayVector(modifier = modifier.fillMaxWidth(1.0f).fillMaxHeight(1.0f))
+    RelayVector(modifier = modifier
+        .fillMaxWidth(1.0f)
+        .fillMaxHeight(1.0f))
 }
 
 @Composable
 fun Vector5(modifier: Modifier = Modifier) {
     RelayVector(
         vector = painterResource(R.drawable.sign_up_vector),
-        modifier = modifier.padding(
-            paddingValues = PaddingValues(
-                start = 1.0.dp,
-                top = 4.0.dp,
-                end = 1.0.dp,
-                bottom = 5.0.dp
+        modifier = modifier
+            .padding(
+                paddingValues = PaddingValues(
+                    start = 1.0.dp,
+                    top = 4.0.dp,
+                    end = 1.0.dp,
+                    bottom = 5.0.dp
+                )
             )
-        ).fillMaxWidth(1.0f).fillMaxHeight(1.0f)
+            .fillMaxWidth(1.0f)
+            .fillMaxHeight(1.0f)
     )
 }
 
@@ -586,7 +628,10 @@ fun IconEye2(
     RelayContainer(
         isStructured = false,
         content = content,
-        modifier = modifier.tappable(onTap = onIconEyeTapped).requiredWidth(24.0.dp).requiredHeight(24.0.dp)
+        modifier = modifier
+            .tappable(onTap = onIconEyeTapped)
+            .requiredWidth(24.0.dp)
+            .requiredHeight(24.0.dp)
     )
 }
 
@@ -601,7 +646,9 @@ fun PlaceholderRightIcon2(
         itemSpacing = 24.0,
         clipToParent = false,
         content = content,
-        modifier = modifier.height(IntrinsicSize.Min).fillMaxWidth(1.0f)
+        modifier = modifier
+            .height(IntrinsicSize.Min)
+            .fillMaxWidth(1.0f)
     )
 }
 
@@ -652,7 +699,9 @@ fun ForgotPasswordLink(
         textAlign = TextAlign.Right,
         italic = true,
         maxLines = -1,
-        modifier = modifier.tappable(onTap = onForgotPasswordLinkTapped).fillMaxWidth(1.0f)
+        modifier = modifier
+            .tappable(onTap = onForgotPasswordLinkTapped)
+            .fillMaxWidth(1.0f)
     )
 }
 
@@ -682,7 +731,9 @@ fun SignUpForm(
         itemSpacing = 16.0,
         clipToParent = false,
         content = content,
-        modifier = modifier.requiredWidth(345.0.dp).requiredHeight(219.0.dp)
+        modifier = modifier
+            .requiredWidth(345.0.dp)
+            .requiredHeight(219.0.dp)
     )
 }
 
@@ -722,19 +773,23 @@ fun Frame162475(
         radius = 5.0,
         borderAlignment = BorderAlignment.Outside,
         content = content,
-        modifier = modifier.tappable(onTap = onSignUpButtonTapped).requiredWidth(343.0.dp).requiredHeight(48.0.dp).relayDropShadow(
-            color = Color(
-                alpha = 51,
-                red = 56,
-                green = 65,
-                blue = 157
-            ),
-            borderRadius = 5.0.dp,
-            blur = 4.0.dp,
-            offsetX = 0.0.dp,
-            offsetY = 4.0.dp,
-            spread = 0.0.dp
-        )
+        modifier = modifier
+            .tappable(onTap = onSignUpButtonTapped)
+            .requiredWidth(343.0.dp)
+            .requiredHeight(48.0.dp)
+            .relayDropShadow(
+                color = Color(
+                    alpha = 51,
+                    red = 56,
+                    green = 65,
+                    blue = 157
+                ),
+                borderRadius = 5.0.dp,
+                blur = 4.0.dp,
+                offsetX = 0.0.dp,
+                offsetY = 4.0.dp,
+                spread = 0.0.dp
+            )
     )
 }
 
@@ -742,7 +797,9 @@ fun Frame162475(
 fun Ellipse2(modifier: Modifier = Modifier) {
     RelayVector(
         vector = painterResource(R.drawable.sign_up_ellipse_2),
-        modifier = modifier.requiredWidth(40.0.dp).requiredHeight(40.0.dp)
+        modifier = modifier
+            .requiredWidth(40.0.dp)
+            .requiredHeight(40.0.dp)
     )
 }
 
@@ -750,7 +807,9 @@ fun Ellipse2(modifier: Modifier = Modifier) {
 fun Ellipse36(modifier: Modifier = Modifier) {
     RelayVector(
         vector = painterResource(R.drawable.sign_up_ellipse_36),
-        modifier = modifier.requiredWidth(26.0.dp).requiredHeight(26.0.dp)
+        modifier = modifier
+            .requiredWidth(26.0.dp)
+            .requiredHeight(26.0.dp)
     )
 }
 
@@ -758,7 +817,9 @@ fun Ellipse36(modifier: Modifier = Modifier) {
 fun Vector161(modifier: Modifier = Modifier) {
     RelayVector(
         vector = painterResource(R.drawable.sign_up_vector_161),
-        modifier = modifier.requiredWidth(9.0.dp).requiredHeight(18.0.dp)
+        modifier = modifier
+            .requiredWidth(9.0.dp)
+            .requiredHeight(18.0.dp)
     )
 }
 
@@ -772,7 +833,10 @@ fun LoginWithFacebook(
         isStructured = false,
         clipToParent = false,
         content = content,
-        modifier = modifier.tappable(onTap = onLoginWithFacebookTapped).requiredWidth(40.0.dp).requiredHeight(40.0.dp)
+        modifier = modifier
+            .tappable(onTap = onLoginWithFacebookTapped)
+            .requiredWidth(40.0.dp)
+            .requiredHeight(40.0.dp)
     )
 }
 
@@ -780,7 +844,9 @@ fun LoginWithFacebook(
 fun Ellipse1(modifier: Modifier = Modifier) {
     RelayVector(
         vector = painterResource(R.drawable.sign_up_ellipse_1),
-        modifier = modifier.requiredWidth(40.0.dp).requiredHeight(40.0.dp)
+        modifier = modifier
+            .requiredWidth(40.0.dp)
+            .requiredHeight(40.0.dp)
     )
 }
 
@@ -788,7 +854,9 @@ fun Ellipse1(modifier: Modifier = Modifier) {
 fun Ellipse35(modifier: Modifier = Modifier) {
     RelayVector(
         vector = painterResource(R.drawable.sign_up_ellipse_35),
-        modifier = modifier.requiredWidth(18.000003814697266.dp).requiredHeight(18.00002098083496.dp)
+        modifier = modifier
+            .requiredWidth(18.000003814697266.dp)
+            .requiredHeight(18.00002098083496.dp)
     )
 }
 
@@ -802,7 +870,10 @@ fun LoginWithGoogle(
         isStructured = false,
         clipToParent = false,
         content = content,
-        modifier = modifier.tappable(onTap = onLoginWithGoogleTapped).requiredWidth(40.0.dp).requiredHeight(40.0.dp)
+        modifier = modifier
+            .tappable(onTap = onLoginWithGoogleTapped)
+            .requiredWidth(40.0.dp)
+            .requiredHeight(40.0.dp)
     )
 }
 
@@ -815,7 +886,9 @@ fun Group99(
         isStructured = false,
         clipToParent = false,
         content = content,
-        modifier = modifier.requiredWidth(89.0.dp).requiredHeight(40.0.dp)
+        modifier = modifier
+            .requiredWidth(89.0.dp)
+            .requiredHeight(40.0.dp)
     )
 }
 
@@ -828,7 +901,9 @@ fun OrSignUpWith(modifier: Modifier = Modifier) {
         height = 1.2102272510528564.em,
         fontWeight = FontWeight(300.0.toInt()),
         maxLines = -1,
-        modifier = modifier.requiredWidth(273.0.dp).requiredHeight(10.0.dp)
+        modifier = modifier
+            .requiredWidth(273.0.dp)
+            .requiredHeight(10.0.dp)
     )
 }
 
@@ -846,6 +921,8 @@ fun TopLevel(
         ),
         isStructured = false,
         content = content,
-        modifier = modifier.fillMaxWidth(1.0f).fillMaxHeight(1.0f)
+        modifier = modifier
+            .fillMaxWidth(1.0f)
+            .fillMaxHeight(1.0f)
     )
 }

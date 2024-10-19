@@ -1,13 +1,18 @@
 package com.example.budgeto.data.repository.base
 
+import com.example.budgeto.data.repository.base.IFirestoreRepository
 import com.google.firebase.firestore.CollectionReference
 import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.coroutines.tasks.await
+import javax.inject.Inject
 
-open class FirestoreRepository<T : Any>(private val collectionPath: String, private val clazz: Class<T>) :
-    IFirebaseRepository<T> {
-    private val firestore = FirebaseFirestore.getInstance()
-    private val collectionRef = firestore.collection(collectionPath)
+open class FirestoreRepository<T : Any> @Inject constructor(
+    private val firestore: FirebaseFirestore,  // Injecting FirebaseFirestore
+    private val collectionPath: String,        // Collection path
+    private val clazz: Class<T>                // Class type for serialization
+) : IFirestoreRepository<T> {
+
+    private val collectionRef: CollectionReference = firestore.collection(collectionPath)
 
     override suspend fun add(item: T): String {
         val document = collectionRef.add(item).await()
@@ -32,7 +37,7 @@ open class FirestoreRepository<T : Any>(private val collectionPath: String, priv
         return documents.mapNotNull { it.toObject(clazz) }
     }
 
-    //subcollection
+    // Subcollection
     override suspend fun addSubcollection(
         parentId: String,
         subcollectionPath: String,

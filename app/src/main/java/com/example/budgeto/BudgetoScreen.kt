@@ -8,6 +8,7 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -19,6 +20,7 @@ import com.example.budgeto.screens.profilescreen.ProfileScreen
 import com.example.budgeto.screens.signuploginscreen.SignUpLoginScreen
 import com.example.budgeto.screens.signupscreen.SignUpScreen
 import com.example.budgeto.screens.storescreen.StoreScreen
+import com.example.budgeto.viewmodel.SignUpViewModel
 
 enum class BudgetoScreenEnum(@StringRes val title: Int) {
     Start(title = R.string.SignUpLoginScreen),
@@ -54,7 +56,9 @@ fun BudgetoApp(
                 )
             }
             composable(route = BudgetoScreenEnum.SignUp.name) {
+                val signUpViewModel : SignUpViewModel = hiltViewModel()
                 SignUpScreen(
+                    signUpViewModel = signUpViewModel,
                     fullName = "Full Name" ,
                     email = "Email" ,
                     password = "Password" ,

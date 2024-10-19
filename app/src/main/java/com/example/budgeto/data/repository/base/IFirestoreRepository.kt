@@ -1,6 +1,6 @@
 package com.example.budgeto.data.repository.base
 
-interface IFirebaseRepository<T> {
+interface IFirestoreRepository<T> {
     suspend fun getAll(): List<T>
     suspend fun get(id:String): T?
     suspend fun add(item: T): String
