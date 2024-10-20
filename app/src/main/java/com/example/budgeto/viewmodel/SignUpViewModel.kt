@@ -1,5 +1,6 @@
 package com.example.budgeto.viewmodel
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.budgeto.data.AuthRepository
@@ -24,9 +25,12 @@ class SignUpViewModel @Inject constructor(
     val signUpState = _signUpState.receiveAsFlow()
 
     fun registerUser(email: String, password: String) = viewModelScope.launch {
+
         authRepository.signUp(email, password).collect { result ->
             when (result) {
                 is Resource.Success -> {
+                    Log.d("SignUpButton", "Signup button presses")
+
                     val firebaseUser = result.data?.user
                     firebaseUser?.let {
                         addNewUserToFirestore(it)
@@ -34,6 +38,7 @@ class SignUpViewModel @Inject constructor(
                     }?:run {
                         _signUpState.send(SignUpState(isError = "Failed to retrieve Firebase user"))
                     }
+
                 }
                 is Resource.Loading -> {
                     _signUpState.send(SignUpState(isLoading = true))
@@ -41,6 +46,7 @@ class SignUpViewModel @Inject constructor(
 
                 is Resource.Error -> {
                     _signUpState.send(SignUpState(isError = result.message))
+                    Log.d("Errorororororor", "Signup button presses")
 
                 }
             }

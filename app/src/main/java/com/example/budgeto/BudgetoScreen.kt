@@ -39,7 +39,7 @@ enum class BudgetoScreenEnum(@StringRes val title: Int) {
 fun BudgetoApp(
     navController: NavHostController = rememberNavController()
 ) {
-    Scaffold () { innerPadding ->
+    Scaffold() { innerPadding ->
 
         NavHost(
             navController = navController,
@@ -56,13 +56,15 @@ fun BudgetoApp(
                 )
             }
             composable(route = BudgetoScreenEnum.SignUp.name) {
-                val signUpViewModel : SignUpViewModel = hiltViewModel()
+                val signUpViewModel: SignUpViewModel = hiltViewModel()
                 SignUpScreen(
                     signUpViewModel = signUpViewModel,
-                    fullName = "Full Name" ,
-                    email = "Email" ,
-                    password = "Password" ,
-                    onSignUpButtonTapped = { navController.navigate(BudgetoScreenEnum.Login.name) },
+                    fullName = "Full Name",
+                    email = "Email",
+                    password = "Password",
+                    onSignUpButtonTapped = {
+                        navController.navigate(BudgetoScreenEnum.Login.name)
+                    },
 
                     onLoginButtonTapped = { navController.navigate(BudgetoScreenEnum.Login.name) },
                     onForgotPasswordLinkTapped = {},
@@ -73,18 +75,15 @@ fun BudgetoApp(
             }
             composable(route = BudgetoScreenEnum.Login.name) {
                 LoginScreen(
-                    email = "Email" ,
-                    password = "Password" ,
+                    email = "Email",
+                    password = "Password",
                     onLoginButtonTapped = {
-                        if(1 == 1)
-                        {
+                        if (1 == 1) {
                             navController.navigate(BudgetoScreenEnum.OpeningScreen.name)
-                        }
-                        else
-                        {
+                        } else {
                             navController.navigate(BudgetoScreenEnum.Login.name)
                         }
-                                          },
+                    },
 
                     onSignUpTapped = { navController.navigate(BudgetoScreenEnum.SignUp.name) },
                     onForgotPasswordTapped = {},
@@ -105,7 +104,7 @@ fun BudgetoApp(
                     onHistoryButtonTapped = { navController.navigate(BudgetoScreenEnum.HistoryScreen.name) },
                     onStatisticButtonTapped = { navController.navigate(BudgetoScreenEnum.StatisticScreen.name) },
 
-                )
+                    )
             }
             composable(route = BudgetoScreenEnum.ProfileScreen.name) {
                 ProfileScreen(
