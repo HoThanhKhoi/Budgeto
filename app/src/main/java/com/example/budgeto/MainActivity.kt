@@ -10,23 +10,22 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
 import com.example.budgeto.tmpNavigation.NavigationGraph
 import com.example.budgeto.ui.theme.BudgetoTheme
-import com.example.budgeto.viewmodel.AuthViewModel
 import androidx.compose.ui.Modifier
 import dagger.hilt.android.AndroidEntryPoint
+
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
 //        installSplashScreen()
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
-        val authViewModel: AuthViewModel by viewModels()
         setContent {
             BudgetoTheme {
-               // BudgetoApp()
+                BudgetoApp()
 
-                Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-                    NavigationGraph(modifier = Modifier.padding(innerPadding), authViewModel = authViewModel)
-                }
+//                Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
+//                    NavigationGraph(modifier = Modifier.padding(innerPadding), authViewModel = authViewModel)
+//                }
             }
         }
     }
