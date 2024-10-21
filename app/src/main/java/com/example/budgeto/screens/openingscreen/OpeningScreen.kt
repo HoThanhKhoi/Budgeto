@@ -1,14 +1,17 @@
 package com.example.budgeto.screens.openingscreen
 
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.requiredHeight
 import androidx.compose.foundation.layout.requiredWidth
 import androidx.compose.foundation.layout.wrapContentHeight
+import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
@@ -35,14 +38,122 @@ import com.google.relay.compose.RelayText
 import com.google.relay.compose.RelayVector
 import com.google.relay.compose.relayDropShadow
 import com.google.relay.compose.tappable
+import java.util.Stack
 
 @Composable
 fun OpeningScreenExpensesInputScreen(
     modifier: Modifier = Modifier
 ) {
+    var operationText by remember { mutableStateOf("") }
+    var resultText by remember { mutableStateOf("") }
+
     OpeningScreenExpensesInput(
         modifier = modifier.rowWeight(1.0f).columnWeight(1.0f),
+        operationTextContent = operationText,
+        resultTextContent = resultText,
+        onTaxButtonTapped = { /* Implement tax logic if needed */ },
+        onPercentButtonTapped = { operationText += "%" },
+        onAccountButtonTapped = { /* Implement account logic if needed */ },
+        onNumberFourButtonTapped = { operationText += "4" },
+        onButtonFiveButtonTapped = { operationText += "5" },
+        onMultiplyButtonTapped = { operationText += "*" },
+        onButtonSixButtonTapped = { operationText += "6" },
+        onDivideButtonTapped = { operationText += "/" },
+        onNumberSevenButtonTapped = { operationText += "7" },
+        onNumberEightButtonTapped = { operationText += "8" },
+        onDeleteButtonTapped = {
+            if (operationText.isNotEmpty()) {
+                operationText = operationText.dropLast(1)
+            }
+        },
+        onNumberNineButtonTapped = { operationText += "9" },
+        onEqualButtonTapped = {
+            resultText = evaluateExpression(operationText)
+        },
+        onNumberOneButtonTapped = { operationText += "1" },
+        onNumberTwoButtonTapped = { operationText += "2" },
+        onAdditionButtonTapped = { operationText += "+" },
+        onNumberThreeButtonTapped = { operationText += "3" },
+        onOpenParenthesesButtonTapped = { operationText += "(" },
+        onNumberZeroButtonTapped = { operationText += "0" },
+        onDotButtonTapped = { operationText += "." },
+        onCloseParenthesesButtonTapped = { operationText += ")" },
+        onMinusButtonTapped = { operationText += "-" },
+        onDoneButtonTapped = { /* Handle done action if needed */ },
+        onInputButtonTapped = { /* Handle input button if needed */ },
+        onOutputButtonTapped = { /* Handle output button if needed */ }
     )
+}
+
+fun evaluateExpression(expression: String): String {
+    return try {
+        val result = ExpressionParser().evaluate(expression)
+        result.toString()
+    } catch (e: Exception) {
+        "Error"
+    }
+}
+
+class ExpressionParser {
+    fun evaluate(expression: String): Double {
+        val tokens = expression.toCharArray()
+        val values = Stack<Double>()
+        val ops = Stack<Char>()
+
+        var i = 0
+        while (i < tokens.size) {
+            when {
+                tokens[i] == ' ' -> i++
+                tokens[i] in '0'..'9' || tokens[i] == '.' -> {
+                    val sb = StringBuilder()
+                    while (i < tokens.size && (tokens[i] in '0'..'9' || tokens[i] == '.')) {
+                        sb.append(tokens[i++])
+                    }
+                    values.push(sb.toString().toDouble())
+                }
+                tokens[i] == '(' -> ops.push(tokens[i++])
+                tokens[i] == ')' -> {
+                    while (ops.peek() != '(') {
+                        values.push(applyOp(ops.pop(), values.pop(), values.pop()))
+                    }
+                    ops.pop()
+                    i++
+                }
+                tokens[i] in listOf('+', '-', '*', '/') -> {
+                    while (ops.isNotEmpty() && hasPrecedence(tokens[i], ops.peek())) {
+                        values.push(applyOp(ops.pop(), values.pop(), values.pop()))
+                    }
+                    ops.push(tokens[i++])
+                }
+                else -> i++
+            }
+        }
+
+        while (ops.isNotEmpty()) {
+            values.push(applyOp(ops.pop(), values.pop(), values.pop()))
+        }
+
+        return values.pop()
+    }
+
+    private fun hasPrecedence(op1: Char, op2: Char): Boolean {
+        if (op2 == '(' || op2 == ')') return false
+        if ((op1 == '*' || op1 == '/') && (op2 == '+' || op2 == '-')) return false
+        return true
+    }
+
+    private fun applyOp(op: Char, b: Double, a: Double): Double {
+        return when (op) {
+            '+' -> a + b
+            '-' -> a - b
+            '*' -> a * b
+            '/' -> {
+                if (b == 0.0) throw UnsupportedOperationException("Cannot divide by zero")
+                a / b
+            }
+            else -> 0.0
+        }
+    }
 }
 
 
@@ -700,7 +811,8 @@ fun OpeningScreenExpensesInput(
                             x = 205.0.dp,
                             y = 60.0.dp
                         )
-                    )
+                    ).wrapContentWidth(),
+                    textAlign = TextAlign.End
                 )
             }
         }
@@ -2165,14 +2277,15 @@ fun Class10001000(
 @Composable
 fun Class2000(
     resultTextContent: String,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    textAlign: TextAlign = TextAlign.Right
 ) {
     RelayText(
         content = resultTextContent,
         fontSize = 40.0.sp,
         fontFamily = inter,
         height = 1.2102272033691406.em,
-        textAlign = TextAlign.Left,
+        textAlign = textAlign,
         fontWeight = FontWeight(700.0.toInt()),
         modifier = modifier
     )
