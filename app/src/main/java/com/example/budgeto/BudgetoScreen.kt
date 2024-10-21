@@ -17,7 +17,6 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import com.example.budgeto.screens.demo.SignInScreen
 import com.example.budgeto.screens.homepagescreen.HomepageScreen
 import com.example.budgeto.screens.loginscreen.LoginScreen
 import com.example.budgeto.screens.openingscreen.OpeningScreenExpensesInputScreen
@@ -82,10 +81,9 @@ fun BudgetoApp(
             }
             composable(route = BudgetoScreenEnum.Login.name) {
 
-                var email by remember { mutableStateOf("") }
-                var password by remember { mutableStateOf("") }
-
+                val loginViewModel: LoginViewModel = hiltViewModel()
                 LoginScreen(
+                    loginViewModel = loginViewModel,
                     email = "Email",
                     password = "Password",
                     onLoginButtonTapped = {
@@ -94,11 +92,7 @@ fun BudgetoApp(
                         } else {
                             navController.navigate(BudgetoScreenEnum.Login.name)
                         }
-                    //email = email ,
-                    //password = password ,
-                    //onEmailChange = { email = it },
-                    //onPasswordChange = { password = it },
-                    //onLoginButtonTapped = {
+
                         //navController.navigate(BudgetoScreenEnum.OpeningScreen.name)
                     },
 

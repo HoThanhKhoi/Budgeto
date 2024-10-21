@@ -46,7 +46,7 @@ class SignUpViewModel @Inject constructor(
 
                 is Resource.Error -> {
                     _signUpState.send(SignUpState(isError = result.message))
-                    Log.d("Errorororororor", "Signup button presses")
+                    Log.d("Error", "Signup button presses")
 
                 }
             }

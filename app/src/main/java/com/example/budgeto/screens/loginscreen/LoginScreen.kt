@@ -37,6 +37,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.budgeto.R
 import com.example.budgeto.screensfonts.inter
 import com.example.budgeto.viewmodel.LoginViewModel
+import com.example.budgeto.viewmodel.SignUpViewModel
 import com.google.relay.compose.BorderAlignment
 import com.google.relay.compose.BoxScopeInstance.columnWeight
 import com.google.relay.compose.BoxScopeInstance.rowWeight
@@ -56,25 +57,22 @@ import com.google.relay.compose.tappable
 fun LoginScreen(
     email: String,
     password: String,
-    onEmailChange: (String) -> Unit, // Callback for email input
-    onPasswordChange: (String) -> Unit,
     onLoginButtonTapped: () -> Unit = {},
     onSignUpTapped: () -> Unit,
     onForgotPasswordTapped: () -> Unit,
     onIconEyeTapped: () -> Unit,
     onLoginWithGoogleTapped: () -> Unit,
     onLoginWithFacebookTapped: () -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    loginViewModel: LoginViewModel
 ){
-    val loginViewModel: LoginViewModel = viewModel()
+    //val loginViewModel: LoginViewModel = viewModel()
 
-    val loginState by loginViewModel.loginState. collectAsState()
     Login(
         email = email,
         password = password,
-        onEmailChange = onEmailChange,
-        onPasswordChange = onPasswordChange,
         onLoginTapped = {
+            onLoginButtonTapped()
             loginViewModel.loginUser(email, password)
         },
         onSignUpTapped = onSignUpTapped,
@@ -82,27 +80,10 @@ fun LoginScreen(
         onIconEyeTapped = onIconEyeTapped,
         onLoginWithGoogleTapped = onLoginWithGoogleTapped,
         onLoginWithFacebookTapped = onLoginWithFacebookTapped,
-        modifier = Modifier.rowWeight(1.0f).columnWeight(1.0f)
+        modifier = modifier.rowWeight(1.0f).columnWeight(1.0f)
     )
 
-    when {
-        loginState.isLoading -> {
-            // Display a loading spinner
-            //CircularProgressIndicator(modifier = Modifier.align(Alignment.CenterHorizontally))
-        }
-        loginState.isSuccess?.isNotEmpty() == true -> {
-            // If login was successful, trigger the success action (e.g., navigation)
-            onLoginButtonTapped()
-        }
-        loginState.isError?.isNotEmpty() == true -> {
-            // If login failed, show an error message
-            Text(
-                text = loginState.isError.orEmpty(),
-                color = Color.Red,
-                modifier = Modifier.align(Alignment.CenterHorizontally)
-            )
-        }
-    }
+
 }
 
 
@@ -110,8 +91,6 @@ fun LoginScreen(
 fun Login(
     email: String,
     password: String,
-    onEmailChange: (String) -> Unit, // Function to update email state
-    onPasswordChange: (String) -> Unit,
     onLoginTapped: () -> Unit = {},
     onSignUpTapped: () -> Unit = {},
     onForgotPasswordTapped: () -> Unit = {},
@@ -183,7 +162,7 @@ fun Login(
                 PlaceholderRightIcon(modifier = Modifier.rowWeight(1.0f)) {
                     Label(
                         email = email,
-                        onEmailChange = onEmailChange,
+                        onEmailChange = {},
                         modifier = Modifier.rowWeight(1.0f)
                     )
                 }
@@ -193,7 +172,7 @@ fun Login(
                     PlaceholderRightIcon1(modifier = Modifier.rowWeight(1.0f)) {
                         Label1(
                             password = password,
-                            onPasswordChange = onPasswordChange,
+                            onPasswordChange = {},
                             modifier = Modifier.rowWeight(1.0f)
                         )
                         IconEye1(onIconEyeTapped = onIconEyeTapped) {
@@ -437,8 +416,6 @@ private fun LoginPreview() {
             Login(
                 email = "Email",
                 password = "Password",
-                onEmailChange = {},
-                onPasswordChange = {},
                 onLoginTapped = {},
                 onSignUpTapped = {},
                 onForgotPasswordTapped = {},

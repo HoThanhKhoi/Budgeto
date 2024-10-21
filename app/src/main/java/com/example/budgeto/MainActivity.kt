@@ -8,7 +8,6 @@ import androidx.activity.viewModels
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
-import com.example.budgeto.tmpNavigation.NavigationGraph
 import com.example.budgeto.ui.theme.BudgetoTheme
 import dagger.hilt.android.AndroidEntryPoint
 @AndroidEntryPoint
