@@ -1,6 +1,6 @@
 package com.example.budgeto.screens.signupscreen
 
-import android.util.Log
+import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxHeight
@@ -11,9 +11,6 @@ import androidx.compose.foundation.layout.requiredHeight
 import androidx.compose.foundation.layout.requiredWidth
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Build
-import androidx.compose.material.icons.filled.Face
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Icon
@@ -30,7 +27,9 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
@@ -43,7 +42,6 @@ import androidx.compose.ui.unit.sp
 import com.example.budgeto.R
 import com.example.budgeto.state.SignUpState
 import com.example.budgeto.viewmodel.SignUpViewModel
-import com.google.relay.compose.BorderAlignment
 import com.google.relay.compose.BoxScopeInstance.boxAlign
 import com.google.relay.compose.BoxScopeInstance.columnWeight
 import com.google.relay.compose.BoxScopeInstance.rowWeight
@@ -55,7 +53,6 @@ import com.google.relay.compose.RelayContainerArrangement
 import com.google.relay.compose.RelayContainerScope
 import com.google.relay.compose.RelayText
 import com.google.relay.compose.RelayVector
-import com.google.relay.compose.relayDropShadow
 import com.google.relay.compose.tappable
 
 
@@ -185,7 +182,8 @@ fun SignUpText(
         ) {
             FullnameTextBox(
                 fullName = fullName,
-                modifier = Modifier.rowWeight(1.0f),
+                modifier = Modifier
+                    .rowWeight(1.0f),
                 onFullNameChanged = onFullNameChanged
             )
             EmailTextBox(
@@ -198,7 +196,8 @@ fun SignUpText(
                 onPasswordChanged = onPasswordChanged,
                 isPasswordVisible = isPasswordVisible,
                 onTogglePasswordVisibility = onTogglePasswordVisibility,
-                modifier = Modifier.rowWeight(1.0f)
+                modifier = Modifier
+                    .rowWeight(1.0f)
             )
 
             ForgotPasswordLink(
@@ -447,19 +446,22 @@ fun FullnameTextBox(
 ) {
     OutlinedTextField(
         value = fullName,
+        placeholder = { Text(text = "Name") },
+        shape = RoundedCornerShape(10.dp),
         onValueChange = onFullNameChanged,
-        label = { Text(text = "Full Name") },
         textStyle = androidx.compose.ui.text.TextStyle( // Match original font size, letter spacing, and other text properties
             fontSize = 16.sp,
+            color = Color.DarkGray,
             fontFamily = com.example.budgeto.screensfonts.inter, // Keeping the original font family
             letterSpacing = (-0.5).sp,
             fontWeight = FontWeight(500),
             textAlign = TextAlign.Left,
-            lineHeight = 1.625.em // Line height as in your original design
+            lineHeight = 1.625.em, // Line height as in your original design
         ),
         modifier = modifier
             .fillMaxWidth() // Ensure it fills the width
-            .padding(4.dp), // Add padding as needed
+            .padding(4.dp)
+            .border(1.dp, color = Color.DarkGray, shape = RoundedCornerShape(10.dp)),
 //        colors = TextFieldDefaults.outlinedTextFieldColors(
 //            focusedBorderColor = Color.Black, // Matching border colors
 //            unfocusedBorderColor = Color.Black,
@@ -563,10 +565,12 @@ fun EmailTextBox(
 ) {
     OutlinedTextField(
         value = email,
+        placeholder = { Text(text = "Email") },
         onValueChange = onEmailChanged,
-        label = { Text(text = "Email") },
+        shape = RoundedCornerShape(10.dp),
         textStyle = androidx.compose.ui.text.TextStyle(
             fontSize = 16.sp,
+            color = Color.DarkGray,
             fontFamily = com.example.budgeto.screensfonts.inter, // Keeping the original font family
             letterSpacing = (-0.5).sp,
             fontWeight = FontWeight(500),
@@ -576,6 +580,8 @@ fun EmailTextBox(
         modifier = modifier
             .fillMaxWidth()
             .padding(4.dp)
+            .border(1.dp, color = Color.DarkGray, shape = RoundedCornerShape(10.dp)),
+
     )
 }
 
@@ -668,9 +674,11 @@ fun PasswordTextBox(
     OutlinedTextField(
         value = password,
         onValueChange = onPasswordChanged,
-        label = { Text(text = "Password") },
+        shape = RoundedCornerShape(10.dp),
+        placeholder = { Text(text = "Password") },
         textStyle = androidx.compose.ui.text.TextStyle(
             fontSize = 16.sp,
+            color = Color.DarkGray,
             fontFamily = com.example.budgeto.screensfonts.inter,
             letterSpacing = (-0.5).sp,
             fontWeight = FontWeight(500),
@@ -680,9 +688,9 @@ fun PasswordTextBox(
         visualTransformation = if (isPasswordVisible) VisualTransformation.None else PasswordVisualTransformation(),
         trailingIcon = {
             val image = if (isPasswordVisible)
-                Icons.Default.Face
+                ImageVector.vectorResource(id = R.drawable.sign_up_vector)
             else
-                Icons.Default.Build
+                ImageVector.vectorResource(id = R.drawable.login_vector)
 
             IconButton(onClick = onTogglePasswordVisibility) {
                 Icon(imageVector = image, contentDescription = null)
@@ -691,6 +699,9 @@ fun PasswordTextBox(
         modifier = modifier
             .fillMaxWidth()
             .padding(4.dp)
+            .align(Alignment.CenterHorizontally)
+            .border(1.dp, color = Color.DarkGray, shape = RoundedCornerShape(10.dp)),
+
     )
 }
 
@@ -709,6 +720,7 @@ fun ForgotPasswordLink(
         modifier = modifier
             .tappable(onTap = onForgotPasswordLinkTapped)
             .fillMaxWidth(1.0f)
+            .padding(end = 5.dp)
     )
 }
 
@@ -766,7 +778,7 @@ fun SignUpButton(
         onClick = onSignUpButtonTapped,
         modifier = modifier
             .fillMaxWidth(0.9f) // Make the button responsive by filling 90% of the width
-            .height(60.dp) // Keep the height fixed to ensure button looks good
+            .height(80.dp) // Keep the height fixed to ensure button looks good
             .padding(vertical = 16.dp) // Add padding to make space around the button
             .align(Alignment.CenterHorizontally), // Center the button horizontally
         shape = RoundedCornerShape(5.dp), // Maintain the rounded corners
