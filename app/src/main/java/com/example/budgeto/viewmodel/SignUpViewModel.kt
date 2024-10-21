@@ -58,7 +58,7 @@ class SignUpViewModel @Inject constructor(
         val user = User(
             userId = firebaseUser.uid,
             fullName = firebaseUser.displayName ?: "",
-            email = firebaseUser.email?: ""
+            email = firebaseUser.email?: "",
         )
         userRepository.add(user)
     }

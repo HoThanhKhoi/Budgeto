@@ -8,11 +8,11 @@ import javax.inject.Inject
 class UserRepository @Inject constructor(
     firestore: FirebaseFirestore
 ) : FirestoreRepository<User>(firestore,"users", User::class.java) {
-    override suspend fun addSubcollection(
-        parentId: String,
-        subcollectionPath: String,
-        item: User
-    ): String {
-        return super.addSubcollection(parentId, subcollectionPath, item)
-    }
+//    override suspend fun addSubcollection(
+//        parentId: String,
+//        subcollectionPath: String,
+//        item: User
+//    ): String {
+//        return super.addSubcollection(parentId, subcollectionPath, item)
+//    }
 }
