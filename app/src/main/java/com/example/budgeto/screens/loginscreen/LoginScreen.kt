@@ -1,5 +1,6 @@
 package com.example.budgeto.screens.loginscreen
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.IntrinsicSize
@@ -12,22 +13,35 @@ import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.requiredHeight
 import androidx.compose.foundation.layout.requiredWidth
+import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.Text
+import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.DpOffset
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.em
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.budgeto.R
 import com.example.budgeto.screensfonts.inter
+import com.example.budgeto.viewmodel.LoginViewModel
+import com.example.budgeto.viewmodel.SignUpViewModel
 import com.google.relay.compose.BorderAlignment
 import com.google.relay.compose.BoxScopeInstance.columnWeight
 import com.google.relay.compose.BoxScopeInstance.rowWeight
+import com.google.relay.compose.ColumnScopeInstanceImpl.align
 import com.google.relay.compose.ColumnScopeInstanceImpl.weight
 import com.google.relay.compose.CrossAxisAlignment
 import com.google.relay.compose.MainAxisAlignment
@@ -39,44 +53,51 @@ import com.google.relay.compose.RelayVector
 import com.google.relay.compose.relayDropShadow
 import com.google.relay.compose.tappable
 
-
 @Composable
 fun LoginScreen(
+    email: String,
+    password: String,
     onLoginButtonTapped: () -> Unit = {},
     onSignUpTapped: () -> Unit,
-    email: String,
     onForgotPasswordTapped: () -> Unit,
-    password: String,
     onIconEyeTapped: () -> Unit,
     onLoginWithGoogleTapped: () -> Unit,
     onLoginWithFacebookTapped: () -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    loginViewModel: LoginViewModel
 ){
+    //val loginViewModel: LoginViewModel = viewModel()
+
     Login(
-        onLoginTapped = onLoginButtonTapped,
-        onSignUpTapped = onSignUpTapped,
         email = email,
-        onForgotPasswordTapped = onForgotPasswordTapped,
         password = password,
+        onLoginTapped = {
+            onLoginButtonTapped()
+            loginViewModel.loginUser(email, password)
+        },
+        onSignUpTapped = onSignUpTapped,
+        onForgotPasswordTapped = onForgotPasswordTapped,
         onIconEyeTapped = onIconEyeTapped,
         onLoginWithGoogleTapped = onLoginWithGoogleTapped,
         onLoginWithFacebookTapped = onLoginWithFacebookTapped,
-        modifier = Modifier.rowWeight(1.0f).columnWeight(1.0f)
+        modifier = modifier.rowWeight(1.0f).columnWeight(1.0f)
     )
+
+
 }
 
 
 @Composable
 fun Login(
-    modifier: Modifier = Modifier,
-    email: String = "",
-    password: String = "",
+    email: String,
+    password: String,
     onLoginTapped: () -> Unit = {},
     onSignUpTapped: () -> Unit = {},
     onForgotPasswordTapped: () -> Unit = {},
     onIconEyeTapped: () -> Unit = {},
     onLoginWithGoogleTapped: () -> Unit = {},
-    onLoginWithFacebookTapped: () -> Unit = {}
+    onLoginWithFacebookTapped: () -> Unit = {},
+    modifier: Modifier = Modifier,
 ) {
     TopLevel(modifier = modifier) {
         Statistics(
@@ -141,6 +162,7 @@ fun Login(
                 PlaceholderRightIcon(modifier = Modifier.rowWeight(1.0f)) {
                     Label(
                         email = email,
+                        onEmailChange = {},
                         modifier = Modifier.rowWeight(1.0f)
                     )
                 }
@@ -150,6 +172,7 @@ fun Login(
                     PlaceholderRightIcon1(modifier = Modifier.rowWeight(1.0f)) {
                         Label1(
                             password = password,
+                            onPasswordChange = {},
                             modifier = Modifier.rowWeight(1.0f)
                         )
                         IconEye1(onIconEyeTapped = onIconEyeTapped) {
@@ -385,6 +408,25 @@ fun Login(
 //    }
 //}
 
+@Preview(widthDp = 390, heightDp = 844)
+@Composable
+private fun LoginPreview() {
+    MaterialTheme {
+        RelayContainer {
+            Login(
+                email = "Email",
+                password = "Password",
+                onLoginTapped = {},
+                onSignUpTapped = {},
+                onForgotPasswordTapped = {},
+                onIconEyeTapped = {},
+                onLoginWithGoogleTapped = {},
+                onLoginWithFacebookTapped = {},
+                modifier = Modifier.rowWeight(1.0f).columnWeight(1.0f)
+            )
+        }
+    }
+}
 
 
 @Composable
@@ -500,6 +542,7 @@ fun BottomLink(
 @Composable
 fun Label(
     email: String,
+    onEmailChange: (String) -> Unit,
     modifier: Modifier = Modifier
 ) {
     RelayText(
@@ -512,6 +555,13 @@ fun Label(
         fontWeight = FontWeight(500.0.toInt()),
         maxLines = -1,
         modifier = modifier.fillMaxWidth(1.0f)
+    )
+    OutlinedTextField(
+        value = email,
+        onValueChange = onEmailChange,
+        modifier = Modifier
+            .fillMaxWidth()
+            .background(Color.Transparent) // Custom modifier for transparency
     )
 }
 
@@ -568,20 +618,33 @@ fun EmailTextBox(
 @Composable
 fun Label1(
     password: String,
+    onPasswordChange: (String) -> Unit,
     modifier: Modifier = Modifier
 ) {
-    RelayText(
-        content = password,
-        fontSize = 16.0.sp,
-        fontFamily = inter,
-        height = 1.625.em,
-        letterSpacing = -0.5.sp,
-        textAlign = TextAlign.Left,
-        fontWeight = FontWeight(500.0.toInt()),
-        maxLines = -1,
-        modifier = modifier.fillMaxWidth(1.0f)
-    )
+        // Display the password using RelayText for styling
+        RelayText(
+            content = password,
+            fontSize = 16.0.sp,
+            fontFamily = inter,
+            height = 1.625.em,
+            letterSpacing = 0.5.sp,
+            textAlign = TextAlign.Left,
+            fontWeight = FontWeight(500),
+            maxLines = 1,
+            modifier = modifier.fillMaxWidth()
+        )
+        // Transparent OutlinedTextField for capturing input
+        OutlinedTextField(
+            value = password,
+            onValueChange = onPasswordChange,
+            //visualTransformation = PasswordVisualTransformation(), // Hide password text
+            modifier = Modifier
+                .fillMaxWidth()
+                .background(Color.Transparent) // Custom modifier for transparency
+        )
+
 }
+
 
 @Composable
 fun Vector2(modifier: Modifier = Modifier) {
@@ -762,6 +825,7 @@ fun Frame162475(
             spread = 0.0.dp
         )
     )
+
 }
 
 @Composable
