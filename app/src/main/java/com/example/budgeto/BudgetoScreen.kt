@@ -25,6 +25,7 @@ import com.example.budgeto.screens.profilescreen.ProfileScreen
 import com.example.budgeto.screens.signuploginscreen.SignUpLoginScreen
 import com.example.budgeto.screens.signupscreen.SignUpScreen
 import com.example.budgeto.screens.storescreen.StoreScreen
+import com.example.budgeto.viewmodel.SignUpViewModel
 import com.example.budgeto.viewmodel.LoginViewModel
 
 enum class BudgetoScreenEnum(@StringRes val title: Int) {
@@ -45,7 +46,7 @@ fun BudgetoApp(
     navController: NavHostController = rememberNavController(),
     //loginViewModel: LoginViewModel = hiltViewModel()
 ) {
-    Scaffold () { innerPadding ->
+    Scaffold() { innerPadding ->
 
         NavHost(
             navController = navController,
@@ -62,11 +63,15 @@ fun BudgetoApp(
                 )
             }
             composable(route = BudgetoScreenEnum.SignUp.name) {
+                val signUpViewModel: SignUpViewModel = hiltViewModel()
                 SignUpScreen(
-                    fullName = "Full Name" ,
-                    email = "Email" ,
-                    password = "Password" ,
-                    onSignUpButtonTapped = { navController.navigate(BudgetoScreenEnum.Login.name) },
+                    signUpViewModel = signUpViewModel,
+                    fullName = "Full Name",
+                    email = "Email",
+                    password = "Password",
+                    onSignUpButtonTapped = {
+                        navController.navigate(BudgetoScreenEnum.Login.name)
+                    },
 
                     onLoginButtonTapped = { navController.navigate(BudgetoScreenEnum.Login.name) },
                     onForgotPasswordLinkTapped = {},
@@ -81,12 +86,20 @@ fun BudgetoApp(
                 var password by remember { mutableStateOf("") }
 
                 LoginScreen(
-                    email = email ,
-                    password = password ,
-                    onEmailChange = { email = it },
-                    onPasswordChange = { password = it },
+                    email = "Email",
+                    password = "Password",
                     onLoginButtonTapped = {
-                        navController.navigate(BudgetoScreenEnum.OpeningScreen.name)
+                        if (1 == 1) {
+                            navController.navigate(BudgetoScreenEnum.OpeningScreen.name)
+                        } else {
+                            navController.navigate(BudgetoScreenEnum.Login.name)
+                        }
+                    //email = email ,
+                    //password = password ,
+                    //onEmailChange = { email = it },
+                    //onPasswordChange = { password = it },
+                    //onLoginButtonTapped = {
+                        //navController.navigate(BudgetoScreenEnum.OpeningScreen.name)
                     },
 
                     onSignUpTapped = { navController.navigate(BudgetoScreenEnum.SignUp.name) },

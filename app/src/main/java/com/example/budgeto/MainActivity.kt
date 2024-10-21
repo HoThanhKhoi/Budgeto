@@ -10,9 +10,8 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
 import com.example.budgeto.tmpNavigation.NavigationGraph
 import com.example.budgeto.ui.theme.BudgetoTheme
-import androidx.compose.ui.Modifier
 import dagger.hilt.android.AndroidEntryPoint
-
+@AndroidEntryPoint
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
