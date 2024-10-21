@@ -188,7 +188,7 @@ fun SignUpText(
             )
             EmailTextBox(
                 email = email,
-                modifier = Modifier.rowWeight(1.0f),
+                modifier = Modifier,
                 onEmailChanged = onEmailChanged
             )
             PasswordTextBox(
@@ -202,7 +202,7 @@ fun SignUpText(
 
             ForgotPasswordLink(
                 onForgotPasswordLinkTapped = onForgotPasswordLinkTapped,
-                modifier = Modifier.rowWeight(1.0f)
+                modifier = Modifier
             )
 
             SignUpButton(

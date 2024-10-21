@@ -7,6 +7,10 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
@@ -21,6 +25,7 @@ import com.example.budgeto.screens.signuploginscreen.SignUpLoginScreen
 import com.example.budgeto.screens.signupscreen.SignUpScreen
 import com.example.budgeto.screens.storescreen.StoreScreen
 import com.example.budgeto.viewmodel.SignUpViewModel
+import com.example.budgeto.viewmodel.LoginViewModel
 
 enum class BudgetoScreenEnum(@StringRes val title: Int) {
     Start(title = R.string.SignUpLoginScreen),
@@ -37,7 +42,8 @@ enum class BudgetoScreenEnum(@StringRes val title: Int) {
 
 @Composable
 fun BudgetoApp(
-    navController: NavHostController = rememberNavController()
+    navController: NavHostController = rememberNavController(),
+    //loginViewModel: LoginViewModel = hiltViewModel()
 ) {
     Scaffold() { innerPadding ->
 
@@ -74,7 +80,10 @@ fun BudgetoApp(
                 )
             }
             composable(route = BudgetoScreenEnum.Login.name) {
+
+                val loginViewModel: LoginViewModel = hiltViewModel()
                 LoginScreen(
+                    loginViewModel = loginViewModel,
                     email = "Email",
                     password = "Password",
                     onLoginButtonTapped = {
@@ -83,13 +92,15 @@ fun BudgetoApp(
                         } else {
                             navController.navigate(BudgetoScreenEnum.Login.name)
                         }
+
+                        //navController.navigate(BudgetoScreenEnum.OpeningScreen.name)
                     },
 
                     onSignUpTapped = { navController.navigate(BudgetoScreenEnum.SignUp.name) },
                     onForgotPasswordTapped = {},
                     onIconEyeTapped = {},
                     onLoginWithFacebookTapped = {},
-                    onLoginWithGoogleTapped = {},
+                    onLoginWithGoogleTapped = {}
                 )
             }
             composable(route = BudgetoScreenEnum.OpeningScreen.name) {
@@ -104,7 +115,7 @@ fun BudgetoApp(
                     onHistoryButtonTapped = { navController.navigate(BudgetoScreenEnum.HistoryScreen.name) },
                     onStatisticButtonTapped = { navController.navigate(BudgetoScreenEnum.StatisticScreen.name) },
 
-                    )
+                )
             }
             composable(route = BudgetoScreenEnum.ProfileScreen.name) {
                 ProfileScreen(
