@@ -6,23 +6,17 @@ import com.google.firebase.Timestamp
 
 data class User(
     val userId: String = "",
-    val fullName: String = "",
-    val email: String = "",
-    val gender: UserGender = UserGender.MALE,
-    val hiddenInfo: HiddenInfo = HiddenInfo(),
-    val generalInfo: GeneralInfo = GeneralInfo(),
-    val gameInfo: GameInfo = GameInfo()
-)
-
-data class HiddenInfo(
     val createdAt: Timestamp = Timestamp.now(),
-    val password: String = "",
-    val status: UserStatus = UserStatus.ACTIVE
+    val status: UserStatus = UserStatus.ACTIVE,
+    val generalInfo: GeneralInfo = GeneralInfo(),
 )
 
 data class GeneralInfo(
+    val fullName: String = "",
+    val email: String = "",
     val phone: String = "",
     val address: String = "",
+    val gender: UserGender = UserGender.NONE,
     val occupation: String = "",
     val googleLink: String = "",
     val facebookLink: String = "",

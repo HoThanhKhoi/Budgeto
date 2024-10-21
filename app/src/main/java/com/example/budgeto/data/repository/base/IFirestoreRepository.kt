@@ -1,13 +1,17 @@
 package com.example.budgeto.data.repository.base
 
-interface IFirestoreRepository<T> {
-    suspend fun getAll(): List<T>
-    suspend fun get(id:String): T?
-    suspend fun add(item: T): String
-    suspend fun update(id: String, item: T)
-    suspend fun delete(id: String)
+interface IFirestoreRepository {
 
-    //sub-collection
-    suspend fun addSubcollection(parentId: String, subcollectionPath: String, item: T): String
-    suspend fun getSubcollection(parentId: String, subcollectionPath: String): List<T>
+    // General operations
+    suspend fun <T : Any> getAll(collectionName: String, clazz: Class<T>): List<T>
+    suspend fun <T : Any> get(collectionName: String, id: String, clazz: Class<T>): T?
+    suspend fun <T : Any> add(collectionName: String, item: T, documentId: String? = null): String
+    suspend fun <T : Any> update(collectionName: String, id: String, item: T)
+    suspend fun delete(collectionName: String, id: String)
+
+    // Sub-collection operations
+    suspend fun <S : Any> addSubcollection(parentCollection: String, parentId: String, subcollectionPath: String, subItem: S, subItemId: String? = null): String
+    suspend fun <S : Any> getSubcollection(parentCollection: String, parentId: String, subcollectionPath: String, clazz: Class<S>): List<S>
+    suspend fun deleteSubcollectionDocument(parentCollection: String, parentId: String, subcollectionPath: String, subItemId: String
+    )
 }

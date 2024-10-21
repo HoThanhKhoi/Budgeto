@@ -185,12 +185,12 @@ fun SignUpText(
         ) {
             FullnameTextBox(
                 fullName = fullName,
-                modifier = Modifier.rowWeight(1.0f),
+                modifier = Modifier,
                 onFullNameChanged = onFullNameChanged
             )
             EmailTextBox(
                 email = email,
-                modifier = Modifier.rowWeight(1.0f),
+                modifier = Modifier,
                 onEmailChanged = onEmailChanged
             )
             PasswordTextBox(
@@ -198,12 +198,12 @@ fun SignUpText(
                 onPasswordChanged = onPasswordChanged,
                 isPasswordVisible = isPasswordVisible,
                 onTogglePasswordVisibility = onTogglePasswordVisibility,
-                modifier = Modifier.rowWeight(1.0f)
+                modifier = Modifier
             )
 
             ForgotPasswordLink(
                 onForgotPasswordLinkTapped = onForgotPasswordLinkTapped,
-                modifier = Modifier.rowWeight(1.0f)
+                modifier = Modifier
             )
 
             SignUpButton(
