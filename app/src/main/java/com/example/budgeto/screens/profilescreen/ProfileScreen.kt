@@ -3,8 +3,11 @@ package com.example.budgeto.screens.profilescreen
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.requiredHeight
 import androidx.compose.foundation.layout.requiredWidth
@@ -418,11 +421,21 @@ fun Profile1(
             )
         )
 
-        UserNameField(
-            value = "Name",
-            onValueChange = onNameFieldChanged,
-            modifier = modifier
-        )
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(top = 335.dp),
+            horizontalAlignment = Alignment.CenterHorizontally
+
+        ) {
+            UserNameField(
+                value = "Name",
+                onValueChange = onNameFieldChanged,
+                modifier = modifier
+
+            )
+        }
+
 
         Frame56(
             modifier = Modifier.boxAlign(
@@ -1746,6 +1759,7 @@ fun UserNameField(
         value = value,
         onValueChange = onValueChange,
         modifier = modifier
+            .width(344.dp)
     )
 }
 
