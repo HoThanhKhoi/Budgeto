@@ -1,6 +1,5 @@
 package com.example.budgeto.screens.signupscreen
 
-import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxHeight
@@ -10,13 +9,9 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.requiredHeight
 import androidx.compose.foundation.layout.requiredWidth
 import androidx.compose.foundation.layout.wrapContentHeight
-import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.Button
-import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
@@ -45,7 +40,6 @@ import com.example.budgeto.viewmodel.SignUpViewModel
 import com.google.relay.compose.BoxScopeInstance.boxAlign
 import com.google.relay.compose.BoxScopeInstance.columnWeight
 import com.google.relay.compose.BoxScopeInstance.rowWeight
-import com.google.relay.compose.ColumnScopeInstanceImpl.align
 import com.google.relay.compose.CrossAxisAlignment
 import com.google.relay.compose.MainAxisAlignment
 import com.google.relay.compose.RelayContainer
@@ -54,9 +48,8 @@ import com.google.relay.compose.RelayContainerScope
 import com.google.relay.compose.RelayText
 import com.google.relay.compose.RelayVector
 import com.google.relay.compose.tappable
-import com.google.relay.compose.ReusableComponent
 import com.google.relay.compose.SignUpLoginButton
-import com.google.relay.compose.SignUpLoginTextBox
+import com.google.relay.compose.UserInfoTextBox
 
 
 @Composable
@@ -415,7 +408,7 @@ fun FullnameTextBox(
     onFullNameChanged: (String) -> Unit, // Callback to update full name
     modifier: Modifier = Modifier
 ) {
-    SignUpLoginTextBox(
+    UserInfoTextBox(
         value = fullName,
         placeholder = "Full Name",
         onValueChange = onFullNameChanged,
@@ -516,7 +509,7 @@ fun EmailTextBox(
     onEmailChanged: (String) -> Unit, // Callback to update email
     modifier: Modifier = Modifier
 ) {
-    SignUpLoginTextBox(
+    UserInfoTextBox(
         value = email,
         onValueChange = onEmailChanged,
         placeholder = "Email",
@@ -615,7 +608,7 @@ fun PasswordTextBox(
     else
         ImageVector.vectorResource(id = R.drawable.login_vector) // Hidden state
 
-    SignUpLoginTextBox(
+    UserInfoTextBox(
         value = password,
         onValueChange = onPasswordChanged,
         placeholder = "Password",
