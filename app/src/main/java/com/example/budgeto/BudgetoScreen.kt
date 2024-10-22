@@ -50,18 +50,18 @@ fun BudgetoApp(
         NavHost(
             navController = navController,
             //startDestination = BudgetoScreenEnum.Start.name,
-            startDestination = BudgetoScreenEnum.OpeningScreen.name,
+            startDestination = BudgetoScreenEnum.Start.name,
             modifier = Modifier
                 .fillMaxSize()
                 .verticalScroll(rememberScrollState())
                 .padding(innerPadding)
         ) {
             composable(route = BudgetoScreenEnum.Start.name) {
-//                SignUpLoginScreen(
-//                    onSignUpTapped = { navController.navigate(BudgetoScreenEnum.SignUp.name) },
-//                    onLoginTapped = { navController.navigate(BudgetoScreenEnum.Login.name) }
-//                )
-                OpeningScreenExpensesInputScreen()
+                SignUpLoginScreen(
+                    onSignUpTapped = { navController.navigate(BudgetoScreenEnum.SignUp.name) },
+                    onLoginTapped = { navController.navigate(BudgetoScreenEnum.Login.name) }
+                )
+//                OpeningScreenExpensesInputScreen()
             }
             composable(route = BudgetoScreenEnum.SignUp.name) {
                 val signUpViewModel: SignUpViewModel = hiltViewModel()

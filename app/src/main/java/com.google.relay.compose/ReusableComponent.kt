@@ -27,6 +27,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.em
 import androidx.compose.ui.unit.sp
 import com.google.relay.compose.ColumnScopeInstanceImpl.align
+import org.w3c.dom.Text
 
 class ReusableComponent {
 
@@ -37,12 +38,26 @@ fun SignUpLoginTextBox(
     value: String,
     onValueChange: (String) -> Unit, // Callback to update the value
     modifier: Modifier = Modifier,
+    placeholder: String,
     visualTransformation: VisualTransformation = VisualTransformation.None, // Default to no transformation
     trailingIcon: @Composable (() -> Unit)? = null // Optional trailing icon
 ) {
     OutlinedTextField(
         value = value,
-        placeholder = { Text(text = "Enter your text") }, // Generic placeholder
+        placeholder = {
+            Text(
+                text = placeholder,
+                style = androidx.compose.ui.text.TextStyle(
+                    fontSize = 16.sp,
+                    color = Color.Gray,
+                    fontFamily = com.example.budgeto.screensfonts.inter,
+                    letterSpacing = (-0.5).sp,
+                    fontWeight = FontWeight(500),
+                    textAlign = TextAlign.Left,
+                    lineHeight = 1.625.em
+                )
+            )
+        },
         shape = RoundedCornerShape(10.dp),
         onValueChange = onValueChange,
         textStyle = androidx.compose.ui.text.TextStyle(

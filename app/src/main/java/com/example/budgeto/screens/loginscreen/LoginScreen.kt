@@ -5,12 +5,14 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.requiredHeight
 import androidx.compose.foundation.layout.requiredWidth
+import androidx.compose.foundation.layout.width
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -36,6 +38,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.em
 import androidx.compose.ui.unit.sp
 import com.example.budgeto.R
+import com.example.budgeto.screens.signupscreen.SignUpText
 import com.example.budgeto.screensfonts.inter
 import com.example.budgeto.viewmodel.LoginViewModel
 import com.facebook.login.widget.LoginButton
@@ -112,61 +115,33 @@ fun Login(
     modifier: Modifier = Modifier,
 ) {
     TopLevel(modifier = modifier) {
-        Statistics(
+        LoginText(
             modifier = Modifier.boxAlign(
-                alignment = Alignment.TopStart,
+                alignment = Alignment.TopCenter,
                 offset = DpOffset(
-                    x = 0.0.dp,
-                    y = 795.0.dp
+                    x = 0.5.dp,
+                    y = 93.0.dp
                 )
             )
-        ) {}
-        BottomNav(
-            modifier = Modifier.boxAlign(
-                alignment = Alignment.TopStart,
-                offset = DpOffset(
-                    x = 0.0.dp,
-                    y = 731.0.dp
-                )
-            )
-        ) {
-            Line12(
-                modifier = Modifier.boxAlign(
-                    alignment = Alignment.TopCenter,
-                    offset = DpOffset(
-                        x = 0.0.dp,
-                        y = 101.0.dp
-                    )
-                )
-            )
-        }
-//        Login(
-//            modifier = Modifier.boxAlign(
-//                alignment = Alignment.TopCenter,
-//                offset = DpOffset(
-//                    x = 0.0.dp,
-//                    y = 84.0.dp
-//                )
-//            )
-//        )
+        )
         BottomLink(
             modifier = Modifier.boxAlign(
                 alignment = Alignment.TopStart,
                 offset = DpOffset(
                     x = 31.0.dp,
-                    y = 607.0.dp
+                    y = 650.0.dp
                 )
             )
         ) {
             DonTHaveAnAccount()
             SignUp(onSignUpTapped = onSignUpTapped)
         }
-        SignUpForm(
+        LoginForm(
             modifier = Modifier.boxAlign(
                 alignment = Alignment.TopCenter,
                 offset = DpOffset(
                     x = 0.0.dp,
-                    y = 274.0.dp
+                    y = 255.0.dp
                 )
             )
         ) {
@@ -191,10 +166,18 @@ fun Login(
                 onLoginTapped = onLoginTapped,
             )
             Row(
-                modifier = Modifier.align(Alignment.CenterHorizontally),
-                horizontalArrangement = Arrangement.spacedBy(16.dp) // Add space between the buttons
+                modifier = Modifier
+                    .align(Alignment.CenterHorizontally)
+                    .boxAlign(
+                        alignment = Alignment.TopStart,
+                        offset = DpOffset(
+                            x = 0.0.dp,
+                            y = 40.0.dp
+                    ),
+                )
             ) {
                 LoginWithGoogleButton(onclick = onLoginWithGoogleTapped)
+                Spacer(modifier = Modifier.width(16.dp))
                 LoginWithFacebookButton(onclick = onLoginWithFacebookTapped)
             }
 //            EmailTextBox(modifier = Modifier.rowWeight(1.0f)) {
@@ -320,12 +303,12 @@ fun Login(
 //                )
 //            }
 //        }
-        OrSignUpWith(
+        OrLoginWith(
             modifier = Modifier.boxAlign(
                 alignment = Alignment.TopStart,
                 offset = DpOffset(
                     x = 58.0.dp,
-                    y = 515.0.dp
+                    y = 548.0.dp
                 )
             )
         )
@@ -646,6 +629,7 @@ fun EmailTextBox(
     SignUpLoginTextBox(
         value = email,
         onValueChange = onEmailChanged,
+        placeholder = "Email",
         modifier = modifier
     )
 }
@@ -757,6 +741,7 @@ fun PasswordTextBox(
     SignUpLoginTextBox(
         value = password,
         onValueChange = onPasswordChanged,
+        placeholder = "Password",
         visualTransformation = if (isPasswordVisible) VisualTransformation.None else PasswordVisualTransformation(),
         trailingIcon = {
             IconButton(onClick = onTogglePasswordVisibility) {
@@ -835,7 +820,7 @@ fun PasswordWrapper(
 }
 
 @Composable
-fun SignUpForm(
+fun LoginForm(
     modifier: Modifier = Modifier,
     content: @Composable RelayContainerScope.() -> Unit
 ) {
@@ -1046,9 +1031,9 @@ fun Group99(
 }
 
 @Composable
-fun OrSignUpWith(modifier: Modifier = Modifier) {
+fun OrLoginWith(modifier: Modifier = Modifier) {
     RelayText(
-        content = "or sign up with",
+        content = "or login with",
         fontSize = 16.0.sp,
         fontFamily = inter,
         height = 1.2102272510528564.em,
@@ -1056,7 +1041,7 @@ fun OrSignUpWith(modifier: Modifier = Modifier) {
         maxLines = -1,
         modifier = modifier
             .requiredWidth(273.0.dp)
-            .requiredHeight(10.0.dp)
+            .requiredHeight(20.0.dp)
     )
 }
 
@@ -1077,5 +1062,19 @@ fun TopLevel(
         modifier = modifier
             .fillMaxWidth(1.0f)
             .fillMaxHeight(1.0f)
+    )
+}
+
+
+@Composable
+fun LoginText(modifier: Modifier = Modifier) {
+    RelayText(
+        content = "Login",
+        fontSize = 24.0.sp,
+        fontFamily = com.example.budgeto.screensfonts.inter,
+        height = 1.2102272510528564.em,
+        textAlign = TextAlign.Left,
+        fontWeight = FontWeight(700.0.toInt()),
+        modifier = modifier
     )
 }

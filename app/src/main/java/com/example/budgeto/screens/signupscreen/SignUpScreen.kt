@@ -150,7 +150,7 @@ fun SignUpText(
             modifier = Modifier.boxAlign(
                 alignment = Alignment.TopCenter,
                 offset = DpOffset(
-                    x = -0.5.dp,
+                    x = 0.dp,
                     y = 255.0.dp
                 )
             )
@@ -417,6 +417,7 @@ fun FullnameTextBox(
 ) {
     SignUpLoginTextBox(
         value = fullName,
+        placeholder = "Full Name",
         onValueChange = onFullNameChanged,
         modifier = modifier
     )
@@ -518,6 +519,7 @@ fun EmailTextBox(
     SignUpLoginTextBox(
         value = email,
         onValueChange = onEmailChanged,
+        placeholder = "Email",
         modifier = modifier
     )
 }
@@ -616,6 +618,7 @@ fun PasswordTextBox(
     SignUpLoginTextBox(
         value = password,
         onValueChange = onPasswordChanged,
+        placeholder = "Password",
         visualTransformation = if (isPasswordVisible) VisualTransformation.None else PasswordVisualTransformation(),
         trailingIcon = {
             IconButton(onClick = onTogglePasswordVisibility) {
