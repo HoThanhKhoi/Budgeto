@@ -1,21 +1,28 @@
 package com.google.relay.compose
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.em
 import androidx.compose.ui.unit.sp
@@ -95,4 +102,28 @@ fun SignUpLoginButtonText(
         letterSpacing = 0.32.sp,
         fontWeight = FontWeight(600)
     )
+}
+
+@Composable
+fun CircularButton(
+    onClick: () -> Unit,
+    icon: Painter, // Pass the vector icon you want to display
+    contentDescription: String,
+    modifier: Modifier = Modifier,
+    size: Dp = 40.dp, // Define a standard size for both buttons
+    backgroundColor: Color = Color.White // Customize the background color
+) {
+    IconButton(
+        onClick = onClick,
+        modifier = modifier
+            .size(size) // Set the size of the button
+            .background(backgroundColor, shape = CircleShape) // Set the background color and make it circular
+    ) {
+        Icon(
+            painter = icon,
+            contentDescription = contentDescription,
+            modifier = Modifier.size(size * 0.6f), // Scale the icon to fit inside the button
+            tint = Color.Unspecified // Keep the original color of the icon
+        )
+    }
 }

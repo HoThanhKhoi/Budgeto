@@ -1,8 +1,10 @@
 package com.example.budgeto.screens.loginscreen
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -40,6 +42,7 @@ import com.facebook.login.widget.LoginButton
 import com.google.relay.compose.BorderAlignment
 import com.google.relay.compose.BoxScopeInstance.columnWeight
 import com.google.relay.compose.BoxScopeInstance.rowWeight
+import com.google.relay.compose.CircularButton
 import com.google.relay.compose.ColumnScopeInstanceImpl.align
 import com.google.relay.compose.CrossAxisAlignment
 import com.google.relay.compose.MainAxisAlignment
@@ -60,7 +63,6 @@ fun LoginScreen(
     onLoginButtonTapped: () -> Unit = {},
     onSignUpTapped: () -> Unit,
     onForgotPasswordTapped: () -> Unit,
-    onIconEyeTapped: () -> Unit,
     onLoginWithGoogleTapped: () -> Unit,
     onLoginWithFacebookTapped: () -> Unit,
     modifier: Modifier = Modifier,
@@ -85,7 +87,6 @@ fun LoginScreen(
         onTogglePasswordVisibility = { isPasswordVisible = !isPasswordVisible },
         onSignUpTapped = onSignUpTapped,
         onForgotPasswordTapped = onForgotPasswordTapped,
-        onIconEyeTapped = onIconEyeTapped,
         onLoginWithGoogleTapped = onLoginWithGoogleTapped,
         onLoginWithFacebookTapped = onLoginWithFacebookTapped,
         modifier = modifier
@@ -106,7 +107,6 @@ fun Login(
     onLoginTapped: () -> Unit = {},
     onSignUpTapped: () -> Unit = {},
     onForgotPasswordTapped: () -> Unit = {},
-    onIconEyeTapped: () -> Unit = {},
     onLoginWithGoogleTapped: () -> Unit = {},
     onLoginWithFacebookTapped: () -> Unit = {},
     modifier: Modifier = Modifier,
@@ -190,6 +190,13 @@ fun Login(
             LoginButton(
                 onLoginTapped = onLoginTapped,
             )
+            Row(
+                modifier = Modifier.align(Alignment.CenterHorizontally),
+                horizontalArrangement = Arrangement.spacedBy(16.dp) // Add space between the buttons
+            ) {
+                LoginWithGoogleButton(onclick = onLoginWithGoogleTapped)
+                LoginWithFacebookButton(onclick = onLoginWithFacebookTapped)
+            }
 //            EmailTextBox(modifier = Modifier.rowWeight(1.0f)) {
 //                PlaceholderRightIcon(modifier = Modifier.rowWeight(1.0f)) {
 //                    Label(
@@ -242,74 +249,77 @@ fun Login(
 //                )
 //            )
 //        }
-        Group99(
-            modifier = Modifier.boxAlign(
-                alignment = Alignment.TopStart,
-                offset = DpOffset(
-                    x = 150.0.dp,
-                    y = 545.0.dp
-                )
-            )
-        ) {
-            LoginWithGoogle(onLoginWithGoogleTapped = onLoginWithGoogleTapped) {
-                Ellipse1(
-                    modifier = Modifier.boxAlign(
-                        alignment = Alignment.Center,
-                        offset = DpOffset(
-                            x = 0.0.dp,
-                            y = 0.0.dp
-                        )
-                    )
-                )
-                Ellipse35(
-                    modifier = Modifier.boxAlign(
-                        alignment = Alignment.TopStart,
-                        offset = DpOffset(
-                            x = 10.0.dp,
-                            y = 10.0.dp
-                        )
-                    )
-                )
-            }
-            LoginWithFacebook(
-                onLoginWithFacebookTapped = onLoginWithFacebookTapped,
-                modifier = Modifier.boxAlign(
-                    alignment = Alignment.TopStart,
-                    offset = DpOffset(
-                        x = 49.0.dp,
-                        y = 0.0.dp
-                    )
-                )
-            ) {
-                Ellipse2(
-                    modifier = Modifier.boxAlign(
-                        alignment = Alignment.Center,
-                        offset = DpOffset(
-                            x = 0.0.dp,
-                            y = 0.0.dp
-                        )
-                    )
-                )
-                Ellipse36(
-                    modifier = Modifier.boxAlign(
-                        alignment = Alignment.Center,
-                        offset = DpOffset(
-                            x = -1.0.dp,
-                            y = -1.0.dp
-                        )
-                    )
-                )
-                Vector161(
-                    modifier = Modifier.boxAlign(
-                        alignment = Alignment.TopStart,
-                        offset = DpOffset(
-                            x = 15.0.dp,
-                            y = 11.0.dp
-                        )
-                    )
-                )
-            }
-        }
+
+
+
+//        Group99(
+//            modifier = Modifier.boxAlign(
+//                alignment = Alignment.TopStart,
+//                offset = DpOffset(
+//                    x = 150.0.dp,
+//                    y = 545.0.dp
+//                )
+//            )
+//        ) {
+//            LoginWithGoogle(onLoginWithGoogleTapped = onLoginWithGoogleTapped) {
+//                Ellipse1(
+//                    modifier = Modifier.boxAlign(
+//                        alignment = Alignment.Center,
+//                        offset = DpOffset(
+//                            x = 0.0.dp,
+//                            y = 0.0.dp
+//                        )
+//                    )
+//                )
+//                Ellipse35(
+//                    modifier = Modifier.boxAlign(
+//                        alignment = Alignment.TopStart,
+//                        offset = DpOffset(
+//                            x = 10.0.dp,
+//                            y = 10.0.dp
+//                        )
+//                    )
+//                )
+//            }
+//            LoginWithFacebook(
+//                onLoginWithFacebookTapped = onLoginWithFacebookTapped,
+//                modifier = Modifier.boxAlign(
+//                    alignment = Alignment.TopStart,
+//                    offset = DpOffset(
+//                        x = 49.0.dp,
+//                        y = 0.0.dp
+//                    )
+//                )
+//            ) {
+//                Ellipse2(
+//                    modifier = Modifier.boxAlign(
+//                        alignment = Alignment.Center,
+//                        offset = DpOffset(
+//                            x = 0.0.dp,
+//                            y = 0.0.dp
+//                        )
+//                    )
+//                )
+//                Ellipse36(
+//                    modifier = Modifier.boxAlign(
+//                        alignment = Alignment.Center,
+//                        offset = DpOffset(
+//                            x = -1.0.dp,
+//                            y = -1.0.dp
+//                        )
+//                    )
+//                )
+//                Vector161(
+//                    modifier = Modifier.boxAlign(
+//                        alignment = Alignment.TopStart,
+//                        offset = DpOffset(
+//                            x = 15.0.dp,
+//                            y = 11.0.dp
+//                        )
+//                    )
+//                )
+//            }
+//        }
         OrSignUpWith(
             modifier = Modifier.boxAlign(
                 alignment = Alignment.TopStart,
@@ -455,7 +465,6 @@ private fun LoginPreview() {
                 onLoginTapped = {},
                 onSignUpTapped = {},
                 onForgotPasswordTapped = {},
-                onIconEyeTapped = {},
                 onLoginWithGoogleTapped = {},
                 onLoginWithFacebookTapped = {},
                 modifier = Modifier
@@ -910,6 +919,32 @@ fun LoginButton(
 //    )
 //
 //}
+
+@Composable
+fun LoginWithGoogleButton(
+    onclick: () -> Unit
+){
+    CircularButton(
+        onClick = onclick,
+        icon = painterResource(R.drawable.login_vector_161), // Use the appropriate icon
+        contentDescription = "Login with Google",
+        backgroundColor = Color.Black, // You can customize this color
+        size = 40.dp // Match the size from your previous implementation
+    )
+}
+
+@Composable
+fun LoginWithFacebookButton(
+    onclick: () -> Unit
+) {
+    CircularButton(
+        onClick = onclick,
+        icon = painterResource(R.drawable.login_ellipse_35), // Use the appropriate icon
+        contentDescription = "Login with Facebook",
+        backgroundColor = Color.Black, // You can customize this color
+        size = 40.dp // Match the size from your previous implementation
+    )
+}
 
 @Composable
 fun Ellipse1(modifier: Modifier = Modifier) {

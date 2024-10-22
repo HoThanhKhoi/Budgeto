@@ -98,7 +98,6 @@ fun BudgetoApp(
 
                     onSignUpTapped = { navController.navigate(BudgetoScreenEnum.SignUp.name) },
                     onForgotPasswordTapped = {},
-                    onIconEyeTapped = {},
                     onLoginWithFacebookTapped = {},
                     onLoginWithGoogleTapped = {}
                 )
