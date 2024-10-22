@@ -55,6 +55,7 @@ import com.google.relay.compose.RelayText
 import com.google.relay.compose.RelayVector
 import com.google.relay.compose.tappable
 import com.google.relay.compose.ReusableComponent
+import com.google.relay.compose.SignUpLoginButton
 import com.google.relay.compose.SignUpLoginTextBox
 
 
@@ -211,10 +212,6 @@ fun SignUpText(
                 onSignUpButtonTapped = {
                     onSignUpButtonTapped()
                 },
-                modifier = Modifier
-                    .fillMaxWidth(0.9f) // Make the button take 90% of the width
-                    .padding(vertical = 16.dp) // Add padding to make space around the button
-                    .align(Alignment.CenterHorizontally) // Center the button horizontally
             )
         }
     }
@@ -726,23 +723,28 @@ fun SignUpButton(
     onSignUpButtonTapped: () -> Unit,
     modifier: Modifier = Modifier
 ) {
-    Button(
+    SignUpLoginButton(
         onClick = onSignUpButtonTapped,
-        modifier = modifier
-            .fillMaxWidth(0.9f) // Make the button responsive by filling 90% of the width
-            .height(80.dp) // Keep the height fixed to ensure button looks good
-            .padding(vertical = 16.dp) // Add padding to make space around the button
-            .align(Alignment.CenterHorizontally), // Center the button horizontally
-        shape = RoundedCornerShape(5.dp), // Maintain the rounded corners
-        colors = ButtonDefaults.buttonColors(
-            containerColor = Color.Black // Button background color
-        ),
-        elevation = ButtonDefaults.buttonElevation( // Add elevation for shadow effect
-            defaultElevation = 4.dp
-        )
-    ) {
-        SignUpButtonText() // Call the text composable inside the button
-    }
+        modifier = modifier,
+        text = "Sign up"
+    )
+//    Button(
+//        onClick = onSignUpButtonTapped,
+//        modifier = modifier
+//            .fillMaxWidth(0.9f) // Make the button responsive by filling 90% of the width
+//            .height(80.dp) // Keep the height fixed to ensure button looks good
+//            .padding(vertical = 16.dp) // Add padding to make space around the button
+//            .align(Alignment.CenterHorizontally), // Center the button horizontally
+//        shape = RoundedCornerShape(5.dp), // Maintain the rounded corners
+//        colors = ButtonDefaults.buttonColors(
+//            containerColor = Color.Black // Button background color
+//        ),
+//        elevation = ButtonDefaults.buttonElevation( // Add elevation for shadow effect
+//            defaultElevation = 4.dp
+//        )
+//    ) {
+//        SignUpButtonText() // Call the text composable inside the button
+//    }
 }
 
 @Composable
