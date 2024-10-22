@@ -49,7 +49,8 @@ fun BudgetoApp(
 
         NavHost(
             navController = navController,
-            startDestination = BudgetoScreenEnum.Start.name,
+            //startDestination = BudgetoScreenEnum.Start.name,
+            startDestination = BudgetoScreenEnum.OpeningScreen.name,
             modifier = Modifier
                 .fillMaxSize()
                 .verticalScroll(rememberScrollState())
@@ -99,7 +100,6 @@ fun BudgetoApp(
 
                     onSignUpTapped = { navController.navigate(BudgetoScreenEnum.SignUp.name) },
                     onForgotPasswordTapped = {},
-                    onIconEyeTapped = {},
                     onLoginWithFacebookTapped = {},
                     onLoginWithGoogleTapped = {}
                 )

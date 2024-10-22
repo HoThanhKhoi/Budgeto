@@ -54,6 +54,9 @@ import com.google.relay.compose.RelayContainerScope
 import com.google.relay.compose.RelayText
 import com.google.relay.compose.RelayVector
 import com.google.relay.compose.tappable
+import com.google.relay.compose.ReusableComponent
+import com.google.relay.compose.SignUpLoginButton
+import com.google.relay.compose.SignUpLoginTextBox
 
 
 @Composable
@@ -181,10 +184,6 @@ fun SignUpText(
                 onSignUpButtonTapped = {
                     onSignUpButtonTapped()
                 },
-                modifier = Modifier
-                    .fillMaxWidth(0.9f) // Make the button take 90% of the width
-                    .padding(vertical = 16.dp) // Add padding to make space around the button
-                    .align(Alignment.CenterHorizontally) // Center the button horizontally
             )
         }
     }
@@ -416,29 +415,10 @@ fun FullnameTextBox(
     onFullNameChanged: (String) -> Unit, // Callback to update full name
     modifier: Modifier = Modifier
 ) {
-    OutlinedTextField(
+    SignUpLoginTextBox(
         value = fullName,
-        placeholder = { Text(text = "Name") },
-        shape = RoundedCornerShape(10.dp),
         onValueChange = onFullNameChanged,
-        textStyle = androidx.compose.ui.text.TextStyle( // Match original font size, letter spacing, and other text properties
-            fontSize = 16.sp,
-            color = Color.DarkGray,
-            fontFamily = com.example.budgeto.screensfonts.inter, // Keeping the original font family
-            letterSpacing = (-0.5).sp,
-            fontWeight = FontWeight(500),
-            textAlign = TextAlign.Left,
-            lineHeight = 1.625.em, // Line height as in your original design
-        ),
         modifier = modifier
-            .fillMaxWidth() // Ensure it fills the width
-            .padding(4.dp)
-            .border(1.dp, color = Color.DarkGray, shape = RoundedCornerShape(10.dp)),
-//        colors = TextFieldDefaults.outlinedTextFieldColors(
-//            focusedBorderColor = Color.Black, // Matching border colors
-//            unfocusedBorderColor = Color.Black,
-//            cursorColor = Color.Black // Customize cursor color to match design
-//        )
     )
 }
 
@@ -535,25 +515,10 @@ fun EmailTextBox(
     onEmailChanged: (String) -> Unit, // Callback to update email
     modifier: Modifier = Modifier
 ) {
-    OutlinedTextField(
+    SignUpLoginTextBox(
         value = email,
-        placeholder = { Text(text = "Email") },
         onValueChange = onEmailChanged,
-        shape = RoundedCornerShape(10.dp),
-        textStyle = androidx.compose.ui.text.TextStyle(
-            fontSize = 16.sp,
-            color = Color.DarkGray,
-            fontFamily = com.example.budgeto.screensfonts.inter, // Keeping the original font family
-            letterSpacing = (-0.5).sp,
-            fontWeight = FontWeight(500),
-            textAlign = TextAlign.Left,
-            lineHeight = 1.625.em // Line height as in your original design
-        ),
         modifier = modifier
-            .fillMaxWidth()
-            .padding(4.dp)
-            .border(1.dp, color = Color.DarkGray, shape = RoundedCornerShape(10.dp)),
-
     )
 }
 
@@ -643,37 +608,21 @@ fun PasswordTextBox(
     isPasswordVisible: Boolean = false, // Option to toggle visibility
     onTogglePasswordVisibility: () -> Unit // Callback to toggle visibility
 ) {
-    OutlinedTextField(
+    val image = if (isPasswordVisible)
+        ImageVector.vectorResource(id = R.drawable.sign_up_vector) // Visible state
+    else
+        ImageVector.vectorResource(id = R.drawable.login_vector) // Hidden state
+
+    SignUpLoginTextBox(
         value = password,
         onValueChange = onPasswordChanged,
-        shape = RoundedCornerShape(10.dp),
-        placeholder = { Text(text = "Password") },
-        textStyle = androidx.compose.ui.text.TextStyle(
-            fontSize = 16.sp,
-            color = Color.DarkGray,
-            fontFamily = com.example.budgeto.screensfonts.inter,
-            letterSpacing = (-0.5).sp,
-            fontWeight = FontWeight(500),
-            textAlign = TextAlign.Left,
-            lineHeight = 1.625.em,
-        ),
         visualTransformation = if (isPasswordVisible) VisualTransformation.None else PasswordVisualTransformation(),
         trailingIcon = {
-            val image = if (isPasswordVisible)
-                ImageVector.vectorResource(id = R.drawable.sign_up_vector)
-            else
-                ImageVector.vectorResource(id = R.drawable.sign_up_vector)
-
             IconButton(onClick = onTogglePasswordVisibility) {
                 Icon(imageVector = image, contentDescription = null)
             }
         },
         modifier = modifier
-            .fillMaxWidth()
-            .padding(4.dp)
-            .align(Alignment.CenterHorizontally)
-            .border(1.dp, color = Color.DarkGray, shape = RoundedCornerShape(10.dp)),
-
     )
 }
 
@@ -746,23 +695,28 @@ fun SignUpButton(
     onSignUpButtonTapped: () -> Unit,
     modifier: Modifier = Modifier
 ) {
-    Button(
+    SignUpLoginButton(
         onClick = onSignUpButtonTapped,
-        modifier = modifier
-            .fillMaxWidth(0.9f) // Make the button responsive by filling 90% of the width
-            .height(80.dp) // Keep the height fixed to ensure button looks good
-            .padding(vertical = 16.dp) // Add padding to make space around the button
-            .align(Alignment.CenterHorizontally), // Center the button horizontally
-        shape = RoundedCornerShape(5.dp), // Maintain the rounded corners
-        colors = ButtonDefaults.buttonColors(
-            containerColor = Color.Black // Button background color
-        ),
-        elevation = ButtonDefaults.buttonElevation( // Add elevation for shadow effect
-            defaultElevation = 4.dp
-        )
-    ) {
-        SignUpButtonText() // Call the text composable inside the button
-    }
+        modifier = modifier,
+        text = "Sign up"
+    )
+//    Button(
+//        onClick = onSignUpButtonTapped,
+//        modifier = modifier
+//            .fillMaxWidth(0.9f) // Make the button responsive by filling 90% of the width
+//            .height(80.dp) // Keep the height fixed to ensure button looks good
+//            .padding(vertical = 16.dp) // Add padding to make space around the button
+//            .align(Alignment.CenterHorizontally), // Center the button horizontally
+//        shape = RoundedCornerShape(5.dp), // Maintain the rounded corners
+//        colors = ButtonDefaults.buttonColors(
+//            containerColor = Color.Black // Button background color
+//        ),
+//        elevation = ButtonDefaults.buttonElevation( // Add elevation for shadow effect
+//            defaultElevation = 4.dp
+//        )
+//    ) {
+//        SignUpButtonText() // Call the text composable inside the button
+//    }
 }
 
 @Composable

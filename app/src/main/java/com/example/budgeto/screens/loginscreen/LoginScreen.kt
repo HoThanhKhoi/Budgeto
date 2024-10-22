@@ -1,48 +1,49 @@
 package com.example.budgeto.screens.loginscreen
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.BoxWithConstraints
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxHeight
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.requiredHeight
 import androidx.compose.foundation.layout.requiredWidth
-import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
-import androidx.compose.material3.Text
-import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.PasswordVisualTransformation
+import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.DpOffset
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.em
 import androidx.compose.ui.unit.sp
-import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.budgeto.R
 import com.example.budgeto.screensfonts.inter
 import com.example.budgeto.viewmodel.LoginViewModel
-import com.example.budgeto.viewmodel.SignUpViewModel
+import com.facebook.login.widget.LoginButton
 import com.google.relay.compose.BorderAlignment
 import com.google.relay.compose.BoxScopeInstance.columnWeight
 import com.google.relay.compose.BoxScopeInstance.rowWeight
+import com.google.relay.compose.CircularButton
 import com.google.relay.compose.ColumnScopeInstanceImpl.align
-import com.google.relay.compose.ColumnScopeInstanceImpl.weight
 import com.google.relay.compose.CrossAxisAlignment
 import com.google.relay.compose.MainAxisAlignment
 import com.google.relay.compose.RelayContainer
@@ -50,6 +51,8 @@ import com.google.relay.compose.RelayContainerArrangement
 import com.google.relay.compose.RelayContainerScope
 import com.google.relay.compose.RelayText
 import com.google.relay.compose.RelayVector
+import com.google.relay.compose.SignUpLoginButton
+import com.google.relay.compose.SignUpLoginTextBox
 import com.google.relay.compose.relayDropShadow
 import com.google.relay.compose.tappable
 
@@ -60,30 +63,36 @@ fun LoginScreen(
     onLoginButtonTapped: () -> Unit = {},
     onSignUpTapped: () -> Unit,
     onForgotPasswordTapped: () -> Unit,
-    onIconEyeTapped: () -> Unit,
     onLoginWithGoogleTapped: () -> Unit,
     onLoginWithFacebookTapped: () -> Unit,
     modifier: Modifier = Modifier,
     loginViewModel: LoginViewModel
-){
+) {
     //val loginViewModel: LoginViewModel = viewModel()
+    var localEmail by remember { mutableStateOf(email) }
+    var localPassword by remember { mutableStateOf(password) }
+
+    var isPasswordVisible by remember { mutableStateOf(false) }
 
     Login(
         email = email,
         password = password,
         onLoginTapped = {
             onLoginButtonTapped()
-            loginViewModel.loginUser(email, password)
+            loginViewModel.loginUser(localEmail, localPassword)
         },
+        onEmailChanged = { localEmail = email },
+        onPasswordChange = { localPassword = password },
+        isPasswordVisible = isPasswordVisible,
+        onTogglePasswordVisibility = { isPasswordVisible = !isPasswordVisible },
         onSignUpTapped = onSignUpTapped,
         onForgotPasswordTapped = onForgotPasswordTapped,
-        onIconEyeTapped = onIconEyeTapped,
         onLoginWithGoogleTapped = onLoginWithGoogleTapped,
         onLoginWithFacebookTapped = onLoginWithFacebookTapped,
-        modifier = modifier.rowWeight(1.0f).columnWeight(1.0f)
+        modifier = modifier
+            .rowWeight(1.0f)
+            .columnWeight(1.0f)
     )
-
-
 }
 
 
@@ -91,10 +100,13 @@ fun LoginScreen(
 fun Login(
     email: String,
     password: String,
+    onEmailChanged: (String) -> Unit = {},
+    onPasswordChange: (String) -> Unit = {},
+    onTogglePasswordVisibility: () -> Unit = {},
+    isPasswordVisible: Boolean,
     onLoginTapped: () -> Unit = {},
     onSignUpTapped: () -> Unit = {},
     onForgotPasswordTapped: () -> Unit = {},
-    onIconEyeTapped: () -> Unit = {},
     onLoginWithGoogleTapped: () -> Unit = {},
     onLoginWithFacebookTapped: () -> Unit = {},
     modifier: Modifier = Modifier,
@@ -128,15 +140,15 @@ fun Login(
                 )
             )
         }
-        Login(
-            modifier = Modifier.boxAlign(
-                alignment = Alignment.TopCenter,
-                offset = DpOffset(
-                    x = 0.0.dp,
-                    y = 84.0.dp
-                )
-            )
-        )
+//        Login(
+//            modifier = Modifier.boxAlign(
+//                alignment = Alignment.TopCenter,
+//                offset = DpOffset(
+//                    x = 0.0.dp,
+//                    y = 84.0.dp
+//                )
+//            )
+//        )
         BottomLink(
             modifier = Modifier.boxAlign(
                 alignment = Alignment.TopStart,
@@ -158,123 +170,156 @@ fun Login(
                 )
             )
         ) {
-            EmailTextBox(modifier = Modifier.rowWeight(1.0f)) {
-                PlaceholderRightIcon(modifier = Modifier.rowWeight(1.0f)) {
-                    Label(
-                        email = email,
-                        onEmailChange = {},
-                        modifier = Modifier.rowWeight(1.0f)
-                    )
-                }
-            }
-            PasswordWrapper(modifier = Modifier.rowWeight(1.0f)) {
-                PasswordTextBox(modifier = Modifier.rowWeight(1.0f)) {
-                    PlaceholderRightIcon1(modifier = Modifier.rowWeight(1.0f)) {
-                        Label1(
-                            password = password,
-                            onPasswordChange = {},
-                            modifier = Modifier.rowWeight(1.0f)
-                        )
-                        IconEye1(onIconEyeTapped = onIconEyeTapped) {
-                            Vector2(modifier = Modifier.rowWeight(1.0f).columnWeight(1.0f))
-                            Vector3(modifier = Modifier.rowWeight(1.0f).columnWeight(1.0f))
-                        }
-                    }
-                }
-                ForgotPasswordLink(
-                    onForgotPasswordTapped = onForgotPasswordTapped,
-                    modifier = Modifier.rowWeight(1.0f)
-                )
-            }
-        }
-        Frame162475(
-            onLoginTapped = onLoginTapped,
-            modifier = Modifier.boxAlign(
-                alignment = Alignment.TopCenter,
-                offset = DpOffset(
-                    x = 0.0.dp,
-                    y = 432.0.dp
-                )
+            EmailTextBox(
+                email = email,
+                onEmailChanged = onEmailChanged,
+                modifier = Modifier.rowWeight(1.0f)
             )
-        ) {
-            Login1(
-                modifier = Modifier.boxAlign(
-                    alignment = Alignment.TopStart,
-                    offset = DpOffset(
-                        x = 150.0.dp,
-                        y = 13.0.dp
-                    )
-                )
+            PasswordTextBox(
+                password = password,
+                onPasswordChanged = onPasswordChange,
+                isPasswordVisible = isPasswordVisible,
+                onTogglePasswordVisibility = onTogglePasswordVisibility,
+                modifier = Modifier
+                    .rowWeight(1.0f)
             )
-        }
-        Group99(
-            modifier = Modifier.boxAlign(
-                alignment = Alignment.TopStart,
-                offset = DpOffset(
-                    x = 150.0.dp,
-                    y = 545.0.dp
-                )
+            ForgotPasswordLink(
+                onForgotPasswordTapped = onForgotPasswordTapped,
+                modifier = Modifier.rowWeight(1.0f)
             )
-        ) {
-            LoginWithGoogle(onLoginWithGoogleTapped = onLoginWithGoogleTapped) {
-                Ellipse1(
-                    modifier = Modifier.boxAlign(
-                        alignment = Alignment.Center,
-                        offset = DpOffset(
-                            x = 0.0.dp,
-                            y = 0.0.dp
-                        )
-                    )
-                )
-                Ellipse35(
-                    modifier = Modifier.boxAlign(
-                        alignment = Alignment.TopStart,
-                        offset = DpOffset(
-                            x = 10.0.dp,
-                            y = 10.0.dp
-                        )
-                    )
-                )
-            }
-            LoginWithFacebook(
-                onLoginWithFacebookTapped = onLoginWithFacebookTapped,
-                modifier = Modifier.boxAlign(
-                    alignment = Alignment.TopStart,
-                    offset = DpOffset(
-                        x = 49.0.dp,
-                        y = 0.0.dp
-                    )
-                )
+            LoginButton(
+                onLoginTapped = onLoginTapped,
+            )
+            Row(
+                modifier = Modifier.align(Alignment.CenterHorizontally),
+                horizontalArrangement = Arrangement.spacedBy(16.dp) // Add space between the buttons
             ) {
-                Ellipse2(
-                    modifier = Modifier.boxAlign(
-                        alignment = Alignment.Center,
-                        offset = DpOffset(
-                            x = 0.0.dp,
-                            y = 0.0.dp
-                        )
-                    )
-                )
-                Ellipse36(
-                    modifier = Modifier.boxAlign(
-                        alignment = Alignment.Center,
-                        offset = DpOffset(
-                            x = -1.0.dp,
-                            y = -1.0.dp
-                        )
-                    )
-                )
-                Vector161(
-                    modifier = Modifier.boxAlign(
-                        alignment = Alignment.TopStart,
-                        offset = DpOffset(
-                            x = 15.0.dp,
-                            y = 11.0.dp
-                        )
-                    )
-                )
+                LoginWithGoogleButton(onclick = onLoginWithGoogleTapped)
+                LoginWithFacebookButton(onclick = onLoginWithFacebookTapped)
             }
+//            EmailTextBox(modifier = Modifier.rowWeight(1.0f)) {
+//                PlaceholderRightIcon(modifier = Modifier.rowWeight(1.0f)) {
+//                    Label(
+//                        email = email,
+//                        onEmailChange = {},
+//                        modifier = Modifier.rowWeight(1.0f)
+//                    )
+//                }
+//            }
+//            PasswordWrapper(modifier = Modifier.rowWeight(1.0f)) {
+//                PasswordTextBox(modifier = Modifier.rowWeight(1.0f)) {
+//                    PlaceholderRightIcon1(modifier = Modifier.rowWeight(1.0f)) {
+//                        Label1(
+//                            password = password,
+//                            onPasswordChange = {},
+//                            modifier = Modifier.rowWeight(1.0f)
+//                        )
+//                        IconEye1(onIconEyeTapped = onIconEyeTapped) {
+//                            Vector2(modifier = Modifier
+//                                .rowWeight(1.0f)
+//                                .columnWeight(1.0f))
+//                            Vector3(modifier = Modifier
+//                                .rowWeight(1.0f)
+//                                .columnWeight(1.0f))
+//                        }
+//                    }
+//                }
+//
+//            }
         }
+
+
+//        Frame162475(
+//            onLoginTapped = onLoginTapped,
+//            modifier = Modifier.boxAlign(
+//                alignment = Alignment.TopCenter,
+//                offset = DpOffset(
+//                    x = 0.0.dp,
+//                    y = 432.0.dp
+//                )
+//            )
+//        ) {
+//            Login1(
+//                modifier = Modifier.boxAlign(
+//                    alignment = Alignment.TopStart,
+//                    offset = DpOffset(
+//                        x = 150.0.dp,
+//                        y = 13.0.dp
+//                    )
+//                )
+//            )
+//        }
+
+
+
+//        Group99(
+//            modifier = Modifier.boxAlign(
+//                alignment = Alignment.TopStart,
+//                offset = DpOffset(
+//                    x = 150.0.dp,
+//                    y = 545.0.dp
+//                )
+//            )
+//        ) {
+//            LoginWithGoogle(onLoginWithGoogleTapped = onLoginWithGoogleTapped) {
+//                Ellipse1(
+//                    modifier = Modifier.boxAlign(
+//                        alignment = Alignment.Center,
+//                        offset = DpOffset(
+//                            x = 0.0.dp,
+//                            y = 0.0.dp
+//                        )
+//                    )
+//                )
+//                Ellipse35(
+//                    modifier = Modifier.boxAlign(
+//                        alignment = Alignment.TopStart,
+//                        offset = DpOffset(
+//                            x = 10.0.dp,
+//                            y = 10.0.dp
+//                        )
+//                    )
+//                )
+//            }
+//            LoginWithFacebook(
+//                onLoginWithFacebookTapped = onLoginWithFacebookTapped,
+//                modifier = Modifier.boxAlign(
+//                    alignment = Alignment.TopStart,
+//                    offset = DpOffset(
+//                        x = 49.0.dp,
+//                        y = 0.0.dp
+//                    )
+//                )
+//            ) {
+//                Ellipse2(
+//                    modifier = Modifier.boxAlign(
+//                        alignment = Alignment.Center,
+//                        offset = DpOffset(
+//                            x = 0.0.dp,
+//                            y = 0.0.dp
+//                        )
+//                    )
+//                )
+//                Ellipse36(
+//                    modifier = Modifier.boxAlign(
+//                        alignment = Alignment.Center,
+//                        offset = DpOffset(
+//                            x = -1.0.dp,
+//                            y = -1.0.dp
+//                        )
+//                    )
+//                )
+//                Vector161(
+//                    modifier = Modifier.boxAlign(
+//                        alignment = Alignment.TopStart,
+//                        offset = DpOffset(
+//                            x = 15.0.dp,
+//                            y = 11.0.dp
+//                        )
+//                    )
+//                )
+//            }
+//        }
         OrSignUpWith(
             modifier = Modifier.boxAlign(
                 alignment = Alignment.TopStart,
@@ -414,15 +459,17 @@ private fun LoginPreview() {
     MaterialTheme {
         RelayContainer {
             Login(
+                isPasswordVisible = false,
                 email = "Email",
                 password = "Password",
                 onLoginTapped = {},
                 onSignUpTapped = {},
                 onForgotPasswordTapped = {},
-                onIconEyeTapped = {},
                 onLoginWithGoogleTapped = {},
                 onLoginWithFacebookTapped = {},
-                modifier = Modifier.rowWeight(1.0f).columnWeight(1.0f)
+                modifier = Modifier
+                    .rowWeight(1.0f)
+                    .columnWeight(1.0f)
             )
         }
     }
@@ -443,7 +490,9 @@ fun Statistics(
         ),
         isStructured = false,
         content = content,
-        modifier = modifier.requiredWidth(392.0.dp).requiredHeight(49.0.dp)
+        modifier = modifier
+            .requiredWidth(392.0.dp)
+            .requiredHeight(49.0.dp)
     )
 }
 
@@ -451,7 +500,9 @@ fun Statistics(
 fun Line12(modifier: Modifier = Modifier) {
     RelayVector(
         vector = painterResource(R.drawable.login_line_12),
-        modifier = modifier.requiredWidth(150.0.dp).requiredHeight(0.0.dp)
+        modifier = modifier
+            .requiredWidth(150.0.dp)
+            .requiredHeight(0.0.dp)
     )
 }
 
@@ -469,22 +520,24 @@ fun BottomNav(
         ),
         isStructured = false,
         content = content,
-        modifier = modifier.requiredWidth(390.0.dp).requiredHeight(113.0.dp)
+        modifier = modifier
+            .requiredWidth(390.0.dp)
+            .requiredHeight(113.0.dp)
     )
 }
 
-@Composable
-fun Login(modifier: Modifier = Modifier) {
-    RelayText(
-        content = "Login",
-        fontSize = 24.0.sp,
-        fontFamily = inter,
-        height = 1.2102272510528564.em,
-        textAlign = TextAlign.Left,
-        fontWeight = FontWeight(700.0.toInt()),
-        modifier = modifier
-    )
-}
+//@Composable
+//fun Login(modifier: Modifier = Modifier) {
+//    RelayText(
+//        content = "Login",
+//        fontSize = 24.0.sp,
+//        fontFamily = inter,
+//        height = 1.2102272510528564.em,
+//        textAlign = TextAlign.Left,
+//        fontWeight = FontWeight(700.0.toInt()),
+//        modifier = modifier
+//    )
+//}
 
 @Composable
 fun DonTHaveAnAccount(modifier: Modifier = Modifier) {
@@ -535,7 +588,9 @@ fun BottomLink(
         itemSpacing = 8.0,
         clipToParent = false,
         content = content,
-        modifier = modifier.height(IntrinsicSize.Min).requiredWidth(327.0.dp)
+        modifier = modifier
+            .height(IntrinsicSize.Min)
+            .requiredWidth(327.0.dp)
     )
 }
 
@@ -576,42 +631,22 @@ fun PlaceholderRightIcon(
         itemSpacing = 24.0,
         clipToParent = false,
         content = content,
-        modifier = modifier.height(IntrinsicSize.Min).fillMaxWidth(1.0f)
+        modifier = modifier
+            .height(IntrinsicSize.Min)
+            .fillMaxWidth(1.0f)
     )
 }
 
 @Composable
 fun EmailTextBox(
+    email: String,
+    onEmailChanged: (String) -> Unit,
     modifier: Modifier = Modifier,
-    content: @Composable RelayContainerScope.() -> Unit
 ) {
-    RelayContainer(
-        backgroundColor = Color(
-            alpha = 255,
-            red = 255,
-            green = 255,
-            blue = 255
-        ),
-        mainAxisAlignment = MainAxisAlignment.Start,
-        crossAxisAlignment = CrossAxisAlignment.Start,
-        padding = PaddingValues(
-            start = 20.0.dp,
-            top = 10.0.dp,
-            end = 20.0.dp,
-            bottom = 10.0.dp
-        ),
-        itemSpacing = 10.0,
-        clipToParent = false,
-        radius = 8.0,
-        strokeWidth = 1.0,
-        strokeColor = Color(
-            alpha = 255,
-            red = 0,
-            green = 0,
-            blue = 0
-        ),
-        content = content,
-        modifier = modifier.fillMaxWidth(1.0f)
+    SignUpLoginTextBox(
+        value = email,
+        onValueChange = onEmailChanged,
+        modifier = modifier
     )
 }
 
@@ -621,48 +656,55 @@ fun Label1(
     onPasswordChange: (String) -> Unit,
     modifier: Modifier = Modifier
 ) {
-        // Display the password using RelayText for styling
-        RelayText(
-            content = password,
-            fontSize = 16.0.sp,
-            fontFamily = inter,
-            height = 1.625.em,
-            letterSpacing = 0.5.sp,
-            textAlign = TextAlign.Left,
-            fontWeight = FontWeight(500),
-            maxLines = 1,
-            modifier = modifier.fillMaxWidth()
-        )
-        // Transparent OutlinedTextField for capturing input
-        OutlinedTextField(
-            value = password,
-            onValueChange = onPasswordChange,
-            //visualTransformation = PasswordVisualTransformation(), // Hide password text
-            modifier = Modifier
-                .fillMaxWidth()
-                .background(Color.Transparent) // Custom modifier for transparency
-        )
+    // Display the password using RelayText for styling
+    RelayText(
+        content = password,
+        fontSize = 16.0.sp,
+        fontFamily = inter,
+        height = 1.625.em,
+        letterSpacing = 0.5.sp,
+        textAlign = TextAlign.Left,
+        fontWeight = FontWeight(500),
+        maxLines = 1,
+        modifier = modifier.fillMaxWidth()
+    )
+    // Transparent OutlinedTextField for capturing input
+    OutlinedTextField(
+        value = password,
+        onValueChange = onPasswordChange,
+        //visualTransformation = PasswordVisualTransformation(), // Hide password text
+        modifier = Modifier
+            .fillMaxWidth()
+            .background(Color.Transparent) // Custom modifier for transparency
+    )
 
 }
 
 
 @Composable
 fun Vector2(modifier: Modifier = Modifier) {
-    RelayVector(modifier = modifier.fillMaxWidth(1.0f).fillMaxHeight(1.0f))
+    RelayVector(
+        modifier = modifier
+            .fillMaxWidth(1.0f)
+            .fillMaxHeight(1.0f)
+    )
 }
 
 @Composable
 fun Vector3(modifier: Modifier = Modifier) {
     RelayVector(
         vector = painterResource(R.drawable.login_vector),
-        modifier = modifier.padding(
-            paddingValues = PaddingValues(
-                start = 1.0.dp,
-                top = 4.0.dp,
-                end = 1.0.dp,
-                bottom = 5.0.dp
+        modifier = modifier
+            .padding(
+                paddingValues = PaddingValues(
+                    start = 1.0.dp,
+                    top = 4.0.dp,
+                    end = 1.0.dp,
+                    bottom = 5.0.dp
+                )
             )
-        ).fillMaxWidth(1.0f).fillMaxHeight(1.0f)
+            .fillMaxWidth(1.0f)
+            .fillMaxHeight(1.0f)
     )
 }
 
@@ -675,7 +717,10 @@ fun IconEye1(
     RelayContainer(
         isStructured = false,
         content = content,
-        modifier = modifier.tappable(onTap = onIconEyeTapped).requiredWidth(24.0.dp).requiredHeight(24.0.dp)
+        modifier = modifier
+            .tappable(onTap = onIconEyeTapped)
+            .requiredWidth(24.0.dp)
+            .requiredHeight(24.0.dp)
     )
 }
 
@@ -690,44 +735,71 @@ fun PlaceholderRightIcon1(
         itemSpacing = 24.0,
         clipToParent = false,
         content = content,
-        modifier = modifier.height(IntrinsicSize.Min).fillMaxWidth(1.0f)
+        modifier = modifier
+            .height(IntrinsicSize.Min)
+            .fillMaxWidth(1.0f)
     )
 }
 
 @Composable
 fun PasswordTextBox(
+    password: String,
+    onPasswordChanged: (String) -> Unit, // Callback to update password
     modifier: Modifier = Modifier,
-    content: @Composable RelayContainerScope.() -> Unit
+    isPasswordVisible: Boolean = false, // Option to toggle visibility
+    onTogglePasswordVisibility: () -> Unit // Callback to toggle visibility
 ) {
-    RelayContainer(
-        backgroundColor = Color(
-            alpha = 255,
-            red = 255,
-            green = 255,
-            blue = 255
-        ),
-        mainAxisAlignment = MainAxisAlignment.Start,
-        crossAxisAlignment = CrossAxisAlignment.Start,
-        padding = PaddingValues(
-            start = 20.0.dp,
-            top = 10.0.dp,
-            end = 20.0.dp,
-            bottom = 10.0.dp
-        ),
-        itemSpacing = 10.0,
-        clipToParent = false,
-        radius = 8.0,
-        strokeWidth = 1.0,
-        strokeColor = Color(
-            alpha = 255,
-            red = 0,
-            green = 0,
-            blue = 0
-        ),
-        content = content,
-        modifier = modifier.fillMaxWidth(1.0f)
+    val image = if (isPasswordVisible)
+        ImageVector.vectorResource(id = R.drawable.sign_up_vector) // Visible state
+    else
+        ImageVector.vectorResource(id = R.drawable.login_vector) // Hidden state
+
+    SignUpLoginTextBox(
+        value = password,
+        onValueChange = onPasswordChanged,
+        visualTransformation = if (isPasswordVisible) VisualTransformation.None else PasswordVisualTransformation(),
+        trailingIcon = {
+            IconButton(onClick = onTogglePasswordVisibility) {
+                Icon(imageVector = image, contentDescription = null)
+            }
+        },
+        modifier = modifier
     )
 }
+//@Composable
+//fun PasswordTextBox(
+//    modifier: Modifier = Modifier,
+//    content: @Composable RelayContainerScope.() -> Unit
+//) {
+//    RelayContainer(
+//        backgroundColor = Color(
+//            alpha = 255,
+//            red = 255,
+//            green = 255,
+//            blue = 255
+//        ),
+//        mainAxisAlignment = MainAxisAlignment.Start,
+//        crossAxisAlignment = CrossAxisAlignment.Start,
+//        padding = PaddingValues(
+//            start = 20.0.dp,
+//            top = 10.0.dp,
+//            end = 20.0.dp,
+//            bottom = 10.0.dp
+//        ),
+//        itemSpacing = 10.0,
+//        clipToParent = false,
+//        radius = 8.0,
+//        strokeWidth = 1.0,
+//        strokeColor = Color(
+//            alpha = 255,
+//            red = 0,
+//            green = 0,
+//            blue = 0
+//        ),
+//        content = content,
+//        modifier = modifier.fillMaxWidth(1.0f)
+//    )
+//}
 
 @Composable
 fun ForgotPasswordLink(
@@ -741,7 +813,9 @@ fun ForgotPasswordLink(
         textAlign = TextAlign.Right,
         italic = true,
         maxLines = -1,
-        modifier = modifier.tappable(onTap = onForgotPasswordTapped).fillMaxWidth(1.0f)
+        modifier = modifier
+            .tappable(onTap = onForgotPasswordTapped)
+            .fillMaxWidth(1.0f)
     )
 }
 
@@ -771,7 +845,9 @@ fun SignUpForm(
         itemSpacing = 16.0,
         clipToParent = false,
         content = content,
-        modifier = modifier.requiredWidth(345.0.dp).requiredHeight(137.0.dp)
+        modifier = modifier
+            .requiredWidth(345.0.dp)
+
     )
 }
 
@@ -795,44 +871,88 @@ fun Login1(modifier: Modifier = Modifier) {
 }
 
 @Composable
-fun Frame162475(
+fun LoginButton(
     onLoginTapped: () -> Unit,
-    modifier: Modifier = Modifier,
-    content: @Composable RelayContainerScope.() -> Unit
+    modifier: Modifier = Modifier
 ) {
-    RelayContainer(
-        backgroundColor = Color(
-            alpha = 255,
-            red = 0,
-            green = 0,
-            blue = 0
-        ),
-        isStructured = false,
-        radius = 5.0,
-        borderAlignment = BorderAlignment.Outside,
-        content = content,
-        modifier = modifier.tappable(onTap = onLoginTapped).requiredWidth(343.0.dp).requiredHeight(48.0.dp).relayDropShadow(
-            color = Color(
-                alpha = 51,
-                red = 56,
-                green = 65,
-                blue = 157
-            ),
-            borderRadius = 5.0.dp,
-            blur = 4.0.dp,
-            offsetX = 0.0.dp,
-            offsetY = 4.0.dp,
-            spread = 0.0.dp
-        )
+    SignUpLoginButton(
+        onClick = onLoginTapped,
+        text = "Login",
+        modifier = modifier
     )
+}
 
+//@Composable
+//fun Frame162475(
+//    onLoginTapped: () -> Unit,
+//    modifier: Modifier = Modifier,
+//    content: @Composable RelayContainerScope.() -> Unit
+//) {
+//    RelayContainer(
+//        backgroundColor = Color(
+//            alpha = 255,
+//            red = 0,
+//            green = 0,
+//            blue = 0
+//        ),
+//        isStructured = false,
+//        radius = 5.0,
+//        borderAlignment = BorderAlignment.Outside,
+//        content = content,
+//        modifier = modifier
+//            .tappable(onTap = onLoginTapped)
+//            .requiredWidth(343.0.dp)
+//            .requiredHeight(48.0.dp)
+//            .relayDropShadow(
+//                color = Color(
+//                    alpha = 51,
+//                    red = 56,
+//                    green = 65,
+//                    blue = 157
+//                ),
+//                borderRadius = 5.0.dp,
+//                blur = 4.0.dp,
+//                offsetX = 0.0.dp,
+//                offsetY = 4.0.dp,
+//                spread = 0.0.dp
+//            )
+//    )
+//
+//}
+
+@Composable
+fun LoginWithGoogleButton(
+    onclick: () -> Unit
+){
+    CircularButton(
+        onClick = onclick,
+        icon = painterResource(R.drawable.login_vector_161), // Use the appropriate icon
+        contentDescription = "Login with Google",
+        backgroundColor = Color.Black, // You can customize this color
+        size = 40.dp // Match the size from your previous implementation
+    )
+}
+
+@Composable
+fun LoginWithFacebookButton(
+    onclick: () -> Unit
+) {
+    CircularButton(
+        onClick = onclick,
+        icon = painterResource(R.drawable.login_ellipse_35), // Use the appropriate icon
+        contentDescription = "Login with Facebook",
+        backgroundColor = Color.Black, // You can customize this color
+        size = 40.dp // Match the size from your previous implementation
+    )
 }
 
 @Composable
 fun Ellipse1(modifier: Modifier = Modifier) {
     RelayVector(
         vector = painterResource(R.drawable.login_ellipse_1),
-        modifier = modifier.requiredWidth(40.0.dp).requiredHeight(40.0.dp)
+        modifier = modifier
+            .requiredWidth(40.0.dp)
+            .requiredHeight(40.0.dp)
     )
 }
 
@@ -840,7 +960,9 @@ fun Ellipse1(modifier: Modifier = Modifier) {
 fun Ellipse35(modifier: Modifier = Modifier) {
     RelayVector(
         vector = painterResource(R.drawable.login_ellipse_35),
-        modifier = modifier.requiredWidth(18.000003814697266.dp).requiredHeight(18.00002098083496.dp)
+        modifier = modifier
+            .requiredWidth(18.000003814697266.dp)
+            .requiredHeight(18.00002098083496.dp)
     )
 }
 
@@ -854,7 +976,10 @@ fun LoginWithGoogle(
         isStructured = false,
         clipToParent = false,
         content = content,
-        modifier = modifier.tappable(onTap = onLoginWithGoogleTapped).requiredWidth(40.0.dp).requiredHeight(40.0.dp)
+        modifier = modifier
+            .tappable(onTap = onLoginWithGoogleTapped)
+            .requiredWidth(40.0.dp)
+            .requiredHeight(40.0.dp)
     )
 }
 
@@ -862,7 +987,9 @@ fun LoginWithGoogle(
 fun Ellipse2(modifier: Modifier = Modifier) {
     RelayVector(
         vector = painterResource(R.drawable.login_ellipse_2),
-        modifier = modifier.requiredWidth(40.0.dp).requiredHeight(40.0.dp)
+        modifier = modifier
+            .requiredWidth(40.0.dp)
+            .requiredHeight(40.0.dp)
     )
 }
 
@@ -870,7 +997,9 @@ fun Ellipse2(modifier: Modifier = Modifier) {
 fun Ellipse36(modifier: Modifier = Modifier) {
     RelayVector(
         vector = painterResource(R.drawable.login_ellipse_36),
-        modifier = modifier.requiredWidth(24.0.dp).requiredHeight(24.0.dp)
+        modifier = modifier
+            .requiredWidth(24.0.dp)
+            .requiredHeight(24.0.dp)
     )
 }
 
@@ -878,7 +1007,9 @@ fun Ellipse36(modifier: Modifier = Modifier) {
 fun Vector161(modifier: Modifier = Modifier) {
     RelayVector(
         vector = painterResource(R.drawable.login_vector_161),
-        modifier = modifier.requiredWidth(8.0.dp).requiredHeight(17.0.dp)
+        modifier = modifier
+            .requiredWidth(8.0.dp)
+            .requiredHeight(17.0.dp)
     )
 }
 
@@ -892,7 +1023,10 @@ fun LoginWithFacebook(
         isStructured = false,
         clipToParent = false,
         content = content,
-        modifier = modifier.tappable(onTap = onLoginWithFacebookTapped).requiredWidth(40.0.dp).requiredHeight(40.0.dp)
+        modifier = modifier
+            .tappable(onTap = onLoginWithFacebookTapped)
+            .requiredWidth(40.0.dp)
+            .requiredHeight(40.0.dp)
     )
 }
 
@@ -905,7 +1039,9 @@ fun Group99(
         isStructured = false,
         clipToParent = false,
         content = content,
-        modifier = modifier.requiredWidth(89.0.dp).requiredHeight(40.0.dp)
+        modifier = modifier
+            .requiredWidth(89.0.dp)
+            .requiredHeight(40.0.dp)
     )
 }
 
@@ -918,7 +1054,9 @@ fun OrSignUpWith(modifier: Modifier = Modifier) {
         height = 1.2102272510528564.em,
         fontWeight = FontWeight(300.0.toInt()),
         maxLines = -1,
-        modifier = modifier.requiredWidth(273.0.dp).requiredHeight(10.0.dp)
+        modifier = modifier
+            .requiredWidth(273.0.dp)
+            .requiredHeight(10.0.dp)
     )
 }
 
@@ -936,6 +1074,8 @@ fun TopLevel(
         ),
         isStructured = false,
         content = content,
-        modifier = modifier.fillMaxWidth(1.0f).fillMaxHeight(1.0f)
+        modifier = modifier
+            .fillMaxWidth(1.0f)
+            .fillMaxHeight(1.0f)
     )
 }
