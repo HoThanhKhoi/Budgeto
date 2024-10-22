@@ -56,10 +56,11 @@ fun BudgetoApp(
                 .padding(innerPadding)
         ) {
             composable(route = BudgetoScreenEnum.Start.name) {
-                SignUpLoginScreen(
-                    onSignUpTapped = { navController.navigate(BudgetoScreenEnum.SignUp.name) },
-                    onLoginTapped = { navController.navigate(BudgetoScreenEnum.Login.name) }
-                )
+//                SignUpLoginScreen(
+//                    onSignUpTapped = { navController.navigate(BudgetoScreenEnum.SignUp.name) },
+//                    onLoginTapped = { navController.navigate(BudgetoScreenEnum.Login.name) }
+//                )
+                OpeningScreenExpensesInputScreen()
             }
             composable(route = BudgetoScreenEnum.SignUp.name) {
                 val signUpViewModel: SignUpViewModel = hiltViewModel()
