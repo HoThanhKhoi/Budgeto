@@ -33,7 +33,7 @@ class ReusableComponent {
 }
 
 @Composable
-fun SignUpLoginTextBox(
+fun UserInfoTextBox(
     value: String,
     onValueChange: (String) -> Unit, // Callback to update the value
     modifier: Modifier = Modifier,

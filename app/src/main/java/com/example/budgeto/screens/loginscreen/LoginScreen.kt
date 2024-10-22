@@ -38,8 +38,6 @@ import androidx.compose.ui.unit.sp
 import com.example.budgeto.R
 import com.example.budgeto.screensfonts.inter
 import com.example.budgeto.viewmodel.LoginViewModel
-import com.facebook.login.widget.LoginButton
-import com.google.relay.compose.BorderAlignment
 import com.google.relay.compose.BoxScopeInstance.columnWeight
 import com.google.relay.compose.BoxScopeInstance.rowWeight
 import com.google.relay.compose.CircularButton
@@ -52,8 +50,7 @@ import com.google.relay.compose.RelayContainerScope
 import com.google.relay.compose.RelayText
 import com.google.relay.compose.RelayVector
 import com.google.relay.compose.SignUpLoginButton
-import com.google.relay.compose.SignUpLoginTextBox
-import com.google.relay.compose.relayDropShadow
+import com.google.relay.compose.UserInfoTextBox
 import com.google.relay.compose.tappable
 
 @Composable
@@ -643,7 +640,7 @@ fun EmailTextBox(
     onEmailChanged: (String) -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    SignUpLoginTextBox(
+    UserInfoTextBox(
         value = email,
         onValueChange = onEmailChanged,
         modifier = modifier
@@ -754,7 +751,7 @@ fun PasswordTextBox(
     else
         ImageVector.vectorResource(id = R.drawable.login_vector) // Hidden state
 
-    SignUpLoginTextBox(
+    UserInfoTextBox(
         value = password,
         onValueChange = onPasswordChanged,
         visualTransformation = if (isPasswordVisible) VisualTransformation.None else PasswordVisualTransformation(),
