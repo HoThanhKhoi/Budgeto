@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.requiredWidth
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -19,10 +20,12 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.DpOffset
+import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.em
 import androidx.compose.ui.unit.sp
@@ -1816,24 +1819,35 @@ fun Frame18(
 }
 
 @Composable
-fun TxtOpenParentheses(modifier: Modifier = Modifier) {
-    RelayText(
-        content = "(",
-        fontSize = 30.0.sp,
-        fontFamily = inter,
-        color = Color(
-            alpha = 229,
-            red = 0,
-            green = 0,
-            blue = 0
-        ),
-        height = 1.2102272033691406.em,
-        fontWeight = FontWeight(500.0.toInt()),
-        maxLines = -1,
-        modifier = modifier.requiredWidth(47.0.dp).requiredHeight(51.0.dp).wrapContentHeight(
-            align = Alignment.CenterVertically,
-            unbounded = true
-        )
+fun TxtOpenParentheses(
+    text: String = "(",
+    fontSize: TextUnit = 30.sp,
+    fontFamily: FontFamily = inter, // Can be customized, e.g., "inter"
+    color: Color = Color(0, 0, 0, alpha = 229),
+    lineHeight: TextUnit = 1.21.em,
+    fontWeight: FontWeight = FontWeight.Medium, // Corresponds to weight 500
+    maxLines: Int = Int.MAX_VALUE,
+    modifier: Modifier = Modifier
+){
+    Text(
+        text = text,
+        fontSize = fontSize,
+        fontFamily = fontFamily,
+        color = color,
+        lineHeight = lineHeight,
+        fontWeight = fontWeight,
+        maxLines = maxLines,
+        modifier = modifier
+            .requiredWidth(47.dp)
+            .requiredHeight(51.dp)
+            .wrapContentHeight(
+                align = Alignment.CenterVertically,
+                unbounded = true
+            )
+            .wrapContentWidth(
+                align = Alignment.CenterHorizontally,
+                unbounded = true
+            )
     )
 }
 

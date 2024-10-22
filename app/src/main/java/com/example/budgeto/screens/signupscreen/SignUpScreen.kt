@@ -118,34 +118,6 @@ fun SignUpText(
     onLoginWithGoogleTapped: () -> Unit = {}
 ) {
     TopLevel(modifier = modifier) {
-        Statistics(
-            modifier = Modifier.boxAlign(
-                alignment = Alignment.TopStart,
-                offset = DpOffset(
-                    x = -2.0.dp,
-                    y = 795.0.dp
-                )
-            )
-        ) {}
-        BottomNav(
-            modifier = Modifier.boxAlign(
-                alignment = Alignment.TopStart,
-                offset = DpOffset(
-                    x = 0.0.dp,
-                    y = 731.0.dp
-                )
-            )
-        ) {
-            Line12(
-                modifier = Modifier.boxAlign(
-                    alignment = Alignment.TopCenter,
-                    offset = DpOffset(
-                        x = -2.0.dp,
-                        y = 101.0.dp
-                    )
-                )
-            )
-        }
         SignUpText(
             modifier = Modifier.boxAlign(
                 alignment = Alignment.TopCenter,
@@ -171,7 +143,7 @@ fun SignUpText(
             modifier = Modifier.boxAlign(
                 alignment = Alignment.TopCenter,
                 offset = DpOffset(
-                    x = -0.5.dp,
+                    x = 0.dp,
                     y = 255.0.dp
                 )
             )
@@ -438,6 +410,7 @@ fun FullnameTextBox(
 ) {
     UserInfoTextBox(
         value = fullName,
+        placeholder = "Full Name",
         onValueChange = onFullNameChanged,
         modifier = modifier
     )
@@ -539,6 +512,7 @@ fun EmailTextBox(
     UserInfoTextBox(
         value = email,
         onValueChange = onEmailChanged,
+        placeholder = "Email",
         modifier = modifier
     )
 }
@@ -637,6 +611,7 @@ fun PasswordTextBox(
     UserInfoTextBox(
         value = password,
         onValueChange = onPasswordChanged,
+        placeholder = "Password",
         visualTransformation = if (isPasswordVisible) VisualTransformation.None else PasswordVisualTransformation(),
         trailingIcon = {
             IconButton(onClick = onTogglePasswordVisibility) {
