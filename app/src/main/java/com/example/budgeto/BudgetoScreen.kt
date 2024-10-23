@@ -49,9 +49,9 @@ fun BudgetoApp(
 
         NavHost(
             navController = navController,
-//            startDestination = BudgetoScreenEnum.Start.name,
+            startDestination = BudgetoScreenEnum.Start.name,
 //            startDestination = BudgetoScreenEnum.OpeningScreen.name,
-            startDestination = BudgetoScreenEnum.ProfileScreen.name,
+//            startDestination = BudgetoScreenEnum.ProfileScreen.name,
             modifier = Modifier
                 .fillMaxSize()
                 .verticalScroll(rememberScrollState())

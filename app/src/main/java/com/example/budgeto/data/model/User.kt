@@ -3,12 +3,12 @@ package com.example.budgeto.data.model
 import com.example.budgeto.data.enums.UserGender
 import com.example.budgeto.data.enums.UserStatus
 import com.google.firebase.Timestamp
+import java.net.URL
 
 data class User(
     val userId: String = "",
     val createdAt: Timestamp = Timestamp.now(),
     val status: UserStatus = UserStatus.ACTIVE,
-    val generalInfo: GeneralInfo = GeneralInfo(),
 )
 
 data class GeneralInfo(
@@ -20,6 +20,7 @@ data class GeneralInfo(
     val occupation: String = "",
     val googleLink: String = "",
     val facebookLink: String = "",
+    val imgURL: String = ""
 )
 
 data class GameInfo(

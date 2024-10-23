@@ -77,7 +77,7 @@ fun SignUpScreen(
     SignUpText(
         onSignUpButtonTapped = {
             onSignUpButtonTapped()
-            signUpViewModel.registerUser(localEmail, localPassword)
+            signUpViewModel.registerUser(localEmail, localPassword, localFullName)
         },
         fullName = localFullName,
         email = localEmail,
