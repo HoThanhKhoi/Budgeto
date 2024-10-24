@@ -1712,6 +1712,7 @@ fun BaoNgu1(
 fun UserInfoField(
     label: String = "",
     value: String = "",
+    placeholder: String ="",
     onValueChange: (String) -> Unit,
     modifier: Modifier
 ) {
@@ -1730,6 +1731,7 @@ fun UserInfoField(
         UserInfoTextBox(
             value = value,
             onValueChange = onValueChange,
+            placeholder = placeholder,
             modifier = modifier
         )
     }
@@ -1744,6 +1746,7 @@ fun UserNameField(
     UserInfoField(
         label = "Name",
         value = value,
+        placeholder = "Enter your name",
         onValueChange = onValueChange,
         modifier = modifier
     )
