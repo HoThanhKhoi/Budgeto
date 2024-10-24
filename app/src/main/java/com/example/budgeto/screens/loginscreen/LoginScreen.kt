@@ -89,7 +89,7 @@ fun LoginScreen(
         onForgotPasswordTapped = onForgotPasswordTapped,
         onLoginWithGoogleTapped = {
             onLoginWithGoogleTapped()
-            loginViewModel.googleLogin()
+//            loginViewModel.googleLogin()
         },
         onLoginWithFacebookTapped = onLoginWithFacebookTapped,
         modifier = modifier

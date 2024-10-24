@@ -62,7 +62,7 @@ fun BudgetoApp(
                     onSignUpTapped = { navController.navigate(BudgetoScreenEnum.SignUp.name) },
                     onLoginTapped = { navController.navigate(BudgetoScreenEnum.Login.name) }
                 )
-                OpeningScreenExpensesInputScreen()
+//                OpeningScreenExpensesInputScreen()
             }
             composable(route = BudgetoScreenEnum.SignUp.name) {
                 val signUpViewModel: SignUpViewModel = hiltViewModel()
