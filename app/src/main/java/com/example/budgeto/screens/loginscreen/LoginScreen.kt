@@ -87,7 +87,10 @@ fun LoginScreen(
         onTogglePasswordVisibility = { isPasswordVisible = !isPasswordVisible },
         onSignUpTapped = onSignUpTapped,
         onForgotPasswordTapped = onForgotPasswordTapped,
-        onLoginWithGoogleTapped = onLoginWithGoogleTapped,
+        onLoginWithGoogleTapped = {
+            onLoginWithGoogleTapped()
+            loginViewModel.googleLogin()
+        },
         onLoginWithFacebookTapped = onLoginWithFacebookTapped,
         modifier = modifier
             .rowWeight(1.0f)
@@ -170,8 +173,8 @@ fun Login(
                         offset = DpOffset(
                             x = 0.0.dp,
                             y = 40.0.dp
-                    ),
-                )
+                        ),
+                    )
             ) {
                 LoginWithGoogleButton(onclick = onLoginWithGoogleTapped)
                 Spacer(modifier = Modifier.width(16.dp))

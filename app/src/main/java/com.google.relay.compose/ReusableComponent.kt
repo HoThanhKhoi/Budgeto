@@ -2,23 +2,37 @@ package com.google.relay.compose
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.DropdownMenu
+import androidx.compose.material3.DropdownMenuItem
+import androidx.compose.material3.ExposedDropdownMenuBox
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.painter.Painter
+import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.text.style.TextAlign
@@ -26,6 +40,7 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.em
 import androidx.compose.ui.unit.sp
+import com.example.budgeto.R
 import com.google.relay.compose.ColumnScopeInstanceImpl.align
 import org.w3c.dom.Text
 
@@ -75,6 +90,25 @@ fun UserInfoTextBox(
             .fillMaxWidth()
             .padding(4.dp)
             .border(1.dp, color = Color.DarkGray, shape = RoundedCornerShape(10.dp)),
+    )
+}
+
+@Composable
+fun <T> UserInfoDropDown(
+    value: T,
+    onValueChange: (T) -> Unit,
+    options: List<T>, // The list of options to display in the dropdown
+    modifier: Modifier = Modifier,
+    placeHolder: String = "",
+    label: String = ""
+) {
+    DropDownField(
+        value = value,
+        onValueChange = onValueChange,
+        options = options,
+        modifier = modifier,
+        placeHolder = placeHolder,
+        label = label
     )
 }
 
@@ -142,3 +176,80 @@ fun CircularButton(
         )
     }
 }
+
+@Composable
+fun <T> DropDownField(
+    value: T,
+    onValueChange: (T) -> Unit,
+    options: List<T>,
+    modifier: Modifier = Modifier,
+    placeHolder: String = "",
+    label: String = ""
+) {
+    var expanded by remember { mutableStateOf(false) } // Track dropdown state
+
+    // Use a BoxWithConstraints to capture the width of the `OutlinedTextField`
+    BoxWithConstraints(
+        modifier = modifier
+            .fillMaxWidth()
+            .padding(4.dp)
+    ) {
+        val textFieldWidthInDp = with(LocalDensity.current) { constraints.maxWidth.toDp() } // Convert width to dp
+
+        // The trigger (text field) for the dropdown
+        OutlinedTextField(
+            value = value.toString(),
+            onValueChange = {}, // No direct editing, dropdown controlled
+            placeholder = {
+                Text(
+                    text = if (placeHolder.isNotEmpty()) placeHolder else value.toString(),
+                    style = androidx.compose.ui.text.TextStyle(
+                        fontSize = 16.sp,
+                        color = Color.Gray,
+                        fontFamily = com.example.budgeto.screensfonts.inter,
+                        letterSpacing = (-0.5).sp,
+                        fontWeight = FontWeight(500),
+                        textAlign = TextAlign.Left,
+                        lineHeight = 1.625.em
+                    )
+                )
+            },
+            readOnly = true, // Make it read-only so the user can only select from the dropdown
+            label = { if (label.isNotEmpty()) Text(text = label) },
+            shape = RoundedCornerShape(10.dp),
+            trailingIcon = {
+                Icon(
+                    painter = painterResource(id = R.drawable.profile_1_vector_321), // Icon for the dropdown
+                    contentDescription = "Dropdown icon",
+                    modifier = Modifier.clickable { expanded = !expanded } // Toggle dropdown when clicked
+                )
+            },
+            colors = TextFieldDefaults.colors(
+                unfocusedIndicatorColor = Color.Black,
+                unfocusedContainerColor = Color.White,
+            ),
+            modifier = Modifier.fillMaxWidth()
+        )
+
+        // The dropdown menu itself
+        DropdownMenu(
+            expanded = expanded,
+            onDismissRequest = { expanded = false },
+            modifier = Modifier.width(textFieldWidthInDp) // Match the width of the OutlinedTextField
+        ) {
+            // List of selectable items
+            options.forEach { option ->
+                DropdownMenuItem(
+                    onClick = {
+                        onValueChange(option) // Callback to update the parent state
+                        expanded = false // Close dropdown after selection
+                    },
+                    text = { Text(option.toString()) } // Display the value as a string
+                )
+            }
+        }
+    }
+}
+
+
+

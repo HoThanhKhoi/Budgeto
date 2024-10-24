@@ -26,7 +26,7 @@ class SignUpViewModel @Inject constructor(
     val _signUpState = Channel<SignUpState>()
     val signUpState = _signUpState.receiveAsFlow()
 
-    fun registerUser(email: String, password: String) = viewModelScope.launch {
+    fun registerUser(email: String, password: String, fullname: String) = viewModelScope.launch {
 
         authRepository.signUp(email, password).collect { result ->
             when (result) {
@@ -35,7 +35,7 @@ class SignUpViewModel @Inject constructor(
 
                     val firebaseUser = result.data?.user
                     firebaseUser?.let {
-                        addNewUserToFirestore(it)
+                        addNewUserToFirestore(it, fullname)
                         _signUpState.send(SignUpState(isSuccess = "Sign Up success"))
                     }?:run {
                         _signUpState.send(SignUpState(isError = "Failed to retrieve Firebase user"))
@@ -55,20 +55,21 @@ class SignUpViewModel @Inject constructor(
         }
     }
 
-    private suspend fun addNewUserToFirestore(firebaseUser: FirebaseUser)
+    private suspend fun addNewUserToFirestore(firebaseUser: FirebaseUser, fullname: String)
     {
         val generalInfo = GeneralInfo(
             email = firebaseUser.email.toString(),
+            fullName = fullname
         )
+
+        val GameInfo = GameInfo()
 
         val user = User(
             userId = firebaseUser.uid,
-            generalInfo = generalInfo
         )
 
         userRepository.addUser(user)
-
-        val gameInfo = GameInfo()
-        userRepository.addOrGameInfo(firebaseUser.uid, gameInfo)
+        userRepository.addGeneralInfo(userId = firebaseUser.uid, generalInfo = generalInfo)
+        userRepository.addGameInfo(userId = firebaseUser.uid, gameInfo = GameInfo)
     }
 }

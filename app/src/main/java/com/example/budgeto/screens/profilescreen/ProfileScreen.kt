@@ -4,6 +4,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.requiredHeight
@@ -19,17 +20,18 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.DpOffset
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.em
 import androidx.compose.ui.unit.sp
 import com.example.budgeto.R
+import com.example.budgeto.data.enums.UserGender
 import com.example.budgeto.screensfonts.inter
 import com.google.relay.compose.RelayContainer
 import com.google.relay.compose.RelayContainerScope
 import com.google.relay.compose.RelayText
 import com.google.relay.compose.RelayVector
+import com.google.relay.compose.UserInfoDropDown
 import com.google.relay.compose.UserInfoTextBox
 import com.google.relay.compose.relayDropShadow
 import com.google.relay.compose.tappable
@@ -82,6 +84,11 @@ fun Profile1(
     onGoogleAccountLinkButtonTapped: () -> Unit = {},
     onFacebookAccountLinkButtonTapped: () -> Unit = {},
     onNameFieldChanged: (String) -> Unit = {},
+    onPhoneFieldChanged: (String) -> Unit = {},
+    onAddressFieldChanged: (String) -> Unit = {},
+    onOccupationFieldChanged: (String) -> Unit = {},
+    onGenderFieldChanged: (UserGender) -> Unit = {},
+    onBirthDayFieldChanged: (String) -> Unit = {},
 ) {
     TopLevel(modifier = modifier) {
         BottomNav(
@@ -418,196 +425,232 @@ fun Profile1(
             )
         )
 
-        UserNameField(
-            value = "Name",
-            onValueChange = onNameFieldChanged,
-            modifier = modifier
-        )
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(top = 300.dp),
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.spacedBy(14.dp)
 
-        Frame56(
-            modifier = Modifier.boxAlign(
-                alignment = Alignment.TopCenter,
-                offset = DpOffset(
-                    x = 0.0.dp,
-                    y = 335.0.dp
-                )
-            )
         ) {
-            BaoNgu1(
-                nameTextContent = nameTextContent,
-                modifier = Modifier.boxAlign(
-                    alignment = Alignment.TopStart,
-                    offset = DpOffset(
-                        x = 15.0.dp,
-                        y = 16.0.dp
-                    )
-                )
+            UserNameField(
+                value = "Name",
+                onValueChange = onNameFieldChanged,
+                modifier = modifier
             )
+            DayOfBirthField(
+                value = "2003-08-29",
+                onValueChange = onBirthDayFieldChanged,
+                modifier = modifier
+            )
+            PhoneField(
+                value = "0987654321",
+                onValueChange = onPhoneFieldChanged,
+                modifier = modifier
+            )
+            AddressField(
+                value = "Hồ Chí Minh",
+                onValueChange = onAddressFieldChanged,
+                modifier = modifier
+            )
+            OccupationField(
+                value = "Sinh viên",
+                onValueChange = onOccupationFieldChanged,
+                modifier = modifier
+            )
+
+            GenderDropdownField(
+                onValueChange = onGenderFieldChanged,
+                modifier = modifier
+            )
+
         }
-        Frame57(
-            modifier = Modifier.boxAlign(
-                alignment = Alignment.TopCenter,
-                offset = DpOffset(
-                    x = 0.0.dp,
-                    y = 429.0.dp
-                )
-            )
-        ) {
-            YyyyMmDd(
-                birthdateTextContent = birthdateTextContent,
-                modifier = Modifier.boxAlign(
-                    alignment = Alignment.TopStart,
-                    offset = DpOffset(
-                        x = 15.0.dp,
-                        y = 16.0.dp
-                    )
-                )
-            )
-        }
-        Frame58(
-            modifier = Modifier.boxAlign(
-                alignment = Alignment.TopCenter,
-                offset = DpOffset(
-                    x = 0.0.dp,
-                    y = 523.0.dp
-                )
-            )
-        ) {
-            Class84366295416(
-                phoneNumberTextContent = phoneNumberTextContent,
-                modifier = Modifier.boxAlign(
-                    alignment = Alignment.TopStart,
-                    offset = DpOffset(
-                        x = 15.0.dp,
-                        y = 16.0.dp
-                    )
-                )
-            )
-        }
-        Frame59(
-            modifier = Modifier.boxAlign(
-                alignment = Alignment.TopCenter,
-                offset = DpOffset(
-                    x = 0.0.dp,
-                    y = 617.0.dp
-                )
-            )
-        ) {
-            HoChiMinhCity(
-                addressTextContent = addressTextContent,
-                modifier = Modifier.boxAlign(
-                    alignment = Alignment.TopStart,
-                    offset = DpOffset(
-                        x = 15.0.dp,
-                        y = 16.0.dp
-                    )
-                )
-            )
-        }
-        Frame60(
-            modifier = Modifier.boxAlign(
-                alignment = Alignment.TopCenter,
-                offset = DpOffset(
-                    x = 0.0.dp,
-                    y = 711.0.dp
-                )
-            )
-        ) {
-            Student(
-                occupationTextContent = occupationTextContent,
-                modifier = Modifier.boxAlign(
-                    alignment = Alignment.TopStart,
-                    offset = DpOffset(
-                        x = 15.0.dp,
-                        y = 16.0.dp
-                    )
-                )
-            )
-        }
-        Frame61(
-            modifier = Modifier.boxAlign(
-                alignment = Alignment.TopCenter,
-                offset = DpOffset(
-                    x = 0.0.dp,
-                    y = 805.0.dp
-                )
-            )
-        ) {
-            Female(
-                genderTextContent = genderTextContent,
-                modifier = Modifier.boxAlign(
-                    alignment = Alignment.TopStart,
-                    offset = DpOffset(
-                        x = 15.0.dp,
-                        y = 16.0.dp
-                    )
-                )
-            )
-            Vector321(
-                onGenderOptionButtonTapped = onGenderOptionButtonTapped,
-                modifier = Modifier.boxAlign(
-                    alignment = Alignment.TopStart,
-                    offset = DpOffset(
-                        x = 315.68750006556706.dp,
-                        y = 21.31250013933003.dp
-                    )
-                )
-            )
-        }
-        Name(
-            modifier = Modifier.boxAlign(
-                alignment = Alignment.TopStart,
-                offset = DpOffset(
-                    x = 23.0.dp,
-                    y = 309.0.dp
-                )
-            )
-        )
-        DayOfBirth(
-            modifier = Modifier.boxAlign(
-                alignment = Alignment.TopStart,
-                offset = DpOffset(
-                    x = 23.0.dp,
-                    y = 403.0.dp
-                )
-            )
-        )
-        Phone(
-            modifier = Modifier.boxAlign(
-                alignment = Alignment.TopStart,
-                offset = DpOffset(
-                    x = 23.0.dp,
-                    y = 497.0.dp
-                )
-            )
-        )
-        Address(
-            modifier = Modifier.boxAlign(
-                alignment = Alignment.TopStart,
-                offset = DpOffset(
-                    x = 23.0.dp,
-                    y = 591.0.dp
-                )
-            )
-        )
-        Occupation(
-            modifier = Modifier.boxAlign(
-                alignment = Alignment.TopStart,
-                offset = DpOffset(
-                    x = 23.0.dp,
-                    y = 685.0.dp
-                )
-            )
-        )
-        Gender(
-            modifier = Modifier.boxAlign(
-                alignment = Alignment.TopStart,
-                offset = DpOffset(
-                    x = 23.0.dp,
-                    y = 779.0.dp
-                )
-            )
-        )
+
+
+//        Frame56(
+//            modifier = Modifier.boxAlign(
+//                alignment = Alignment.TopCenter,
+//                offset = DpOffset(
+//                    x = 0.0.dp,
+//                    y = 335.0.dp
+//                )
+//            )
+//        ) {
+//            BaoNgu1(
+//                nameTextContent = nameTextContent,
+//                modifier = Modifier.boxAlign(
+//                    alignment = Alignment.TopStart,
+//                    offset = DpOffset(
+//                        x = 15.0.dp,
+//                        y = 16.0.dp
+//                    )
+//                )
+//            )
+//        }
+//        Frame57(
+//            modifier = Modifier.boxAlign(
+//                alignment = Alignment.TopCenter,
+//                offset = DpOffset(
+//                    x = 0.0.dp,
+//                    y = 429.0.dp
+//                )
+//            )
+//        ) {
+//            YyyyMmDd(
+//                birthdateTextContent = birthdateTextContent,
+//                modifier = Modifier.boxAlign(
+//                    alignment = Alignment.TopStart,
+//                    offset = DpOffset(
+//                        x = 15.0.dp,
+//                        y = 16.0.dp
+//                    )
+//                )
+//            )
+//        }
+//        Frame58(
+//            modifier = Modifier.boxAlign(
+//                alignment = Alignment.TopCenter,
+//                offset = DpOffset(
+//                    x = 0.0.dp,
+//                    y = 523.0.dp
+//                )
+//            )
+//        ) {
+//            Class84366295416(
+//                phoneNumberTextContent = phoneNumberTextContent,
+//                modifier = Modifier.boxAlign(
+//                    alignment = Alignment.TopStart,
+//                    offset = DpOffset(
+//                        x = 15.0.dp,
+//                        y = 16.0.dp
+//                    )
+//                )
+//            )
+//        }
+//        Frame59(
+//            modifier = Modifier.boxAlign(
+//                alignment = Alignment.TopCenter,
+//                offset = DpOffset(
+//                    x = 0.0.dp,
+//                    y = 617.0.dp
+//                )
+//            )
+//        ) {
+//            HoChiMinhCity(
+//                addressTextContent = addressTextContent,
+//                modifier = Modifier.boxAlign(
+//                    alignment = Alignment.TopStart,
+//                    offset = DpOffset(
+//                        x = 15.0.dp,
+//                        y = 16.0.dp
+//                    )
+//                )
+//            )
+//        }
+//        Frame60(
+//            modifier = Modifier.boxAlign(
+//                alignment = Alignment.TopCenter,
+//                offset = DpOffset(
+//                    x = 0.0.dp,
+//                    y = 711.0.dp
+//                )
+//            )
+//        ) {
+//            Student(
+//                occupationTextContent = occupationTextContent,
+//                modifier = Modifier.boxAlign(
+//                    alignment = Alignment.TopStart,
+//                    offset = DpOffset(
+//                        x = 15.0.dp,
+//                        y = 16.0.dp
+//                    )
+//                )
+//            )
+//        }
+//        Frame61(
+//            modifier = Modifier.boxAlign(
+//                alignment = Alignment.TopCenter,
+//                offset = DpOffset(
+//                    x = 0.0.dp,
+//                    y = 805.0.dp
+//                )
+//            )
+//        ) {
+//            Female(
+//                genderTextContent = genderTextContent,
+//                modifier = Modifier.boxAlign(
+//                    alignment = Alignment.TopStart,
+//                    offset = DpOffset(
+//                        x = 15.0.dp,
+//                        y = 16.0.dp
+//                    )
+//                )
+//            )
+//            Vector321(
+//                onGenderOptionButtonTapped = onGenderOptionButtonTapped,
+//                modifier = Modifier.boxAlign(
+//                    alignment = Alignment.TopStart,
+//                    offset = DpOffset(
+//                        x = 315.68750006556706.dp,
+//                        y = 21.31250013933003.dp
+//                    )
+//                )
+//            )
+//        }
+//        Name(
+//            modifier = Modifier.boxAlign(
+//                alignment = Alignment.TopStart,
+//                offset = DpOffset(
+//                    x = 23.0.dp,
+//                    y = 309.0.dp
+//                )
+//            )
+//        )
+//        DayOfBirth(
+//            modifier = Modifier.boxAlign(
+//                alignment = Alignment.TopStart,
+//                offset = DpOffset(
+//                    x = 23.0.dp,
+//                    y = 403.0.dp
+//                )
+//            )
+//        )
+//        Phone(
+//            modifier = Modifier.boxAlign(
+//                alignment = Alignment.TopStart,
+//                offset = DpOffset(
+//                    x = 23.0.dp,
+//                    y = 497.0.dp
+//                )
+//            )
+//        )
+//        Address(
+//            modifier = Modifier.boxAlign(
+//                alignment = Alignment.TopStart,
+//                offset = DpOffset(
+//                    x = 23.0.dp,
+//                    y = 591.0.dp
+//                )
+//            )
+//        )
+//        Occupation(
+//            modifier = Modifier.boxAlign(
+//                alignment = Alignment.TopStart,
+//                offset = DpOffset(
+//                    x = 23.0.dp,
+//                    y = 685.0.dp
+//                )
+//            )
+//        )
+//        Gender(
+//            modifier = Modifier.boxAlign(
+//                alignment = Alignment.TopStart,
+//                offset = DpOffset(
+//                    x = 23.0.dp,
+//                    y = 779.0.dp
+//                )
+//            )
+//        )
         BaoNgu(
             modifier = Modifier.boxAlign(
                 alignment = Alignment.TopCenter,
@@ -1709,14 +1752,16 @@ fun BaoNgu1(
 }
 
 @Composable
-fun UserInfoField(
+fun UserInfoTextField(
     label: String = "",
     value: String = "",
     placeholder: String ="",
     onValueChange: (String) -> Unit,
-    modifier: Modifier
+    modifier: Modifier,
+    placeHolder: String = ""
 ) {
     Column(
+        modifier = Modifier.width(344.dp)
     ) {
         Text(
             text = label,
@@ -1726,16 +1771,49 @@ fun UserInfoField(
             textAlign = TextAlign.Left,
             fontWeight = FontWeight.Medium,
             maxLines = Int.MAX_VALUE,
-            modifier = Modifier.width(85.dp)
+            modifier = Modifier.padding(start = 5.dp)
         )
         UserInfoTextBox(
             value = value,
             onValueChange = onValueChange,
-            placeholder = placeholder,
-            modifier = modifier
+            modifier = modifier,
+            placeholder = placeHolder
         )
     }
 }
+
+@Composable
+fun UserInfoDropDownField(
+    label: String = "",
+    value: UserGender = UserGender.NONE,
+    onValueChange: (UserGender) -> Unit,
+    modifier: Modifier = Modifier
+) {
+    Column(
+        modifier = Modifier.width(344.dp)
+    ) {
+        // Label for the dropdown
+        Text(
+            text = label,
+            fontSize = 16.sp,
+            fontFamily = com.example.budgeto.screensfonts.inter,
+            lineHeight = 1.21.em,
+            textAlign = TextAlign.Left,
+            fontWeight = FontWeight.Medium,
+            maxLines = Int.MAX_VALUE,
+            modifier = Modifier.padding(start = 5.dp)
+        )
+        // Dropdown for selecting an option
+        UserInfoDropDown(
+            value = value,
+            onValueChange = onValueChange,
+            options = UserGender.values().toList(), // Use enum values as options
+            modifier = modifier,
+            placeHolder = "Choose Gender"
+        )
+    }
+}
+
 
 @Composable
 fun UserNameField(
@@ -1743,10 +1821,81 @@ fun UserNameField(
     onValueChange: (String) -> Unit,
     modifier: Modifier
 ) {
-    UserInfoField(
+    UserInfoTextField(
         label = "Name",
         value = value,
         placeholder = "Enter your name",
+        onValueChange = onValueChange,
+        modifier = modifier
+    )
+}
+
+@Composable
+fun DayOfBirthField(
+    value: String = "",
+    onValueChange: (String) -> Unit,
+    modifier: Modifier
+) {
+    UserInfoTextField(
+        label = "Day of birth",
+        value = value,
+        onValueChange = onValueChange,
+        modifier = modifier,
+        placeHolder = "yyyy-mm-dd"
+    )
+}
+
+@Composable
+fun PhoneField(
+    value: String = "",
+    onValueChange: (String) -> Unit,
+    modifier: Modifier
+) {
+    UserInfoTextField(
+        label = "Phone",
+        value = value,
+        onValueChange = onValueChange,
+        modifier = modifier
+    )
+}
+
+@Composable
+fun AddressField(
+    value: String = "",
+    onValueChange: (String) -> Unit,
+    modifier: Modifier
+) {
+    UserInfoTextField(
+        label = "Address",
+        value = value,
+        onValueChange = onValueChange,
+        modifier = modifier
+    )
+}
+
+@Composable
+fun OccupationField(
+    value: String = "",
+    onValueChange: (String) -> Unit,
+    modifier: Modifier
+) {
+    UserInfoTextField(
+        label = "Occupation",
+        value = value,
+        onValueChange = onValueChange,
+        modifier = modifier
+    )
+}
+
+@Composable
+fun GenderDropdownField(
+    selectedGender: UserGender = UserGender.NONE,
+    onValueChange: (UserGender) -> Unit,
+    modifier: Modifier
+) {
+    UserInfoDropDownField(
+        label = "Gender",
+        value = selectedGender,
         onValueChange = onValueChange,
         modifier = modifier
     )
