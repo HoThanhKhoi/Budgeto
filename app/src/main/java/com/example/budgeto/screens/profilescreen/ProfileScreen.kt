@@ -13,6 +13,8 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -27,6 +29,7 @@ import androidx.compose.ui.unit.sp
 import com.example.budgeto.R
 import com.example.budgeto.data.enums.UserGender
 import com.example.budgeto.screensfonts.inter
+import com.example.budgeto.viewmodel.ProfileViewModel
 import com.google.relay.compose.RelayContainer
 import com.google.relay.compose.RelayContainerScope
 import com.google.relay.compose.RelayText
@@ -39,16 +42,18 @@ import com.google.relay.compose.tappable
 
 @Composable
 fun ProfileScreen(
-
+    viewModel: ProfileViewModel,
     modifier: Modifier = Modifier
 ) {
+    val generalInfo by viewModel.generalInfo.collectAsState()
+
     Profile1(
-        nameTextContent = "",
-        birthdateTextContent = "",
-        phoneNumberTextContent = "",
-        addressTextContent = "",
-        occupationTextContent = "",
-        genderTextContent = "",
+        fullnameTextContent = generalInfo?.fullName ?: "",
+        birthdateTextContent = generalInfo?.dateOfBirth ?: "",
+        phoneNumberTextContent = generalInfo?.phone ?: "",
+        addressTextContent = generalInfo?.address ?: "",
+        occupationTextContent = generalInfo?.occupation ?: "",
+        genderContent = generalInfo?.gender ?: UserGender.NONE,
         onBackToHomepageButtonTapped = {},
         onSignOutButtonTapped = {},
         onHomepageButtonTapped = {},
@@ -59,7 +64,7 @@ fun ProfileScreen(
         onGenderOptionButtonTapped = {},
         onGoogleAccountLinkButtonTapped = {},
         onFacebookAccountLinkButtonTapped = {},
-        modifier = modifier
+        modifier = modifier,
     )
 }
 
@@ -67,12 +72,12 @@ fun ProfileScreen(
 @Composable
 fun Profile1(
     modifier: Modifier = Modifier,
-    nameTextContent: String = "",
+    fullnameTextContent: String = "",
     birthdateTextContent: String = "",
     phoneNumberTextContent: String = "",
     addressTextContent: String = "",
     occupationTextContent: String = "",
-    genderTextContent: String = "",
+    genderContent: UserGender = UserGender.NONE,
     onBackToHomepageButtonTapped: () -> Unit = {},
     onSignOutButtonTapped: () -> Unit = {},
     onHomepageButtonTapped: () -> Unit = {},
@@ -434,27 +439,27 @@ fun Profile1(
 
         ) {
             UserNameField(
-                value = "Name",
+                value = fullnameTextContent,
                 onValueChange = onNameFieldChanged,
                 modifier = modifier
             )
             DayOfBirthField(
-                value = "2003-08-29",
+                value = birthdateTextContent,
                 onValueChange = onBirthDayFieldChanged,
                 modifier = modifier
             )
             PhoneField(
-                value = "0987654321",
+                value = phoneNumberTextContent,
                 onValueChange = onPhoneFieldChanged,
                 modifier = modifier
             )
             AddressField(
-                value = "Hồ Chí Minh",
+                value = addressTextContent,
                 onValueChange = onAddressFieldChanged,
                 modifier = modifier
             )
             OccupationField(
-                value = "Sinh viên",
+                value = occupationTextContent,
                 onValueChange = onOccupationFieldChanged,
                 modifier = modifier
             )
@@ -829,12 +834,12 @@ private fun Profile1Preview() {
                 onStatisticButtonTapped = {},
                 onInventoryButtonTapped = {},
                 onHistoryButtonTapped = {},
-                nameTextContent = "Bao Ngu",
+                fullnameTextContent = "Bao Ngu",
                 birthdateTextContent = "yyyy-mm-dd",
                 phoneNumberTextContent = "+84 366 295 416",
                 addressTextContent = "Ho Chi Minh City",
                 occupationTextContent = "Student",
-                genderTextContent = "Female",
+                genderContent = UserGender.NONE,
                 onGenderOptionButtonTapped = {},
                 onGoogleAccountLinkButtonTapped = {},
                 onFacebookAccountLinkButtonTapped = {},

@@ -58,8 +58,8 @@ import com.google.relay.compose.tappable
 
 @Composable
 fun LoginScreen(
-    email: String,
-    password: String,
+    email: String = "",
+    password: String = "",
     onLoginButtonTapped: () -> Unit = {},
     onSignUpTapped: () -> Unit,
     onForgotPasswordTapped: () -> Unit,
@@ -75,14 +75,14 @@ fun LoginScreen(
     var isPasswordVisible by remember { mutableStateOf(false) }
 
     Login(
-        email = email,
-        password = password,
+        email = localEmail,
+        password = localPassword,
         onLoginTapped = {
             onLoginButtonTapped()
             loginViewModel.loginUser(localEmail, localPassword)
         },
-        onEmailChanged = { localEmail = email },
-        onPasswordChange = { localPassword = password },
+        onEmailChanged = { localEmail = it },
+        onPasswordChange = { localPassword = it },
         isPasswordVisible = isPasswordVisible,
         onTogglePasswordVisibility = { isPasswordVisible = !isPasswordVisible },
         onSignUpTapped = onSignUpTapped,

@@ -62,14 +62,10 @@ class SignUpViewModel @Inject constructor(
             fullName = fullname
         )
 
-        val GameInfo = GameInfo()
-
         val user = User(
             userId = firebaseUser.uid,
         )
 
-        userRepository.addUser(user)
-        userRepository.addGeneralInfo(userId = firebaseUser.uid, generalInfo = generalInfo)
-        userRepository.addGameInfo(userId = firebaseUser.uid, gameInfo = GameInfo)
+        userRepository.addUser(user, generalInfo)
     }
 }
