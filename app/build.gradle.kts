@@ -90,7 +90,7 @@ dependencies {
     kapt("androidx.hilt:hilt-compiler:1.2.0")
     implementation("androidx.hilt:hilt-navigation-compose:1.2.0")
 
-    implementation("com.google.android.gms:play-services-auth:20.4.0")
+    implementation("com.google.android.gms:play-services-auth:20.7.0")
 
     implementation ("com.firebaseui:firebase-ui-auth:7.2.0")
     implementation ("com.facebook.android:facebook-android-sdk:17.0.2")
