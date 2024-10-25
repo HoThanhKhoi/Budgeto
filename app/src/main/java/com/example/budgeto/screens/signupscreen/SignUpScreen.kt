@@ -55,9 +55,9 @@ import com.google.relay.compose.UserInfoTextBox
 @Composable
 fun SignUpScreen(
     onSignUpButtonTapped: () -> Unit = {},
-    fullName: String,
-    email: String,
-    password: String,
+    fullName: String = "",
+    email: String = "",
+    password: String = "",
     onForgotPasswordLinkTapped: () -> Unit = {},
     onLoginButtonTapped: () -> Unit = {},
     onIconEyeTapped: () -> Unit = {},

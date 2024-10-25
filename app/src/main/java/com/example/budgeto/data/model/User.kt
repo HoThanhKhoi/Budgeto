@@ -13,6 +13,7 @@ data class User(
 
 data class GeneralInfo(
     val fullName: String = "",
+    val dateOfBirth: String = "",
     val email: String = "",
     val phone: String = "",
     val address: String = "",

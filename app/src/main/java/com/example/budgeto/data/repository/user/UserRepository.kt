@@ -16,8 +16,15 @@ class UserRepository @Inject constructor(
     private val gameInfoCollection = "gameInfo"
 
     // Add a new user document
-    suspend fun addUser(user: User): String {
-        return add(usersCollection, user, user.userId) // Using userId as the document ID
+    suspend fun addUser(
+        user: User,
+        generalInfo: GeneralInfo = GeneralInfo(),
+        gameInfo: GameInfo = GameInfo()
+    ): String {
+        val userId = add(usersCollection, user, user.userId) // Using userId as the document ID
+        addGeneralInfo(userId, generalInfo)
+        addGameInfo(userId, gameInfo)
+        return userId
     }
 
     // Retrieve a user by their userId
@@ -52,5 +59,16 @@ class UserRepository @Inject constructor(
     suspend fun getUserGeneralInfo(userId: String): GeneralInfo? {
         val generalInfoList = getSubcollection(usersCollection, userId, generalInfoCollection, GeneralInfo::class.java)
         return if (generalInfoList.isNotEmpty()) generalInfoList[0] else null
+    }
+
+    suspend fun updateUserGeneralInfo(userId: String, updatedGeneralInfo: GeneralInfo) {
+        try {
+            // Use addGeneralInfo to add or update the user's GeneralInfo
+            addGeneralInfo(userId, updatedGeneralInfo)
+            println("User's GeneralInfo updated successfully.")
+        } catch (e: Exception) {
+            e.printStackTrace()
+            println("Failed to update User's GeneralInfo: ${e.message}")
+        }
     }
 }

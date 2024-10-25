@@ -26,6 +26,7 @@ import com.example.budgeto.screens.signupscreen.SignUpScreen
 import com.example.budgeto.screens.storescreen.StoreScreen
 import com.example.budgeto.viewmodel.SignUpViewModel
 import com.example.budgeto.viewmodel.LoginViewModel
+import com.example.budgeto.viewmodel.ProfileViewModel
 
 enum class BudgetoScreenEnum(@StringRes val title: Int) {
     Start(title = R.string.SignUpLoginScreen),
@@ -68,9 +69,6 @@ fun BudgetoApp(
                 val signUpViewModel: SignUpViewModel = hiltViewModel()
                 SignUpScreen(
                     signUpViewModel = signUpViewModel,
-                    fullName = "Full Name",
-                    email = "Email",
-                    password = "Password",
                     onSignUpButtonTapped = {
                         navController.navigate(BudgetoScreenEnum.Login.name)
                     },
@@ -87,11 +85,9 @@ fun BudgetoApp(
                 val loginViewModel: LoginViewModel = hiltViewModel()
                 LoginScreen(
                     loginViewModel = loginViewModel,
-                    email = "Email",
-                    password = "Password",
                     onLoginButtonTapped = {
                         if (1 == 1) {
-                            navController.navigate(BudgetoScreenEnum.OpeningScreen.name)
+                            navController.navigate(BudgetoScreenEnum.ProfileScreen.name)
                         } else {
                             navController.navigate(BudgetoScreenEnum.Login.name)
                         }
@@ -120,7 +116,9 @@ fun BudgetoApp(
                 )
             }
             composable(route = BudgetoScreenEnum.ProfileScreen.name) {
+                val profileViewModel: ProfileViewModel = hiltViewModel()
                 ProfileScreen(
+                    viewModel = profileViewModel,
                 )
             }
             composable(route = BudgetoScreenEnum.StoreScreen.name) {

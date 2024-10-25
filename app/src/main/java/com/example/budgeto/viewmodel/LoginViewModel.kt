@@ -88,15 +88,11 @@ class LoginViewModel @Inject constructor(
             imgURL = firebaseUser.photoUrl?.toString() ?: ""
         )
 
-        val gameInfo = GameInfo()
-
         val user = User(
             userId = firebaseUser.uid,
         )
 
-        userRepository.addUser(user)
-        userRepository.addGeneralInfo(userId = firebaseUser.uid, generalInfo = generalInfo)
-        userRepository.addGameInfo(userId = firebaseUser.uid, gameInfo = gameInfo)
+        userRepository.addUser(user, generalInfo)
     }
 
 }
