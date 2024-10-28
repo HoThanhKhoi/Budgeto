@@ -13,6 +13,7 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
@@ -27,7 +28,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.em
 import androidx.compose.ui.unit.sp
 import com.example.budgeto.R
-import com.example.budgeto.data.enums.UserGender
+import com.example.budgeto.data.enums.user.UserGender
 import com.example.budgeto.screensfonts.inter
 import com.example.budgeto.viewmodel.ProfileViewModel
 import com.google.relay.compose.RelayContainer
@@ -45,9 +46,15 @@ fun ProfileScreen(
     viewModel: ProfileViewModel,
     modifier: Modifier = Modifier
 ) {
-    val generalInfo by viewModel.generalInfo.collectAsState()
+    val generalInfo by viewModel.userGeneralInfo.collectAsState()
 
-    Profile1(
+    LaunchedEffect(Unit) {
+        if (generalInfo == null) {
+            viewModel.fetchUserGeneralInfo()
+        }
+    }
+
+    ProfileContent(
         fullnameTextContent = generalInfo?.fullName ?: "",
         birthdateTextContent = generalInfo?.dateOfBirth ?: "",
         phoneNumberTextContent = generalInfo?.phone ?: "",
@@ -70,7 +77,7 @@ fun ProfileScreen(
 
 
 @Composable
-fun Profile1(
+fun ProfileContent(
     modifier: Modifier = Modifier,
     fullnameTextContent: String = "",
     birthdateTextContent: String = "",
@@ -826,7 +833,7 @@ fun Profile1(
 private fun Profile1Preview() {
     MaterialTheme {
         RelayContainer {
-            Profile1(
+            ProfileContent(
                 onBackToHomepageButtonTapped = {},
                 onSignOutButtonTapped = {},
                 onHomepageButtonTapped = {},

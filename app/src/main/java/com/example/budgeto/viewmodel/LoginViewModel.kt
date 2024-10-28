@@ -1,13 +1,13 @@
 package com.example.budgeto.viewmodel
 
+import android.util.Log
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.budgeto.data.AuthRepository
-import com.example.budgeto.data.model.GameInfo
-import com.example.budgeto.data.model.GeneralInfo
-import com.example.budgeto.data.model.User
+import com.example.budgeto.data.model.user.UserGeneralInfo
+import com.example.budgeto.data.model.user.User
 import com.example.budgeto.data.repository.user.UserRepository
 import com.example.budgeto.state.GoogleLoginState
 import com.example.budgeto.state.LoginState
@@ -16,8 +16,6 @@ import com.google.firebase.auth.AuthCredential
 import com.google.firebase.auth.FirebaseUser
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.channels.Channel
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -34,9 +32,11 @@ class LoginViewModel @Inject constructor(
     val googleState: State<GoogleLoginState> = _googleState
 
     fun loginUser(email: String, password: String) = viewModelScope.launch {
+        Log.d("Login", "Login user")
         repository.login(email, password).collect { result ->
             when (result) {
                 is Resource.Success -> {
+                    Log.d("Login", "Login success")
                     _loginState.send(LoginState(isSuccess = "Login success"))
                 }
 
@@ -45,6 +45,7 @@ class LoginViewModel @Inject constructor(
                 }
 
                 is Resource.Error -> {
+                    Log.d("Login", "Login fail")
                     _loginState.send(LoginState(isError = result.message))
                 }
             }
@@ -82,7 +83,7 @@ class LoginViewModel @Inject constructor(
     }
 
     private suspend fun addNewUserToFirestore(firebaseUser: FirebaseUser) {
-        val generalInfo = GeneralInfo(
+        val userGeneralInfo = UserGeneralInfo(
             email = firebaseUser.email ?: "",
             fullName = firebaseUser.displayName ?: "",
             imgURL = firebaseUser.photoUrl?.toString() ?: ""
@@ -92,7 +93,7 @@ class LoginViewModel @Inject constructor(
             userId = firebaseUser.uid,
         )
 
-        userRepository.addUser(user, generalInfo)
+        userRepository.addUser(user, userGeneralInfo)
     }
 
 }

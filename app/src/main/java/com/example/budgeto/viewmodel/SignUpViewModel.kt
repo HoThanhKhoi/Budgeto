@@ -4,9 +4,8 @@ import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.budgeto.data.AuthRepository
-import com.example.budgeto.data.model.GameInfo
-import com.example.budgeto.data.model.GeneralInfo
-import com.example.budgeto.data.model.User
+import com.example.budgeto.data.model.user.UserGeneralInfo
+import com.example.budgeto.data.model.user.User
 import com.example.budgeto.data.repository.user.UserRepository
 import com.example.budgeto.state.SignUpState
 import com.example.budgeto.utils.Resource
@@ -57,7 +56,7 @@ class SignUpViewModel @Inject constructor(
 
     private suspend fun addNewUserToFirestore(firebaseUser: FirebaseUser, fullname: String)
     {
-        val generalInfo = GeneralInfo(
+        val userGeneralInfo = UserGeneralInfo(
             email = firebaseUser.email.toString(),
             fullName = fullname
         )
@@ -66,6 +65,6 @@ class SignUpViewModel @Inject constructor(
             userId = firebaseUser.uid,
         )
 
-        userRepository.addUser(user, generalInfo)
+        userRepository.addUser(user, userGeneralInfo)
     }
 }
