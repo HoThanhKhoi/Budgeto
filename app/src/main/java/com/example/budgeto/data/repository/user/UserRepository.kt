@@ -11,7 +11,6 @@ import javax.inject.Inject
 class UserRepository @Inject constructor(
     firestore: FirebaseFirestore
 ) : FirestoreRepository(firestore) {
-
     private val usersCollectionPath = "users" // Firestore collection name for users
     private val infoCollectionPath = "info"
 

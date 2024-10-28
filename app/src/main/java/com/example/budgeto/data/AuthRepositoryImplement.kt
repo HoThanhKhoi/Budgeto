@@ -1,5 +1,6 @@
 package com.example.budgeto.data
 
+import android.util.Log
 import com.example.budgeto.utils.Resource
 import com.google.firebase.auth.AuthCredential
 import com.google.firebase.auth.AuthResult
@@ -16,9 +17,13 @@ class AuthRepositoryImplement(
 
     override fun login(email: String, password: String): Flow<Resource<AuthResult>> {
         return flow {
+            Log.d("Login auth", "Try login 1")
             emit(Resource.Loading())
+            Log.d("Login auth", "Try login 2")
             val result = firebaseAuth.signInWithEmailAndPassword(email, password).await()
+            Log.d("Login auth", "Try login 3")
             emit(Resource.Success(result))
+            Log.d("Login auth", "Try login 4")
         }.catch {
             emit(Resource.Error(it.message.toString()))
         }
