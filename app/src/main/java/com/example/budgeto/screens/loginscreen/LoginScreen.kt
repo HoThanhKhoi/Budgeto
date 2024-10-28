@@ -1,5 +1,9 @@
 package com.example.budgeto.screens.loginscreen
 
+import android.util.Log
+import android.widget.Toast
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.IntrinsicSize
@@ -26,6 +30,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.font.FontWeight
@@ -38,9 +43,15 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.em
 import androidx.compose.ui.unit.sp
 import com.example.budgeto.R
+import com.example.budgeto.data.Constant
 import com.example.budgeto.screens.signupscreen.SignUpText
 import com.example.budgeto.screensfonts.inter
 import com.example.budgeto.viewmodel.LoginViewModel
+import com.google.android.gms.auth.api.signin.GoogleSignIn
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions
+import com.google.android.gms.common.api.ApiException
+import com.google.firebase.auth.AuthCredential
+import com.google.firebase.auth.GoogleAuthProvider
 import com.google.relay.compose.BoxScopeInstance.columnWeight
 import com.google.relay.compose.BoxScopeInstance.rowWeight
 import com.google.relay.compose.CircularButton
@@ -63,11 +74,40 @@ fun LoginScreen(
     onLoginButtonTapped: () -> Unit = {},
     onSignUpTapped: () -> Unit,
     onForgotPasswordTapped: () -> Unit,
-    onLoginWithGoogleTapped: () -> Unit,
+    onLoginWithGoogleTapped: (AuthCredential) -> Unit,
     onLoginWithFacebookTapped: () -> Unit,
     modifier: Modifier = Modifier,
     loginViewModel: LoginViewModel
 ) {
+
+    val context = LocalContext.current
+
+    val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+        .requestEmail()
+        .requestIdToken(Constant.ServerClient)
+        .build()
+
+    val googleSignInClient = GoogleSignIn.getClient(context, gso)
+
+    val launcher = rememberLauncherForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+        val account = GoogleSignIn.getSignedInAccountFromIntent(result.data)
+        try {
+            val googleAccount = account.getResult(ApiException::class.java)
+            Log.d("LoginScreen", "Google Account retrieved: ${googleAccount.email}")
+            val credential = GoogleAuthProvider.getCredential(googleAccount.idToken, null)
+            loginViewModel.googleLogin(credential) // Pass the credential to ViewModel
+        } catch (e: ApiException) {
+            Log.e("GoogleSignIn", "Google Sign-In failed: ${e.message}", e)
+        }
+    }
+
+    fun initiateGoogleSignIn() {
+        googleSignInClient.signOut().addOnCompleteListener {
+            val signInIntent = googleSignInClient.signInIntent
+            launcher.launch(signInIntent)
+        }
+    }
+
     //val loginViewModel: LoginViewModel = viewModel()
     var localEmail by remember { mutableStateOf(email) }
     var localPassword by remember { mutableStateOf(password) }
@@ -88,8 +128,8 @@ fun LoginScreen(
         onSignUpTapped = onSignUpTapped,
         onForgotPasswordTapped = onForgotPasswordTapped,
         onLoginWithGoogleTapped = {
-            onLoginWithGoogleTapped()
-//            loginViewModel.googleLogin()
+            Log.d("LoginScreen", "Google Sign-In button clicked")
+            initiateGoogleSignIn()
         },
         onLoginWithFacebookTapped = onLoginWithFacebookTapped,
         modifier = modifier
@@ -911,7 +951,7 @@ fun LoginWithGoogleButton(
 ){
     CircularButton(
         onClick = onclick,
-        icon = painterResource(R.drawable.login_vector_161), // Use the appropriate icon
+        icon = painterResource(R.drawable.login_ellipse_35), // Use the appropriate icon
         contentDescription = "Login with Google",
         backgroundColor = Color.Black, // You can customize this color
         size = 40.dp // Match the size from your previous implementation
@@ -924,7 +964,7 @@ fun LoginWithFacebookButton(
 ) {
     CircularButton(
         onClick = onclick,
-        icon = painterResource(R.drawable.login_ellipse_35), // Use the appropriate icon
+        icon = painterResource(R.drawable.login_vector_161), // Use the appropriate icon
         contentDescription = "Login with Facebook",
         backgroundColor = Color.Black, // You can customize this color
         size = 40.dp // Match the size from your previous implementation

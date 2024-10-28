@@ -8,8 +8,11 @@ import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.requiredHeight
+import androidx.compose.foundation.layout.requiredWidth
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
@@ -19,6 +22,7 @@ import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExposedDropdownMenuBox
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextFieldDefaults
@@ -31,16 +35,20 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.painter.Painter
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.Dp
+import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.em
 import androidx.compose.ui.unit.sp
 import com.example.budgeto.R
+import com.example.budgeto.screensfonts.inter
+import com.google.relay.compose.BoxScopeInstanceImpl.align
 import com.google.relay.compose.ColumnScopeInstanceImpl.align
 import org.w3c.dom.Text
 
@@ -250,6 +258,50 @@ fun <T> DropDownField(
         }
     }
 }
+
+@Composable
+fun RelayCalculateButton(
+    label: String? = null,
+    icon: Painter? = null,
+    backgroundColor: Color = Color.White,
+    borderColor: Color = Color.Black,
+    textColor: Color = Color.Black,
+    onClick: () -> Unit,
+    modifier: Modifier = Modifier,
+    fontSize: TextUnit = 30.sp,
+    iconSize: Dp = 32.dp
+) {
+    RelayContainer(
+        backgroundColor = backgroundColor,
+        isStructured = false,
+        radius = 5.dp.value.toDouble(),
+        strokeWidth = 1.dp.value.toDouble(),
+        strokeColor = borderColor,
+        modifier = modifier
+            .tappable(onTap = onClick)
+            .requiredWidth(63.dp)
+            .requiredHeight(63.dp)
+    ) {
+        if (icon != null) {
+            RelayImage(
+                image = icon,
+                contentScale = ContentScale.Crop,
+                modifier = Modifier.size(iconSize).align(Alignment.Center)
+            )
+        } else if (label != null) {
+            RelayText(
+                content = label,
+                fontSize = fontSize,
+                fontFamily = MaterialTheme.typography.bodyMedium.fontFamily,
+                fontWeight = FontWeight.Medium,
+                color = textColor,
+                modifier = Modifier.align(Alignment.Center)
+            )
+        }
+    }
+}
+
+
 
 
 
