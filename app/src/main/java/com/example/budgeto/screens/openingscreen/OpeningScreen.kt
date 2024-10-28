@@ -1,9 +1,14 @@
 package com.example.budgeto.screens.openingscreen
 
 import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.requiredHeight
 import androidx.compose.foundation.layout.requiredWidth
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.material3.MaterialTheme
@@ -18,12 +23,15 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
+import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.DpOffset
 import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
@@ -33,10 +41,14 @@ import com.example.budgeto.R
 import com.example.budgeto.screensfonts.inter
 import com.google.relay.compose.BoxScopeInstance.columnWeight
 import com.google.relay.compose.BoxScopeInstance.rowWeight
+import com.google.relay.compose.BoxScopeInstanceImpl.align
 import com.google.relay.compose.Case
+import com.google.relay.compose.ColumnScopeInstanceImpl.weight
+import com.google.relay.compose.RelayColumn
 import com.google.relay.compose.RelayContainer
 import com.google.relay.compose.RelayContainerScope
 import com.google.relay.compose.RelayImage
+import com.google.relay.compose.RelayRow
 import com.google.relay.compose.RelayText
 import com.google.relay.compose.RelayVector
 import com.google.relay.compose.relayDropShadow
@@ -49,42 +61,73 @@ fun OpeningScreenExpensesInputScreen(
 ) {
     var operationText by remember { mutableStateOf("") }
     var resultText by remember { mutableStateOf("") }
+    var isResultDisplayed by remember { mutableStateOf(false) }
 
+    fun appendNumber(value: String) {
+        if (isResultDisplayed) {
+            operationText = value
+            isResultDisplayed = false
+        } else {
+            operationText += value
+        }
+    }
+
+    fun appendOperation(value: String) {
+        if (isResultDisplayed) {
+            operationText = resultText + value
+            isResultDisplayed = false
+        } else {
+            operationText += value
+        }
+    }
     OpeningScreenExpensesInput(
         modifier = modifier.rowWeight(1.0f).columnWeight(1.0f),
         operationTextContent = operationText,
         resultTextContent = resultText,
+        onNumberButtonTapped = { number -> appendNumber(number) },
+
+        //Row 1
         onTaxButtonTapped = { /* Implement tax logic if needed */ },
-        onPercentButtonTapped = { operationText += "%" },
+        onPercentButtonTapped = { appendOperation("%") },
         onAccountButtonTapped = { /* Implement account logic if needed */ },
-        onNumberFourButtonTapped = { operationText += "4" },
-        onButtonFiveButtonTapped = { operationText += "5" },
-        onMultiplyButtonTapped = { operationText += "*" },
-        onButtonSixButtonTapped = { operationText += "6" },
-        onDivideButtonTapped = { operationText += "/" },
-        onNumberSevenButtonTapped = { operationText += "7" },
-        onNumberEightButtonTapped = { operationText += "8" },
+        onInputButtonTapped = { /* Handle input button if needed */ },
+        onOutputButtonTapped = { /* Handle output button if needed */ },
+
+        //Row 2
         onDeleteButtonTapped = {
             if (operationText.isNotEmpty()) {
                 operationText = operationText.dropLast(1)
             }
         },
-        onNumberNineButtonTapped = { operationText += "9" },
         onEqualButtonTapped = {
             resultText = evaluateExpression(operationText)
+            isResultDisplayed = true
         },
-        onNumberOneButtonTapped = { operationText += "1" },
-        onNumberTwoButtonTapped = { operationText += "2" },
-        onAdditionButtonTapped = { operationText += "+" },
-        onNumberThreeButtonTapped = { operationText += "3" },
-        onOpenParenthesesButtonTapped = { operationText += "(" },
-        onNumberZeroButtonTapped = { operationText += "0" },
-        onDotButtonTapped = { operationText += "." },
-        onCloseParenthesesButtonTapped = { operationText += ")" },
-        onMinusButtonTapped = { operationText += "-" },
+
+        //Row 3
+        onMultiplyButtonTapped = { appendOperation("*") },
+        onDivideButtonTapped = { appendOperation("/") },
+
+        //Row 4
+        onAdditionButtonTapped = { appendOperation("+") },
+        onMinusButtonTapped = { appendOperation("-") },
+
+        //Row 5
+        onOpenParenthesesButtonTapped = { appendNumber("(") },
+        onCloseParenthesesButtonTapped = { appendNumber(")") },
+        onDotButtonTapped = { appendNumber(".") },
         onDoneButtonTapped = { /* Handle done action if needed */ },
-        onInputButtonTapped = { /* Handle input button if needed */ },
-        onOutputButtonTapped = { /* Handle output button if needed */ }
+
+//        onNumberZeroButtonTapped = { operationText += "0" },
+//        onNumberOneButtonTapped = { operationText += "1" },
+//        onNumberTwoButtonTapped = { operationText += "2" },
+//        onNumberThreeButtonTapped = { operationText += "3" },
+//        onNumberFourButtonTapped = { operationText += "4" },
+//        onButtonFiveButtonTapped = { operationText += "5" },
+//        onButtonSixButtonTapped = { operationText += "6" },
+//        onNumberSevenButtonTapped = { operationText += "7" },
+//        onNumberEightButtonTapped = { operationText += "8" },
+//        onNumberNineButtonTapped = { operationText += "9" },
     )
 }
 
@@ -159,6 +202,47 @@ class ExpressionParser {
     }
 }
 
+@Composable
+fun RelayCalculateButton(
+    label: String? = null,
+    icon: Painter? = null,
+    backgroundColor: Color = Color.White,
+    borderColor: Color = Color.Black,
+    textColor: Color = Color.Black,
+    onClick: () -> Unit,
+    modifier: Modifier = Modifier,
+    fontSize: TextUnit = 30.sp,
+    iconSize: Dp = 32.dp
+) {
+    RelayContainer(
+        backgroundColor = backgroundColor,
+        isStructured = false,
+        radius = 5.dp.value.toDouble(),
+        strokeWidth = 1.dp.value.toDouble(),
+        strokeColor = borderColor,
+        modifier = modifier
+            .tappable(onTap = onClick)
+            .requiredWidth(63.dp)
+            .requiredHeight(63.dp)
+    ) {
+        if (icon != null) {
+            RelayImage(
+                image = icon,
+                contentScale = ContentScale.Crop,
+                modifier = Modifier.size(iconSize).align(Alignment.Center)
+            )
+        } else if (label != null) {
+            RelayText(
+                content = label,
+                fontSize = fontSize,
+                fontFamily = MaterialTheme.typography.bodyMedium.fontFamily,
+                fontWeight = FontWeight.Medium,
+                color = textColor,
+                modifier = Modifier.align(Alignment.Center)
+            )
+        }
+    }
+}
 
 @Composable
 fun OpeningScreenExpensesInput(
@@ -168,9 +252,14 @@ fun OpeningScreenExpensesInput(
     resultTextContent: String = "",
     dateTextContent: String = "",
     noteTextContent: String = "",
+
+    //Row 1
     onTaxButtonTapped: () -> Unit = {},
     onPercentButtonTapped: () -> Unit = {},
     onAccountButtonTapped: () -> Unit = {},
+
+    //Row 2
+
     onNumberFourButtonTapped: () -> Unit = {},
     onButtonFiveButtonTapped: () -> Unit = {},
     onMultiplyButtonTapped: () -> Unit = {},
@@ -192,7 +281,8 @@ fun OpeningScreenExpensesInput(
     onMinusButtonTapped: () -> Unit = {},
     onDoneButtonTapped: () -> Unit = {},
     onInputButtonTapped: () -> Unit = {},
-    onOutputButtonTapped: () -> Unit = {}
+    onOutputButtonTapped: () -> Unit = {},
+    onNumberButtonTapped: (String) -> Unit = {}
 ) {
     TopLevel(modifier = modifier) {
 //        Rectangle65()
@@ -200,7 +290,7 @@ fun OpeningScreenExpensesInput(
             modifier = Modifier.boxAlign(
                 alignment = Alignment.TopStart,
                 offset = DpOffset(
-                    x = -3.0.dp,
+                    x = 0.dp,
                     y = 229.0.dp
                 )
             )
@@ -244,549 +334,7 @@ fun OpeningScreenExpensesInput(
                     )
                 )
             }
-            Key(
-                modifier = Modifier.boxAlign(
-                    alignment = Alignment.TopStart,
-                    offset = DpOffset(
-                        x = 3.0.dp,
-                        y = 240.0.dp
-                    )
-                )
-            ) {
-                Frame3(
-                    onTaxButtonTapped = onTaxButtonTapped,
-                    modifier = Modifier.boxAlign(
-                        alignment = Alignment.TopStart,
-                        offset = DpOffset(
-                            x = 22.0.dp,
-                            y = 9.0.dp
-                        )
-                    )
-                ) {
-                    TaxIcon(
-                        modifier = Modifier.boxAlign(
-                            alignment = Alignment.TopStart,
-                            offset = DpOffset(
-                                x = 16.0.dp,
-                                y = 15.0.dp
-                            )
-                        )
-                    )
-                }
-                Frame8(
-                    onPercentButtonTapped = onPercentButtonTapped,
-                    modifier = Modifier.boxAlign(
-                        alignment = Alignment.TopStart,
-                        offset = DpOffset(
-                            x = 91.00000243778862.dp,
-                            y = 8.999998623091187.dp
-                        )
-                    )
-                ) {
-                    PercentIcon(
-                        modifier = Modifier.boxAlign(
-                            alignment = Alignment.TopStart,
-                            offset = DpOffset(
-                                x = 15.51515125696347.dp,
-                                y = 16.484849230427358.dp
-                            )
-                        )
-                    )
-                }
-                Frame10(
-                    onAccountButtonTapped = onAccountButtonTapped,
-                    modifier = Modifier.boxAlign(
-                        alignment = Alignment.TopStart,
-                        offset = DpOffset(
-                            x = 160.50000243778862.dp,
-                            y = 9.499998644946885.dp
-                        )
-                    )
-                ) {
-                    AccountIcon(
-                        modifier = Modifier.boxAlign(
-                            alignment = Alignment.TopStart,
-                            offset = DpOffset(
-                                x = 15.999999300617787.dp,
-                                y = 16.00000120796642.dp
-                            )
-                        )
-                    )
-                }
-                Frame5(
-                    onNumberFourButtonTapped = onNumberFourButtonTapped,
-                    modifier = Modifier.boxAlign(
-                        alignment = Alignment.TopStart,
-                        offset = DpOffset(
-                            x = 22.0.dp,
-                            y = 150.0.dp
-                        )
-                    )
-                ) {
-                    Txt4(
-                        modifier = Modifier.boxAlign(
-                            alignment = Alignment.TopStart,
-                            offset = DpOffset(
-                                x = 8.0.dp,
-                                y = 5.0.dp
-                            )
-                        )
-                    )
-                }
-                Frame12(
-                    onButtonFiveButtonTapped = onButtonFiveButtonTapped,
-                    modifier = Modifier.boxAlign(
-                        alignment = Alignment.TopStart,
-                        offset = DpOffset(
-                            x = 92.0.dp,
-                            y = 150.0.dp
-                        )
-                    )
-                ) {
-                    Txt5(
-                        modifier = Modifier.boxAlign(
-                            alignment = Alignment.TopStart,
-                            offset = DpOffset(
-                                x = 8.0.dp,
-                                y = 5.0.dp
-                            )
-                        )
-                    )
-                }
-                Frame21(
-                    onMultiplyButtonTapped = onMultiplyButtonTapped,
-                    modifier = Modifier.boxAlign(
-                        alignment = Alignment.TopStart,
-                        offset = DpOffset(
-                            x = 231.0.dp,
-                            y = 150.0.dp
-                        )
-                    )
-                ) {
-                    TxtMultiply(
-                        modifier = Modifier.boxAlign(
-                            alignment = Alignment.TopStart,
-                            offset = DpOffset(
-                                x = 11.0.dp,
-                                y = 7.0.dp
-                            )
-                        )
-                    )
-                }
-                Frame16(
-                    onButtonSixButtonTapped = onButtonSixButtonTapped,
-                    modifier = Modifier.boxAlign(
-                        alignment = Alignment.TopStart,
-                        offset = DpOffset(
-                            x = 161.0.dp,
-                            y = 150.0.dp
-                        )
-                    )
-                ) {
-                    Txt6(
-                        modifier = Modifier.boxAlign(
-                            alignment = Alignment.TopStart,
-                            offset = DpOffset(
-                                x = 8.0.dp,
-                                y = 5.0.dp
-                            )
-                        )
-                    )
-                }
-                Frame22(
-                    onDivideButtonTapped = onDivideButtonTapped,
-                    modifier = Modifier.boxAlign(
-                        alignment = Alignment.TopStart,
-                        offset = DpOffset(
-                            x = 300.0.dp,
-                            y = 150.0.dp
-                        )
-                    )
-                ) {
-                    TxtDivide(
-                        modifier = Modifier.boxAlign(
-                            alignment = Alignment.TopStart,
-                            offset = DpOffset(
-                                x = 3.0.dp,
-                                y = 0.0.dp
-                            )
-                        )
-                    )
-                }
-                Frame4(
-                    onNumberSevenButtonTapped = onNumberSevenButtonTapped,
-                    modifier = Modifier.boxAlign(
-                        alignment = Alignment.TopStart,
-                        offset = DpOffset(
-                            x = 22.0.dp,
-                            y = 80.0.dp
-                        )
-                    )
-                ) {
-                    Txt7(
-                        modifier = Modifier.boxAlign(
-                            alignment = Alignment.TopStart,
-                            offset = DpOffset(
-                                x = 8.0.dp,
-                                y = 6.0.dp
-                            )
-                        )
-                    )
-                }
-                Frame13(
-                    onNumberEightButtonTapped = onNumberEightButtonTapped,
-                    modifier = Modifier.boxAlign(
-                        alignment = Alignment.TopStart,
-                        offset = DpOffset(
-                            x = 92.0.dp,
-                            y = 80.0.dp
-                        )
-                    )
-                ) {
-                    Txt8(
-                        modifier = Modifier.boxAlign(
-                            alignment = Alignment.TopStart,
-                            offset = DpOffset(
-                                x = 8.0.dp,
-                                y = 6.0.dp
-                            )
-                        )
-                    )
-                }
-                Frame23(
-                    onDeleteButtonTapped = onDeleteButtonTapped,
-                    modifier = Modifier.boxAlign(
-                        alignment = Alignment.TopStart,
-                        offset = DpOffset(
-                            x = 231.0.dp,
-                            y = 80.0.dp
-                        )
-                    )
-                ) {
-                    DelIcon(
-                        modifier = Modifier.boxAlign(
-                            alignment = Alignment.TopStart,
-                            offset = DpOffset(
-                                x = 14.0.dp,
-                                y = 17.0.dp
-                            )
-                        )
-                    )
-                }
-                Frame17(
-                    onNumberNineButtonTapped = onNumberNineButtonTapped,
-                    modifier = Modifier.boxAlign(
-                        alignment = Alignment.TopStart,
-                        offset = DpOffset(
-                            x = 161.0.dp,
-                            y = 80.0.dp
-                        )
-                    )
-                ) {
-                    Txt9(
-                        modifier = Modifier.boxAlign(
-                            alignment = Alignment.TopStart,
-                            offset = DpOffset(
-                                x = 8.0.dp,
-                                y = 6.0.dp
-                            )
-                        )
-                    )
-                }
-                Frame24(
-                    onEqualButtonTapped = onEqualButtonTapped,
-                    modifier = Modifier.boxAlign(
-                        alignment = Alignment.TopStart,
-                        offset = DpOffset(
-                            x = 300.0.dp,
-                            y = 80.0.dp
-                        )
-                    )
-                ) {
-                    TxtEqual(
-                        modifier = Modifier.boxAlign(
-                            alignment = Alignment.TopStart,
-                            offset = DpOffset(
-                                x = 10.0.dp,
-                                y = 6.0.dp
-                            )
-                        )
-                    )
-                }
-                Frame6(
-                    onNumberOneButtonTapped = onNumberOneButtonTapped,
-                    modifier = Modifier.boxAlign(
-                        alignment = Alignment.TopStart,
-                        offset = DpOffset(
-                            x = 22.0.dp,
-                            y = 219.0.dp
-                        )
-                    )
-                ) {
-                    Txt1(
-                        modifier = Modifier.boxAlign(
-                            alignment = Alignment.TopStart,
-                            offset = DpOffset(
-                                x = 8.0.dp,
-                                y = 5.0.dp
-                            )
-                        )
-                    )
-                }
-                Frame14(
-                    onNumberTwoButtonTapped = onNumberTwoButtonTapped,
-                    modifier = Modifier.boxAlign(
-                        alignment = Alignment.TopStart,
-                        offset = DpOffset(
-                            x = 92.0.dp,
-                            y = 219.0.dp
-                        )
-                    )
-                ) {
-                    Txt2(
-                        modifier = Modifier.boxAlign(
-                            alignment = Alignment.TopStart,
-                            offset = DpOffset(
-                                x = 8.0.dp,
-                                y = 5.0.dp
-                            )
-                        )
-                    )
-                }
-                Frame26(
-                    onAdditionButtonTapped = onAdditionButtonTapped,
-                    modifier = Modifier.boxAlign(
-                        alignment = Alignment.TopStart,
-                        offset = DpOffset(
-                            x = 231.0.dp,
-                            y = 219.0.dp
-                        )
-                    )
-                ) {
-                    TxtAddition(
-                        modifier = Modifier.boxAlign(
-                            alignment = Alignment.TopStart,
-                            offset = DpOffset(
-                                x = 8.0.dp,
-                                y = 3.0.dp
-                            )
-                        )
-                    )
-                }
-                Frame18(
-                    onNumberThreeButtonTapped = onNumberThreeButtonTapped,
-                    modifier = Modifier.boxAlign(
-                        alignment = Alignment.TopStart,
-                        offset = DpOffset(
-                            x = 161.0.dp,
-                            y = 219.0.dp
-                        )
-                    )
-                ) {
-                    Txt3(
-                        modifier = Modifier.boxAlign(
-                            alignment = Alignment.TopStart,
-                            offset = DpOffset(
-                                x = 8.0.dp,
-                                y = 5.0.dp
-                            )
-                        )
-                    )
-                }
-                Frame7(
-                    onOpenParenthesesButtonTapped = onOpenParenthesesButtonTapped,
-                    modifier = Modifier.boxAlign(
-                        alignment = Alignment.TopStart,
-                        offset = DpOffset(
-                            x = 22.0.dp,
-                            y = 290.0.dp
-                        )
-                    )
-                ) {
-                    TxtOpenParentheses(
-                        modifier = Modifier.boxAlign(
-                            alignment = Alignment.TopStart,
-                            offset = DpOffset(
-                                x = 8.0.dp,
-                                y = 5.0.dp
-                            )
-                        )
-                    )
-                }
-                Frame15(
-                    onNumberZeroButtonTapped = onNumberZeroButtonTapped,
-                    modifier = Modifier.boxAlign(
-                        alignment = Alignment.TopStart,
-                        offset = DpOffset(
-                            x = 92.0.dp,
-                            y = 290.0.dp
-                        )
-                    )
-                ) {
-                    Txt0(
-                        modifier = Modifier.boxAlign(
-                            alignment = Alignment.TopStart,
-                            offset = DpOffset(
-                                x = 8.0.dp,
-                                y = 5.0.dp
-                            )
-                        )
-                    )
-                }
-                Frame28(
-                    onDotButtonTapped = onDotButtonTapped,
-                    modifier = Modifier.boxAlign(
-                        alignment = Alignment.TopStart,
-                        offset = DpOffset(
-                            x = 231.0.dp,
-                            y = 290.0.dp
-                        )
-                    )
-                ) {
-                    TxtDot(
-                        modifier = Modifier.boxAlign(
-                            alignment = Alignment.TopStart,
-                            offset = DpOffset(
-                                x = 10.0.dp,
-                                y = 5.0.dp
-                            )
-                        )
-                    )
-                }
-                Frame19(
-                    onCloseParenthesesButtonTapped = onCloseParenthesesButtonTapped,
-                    modifier = Modifier.boxAlign(
-                        alignment = Alignment.TopStart,
-                        offset = DpOffset(
-                            x = 161.0.dp,
-                            y = 290.0.dp
-                        )
-                    )
-                ) {
-                    TxtCloseParentheses(
-                        modifier = Modifier.boxAlign(
-                            alignment = Alignment.TopStart,
-                            offset = DpOffset(
-                                x = 8.0.dp,
-                                y = 5.0.dp
-                            )
-                        )
-                    )
-                }
-                Frame31(
-                    onMinusButtonTapped = onMinusButtonTapped,
-                    modifier = Modifier.boxAlign(
-                        alignment = Alignment.TopStart,
-                        offset = DpOffset(
-                            x = 300.0.dp,
-                            y = 219.0.dp
-                        )
-                    )
-                ) {
-                    TxtMinus(
-                        modifier = Modifier.boxAlign(
-                            alignment = Alignment.TopStart,
-                            offset = DpOffset(
-                                x = 5.0.dp,
-                                y = 4.0.dp
-                            )
-                        )
-                    )
-                }
-                Done(
-                    onDoneButtonTapped = onDoneButtonTapped,
-                    modifier = Modifier.boxAlign(
-                        alignment = Alignment.TopStart,
-                        offset = DpOffset(
-                            x = 300.0.dp,
-                            y = 290.0.dp
-                        )
-                    )
-                ) {
-                    Vector318(
-                        modifier = Modifier.boxAlign(
-                            alignment = Alignment.TopStart,
-                            offset = DpOffset(
-                                x = 17.4998779296875.dp,
-                                y = 19.4998779296875.dp
-                            )
-                        )
-                    )
-                }
-                EI(
-                    modifier = Modifier.boxAlign(
-                        alignment = Alignment.TopStart,
-                        offset = DpOffset(
-                            x = 231.0.dp,
-                            y = 9.0.dp
-                        )
-                    )
-                ) {
-                    Frame20(
-                        modifier = Modifier.boxAlign(
-                            alignment = Alignment.TopStart,
-                            offset = DpOffset(
-                                x = 37.50000066157415.dp,
-                                y = -31.50000084646883.dp
-                            )
-                        )
-                    ) {
-                        Frame(
-                            modifier = Modifier.boxAlign(
-                                alignment = Alignment.TopStart,
-                                offset = DpOffset(
-                                    x = 7.999999082060846.dp,
-                                    y = 12.000000989409479.dp
-                                )
-                            )
-                        ) {
-                            Vector49(modifier = Modifier.rowWeight(1.0f).columnWeight(1.0f))
-                        }
-                    }
-                    Frame32(
-                        onInputButtonTapped = onInputButtonTapped,
-                        modifier = Modifier.boxAlign(
-                            alignment = Alignment.TopStart,
-                            offset = DpOffset(
-                                x = 3.0.dp,
-                                y = 3.0.dp
-                            )
-                        )
-                    ) {
-                        Frame1(
-                            modifier = Modifier.boxAlign(
-                                alignment = Alignment.TopStart,
-                                offset = DpOffset(
-                                    x = 12.0.dp,
-                                    y = 8.0.dp
-                                )
-                            )
-                        ) {}
-                    }
-                    Frame30(
-                        onOutputButtonTapped = onOutputButtonTapped,
-                        modifier = Modifier.boxAlign(
-                            alignment = Alignment.TopStart,
-                            offset = DpOffset(
-                                x = 69.0.dp,
-                                y = 3.0.dp
-                            )
-                        )
-                    ) {
-                        Frame2(
-                            modifier = Modifier.boxAlign(
-                                alignment = Alignment.TopStart,
-                                offset = DpOffset(
-                                    x = 12.0.dp,
-                                    y = 8.0.dp
-                                )
-                            )
-                        ) {
-                            Vector50(modifier = Modifier.rowWeight(1.0f).columnWeight(1.0f))
-                        }
-                    }
-                }
-            }
+
             Input(
                 modifier = Modifier.boxAlign(
                     alignment = Alignment.TopStart,
@@ -818,7 +366,601 @@ fun OpeningScreenExpensesInput(
                     textAlign = TextAlign.End
                 )
             }
+
+            Key(
+                modifier = Modifier.boxAlign(
+                    alignment = Alignment.TopStart,
+                    offset = DpOffset(
+                        x = 0.dp,
+                        y = 240.0.dp
+                    )
+                )
+            ) {
+                RelayColumn (modifier = Modifier.fillMaxWidth()) {
+                    // Row 1
+                    RelayRow (modifier = Modifier.fillMaxWidth())
+                    {
+                        RelayCalculateButton(icon = painterResource(R.drawable.opening_screen_expenses_input_tax_icon), onClick = onTaxButtonTapped, modifier = Modifier.weight(1f))
+                        RelayCalculateButton(label = "%", onClick = onPercentButtonTapped, modifier = Modifier.weight(1f))
+                        RelayCalculateButton(icon = painterResource(R.drawable.opening_screen_expenses_input_account_icon), onClick = onAccountButtonTapped, modifier = Modifier.weight(1f))
+                        RelayCalculateButton(icon = painterResource(R.drawable.opening_screen_expenses_input_money_in_icon), onClick = onInputButtonTapped, modifier = Modifier.weight(1f))
+                        RelayCalculateButton(icon = painterResource(R.drawable.opening_screen_expenses_input_money_out_icon), onClick = onOutputButtonTapped, modifier = Modifier.weight(1f))
+                    }
+
+                    // Row 2
+                    RelayRow {
+                        RelayCalculateButton(label = "7", onClick = { onNumberButtonTapped("7") }, modifier = Modifier.weight(1f))
+                        RelayCalculateButton(label = "8", onClick = { onNumberButtonTapped("8") }, modifier = Modifier.weight(1f))
+                        RelayCalculateButton(label = "9", onClick = { onNumberButtonTapped("9") }, modifier = Modifier.weight(1f))
+                        RelayCalculateButton(icon = painterResource(R.drawable.opening_screen_expenses_input_del_icon), onClick = onDeleteButtonTapped, modifier = Modifier.weight(1f))
+                        RelayCalculateButton(label = "=", onClick = onEqualButtonTapped, modifier = Modifier.weight(1f))
+                    }
+
+                    // Row 3
+                    RelayRow {
+                        RelayCalculateButton(label = "4", onClick = { onNumberButtonTapped("4") }, modifier = Modifier.weight(1f))
+                        RelayCalculateButton(label = "5", onClick = { onNumberButtonTapped("5") }, modifier = Modifier.weight(1f))
+                        RelayCalculateButton(label = "6", onClick = { onNumberButtonTapped("6") }, modifier = Modifier.weight(1f))
+                        RelayCalculateButton(label = "×", onClick = onMultiplyButtonTapped, modifier = Modifier.weight(1f))
+                        RelayCalculateButton(label = "÷", onClick = onDivideButtonTapped, modifier = Modifier.weight(1f))
+                    }
+
+                    // Row 4
+                    RelayRow {
+                        RelayCalculateButton(label = "1", onClick = { onNumberButtonTapped("1") }, modifier = Modifier.weight(1f))
+                        RelayCalculateButton(label = "2", onClick = { onNumberButtonTapped("2") }, modifier = Modifier.weight(1f))
+                        RelayCalculateButton(label = "3", onClick = { onNumberButtonTapped("3") }, modifier = Modifier.weight(1f))
+                        RelayCalculateButton(label = "+", onClick = onAdditionButtonTapped, modifier = Modifier.weight(1f))
+                        RelayCalculateButton(label = "-", onClick = onMinusButtonTapped, modifier = Modifier.weight(1f))
+                    }
+
+                    // Row 5
+                    RelayRow {
+                        RelayCalculateButton(label = "(", onClick = onOpenParenthesesButtonTapped, modifier = Modifier.weight(1f))
+                        RelayCalculateButton(label = "0", onClick = { onNumberButtonTapped("0") }, modifier = Modifier.weight(1f))
+                        RelayCalculateButton(label = ")", onClick = onCloseParenthesesButtonTapped, modifier = Modifier.weight(1f))
+                        RelayCalculateButton(label = ".", onClick = onDotButtonTapped, modifier = Modifier.weight(1f))
+                        RelayCalculateButton(icon = painterResource(R.drawable.opening_screen_expenses_input_vector_318), backgroundColor = Color.Green, onClick = onDoneButtonTapped, modifier = Modifier.weight(1f))
+                    }
+                }
+
+//                Frame3(
+//                    onTaxButtonTapped = onTaxButtonTapped,
+//                    modifier = Modifier.boxAlign(
+//                        alignment = Alignment.TopStart,
+//                        offset = DpOffset(
+//                            x = 22.0.dp,
+//                            y = 9.0.dp
+//                        )
+//                    )
+//                ) {
+//                    TaxIcon(
+//                        modifier = Modifier.boxAlign(
+//                            alignment = Alignment.TopStart,
+//                            offset = DpOffset(
+//                                x = 16.0.dp,
+//                                y = 15.0.dp
+//                            )
+//                        )
+//                    )
+//                }
+//                Frame8(
+//                    onPercentButtonTapped = onPercentButtonTapped,
+//                    modifier = Modifier.boxAlign(
+//                        alignment = Alignment.TopStart,
+//                        offset = DpOffset(
+//                            x = 91.00000243778862.dp,
+//                            y = 8.999998623091187.dp
+//                        )
+//                    )
+//                ) {
+//                    PercentIcon(
+//                        modifier = Modifier.boxAlign(
+//                            alignment = Alignment.TopStart,
+//                            offset = DpOffset(
+//                                x = 15.51515125696347.dp,
+//                                y = 16.484849230427358.dp
+//                            )
+//                        )
+//                    )
+//                }
+//                Frame10(
+//                    onAccountButtonTapped = onAccountButtonTapped,
+//                    modifier = Modifier.boxAlign(
+//                        alignment = Alignment.TopStart,
+//                        offset = DpOffset(
+//                            x = 160.50000243778862.dp,
+//                            y = 9.499998644946885.dp
+//                        )
+//                    )
+//                ) {
+//                    AccountIcon(
+//                        modifier = Modifier.boxAlign(
+//                            alignment = Alignment.TopStart,
+//                            offset = DpOffset(
+//                                x = 15.999999300617787.dp,
+//                                y = 16.00000120796642.dp
+//                            )
+//                        )
+//                    )
+//                }
+//                Frame5(
+//                    onNumberFourButtonTapped = onNumberFourButtonTapped,
+//                    modifier = Modifier.boxAlign(
+//                        alignment = Alignment.TopStart,
+//                        offset = DpOffset(
+//                            x = 22.0.dp,
+//                            y = 150.0.dp
+//                        )
+//                    )
+//                ) {
+//                    Txt4(
+//                        modifier = Modifier.boxAlign(
+//                            alignment = Alignment.TopStart,
+//                            offset = DpOffset(
+//                                x = 8.0.dp,
+//                                y = 5.0.dp
+//                            )
+//                        )
+//                    )
+//                }
+//                Frame12(
+//                    onButtonFiveButtonTapped = onButtonFiveButtonTapped,
+//                    modifier = Modifier.boxAlign(
+//                        alignment = Alignment.TopStart,
+//                        offset = DpOffset(
+//                            x = 92.0.dp,
+//                            y = 150.0.dp
+//                        )
+//                    )
+//                ) {
+//                    Txt5(
+//                        modifier = Modifier.boxAlign(
+//                            alignment = Alignment.TopStart,
+//                            offset = DpOffset(
+//                                x = 8.0.dp,
+//                                y = 5.0.dp
+//                            )
+//                        )
+//                    )
+//                }
+//                Frame21(
+//                    onMultiplyButtonTapped = onMultiplyButtonTapped,
+//                    modifier = Modifier.boxAlign(
+//                        alignment = Alignment.TopStart,
+//                        offset = DpOffset(
+//                            x = 231.0.dp,
+//                            y = 150.0.dp
+//                        )
+//                    )
+//                ) {
+//                    TxtMultiply(
+//                        modifier = Modifier.boxAlign(
+//                            alignment = Alignment.TopStart,
+//                            offset = DpOffset(
+//                                x = 11.0.dp,
+//                                y = 7.0.dp
+//                            )
+//                        )
+//                    )
+//                }
+//                Frame16(
+//                    onButtonSixButtonTapped = onButtonSixButtonTapped,
+//                    modifier = Modifier.boxAlign(
+//                        alignment = Alignment.TopStart,
+//                        offset = DpOffset(
+//                            x = 161.0.dp,
+//                            y = 150.0.dp
+//                        )
+//                    )
+//                ) {
+//                    Txt6(
+//                        modifier = Modifier.boxAlign(
+//                            alignment = Alignment.TopStart,
+//                            offset = DpOffset(
+//                                x = 8.0.dp,
+//                                y = 5.0.dp
+//                            )
+//                        )
+//                    )
+//                }
+//                Frame22(
+//                    onDivideButtonTapped = onDivideButtonTapped,
+//                    modifier = Modifier.boxAlign(
+//                        alignment = Alignment.TopStart,
+//                        offset = DpOffset(
+//                            x = 300.0.dp,
+//                            y = 150.0.dp
+//                        )
+//                    )
+//                ) {
+//                    TxtDivide(
+//                        modifier = Modifier.boxAlign(
+//                            alignment = Alignment.TopStart,
+//                            offset = DpOffset(
+//                                x = 3.0.dp,
+//                                y = 0.0.dp
+//                            )
+//                        )
+//                    )
+//                }
+//                Frame4(
+//                    onNumberSevenButtonTapped = onNumberSevenButtonTapped,
+//                    modifier = Modifier.boxAlign(
+//                        alignment = Alignment.TopStart,
+//                        offset = DpOffset(
+//                            x = 22.0.dp,
+//                            y = 80.0.dp
+//                        )
+//                    )
+//                ) {
+//                    Txt7(
+//                        modifier = Modifier.boxAlign(
+//                            alignment = Alignment.TopStart,
+//                            offset = DpOffset(
+//                                x = 8.0.dp,
+//                                y = 6.0.dp
+//                            )
+//                        )
+//                    )
+//                }
+//                Frame13(
+//                    onNumberEightButtonTapped = onNumberEightButtonTapped,
+//                    modifier = Modifier.boxAlign(
+//                        alignment = Alignment.TopStart,
+//                        offset = DpOffset(
+//                            x = 92.0.dp,
+//                            y = 80.0.dp
+//                        )
+//                    )
+//                ) {
+//                    Txt8(
+//                        modifier = Modifier.boxAlign(
+//                            alignment = Alignment.TopStart,
+//                            offset = DpOffset(
+//                                x = 8.0.dp,
+//                                y = 6.0.dp
+//                            )
+//                        )
+//                    )
+//                }
+//                Frame23(
+//                    onDeleteButtonTapped = onDeleteButtonTapped,
+//                    modifier = Modifier.boxAlign(
+//                        alignment = Alignment.TopStart,
+//                        offset = DpOffset(
+//                            x = 231.0.dp,
+//                            y = 80.0.dp
+//                        )
+//                    )
+//                ) {
+//                    DelIcon(
+//                        modifier = Modifier.boxAlign(
+//                            alignment = Alignment.TopStart,
+//                            offset = DpOffset(
+//                                x = 14.0.dp,
+//                                y = 17.0.dp
+//                            )
+//                        )
+//                    )
+//                }
+//                Frame17(
+//                    onNumberNineButtonTapped = onNumberNineButtonTapped,
+//                    modifier = Modifier.boxAlign(
+//                        alignment = Alignment.TopStart,
+//                        offset = DpOffset(
+//                            x = 161.0.dp,
+//                            y = 80.0.dp
+//                        )
+//                    )
+//                ) {
+//                    Txt9(
+//                        modifier = Modifier.boxAlign(
+//                            alignment = Alignment.TopStart,
+//                            offset = DpOffset(
+//                                x = 8.0.dp,
+//                                y = 6.0.dp
+//                            )
+//                        )
+//                    )
+//                }
+//                Frame24(
+//                    onEqualButtonTapped = onEqualButtonTapped,
+//                    modifier = Modifier.boxAlign(
+//                        alignment = Alignment.TopStart,
+//                        offset = DpOffset(
+//                            x = 300.0.dp,
+//                            y = 80.0.dp
+//                        )
+//                    )
+//                ) {
+//                    TxtEqual(
+//                        modifier = Modifier.boxAlign(
+//                            alignment = Alignment.TopStart,
+//                            offset = DpOffset(
+//                                x = 10.0.dp,
+//                                y = 6.0.dp
+//                            )
+//                        )
+//                    )
+//                }
+//                Frame6(
+//                    onNumberOneButtonTapped = onNumberOneButtonTapped,
+//                    modifier = Modifier.boxAlign(
+//                        alignment = Alignment.TopStart,
+//                        offset = DpOffset(
+//                            x = 22.0.dp,
+//                            y = 219.0.dp
+//                        )
+//                    )
+//                ) {
+//                    Txt1(
+//                        modifier = Modifier.boxAlign(
+//                            alignment = Alignment.TopStart,
+//                            offset = DpOffset(
+//                                x = 8.0.dp,
+//                                y = 5.0.dp
+//                            )
+//                        )
+//                    )
+//                }
+//                Frame14(
+//                    onNumberTwoButtonTapped = onNumberTwoButtonTapped,
+//                    modifier = Modifier.boxAlign(
+//                        alignment = Alignment.TopStart,
+//                        offset = DpOffset(
+//                            x = 92.0.dp,
+//                            y = 219.0.dp
+//                        )
+//                    )
+//                ) {
+//                    Txt2(
+//                        modifier = Modifier.boxAlign(
+//                            alignment = Alignment.TopStart,
+//                            offset = DpOffset(
+//                                x = 8.0.dp,
+//                                y = 5.0.dp
+//                            )
+//                        )
+//                    )
+//                }
+//                Frame26(
+//                    onAdditionButtonTapped = onAdditionButtonTapped,
+//                    modifier = Modifier.boxAlign(
+//                        alignment = Alignment.TopStart,
+//                        offset = DpOffset(
+//                            x = 231.0.dp,
+//                            y = 219.0.dp
+//                        )
+//                    )
+//                ) {
+//                    TxtAddition(
+//                        modifier = Modifier.boxAlign(
+//                            alignment = Alignment.TopStart,
+//                            offset = DpOffset(
+//                                x = 8.0.dp,
+//                                y = 3.0.dp
+//                            )
+//                        )
+//                    )
+//                }
+//                Frame18(
+//                    onNumberThreeButtonTapped = onNumberThreeButtonTapped,
+//                    modifier = Modifier.boxAlign(
+//                        alignment = Alignment.TopStart,
+//                        offset = DpOffset(
+//                            x = 161.0.dp,
+//                            y = 219.0.dp
+//                        )
+//                    )
+//                ) {
+//                    Txt3(
+//                        modifier = Modifier.boxAlign(
+//                            alignment = Alignment.TopStart,
+//                            offset = DpOffset(
+//                                x = 8.0.dp,
+//                                y = 5.0.dp
+//                            )
+//                        )
+//                    )
+//                }
+//                Frame7(
+//                    onOpenParenthesesButtonTapped = onOpenParenthesesButtonTapped,
+//                    modifier = Modifier.boxAlign(
+//                        alignment = Alignment.TopStart,
+//                        offset = DpOffset(
+//                            x = 22.0.dp,
+//                            y = 290.0.dp
+//                        )
+//                    )
+//                ) {
+//                    TxtOpenParentheses(
+//                        modifier = Modifier.boxAlign(
+//                            alignment = Alignment.TopStart,
+//                            offset = DpOffset(
+//                                x = 8.0.dp,
+//                                y = 5.0.dp
+//                            )
+//                        )
+//                    )
+//                }
+//                Frame15(
+//                    onNumberZeroButtonTapped = onNumberZeroButtonTapped,
+//                    modifier = Modifier.boxAlign(
+//                        alignment = Alignment.TopStart,
+//                        offset = DpOffset(
+//                            x = 92.0.dp,
+//                            y = 290.0.dp
+//                        )
+//                    )
+//                ) {
+//                    Txt0(
+//                        modifier = Modifier.boxAlign(
+//                            alignment = Alignment.TopStart,
+//                            offset = DpOffset(
+//                                x = 8.0.dp,
+//                                y = 5.0.dp
+//                            )
+//                        )
+//                    )
+//                }
+//                Frame28(
+//                    onDotButtonTapped = onDotButtonTapped,
+//                    modifier = Modifier.boxAlign(
+//                        alignment = Alignment.TopStart,
+//                        offset = DpOffset(
+//                            x = 231.0.dp,
+//                            y = 290.0.dp
+//                        )
+//                    )
+//                ) {
+//                    TxtDot(
+//                        modifier = Modifier.boxAlign(
+//                            alignment = Alignment.TopStart,
+//                            offset = DpOffset(
+//                                x = 10.0.dp,
+//                                y = 5.0.dp
+//                            )
+//                        )
+//                    )
+//                }
+//                Frame19(
+//                    onCloseParenthesesButtonTapped = onCloseParenthesesButtonTapped,
+//                    modifier = Modifier.boxAlign(
+//                        alignment = Alignment.TopStart,
+//                        offset = DpOffset(
+//                            x = 161.0.dp,
+//                            y = 290.0.dp
+//                        )
+//                    )
+//                ) {
+//                    TxtCloseParentheses(
+//                        modifier = Modifier.boxAlign(
+//                            alignment = Alignment.TopStart,
+//                            offset = DpOffset(
+//                                x = 8.0.dp,
+//                                y = 5.0.dp
+//                            )
+//                        )
+//                    )
+//                }
+//                Frame31(
+//                    onMinusButtonTapped = onMinusButtonTapped,
+//                    modifier = Modifier.boxAlign(
+//                        alignment = Alignment.TopStart,
+//                        offset = DpOffset(
+//                            x = 300.0.dp,
+//                            y = 219.0.dp
+//                        )
+//                    )
+//                ) {
+//                    TxtMinus(
+//                        modifier = Modifier.boxAlign(
+//                            alignment = Alignment.TopStart,
+//                            offset = DpOffset(
+//                                x = 5.0.dp,
+//                                y = 4.0.dp
+//                            )
+//                        )
+//                    )
+//                }
+//                Done(
+//                    onDoneButtonTapped = onDoneButtonTapped,
+//                    modifier = Modifier.boxAlign(
+//                        alignment = Alignment.TopStart,
+//                        offset = DpOffset(
+//                            x = 300.0.dp,
+//                            y = 290.0.dp
+//                        )
+//                    )
+//                ) {
+//                    Vector318(
+//                        modifier = Modifier.boxAlign(
+//                            alignment = Alignment.TopStart,
+//                            offset = DpOffset(
+//                                x = 17.4998779296875.dp,
+//                                y = 19.4998779296875.dp
+//                            )
+//                        )
+//                    )
+//                }
+//                EI(
+//                    modifier = Modifier.boxAlign(
+//                        alignment = Alignment.TopStart,
+//                        offset = DpOffset(
+//                            x = 231.0.dp,
+//                            y = 9.0.dp
+//                        )
+//                    )
+//                ) {
+//                    Frame20(
+//                        modifier = Modifier.boxAlign(
+//                            alignment = Alignment.TopStart,
+//                            offset = DpOffset(
+//                                x = 37.50000066157415.dp,
+//                                y = -31.50000084646883.dp
+//                            )
+//                        )
+//                    ) {
+//                        Frame(
+//                            modifier = Modifier.boxAlign(
+//                                alignment = Alignment.TopStart,
+//                                offset = DpOffset(
+//                                    x = 7.999999082060846.dp,
+//                                    y = 12.000000989409479.dp
+//                                )
+//                            )
+//                        ) {
+//                            Vector49(modifier = Modifier.rowWeight(1.0f).columnWeight(1.0f))
+//                        }
+//                    }
+//                    Frame32(
+//                        onInputButtonTapped = onInputButtonTapped,
+//                        modifier = Modifier.boxAlign(
+//                            alignment = Alignment.TopStart,
+//                            offset = DpOffset(
+//                                x = 3.0.dp,
+//                                y = 3.0.dp
+//                            )
+//                        )
+//                    ) {
+//                        Frame1(
+//                            modifier = Modifier.boxAlign(
+//                                alignment = Alignment.TopStart,
+//                                offset = DpOffset(
+//                                    x = 12.0.dp,
+//                                    y = 8.0.dp
+//                                )
+//                            )
+//                        ) {}
+//                    }
+//                    Frame30(
+//                        onOutputButtonTapped = onOutputButtonTapped,
+//                        modifier = Modifier.boxAlign(
+//                            alignment = Alignment.TopStart,
+//                            offset = DpOffset(
+//                                x = 69.0.dp,
+//                                y = 3.0.dp
+//                            )
+//                        )
+//                    ) {
+//                        Frame2(
+//                            modifier = Modifier.boxAlign(
+//                                alignment = Alignment.TopStart,
+//                                offset = DpOffset(
+//                                    x = 12.0.dp,
+//                                    y = 8.0.dp
+//                                )
+//                            )
+//                        ) {
+//                            Vector50(modifier = Modifier.rowWeight(1.0f).columnWeight(1.0f))
+//                        }
+//                    }
+//                }
+
+            }
         }
+
         Note(
             modifier = Modifier.boxAlign(
                 alignment = Alignment.TopStart,
@@ -2320,26 +2462,18 @@ fun Input(
         isStructured = false,
         radius = 5.0,
         strokeWidth = 2.0,
-        strokeColor = Color(
-            alpha = 255,
-            red = 0,
-            green = 0,
-            blue = 0
-        ),
+        strokeColor = Color.Black,
         content = content,
-        modifier = modifier.requiredWidth(342.0.dp).requiredHeight(120.0.dp).relayDropShadow(
-            color = Color(
-                alpha = 63,
-                red = 0,
-                green = 0,
-                blue = 0
-            ),
-            borderRadius = 5.0.dp,
-            blur = 5.699999809265137.dp,
-            offsetX = 1.0.dp,
-            offsetY = 4.0.dp,
-            spread = 0.0.dp
-        )
+        modifier = modifier
+            .width(342.dp) // Fixed width for consistent alignment
+            .height(120.dp) // Adjust height as needed
+            .relayDropShadow(
+                color = Color.Black.copy(alpha = 0.25f),
+                borderRadius = 5.dp,
+                blur = 5.7.dp,
+                offsetX = 1.dp,
+                offsetY = 4.dp
+            )
     )
 }
 
@@ -2349,20 +2483,10 @@ fun MAINFRAME(
     content: @Composable RelayContainerScope.() -> Unit
 ) {
     RelayContainer(
-        backgroundColor = Color(
-            alpha = 255,
-            red = 255,
-            green = 255,
-            blue = 255
-        ),
+        backgroundColor = Color.White,
         isStructured = false,
-        strokeWidth = 1.0,
-        strokeColor = Color(
-            alpha = 255,
-            red = 0,
-            green = 0,
-            blue = 0
-        ),
+        strokeWidth = 1.dp.value.toDouble(),
+        strokeColor = Color.Black,
         content = content,
         modifier = modifier.requiredWidth(396.0.dp).requiredHeight(615.0.dp)
     )
@@ -2512,6 +2636,6 @@ fun TopLevel(
         ),
         isStructured = false,
         content = content,
-        modifier = modifier.fillMaxWidth(1.0f).fillMaxHeight(1.0f)
+        modifier = modifier.fillMaxSize() // Allows TopLevel to fill the full screen height
     )
 }
