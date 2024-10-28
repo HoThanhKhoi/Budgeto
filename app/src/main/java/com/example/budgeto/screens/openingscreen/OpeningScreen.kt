@@ -4,7 +4,6 @@ import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.requiredHeight
 import androidx.compose.foundation.layout.requiredWidth
 import androidx.compose.foundation.layout.size
@@ -25,7 +24,6 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
@@ -37,13 +35,16 @@ import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.em
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.budgeto.R
 import com.example.budgeto.screensfonts.inter
+import com.example.budgeto.viewmodel.OpeningScreenViewModel
 import com.google.relay.compose.BoxScopeInstance.columnWeight
 import com.google.relay.compose.BoxScopeInstance.rowWeight
 import com.google.relay.compose.BoxScopeInstanceImpl.align
 import com.google.relay.compose.Case
 import com.google.relay.compose.ColumnScopeInstanceImpl.weight
+import com.google.relay.compose.RelayCalculateButton
 import com.google.relay.compose.RelayColumn
 import com.google.relay.compose.RelayContainer
 import com.google.relay.compose.RelayContainerScope
@@ -57,65 +58,41 @@ import java.util.Stack
 
 @Composable
 fun OpeningScreenExpensesInputScreen(
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    viewModel: OpeningScreenViewModel = viewModel()
 ) {
-    var operationText by remember { mutableStateOf("") }
-    var resultText by remember { mutableStateOf("") }
-    var isResultDisplayed by remember { mutableStateOf(false) }
+    var operationText by viewModel.operationText
+    var resultText by viewModel.resultText
 
-    fun appendNumber(value: String) {
-        if (isResultDisplayed) {
-            operationText = value
-            isResultDisplayed = false
-        } else {
-            operationText += value
-        }
-    }
-
-    fun appendOperation(value: String) {
-        if (isResultDisplayed) {
-            operationText = resultText + value
-            isResultDisplayed = false
-        } else {
-            operationText += value
-        }
-    }
     OpeningScreenExpensesInput(
         modifier = modifier.rowWeight(1.0f).columnWeight(1.0f),
         operationTextContent = operationText,
         resultTextContent = resultText,
-        onNumberButtonTapped = { number -> appendNumber(number) },
+        onNumberButtonTapped = { number -> viewModel.appendNumber(number) },
 
         //Row 1
         onTaxButtonTapped = { /* Implement tax logic if needed */ },
-        onPercentButtonTapped = { appendOperation("%") },
+        onPercentButtonTapped = { viewModel.appendOperation("%") },
         onAccountButtonTapped = { /* Implement account logic if needed */ },
         onInputButtonTapped = { /* Handle input button if needed */ },
         onOutputButtonTapped = { /* Handle output button if needed */ },
 
         //Row 2
-        onDeleteButtonTapped = {
-            if (operationText.isNotEmpty()) {
-                operationText = operationText.dropLast(1)
-            }
-        },
-        onEqualButtonTapped = {
-            resultText = evaluateExpression(operationText)
-            isResultDisplayed = true
-        },
+        onDeleteButtonTapped = { viewModel.deleteLast() },
+        onEqualButtonTapped = { viewModel.calculateResult() },
 
         //Row 3
-        onMultiplyButtonTapped = { appendOperation("*") },
-        onDivideButtonTapped = { appendOperation("/") },
+        onMultiplyButtonTapped = { viewModel.appendOperation("*") },
+        onDivideButtonTapped = { viewModel.appendOperation("/") },
 
         //Row 4
-        onAdditionButtonTapped = { appendOperation("+") },
-        onMinusButtonTapped = { appendOperation("-") },
+        onAdditionButtonTapped = { viewModel.appendOperation("+") },
+        onMinusButtonTapped = { viewModel.appendOperation("-") },
 
         //Row 5
-        onOpenParenthesesButtonTapped = { appendNumber("(") },
-        onCloseParenthesesButtonTapped = { appendNumber(")") },
-        onDotButtonTapped = { appendNumber(".") },
+        onOpenParenthesesButtonTapped = { viewModel.appendNumber("(") },
+        onCloseParenthesesButtonTapped = { viewModel.appendNumber(")") },
+        onDotButtonTapped = { viewModel.appendNumber(".") },
         onDoneButtonTapped = { /* Handle done action if needed */ },
 
 //        onNumberZeroButtonTapped = { operationText += "0" },
@@ -203,86 +180,54 @@ class ExpressionParser {
 }
 
 @Composable
-fun RelayCalculateButton(
-    label: String? = null,
-    icon: Painter? = null,
-    backgroundColor: Color = Color.White,
-    borderColor: Color = Color.Black,
-    textColor: Color = Color.Black,
-    onClick: () -> Unit,
-    modifier: Modifier = Modifier,
-    fontSize: TextUnit = 30.sp,
-    iconSize: Dp = 32.dp
-) {
-    RelayContainer(
-        backgroundColor = backgroundColor,
-        isStructured = false,
-        radius = 5.dp.value.toDouble(),
-        strokeWidth = 1.dp.value.toDouble(),
-        strokeColor = borderColor,
-        modifier = modifier
-            .tappable(onTap = onClick)
-            .requiredWidth(63.dp)
-            .requiredHeight(63.dp)
-    ) {
-        if (icon != null) {
-            RelayImage(
-                image = icon,
-                contentScale = ContentScale.Crop,
-                modifier = Modifier.size(iconSize).align(Alignment.Center)
-            )
-        } else if (label != null) {
-            RelayText(
-                content = label,
-                fontSize = fontSize,
-                fontFamily = MaterialTheme.typography.bodyMedium.fontFamily,
-                fontWeight = FontWeight.Medium,
-                color = textColor,
-                modifier = Modifier.align(Alignment.Center)
-            )
-        }
-    }
-}
-
-@Composable
 fun OpeningScreenExpensesInput(
     modifier: Modifier = Modifier,
+
     categoryTextContent: String = "",
     operationTextContent: String = "",
     resultTextContent: String = "",
     dateTextContent: String = "",
     noteTextContent: String = "",
 
+    onNumberButtonTapped: (String) -> Unit = {},
+
     //Row 1
     onTaxButtonTapped: () -> Unit = {},
     onPercentButtonTapped: () -> Unit = {},
     onAccountButtonTapped: () -> Unit = {},
+    onInputButtonTapped: () -> Unit = {},
+    onOutputButtonTapped: () -> Unit = {},
 
     //Row 2
+    onDeleteButtonTapped: () -> Unit = {},
+    onEqualButtonTapped: () -> Unit = {},
+
+    //Row 3
+    onMultiplyButtonTapped: () -> Unit = {},
+    onDivideButtonTapped: () -> Unit = {},
+
+    //Row 4
+    onAdditionButtonTapped: () -> Unit = {},
+    onMinusButtonTapped: () -> Unit = {},
+
+    //Row 5
+    onOpenParenthesesButtonTapped: () -> Unit = {},
+    onCloseParenthesesButtonTapped: () -> Unit = {},
+    onDotButtonTapped: () -> Unit = {},
+    onDoneButtonTapped: () -> Unit = {},
+
 
     onNumberFourButtonTapped: () -> Unit = {},
     onButtonFiveButtonTapped: () -> Unit = {},
-    onMultiplyButtonTapped: () -> Unit = {},
     onButtonSixButtonTapped: () -> Unit = {},
-    onDivideButtonTapped: () -> Unit = {},
     onNumberSevenButtonTapped: () -> Unit = {},
     onNumberEightButtonTapped: () -> Unit = {},
-    onDeleteButtonTapped: () -> Unit = {},
     onNumberNineButtonTapped: () -> Unit = {},
-    onEqualButtonTapped: () -> Unit = {},
     onNumberOneButtonTapped: () -> Unit = {},
     onNumberTwoButtonTapped: () -> Unit = {},
-    onAdditionButtonTapped: () -> Unit = {},
     onNumberThreeButtonTapped: () -> Unit = {},
-    onOpenParenthesesButtonTapped: () -> Unit = {},
-    onNumberZeroButtonTapped: () -> Unit = {},
-    onDotButtonTapped: () -> Unit = {},
-    onCloseParenthesesButtonTapped: () -> Unit = {},
-    onMinusButtonTapped: () -> Unit = {},
-    onDoneButtonTapped: () -> Unit = {},
-    onInputButtonTapped: () -> Unit = {},
-    onOutputButtonTapped: () -> Unit = {},
-    onNumberButtonTapped: (String) -> Unit = {}
+    onNumberZeroButtonTapped: () -> Unit = {}
+
 ) {
     TopLevel(modifier = modifier) {
 //        Rectangle65()
