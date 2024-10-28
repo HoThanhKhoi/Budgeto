@@ -1,4 +1,4 @@
-package com.example.budgeto.data.enums
+package com.example.budgeto.data.enums.user
 
 enum class UserStatus {
     ACTIVE,
