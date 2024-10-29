@@ -1,5 +1,6 @@
 package com.example.budgeto.data.repository.user
 
+import android.util.Log
 import com.example.budgeto.data.model.user.UserGameInfo
 import com.example.budgeto.data.model.user.UserGeneralInfo
 import com.example.budgeto.data.model.user.MoneyInfo
@@ -56,14 +57,15 @@ class UserRepository @Inject constructor(
         return addSubcollection(usersCollectionPath, userId, infoCollectionPath, moneyInfo, "moneyInfo")
     }
 
-    // Retrieve all gameInfo documents for a specific user (though there might be only one)
-    suspend fun getGameInfo(userId: String): List<UserGameInfo> {
-        return getSubcollection(usersCollectionPath, userId, "gameInfo", UserGameInfo::class.java)
-    }
-
     suspend fun getUserGeneralInfo(userId: String): UserGeneralInfo? {
-        val userGeneralInfoList = getSubcollection(usersCollectionPath, userId, infoCollectionPath, UserGeneralInfo::class.java)
-        return if (userGeneralInfoList.isNotEmpty()) userGeneralInfoList[0] else null
+        return try {
+            val generalInfo = getSubcollectionDocument(usersCollectionPath, userId, infoCollectionPath, "generalInfo", UserGeneralInfo::class.java)
+            Log.d("UserRepository", "GeneralInfo: $generalInfo")
+            generalInfo
+        } catch (e: Exception) {
+            e.printStackTrace()
+            null
+        }
     }
 
     suspend fun updateUserGeneralInfo(userId: String, updatedUserGeneralInfo: UserGeneralInfo) {

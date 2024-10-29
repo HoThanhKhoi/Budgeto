@@ -10,8 +10,15 @@ interface IFirestoreRepository {
     suspend fun delete(collectionName: String, id: String)
 
     // Sub-collection operations
+    suspend fun <S : Any> getSubcollectionDocument(
+        parentCollection: String,
+        parentId: String,
+        subcollectionPath: String,
+        subItemId: String,
+        clazz: Class<S>
+    ): S?
     suspend fun <S : Any> addSubcollection(parentCollection: String, parentId: String, subcollectionPath: String, subItem: S, subItemId: String? = null): String
-    suspend fun <S : Any> getSubcollection(parentCollection: String, parentId: String, subcollectionPath: String, clazz: Class<S>): List<S>
+    suspend fun <S : Any> getAllDocumentsFromSubcollection(parentCollection: String, parentId: String, subcollectionPath: String, clazz: Class<S>): List<S>
     suspend fun deleteSubcollectionDocument(parentCollection: String, parentId: String, subcollectionPath: String, subItemId: String
     )
 }

@@ -1,6 +1,5 @@
 package com.example.budgeto.data.repository.base
 
-import com.example.budgeto.data.repository.base.IFirestoreRepository
 import com.google.firebase.firestore.CollectionReference
 import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.coroutines.tasks.await
@@ -61,7 +60,7 @@ open class FirestoreRepository @Inject constructor(
     }
 
     // 7. Retrieve all documents from a sub-collection
-    override suspend fun <S : Any> getSubcollection(
+    override suspend fun <S : Any> getAllDocumentsFromSubcollection(
         parentCollection: String,
         parentId: String,
         subcollectionPath: String,
@@ -72,6 +71,21 @@ open class FirestoreRepository @Inject constructor(
             .collection(subcollectionPath)
         val documents = subcollectionRef.get().await()
         return documents.mapNotNull { it.toObject(clazz) }
+    }
+
+    override suspend fun <S : Any> getSubcollectionDocument(
+        parentCollection: String,
+        parentId: String,
+        subcollectionPath: String,
+        subItemId: String,
+        clazz: Class<S>
+    ): S? {
+        val documentRef = firestore.collection(parentCollection)
+            .document(parentId)
+            .collection(subcollectionPath)
+            .document(subItemId)
+        val document = documentRef.get().await()
+        return document.toObject(clazz)
     }
 
     // 8. Delete a sub-collection document
