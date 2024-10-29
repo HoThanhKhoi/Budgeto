@@ -32,20 +32,21 @@ class LoginViewModel @Inject constructor(
     val googleState: State<GoogleLoginState> = _googleState
 
     fun loginUser(email: String, password: String) = viewModelScope.launch {
-        Log.d("Login", "Login user")
+        Log.d("Login", "loginUser called with email: $email and password: $password")
         repository.login(email, password).collect { result ->
             when (result) {
                 is Resource.Success -> {
-                    Log.d("Login", "Login success")
+                    Log.d("Login", "Login success with user ID: ${result.data?.user?.uid}")
                     _loginState.send(LoginState(isSuccess = "Login success"))
                 }
 
                 is Resource.Loading -> {
+                    Log.d("Login", "Loading...")
                     _loginState.send(LoginState(isLoading = true))
                 }
 
                 is Resource.Error -> {
-                    Log.d("Login", "Login fail")
+                    Log.d("Login", "Login fail with error: ${result.message}")
                     _loginState.send(LoginState(isError = result.message))
                 }
             }
