@@ -15,14 +15,18 @@ import javax.inject.Inject
 class ProfileViewModel @Inject constructor(
     private val userRepository: UserRepository,
     private val authRepository: AuthRepository
-): ViewModel(){
-    private val _User_generalInfo = MutableStateFlow<UserGeneralInfo?>(null)
-    val userGeneralInfo: StateFlow<UserGeneralInfo?> = _User_generalInfo
+) : ViewModel() {
 
+    // State to hold user's general information
+    private val _userGeneralInfo = MutableStateFlow<UserGeneralInfo?>(null)
+    val userGeneralInfo: StateFlow<UserGeneralInfo?> = _userGeneralInfo
+
+    // Initialize and fetch user's general info
     init {
         fetchUserGeneralInfo()
     }
 
+    // Fetch user general info from repository
     fun fetchUserGeneralInfo() {
         val currentUser = authRepository.getCurrentUser()
         if (currentUser != null) {
@@ -30,7 +34,7 @@ class ProfileViewModel @Inject constructor(
             viewModelScope.launch {
                 try {
                     val generalInfo = userRepository.getUserGeneralInfo(userId)
-                    _User_generalInfo.value = generalInfo
+                    _userGeneralInfo.value = generalInfo
                 } catch (e: Exception) {
                     e.printStackTrace()
                 }
@@ -41,6 +45,7 @@ class ProfileViewModel @Inject constructor(
         }
     }
 
+    // Update specific fields of the user's general info
     fun updateUserGeneralInfoField(
         updateFunction: (UserGeneralInfo) -> UserGeneralInfo
     ) {
@@ -48,11 +53,11 @@ class ProfileViewModel @Inject constructor(
         if (currentUser != null) {
             val userId = currentUser.uid
             viewModelScope.launch {
-                val currentUserGeneralInfo = _User_generalInfo.value ?: UserGeneralInfo()
+                val currentUserGeneralInfo = _userGeneralInfo.value ?: UserGeneralInfo()
                 val updatedGeneralInfo = updateFunction(currentUserGeneralInfo)
                 try {
                     userRepository.updateUserGeneralInfo(userId, updatedGeneralInfo)
-                    _User_generalInfo.value = updatedGeneralInfo
+                    _userGeneralInfo.value = updatedGeneralInfo
                 } catch (e: Exception) {
                     e.printStackTrace()
                 }

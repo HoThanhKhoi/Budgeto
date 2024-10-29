@@ -19,10 +19,8 @@ class AuthRepositoryImplement(
 
     override fun login(email: String, password: String): Flow<Resource<AuthResult>> {
         return flow {
-            Log.d("AuthRepository", "Attempting login with email: $email")
             //emit(Resource.Loading())
             val result = firebaseAuth.signInWithEmailAndPassword(email, password).await()
-            Log.d("AuthRepository", "Login successful")
             emit(Resource.Success(result))
         }.catch { e ->
             Log.e("AuthRepository", "Login failed with exception: ${e.localizedMessage}", e)

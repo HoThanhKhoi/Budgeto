@@ -67,15 +67,4 @@ class UserRepository @Inject constructor(
             null
         }
     }
-
-    suspend fun updateUserGeneralInfo(userId: String, updatedUserGeneralInfo: UserGeneralInfo) {
-        try {
-            // Use addGeneralInfo to add or update the user's GeneralInfo
-            addGeneralInfo(userId, updatedUserGeneralInfo)
-            println("User's GeneralInfo updated successfully.")
-        } catch (e: Exception) {
-            e.printStackTrace()
-            println("Failed to update User's GeneralInfo: ${e.message}")
-        }
-    }
 }

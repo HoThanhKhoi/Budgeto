@@ -1,5 +1,6 @@
 package com.example.budgeto.screens.profilescreen
 
+import android.util.Log
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -16,6 +17,9 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -48,19 +52,33 @@ fun ProfileScreen(
 ) {
     val generalInfo by viewModel.userGeneralInfo.collectAsState()
 
-    LaunchedEffect(Unit) {
-        if (generalInfo == null) {
-            viewModel.fetchUserGeneralInfo()
+    var localFullName by remember { mutableStateOf("") }
+    var localBirthDate by remember { mutableStateOf("") }
+    var localPhoneNumber by remember { mutableStateOf("") }
+    var localAddress by remember { mutableStateOf("") }
+    var localOccupation by remember { mutableStateOf("") }
+    var localGender by remember { mutableStateOf(UserGender.NONE) }
+
+    LaunchedEffect(generalInfo) {
+        generalInfo?.let {
+            localFullName = it.fullName
+            localBirthDate = it.dateOfBirth
+            localPhoneNumber = it.phone
+            localAddress = it.address
+            localOccupation = it.occupation
+            localGender = it.gender
         }
     }
 
+    Log.d("ProfileScreen", "fullName: $localFullName gender: $localGender phoneNumber: $localPhoneNumber address: $localAddress occupation: $localOccupation birthDate: $localBirthDate")
+
     ProfileContent(
-        fullnameTextContent = generalInfo?.fullName ?: "",
-        birthdateTextContent = generalInfo?.dateOfBirth ?: "",
-        phoneNumberTextContent = generalInfo?.phone ?: "",
-        addressTextContent = generalInfo?.address ?: "",
-        occupationTextContent = generalInfo?.occupation ?: "",
-        genderContent = generalInfo?.gender ?: UserGender.NONE,
+        fullnameTextContent = localFullName,
+        birthdateTextContent = localBirthDate,
+        phoneNumberTextContent = localPhoneNumber,
+        addressTextContent = localAddress,
+        occupationTextContent = localOccupation,
+        genderContent = localGender,
         onBackToHomepageButtonTapped = {},
         onSignOutButtonTapped = {},
         onHomepageButtonTapped = {},
@@ -71,6 +89,12 @@ fun ProfileScreen(
         onGenderOptionButtonTapped = {},
         onGoogleAccountLinkButtonTapped = {},
         onFacebookAccountLinkButtonTapped = {},
+        onNameFieldChanged = {localFullName = it},
+        onPhoneFieldChanged = {localPhoneNumber = it},
+        onAddressFieldChanged = {localAddress = it},
+        onOccupationFieldChanged = {localOccupation = it},
+        onGenderFieldChanged = {localGender = it},
+        onBirthDayFieldChanged = {localBirthDate = it},
         modifier = modifier,
     )
 }
@@ -663,7 +687,8 @@ fun ProfileContent(
 //                )
 //            )
 //        )
-        BaoNgu(
+        FullNameTitle(
+            text = fullnameTextContent,
             modifier = Modifier.boxAlign(
                 alignment = Alignment.TopCenter,
                 offset = DpOffset(
@@ -1767,7 +1792,7 @@ fun BaoNgu1(
 fun UserInfoTextField(
     label: String = "",
     value: String = "",
-    placeholder: String ="",
+    placeholder: String = "",
     onValueChange: (String) -> Unit,
     modifier: Modifier,
     placeHolder: String = ""
@@ -2255,9 +2280,12 @@ fun Gender(modifier: Modifier = Modifier) {
 }
 
 @Composable
-fun BaoNgu(modifier: Modifier = Modifier) {
+fun FullNameTitle(
+    text: String = "",
+    modifier: Modifier = Modifier
+) {
     RelayText(
-        content = "Bao Ngu",
+        content = text,
         fontSize = 20.0.sp,
         fontFamily = inter,
         height = 1.2102272033691406.em,
