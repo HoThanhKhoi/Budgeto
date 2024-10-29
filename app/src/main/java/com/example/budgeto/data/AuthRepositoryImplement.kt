@@ -5,6 +5,8 @@ import com.example.budgeto.utils.Resource
 import com.google.firebase.auth.AuthCredential
 import com.google.firebase.auth.AuthResult
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException
+import com.google.firebase.auth.FirebaseAuthInvalidUserException
 import com.google.firebase.auth.FirebaseUser
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
@@ -17,15 +19,14 @@ class AuthRepositoryImplement(
 
     override fun login(email: String, password: String): Flow<Resource<AuthResult>> {
         return flow {
-            Log.d("Login auth", "Try login 1")
-            emit(Resource.Loading())
-            Log.d("Login auth", "Try login 2")
+            Log.d("AuthRepository", "Attempting login with email: $email")
+            //emit(Resource.Loading())
             val result = firebaseAuth.signInWithEmailAndPassword(email, password).await()
-            Log.d("Login auth", "Try login 3")
+            Log.d("AuthRepository", "Login successful")
             emit(Resource.Success(result))
-            Log.d("Login auth", "Try login 4")
-        }.catch {
-            emit(Resource.Error(it.message.toString()))
+        }.catch { e ->
+            Log.e("AuthRepository", "Login failed with exception: ${e.localizedMessage}", e)
+            //emit(Resource.Error(e.message.toString()))
         }
     }
 

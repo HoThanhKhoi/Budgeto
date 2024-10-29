@@ -80,6 +80,11 @@ fun LoginScreen(
     loginViewModel: LoginViewModel
 ) {
 
+    var localEmail by remember { mutableStateOf(email) }
+    var localPassword by remember { mutableStateOf(password) }
+
+    var isPasswordVisible by remember { mutableStateOf(false) }
+
     val context = LocalContext.current
 
     val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
@@ -108,17 +113,11 @@ fun LoginScreen(
         }
     }
 
-    //val loginViewModel: LoginViewModel = viewModel()
-    var localEmail by remember { mutableStateOf(email) }
-    var localPassword by remember { mutableStateOf(password) }
-
-    var isPasswordVisible by remember { mutableStateOf(false) }
-
     Login(
         email = localEmail,
         password = localPassword,
         onLoginTapped = {
-            onLoginButtonTapped()
+            //onLoginButtonTapped()
             loginViewModel.loginUser(localEmail, localPassword)
         },
         onEmailChanged = { localEmail = it },
