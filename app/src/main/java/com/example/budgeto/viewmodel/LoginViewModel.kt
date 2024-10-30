@@ -31,6 +31,10 @@ class LoginViewModel @Inject constructor(
     val _googleState = mutableStateOf(GoogleLoginState())
     val googleState: State<GoogleLoginState> = _googleState
 
+    fun isUserLoggedIn(): Boolean{
+        return repository.getCurrentUser() != null
+    }
+
     fun loginUser(email: String, password: String) = viewModelScope.launch {
         Log.d("Login", "loginUser called with email: $email and password: $password")
         repository.login(email, password).collect { result ->

@@ -47,10 +47,12 @@ fun BudgetoApp(
     //loginViewModel: LoginViewModel = hiltViewModel()
 ) {
     Scaffold() { innerPadding ->
-
+        val loginViewModel: LoginViewModel = hiltViewModel()
+        val isUserLoggedIn by remember { mutableStateOf(loginViewModel.isUserLoggedIn()) }
         NavHost(
             navController = navController,
-            startDestination = BudgetoScreenEnum.Start.name,
+            startDestination = if (isUserLoggedIn) BudgetoScreenEnum.ProfileScreen.name else BudgetoScreenEnum.Start.name,
+//            startDestination = BudgetoScreenEnum.Start.name,
 //            startDestination = BudgetoScreenEnum.OpeningScreen.name,
 //            startDestination = BudgetoScreenEnum.ProfileScreen.name,
             modifier = Modifier
@@ -86,12 +88,7 @@ fun BudgetoApp(
                 LoginScreen(
                     loginViewModel = loginViewModel,
                     onLoginButtonTapped = {
-                        if (1 == 1) {
-                            navController.navigate(BudgetoScreenEnum.ProfileScreen.name)
-                        } else {
-                            navController.navigate(BudgetoScreenEnum.Login.name)
-                        }
-
+                        navController.navigate(BudgetoScreenEnum.ProfileScreen.name)
                         //navController.navigate(BudgetoScreenEnum.OpeningScreen.name)
                     },
 

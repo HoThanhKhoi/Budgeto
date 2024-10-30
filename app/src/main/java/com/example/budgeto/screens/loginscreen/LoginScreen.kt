@@ -117,8 +117,8 @@ fun LoginScreen(
         email = localEmail,
         password = localPassword,
         onLoginTapped = {
-            onLoginButtonTapped()
             loginViewModel.loginUser(localEmail, localPassword)
+            onLoginButtonTapped()
         },
         onEmailChanged = { localEmail = it },
         onPasswordChange = { localPassword = it },
