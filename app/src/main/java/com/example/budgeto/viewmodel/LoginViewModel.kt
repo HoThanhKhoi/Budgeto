@@ -16,6 +16,8 @@ import com.google.firebase.auth.AuthCredential
 import com.google.firebase.auth.FirebaseUser
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.channels.Channel
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -25,8 +27,8 @@ class LoginViewModel @Inject constructor(
     private val repository: AuthRepository,
     private val userRepository: UserRepository
 ) : ViewModel() {
-    private val _loginState = Channel<LoginState>()
-    val loginState = _loginState.receiveAsFlow()
+    private val _loginState = MutableStateFlow(LoginState())
+    val loginState = _loginState.asStateFlow()
 
     val _googleState = mutableStateOf(GoogleLoginState())
     val googleState: State<GoogleLoginState> = _googleState
@@ -41,17 +43,14 @@ class LoginViewModel @Inject constructor(
             when (result) {
                 is Resource.Success -> {
                     Log.d("Login", "Login success with user ID: ${result.data?.user?.uid}")
-                    _loginState.send(LoginState(isSuccess = "Login success"))
+                    _loginState.value = LoginState(isSuccess = "Login success") // Emit success state
                 }
-
                 is Resource.Loading -> {
                     Log.d("Login", "Loading...")
-                    _loginState.send(LoginState(isLoading = true))
                 }
-
                 is Resource.Error -> {
                     Log.d("Login", "Login fail with error: ${result.message}")
-                    _loginState.send(LoginState(isError = result.message))
+                    _loginState.value = LoginState(isError = result.message) // Emit error state
                 }
             }
         }
@@ -101,4 +100,7 @@ class LoginViewModel @Inject constructor(
         userRepository.addUser(user, userGeneralInfo)
     }
 
+    fun resetLoginState() {
+        _loginState.value = LoginState() // Reset to idle state
+    }
 }

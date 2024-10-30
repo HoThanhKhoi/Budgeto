@@ -17,11 +17,15 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.requiredHeight
 import androidx.compose.foundation.layout.requiredWidth
 import androidx.compose.foundation.layout.width
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -46,6 +50,7 @@ import com.example.budgeto.R
 import com.example.budgeto.data.Constant
 import com.example.budgeto.screens.signupscreen.SignUpText
 import com.example.budgeto.screensfonts.inter
+import com.example.budgeto.state.LoginState
 import com.example.budgeto.viewmodel.LoginViewModel
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
@@ -106,10 +111,30 @@ fun LoginScreen(
         }
     }
 
+    val loginState by loginViewModel.loginState.collectAsState(initial = LoginState())
+
+    when {
+        loginState.isLoading -> {
+            CircularProgressIndicator()
+        }
+        loginState.isError != null -> {
+            Text("Error: ${loginState.isError}")
+        }
+    }
+
     fun initiateGoogleSignIn() {
         googleSignInClient.signOut().addOnCompleteListener {
             val signInIntent = googleSignInClient.signInIntent
             launcher.launch(signInIntent)
+        }
+    }
+
+    LaunchedEffect(loginState.isSuccess) {
+        loginState.isSuccess?.let {
+            if (loginViewModel.isUserLoggedIn()) {
+                onLoginButtonTapped() // Navigate to Profile screen on success
+                loginViewModel.resetLoginState() // Reset login state after navigation
+            }
         }
     }
 
@@ -118,7 +143,7 @@ fun LoginScreen(
         password = localPassword,
         onLoginTapped = {
             loginViewModel.loginUser(localEmail, localPassword)
-            onLoginButtonTapped()
+//            onLoginButtonTapped()
         },
         onEmailChanged = { localEmail = it },
         onPasswordChange = { localPassword = it },
