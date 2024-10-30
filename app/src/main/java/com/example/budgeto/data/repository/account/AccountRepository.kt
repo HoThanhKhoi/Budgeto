@@ -13,7 +13,7 @@ class AccountRepository @Inject constructor(
     private val accountCollectionPath = "accounts"
 
     suspend fun getAccount(accountId: String): Account? {
-
+        return null
     }
 
     suspend fun addAccount(

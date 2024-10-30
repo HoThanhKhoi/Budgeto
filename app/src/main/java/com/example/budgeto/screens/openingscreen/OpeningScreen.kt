@@ -1,35 +1,38 @@
 package com.example.budgeto.screens.openingscreen
 
+import androidx.compose.foundation.background
+import androidx.compose.foundation.horizontalScroll
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.requiredHeight
 import androidx.compose.foundation.layout.requiredWidth
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.layout.wrapContentWidth
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.AbsoluteAlignment
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
+import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
-import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.DpOffset
 import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
@@ -230,101 +233,106 @@ fun OpeningScreenExpensesInput(
 
 ) {
     TopLevel(modifier = modifier) {
-//        Rectangle65()
         MAINFRAME(
-            modifier = Modifier.boxAlign(
-                alignment = Alignment.TopStart,
-                offset = DpOffset(
-                    x = 0.dp,
-                    y = 229.0.dp
-                )
-            )
+            modifier = Modifier
+                .fillMaxSize()
+                .align(Alignment.BottomCenter)
         ) {
             Category(
-                modifier = Modifier.boxAlign(
-                    alignment = Alignment.TopStart,
-                    offset = DpOffset(
-                        x = 220.0.dp,
-                        y = 16.0.dp
-                    )
-                )
+                modifier = Modifier
+                    .fillMaxWidth() // Makes Category take the full width of the container
+                    .padding(top = 16.dp, start = 200.dp) // Relative positioning using padding
             ) {
                 FrameCategory(
-                    modifier = Modifier.boxAlign(
-                        alignment = Alignment.TopStart,
-                        offset = DpOffset(
-                            x = 9.0.dp,
-                            y = 31.0.dp
-                        )
-                    )
+                    modifier = Modifier
+                        .fillMaxWidth() // Makes FrameCategory responsive to Category width
+                        .padding(top = 31.dp) // Positioning within Category
                 ) {
                     TxtDefault(
                         categoryTextContent = categoryTextContent,
-                        modifier = Modifier.boxAlign(
-                            alignment = Alignment.TopStart,
-                            offset = DpOffset(
-                                x = 36.0.dp,
-                                y = 11.0.dp
-                            )
-                        )
+                        modifier = Modifier
+                            .padding(start = 36.dp, top = 11.dp) // Relative padding for TxtDefault within FrameCategory
                     )
                 }
+
                 Category1(
-                    modifier = Modifier.boxAlign(
-                        alignment = Alignment.TopStart,
-                        offset = DpOffset(
-                            x = 40.0.dp,
-                            y = 7.0.dp
-                        )
-                    )
+                    modifier = Modifier
+                        .padding(start = 40.dp, top = 7.dp) // Relative positioning within Category
                 )
             }
 
+            val scrollState = rememberScrollState()
             Input(
-                modifier = Modifier.boxAlign(
-                    alignment = Alignment.TopStart,
-                    offset = DpOffset(
-                        x = 25.0.dp,
-                        y = 110.0.dp
-                    )
-                )
+                modifier = modifier
+                    .fillMaxWidth()
+                    .padding(start = 77.dp, end = 77.dp, top = 110.dp, bottom = 0.dp)
             ) {
-                Class10001000(
-                    operationTextContent = operationTextContent,
-                    modifier = Modifier.boxAlign(
-                        alignment = Alignment.TopStart,
-                        offset = DpOffset(
-                            x = 20.0.dp,
-                            y = 12.0.dp
+                val operationTextFontSize = calculateFontSize(operationTextContent, maxFontSize = 24.sp, minFontSize = 12.sp)
+                val resultTextFontSize = calculateFontSize(resultTextContent, maxFontSize = 40.sp, minFontSize = 20.sp)
+
+                Box(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .fillMaxHeight()
+                ) {
+                    Row(
+                        modifier = Modifier
+                            .horizontalScroll(scrollState)
+                            .fillMaxWidth()
+                    ) {
+                        Class10001000(
+                            operationTextContent = operationTextContent,
+                            modifier = Modifier
+                                .align(Alignment.CenterVertically)
+                                .padding(15.dp),
+                            fontSize = operationTextFontSize
                         )
+                    }
+
+                    Row(
+                        modifier = Modifier
+                            .horizontalScroll(scrollState)
+                            .align(Alignment.BottomEnd)
+                            .fillMaxWidth()
+                    ) {
+                        Class2000(
+                            resultTextContent = resultTextContent,
+                            textAlign = TextAlign.End,
+                            modifier = Modifier
+                                .align(Alignment.CenterVertically)
+                                .padding(15.dp),
+                            fontSize = resultTextFontSize
+                        )
+                    }
+
+                    // Optional: Fade effect for overflow indicator
+                    Box(
+                        modifier = Modifier
+                            .align(Alignment.CenterEnd)
+                            .fillMaxWidth()
+                            .background(
+                                brush = Brush.horizontalGradient(
+                                    colors = listOf(Color.Transparent, Color.Gray),
+                                    startX = 0.0f,
+                                    endX = 100.0f
+                                )
+                            )
                     )
-                )
-                Class2000(
-                    resultTextContent = resultTextContent,
-                    modifier = Modifier.boxAlign(
-                        alignment = Alignment.TopStart,
-                        offset = DpOffset(
-                            x = 205.0.dp,
-                            y = 60.0.dp
-                        )
-                    ).wrapContentWidth(),
-                    textAlign = TextAlign.End
-                )
+                }
             }
 
             Key(
-                modifier = Modifier.boxAlign(
-                    alignment = Alignment.TopStart,
-                    offset = DpOffset(
-                        x = 0.dp,
-                        y = 240.0.dp
-                    )
-                )
+                modifier = modifier
+                    .fillMaxWidth()
+                    .padding(start = 10.dp, end = 10.dp, top = 240.dp, bottom = 10.dp)
             ) {
-                RelayColumn (modifier = Modifier.fillMaxWidth()) {
+                RelayColumn (modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(15.dp, 5.dp, 15.dp, 5.dp)) {
                     // Row 1
-                    RelayRow (modifier = Modifier.fillMaxWidth())
-                    {
+                    RelayRow (modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(5.dp)) {
                         RelayCalculateButton(icon = painterResource(R.drawable.opening_screen_expenses_input_tax_icon), onClick = onTaxButtonTapped, modifier = Modifier.weight(1f))
                         RelayCalculateButton(label = "%", onClick = onPercentButtonTapped, modifier = Modifier.weight(1f))
                         RelayCalculateButton(icon = painterResource(R.drawable.opening_screen_expenses_input_account_icon), onClick = onAccountButtonTapped, modifier = Modifier.weight(1f))
@@ -333,7 +341,9 @@ fun OpeningScreenExpensesInput(
                     }
 
                     // Row 2
-                    RelayRow {
+                    RelayRow (modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(5.dp)) {
                         RelayCalculateButton(label = "7", onClick = { onNumberButtonTapped("7") }, modifier = Modifier.weight(1f))
                         RelayCalculateButton(label = "8", onClick = { onNumberButtonTapped("8") }, modifier = Modifier.weight(1f))
                         RelayCalculateButton(label = "9", onClick = { onNumberButtonTapped("9") }, modifier = Modifier.weight(1f))
@@ -342,7 +352,9 @@ fun OpeningScreenExpensesInput(
                     }
 
                     // Row 3
-                    RelayRow {
+                    RelayRow (modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(5.dp)) {
                         RelayCalculateButton(label = "4", onClick = { onNumberButtonTapped("4") }, modifier = Modifier.weight(1f))
                         RelayCalculateButton(label = "5", onClick = { onNumberButtonTapped("5") }, modifier = Modifier.weight(1f))
                         RelayCalculateButton(label = "6", onClick = { onNumberButtonTapped("6") }, modifier = Modifier.weight(1f))
@@ -351,7 +363,9 @@ fun OpeningScreenExpensesInput(
                     }
 
                     // Row 4
-                    RelayRow {
+                    RelayRow (modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(5.dp)) {
                         RelayCalculateButton(label = "1", onClick = { onNumberButtonTapped("1") }, modifier = Modifier.weight(1f))
                         RelayCalculateButton(label = "2", onClick = { onNumberButtonTapped("2") }, modifier = Modifier.weight(1f))
                         RelayCalculateButton(label = "3", onClick = { onNumberButtonTapped("3") }, modifier = Modifier.weight(1f))
@@ -360,7 +374,9 @@ fun OpeningScreenExpensesInput(
                     }
 
                     // Row 5
-                    RelayRow {
+                    RelayRow (modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(5.dp)) {
                         RelayCalculateButton(label = "(", onClick = onOpenParenthesesButtonTapped, modifier = Modifier.weight(1f))
                         RelayCalculateButton(label = "0", onClick = { onNumberButtonTapped("0") }, modifier = Modifier.weight(1f))
                         RelayCalculateButton(label = ")", onClick = onCloseParenthesesButtonTapped, modifier = Modifier.weight(1f))
@@ -907,13 +923,9 @@ fun OpeningScreenExpensesInput(
         }
 
         Note(
-            modifier = Modifier.boxAlign(
-                alignment = Alignment.TopStart,
-                offset = DpOffset(
-                    x = 24.0.dp,
-                    y = 148.0.dp
-                )
-            )
+            modifier = modifier
+                .align(Alignment.TopStart)
+                .padding(start = 30.dp, end = 0.dp, top = 157.dp, bottom = 0.dp)
         ) {
             Rectangle60(
                 modifier = Modifier.boxAlign(
@@ -2362,11 +2374,12 @@ fun Key(
 @Composable
 fun Class10001000(
     operationTextContent: String,
+    fontSize: TextUnit,
     modifier: Modifier = Modifier
 ) {
     RelayText(
         content = operationTextContent,
-        fontSize = 24.0.sp,
+        fontSize = fontSize,
         fontFamily = inter,
         height = 1.2102272510528564.em,
         textAlign = TextAlign.Left,
@@ -2379,11 +2392,12 @@ fun Class10001000(
 fun Class2000(
     resultTextContent: String,
     modifier: Modifier = Modifier,
+    fontSize: TextUnit,
     textAlign: TextAlign = TextAlign.Right
 ) {
     RelayText(
         content = resultTextContent,
-        fontSize = 40.0.sp,
+        fontSize = fontSize,
         fontFamily = inter,
         height = 1.2102272033691406.em,
         textAlign = textAlign,
@@ -2433,7 +2447,7 @@ fun MAINFRAME(
         strokeWidth = 1.dp.value.toDouble(),
         strokeColor = Color.Black,
         content = content,
-        modifier = modifier.requiredWidth(396.0.dp).requiredHeight(615.0.dp)
+        modifier = modifier.requiredWidth(500.0.dp).requiredHeight(615.0.dp)
     )
 }
 
@@ -2583,4 +2597,21 @@ fun TopLevel(
         content = content,
         modifier = modifier.fillMaxSize() // Allows TopLevel to fill the full screen height
     )
+}
+
+fun calculateFontSize(
+    textContent: String,
+    maxFontSize: TextUnit = 24.sp,
+    minFontSize: TextUnit = 12.sp
+): TextUnit {
+    val length = textContent.length
+
+    // Convert TextUnit to Float for calculation
+    val fontSize = when {
+        length < 10 -> maxFontSize
+        length < 20 -> (maxFontSize.value - (maxFontSize.value - minFontSize.value) * 0.3f).sp
+        length < 30 -> (maxFontSize.value - (maxFontSize.value - minFontSize.value) * 0.6f).sp
+        else -> minFontSize
+    }
+    return fontSize
 }
