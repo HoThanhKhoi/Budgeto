@@ -2,6 +2,7 @@ package com.example.budgeto.screens.profilescreen
 
 import android.util.Log
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxHeight
@@ -11,6 +12,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.requiredHeight
 import androidx.compose.foundation.layout.requiredWidth
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -70,7 +72,10 @@ fun ProfileScreen(
         }
     }
 
-    Log.d("ProfileScreen", "fullName: $localFullName gender: $localGender phoneNumber: $localPhoneNumber address: $localAddress occupation: $localOccupation birthDate: $localBirthDate")
+    Log.d(
+        "ProfileScreen",
+        "fullName: $localFullName gender: $localGender phoneNumber: $localPhoneNumber address: $localAddress occupation: $localOccupation birthDate: $localBirthDate"
+    )
 
     ProfileContent(
         fullnameTextContent = localFullName,
@@ -89,12 +94,12 @@ fun ProfileScreen(
         onGenderOptionButtonTapped = {},
         onGoogleAccountLinkButtonTapped = {},
         onFacebookAccountLinkButtonTapped = {},
-        onNameFieldChanged = {localFullName = it},
-        onPhoneFieldChanged = {localPhoneNumber = it},
-        onAddressFieldChanged = {localAddress = it},
-        onOccupationFieldChanged = {localOccupation = it},
-        onGenderFieldChanged = {localGender = it},
-        onBirthDayFieldChanged = {localBirthDate = it},
+        onNameFieldChanged = { localFullName = it },
+        onPhoneFieldChanged = { localPhoneNumber = it },
+        onAddressFieldChanged = { localAddress = it },
+        onOccupationFieldChanged = { localOccupation = it },
+        onGenderFieldChanged = { localGender = it },
+        onBirthDayFieldChanged = { localBirthDate = it },
         modifier = modifier,
     )
 }
@@ -126,729 +131,528 @@ fun ProfileContent(
     onGenderFieldChanged: (UserGender) -> Unit = {},
     onBirthDayFieldChanged: (String) -> Unit = {},
 ) {
-    TopLevel(modifier = modifier) {
-        BottomNav(
-            modifier = Modifier.boxAlign(
-                alignment = Alignment.TopStart,
-                offset = DpOffset(
-                    x = 0.0.dp,
-                    y = 1151.0.dp
-                )
-            )
-        ) {
-            Line12(
-                modifier = Modifier.boxAlign(
-                    alignment = Alignment.TopCenter,
-                    offset = DpOffset(
-                        x = -2.0.dp,
-                        y = 101.0.dp
-                    )
-                )
-            )
-            Frame43(
-                modifier = Modifier.boxAlign(
-                    alignment = Alignment.TopCenter,
-                    offset = DpOffset(
-                        x = 0.5.dp,
-                        y = 24.0.dp
-                    )
-                )
-            ) {
-                Store(
-                    onStoreButtonTapped = onStoreButtonTapped,
-                    modifier = Modifier
-                        .rowWeight(1.0f)
-                        .columnWeight(1.0f)
-                ) {
-                    Vector(
-                        modifier = Modifier
-                            .boxAlign(
-                                alignment = Alignment.TopStart,
-                                offset = DpOffset(
-                                    x = -0.875.dp,
-                                    y = -0.875.dp
-                                )
-                            )
-                            .rowWeight(1.0f)
-                            .columnWeight(1.0f)
-                    )
-                    Vector1(
-                        modifier = Modifier
-                            .boxAlign(
-                                alignment = Alignment.TopStart,
-                                offset = DpOffset(
-                                    x = -0.8751220703125.dp,
-                                    y = -0.875.dp
-                                )
-                            )
-                            .rowWeight(1.0f)
-                            .columnWeight(1.0f)
-                    )
-                }
-                Statistic(
-                    onStatisticButtonTapped = onStatisticButtonTapped,
-                    modifier = Modifier.boxAlign(
-                        alignment = Alignment.TopStart,
-                        offset = DpOffset(
-                            x = 282.0.dp,
-                            y = 9.0.dp
-                        )
-                    )
-                ) {
-                    Vector2(
-                        modifier = Modifier
-                            .rowWeight(1.0f)
-                            .columnWeight(1.0f)
-                    )
-                }
-                Archive(
-                    onInventoryButtonTapped = onInventoryButtonTapped,
-                    modifier = Modifier.boxAlign(
-                        alignment = Alignment.TopStart,
-                        offset = DpOffset(
-                            x = 87.0.dp,
-                            y = 14.0.dp
-                        )
-                    )
-                ) {
-                    Vector3(
-                        modifier = Modifier
-                            .rowWeight(1.0f)
-                            .columnWeight(1.0f)
-                    )
-                    Vector4(
-                        modifier = Modifier
-                            .rowWeight(1.0f)
-                            .columnWeight(1.0f)
-                    )
-                }
-                History(
-                    onHistoryButtonTapped = onHistoryButtonTapped,
-                    modifier = Modifier.boxAlign(
-                        alignment = Alignment.TopStart,
-                        offset = DpOffset(
-                            x = 231.0.dp,
-                            y = 16.0.dp
-                        )
-                    )
-                ) {
-                    Vector5(
-                        modifier = Modifier
-                            .rowWeight(1.0f)
-                            .columnWeight(1.0f)
-                    )
-                    Vector6(
-                        modifier = Modifier
-                            .rowWeight(1.0f)
-                            .columnWeight(1.0f)
-                    )
-                }
-            }
-            Frame42(
-                onHomepageButtonTapped = onHomepageButtonTapped,
-                modifier = Modifier.boxAlign(
-                    alignment = Alignment.TopStart,
-                    offset = DpOffset(
-                        x = 165.0.dp,
-                        y = 6.0.dp
-                    )
-                )
-            ) {
-                Vector7(
-                    modifier = Modifier
-                        .rowWeight(1.0f)
-                        .columnWeight(1.0f)
-                )
-            }
-        }
-        Frame54(
-            onBackToHomepageButtonTapped = onBackToHomepageButtonTapped,
-            modifier = Modifier.boxAlign(
-                alignment = Alignment.TopStart,
-                offset = DpOffset(
-                    x = 339.0.dp,
-                    y = 37.0.dp
-                )
-            )
-        ) {
-            Arrow3(
-                modifier = Modifier.boxAlign(
-                    alignment = Alignment.TopStart,
-                    offset = DpOffset(
-                        x = 7.0.dp,
-                        y = 6.6360321044921875.dp
-                    )
-                )
-            )
-        }
-        Avatar(
-            modifier = Modifier.boxAlign(
-                alignment = Alignment.TopCenter,
-                offset = DpOffset(
-                    x = 0.0.dp,
-                    y = 89.0.dp
-                )
-            )
-        ) {
-            Layer2(
-                modifier = Modifier
-                    .rowWeight(1.0f)
-                    .columnWeight(1.0f)
-            ) {
-                Class1(
-                    modifier = Modifier
-                        .rowWeight(1.0f)
-                        .columnWeight(1.0f)
-                ) {
-                    Vector8(
-                        modifier = Modifier
-                            .rowWeight(1.0f)
-                            .columnWeight(1.0f)
-                    )
-                    Vector9(
-                        modifier = Modifier
-                            .rowWeight(1.0f)
-                            .columnWeight(1.0f)
-                    )
-                    Vector10(
-                        modifier = Modifier
-                            .rowWeight(1.0f)
-                            .columnWeight(1.0f)
-                    )
-                    Vector11(
-                        modifier = Modifier
-                            .rowWeight(1.0f)
-                            .columnWeight(1.0f)
-                    )
-                    ClipPathGroup(
-                        modifier = Modifier
-                            .rowWeight(1.0f)
-                            .columnWeight(1.0f)
-                    ) {
-                        A(
-                            modifier = Modifier
-                                .rowWeight(1.0f)
-                                .columnWeight(1.0f)
-                        ) {
-                            Vector19(
-                                modifier = Modifier
-                                    .rowWeight(1.0f)
-                                    .columnWeight(1.0f)
-                            )
-                        }
-                        Group(
-                            modifier = Modifier
-                                .rowWeight(1.0f)
-                                .columnWeight(1.0f)
-                        ) {
-                            Vector20(
-                                modifier = Modifier
-                                    .rowWeight(1.0f)
-                                    .columnWeight(1.0f)
-                            )
-                            Vector21(
-                                modifier = Modifier
-                                    .rowWeight(1.0f)
-                                    .columnWeight(1.0f)
-                            )
-                            Vector22(
-                                modifier = Modifier
-                                    .rowWeight(1.0f)
-                                    .columnWeight(1.0f)
-                            )
-                            Vector23(
-                                modifier = Modifier
-                                    .rowWeight(1.0f)
-                                    .columnWeight(1.0f)
-                            )
-                            Vector24(
-                                modifier = Modifier
-                                    .rowWeight(1.0f)
-                                    .columnWeight(1.0f)
-                            )
-                            Vector25(
-                                modifier = Modifier
-                                    .rowWeight(1.0f)
-                                    .columnWeight(1.0f)
-                            )
-                            Vector26(
-                                modifier = Modifier
-                                    .rowWeight(1.0f)
-                                    .columnWeight(1.0f)
-                            )
-                        }
-                    }
-                    Vector12(
-                        modifier = Modifier
-                            .rowWeight(1.0f)
-                            .columnWeight(1.0f)
-                    )
-                    Vector13(
-                        modifier = Modifier
-                            .rowWeight(1.0f)
-                            .columnWeight(1.0f)
-                    )
-                    ClipPathGroup1(
-                        modifier = Modifier
-                            .rowWeight(1.0f)
-                            .columnWeight(1.0f)
-                    ) {
-                        B(
-                            modifier = Modifier
-                                .rowWeight(1.0f)
-                                .columnWeight(1.0f)
-                        ) {
-                            Vector27(
-                                modifier = Modifier
-                                    .rowWeight(1.0f)
-                                    .columnWeight(1.0f)
-                            )
-                        }
-                        Group1(
-                            modifier = Modifier
-                                .rowWeight(1.0f)
-                                .columnWeight(1.0f)
-                        ) {
-                            Vector28(
-                                modifier = Modifier
-                                    .boxAlign(
-                                        alignment = Alignment.TopStart,
-                                        offset = DpOffset(
-                                            x = 0.0.dp,
-                                            y = 1.2065582275390625.dp
-                                        )
-                                    )
-                                    .rowWeight(1.0f)
-                                    .columnWeight(1.0f)
-                            )
-                        }
-                    }
-                    Vector14(
-                        modifier = Modifier
-                            .rowWeight(1.0f)
-                            .columnWeight(1.0f)
-                    )
-                    Vector15(
-                        modifier = Modifier
-                            .rowWeight(1.0f)
-                            .columnWeight(1.0f)
-                    )
-                    Vector16(
-                        modifier = Modifier
-                            .rowWeight(1.0f)
-                            .columnWeight(1.0f)
-                    )
-                    Vector17(
-                        modifier = Modifier
-                            .rowWeight(1.0f)
-                            .columnWeight(1.0f)
-                    )
-                    Vector18(
-                        modifier = Modifier
-                            .rowWeight(1.0f)
-                            .columnWeight(1.0f)
-                    )
-                }
-            }
-        }
-        Profile(
-            modifier = Modifier.boxAlign(
-                alignment = Alignment.TopStart,
-                offset = DpOffset(
-                    x = 23.0.dp,
-                    y = 41.0.dp
-                )
-            )
-        )
 
-        Column(
+    TopLevel(modifier = modifier) {
+        Box(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(top = 300.dp),
-            horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.spacedBy(14.dp)
-
         ) {
-            UserNameField(
-                value = fullnameTextContent,
-                onValueChange = onNameFieldChanged,
+            BottomNav(
                 modifier = modifier
-            )
-            DayOfBirthField(
-                value = birthdateTextContent,
-                onValueChange = onBirthDayFieldChanged,
-                modifier = modifier
-            )
-            PhoneField(
-                value = phoneNumberTextContent,
-                onValueChange = onPhoneFieldChanged,
-                modifier = modifier
-            )
-            AddressField(
-                value = addressTextContent,
-                onValueChange = onAddressFieldChanged,
-                modifier = modifier
-            )
-            OccupationField(
-                value = occupationTextContent,
-                onValueChange = onOccupationFieldChanged,
-                modifier = modifier
-            )
-
-            GenderDropdownField(
-                onValueChange = onGenderFieldChanged,
-                modifier = modifier
-            )
-
-        }
-
-
-//        Frame56(
-//            modifier = Modifier.boxAlign(
-//                alignment = Alignment.TopCenter,
-//                offset = DpOffset(
-//                    x = 0.0.dp,
-//                    y = 335.0.dp
-//                )
-//            )
-//        ) {
-//            BaoNgu1(
-//                nameTextContent = nameTextContent,
-//                modifier = Modifier.boxAlign(
-//                    alignment = Alignment.TopStart,
-//                    offset = DpOffset(
-//                        x = 15.0.dp,
-//                        y = 16.0.dp
-//                    )
-//                )
-//            )
-//        }
-//        Frame57(
-//            modifier = Modifier.boxAlign(
-//                alignment = Alignment.TopCenter,
-//                offset = DpOffset(
-//                    x = 0.0.dp,
-//                    y = 429.0.dp
-//                )
-//            )
-//        ) {
-//            YyyyMmDd(
-//                birthdateTextContent = birthdateTextContent,
-//                modifier = Modifier.boxAlign(
-//                    alignment = Alignment.TopStart,
-//                    offset = DpOffset(
-//                        x = 15.0.dp,
-//                        y = 16.0.dp
-//                    )
-//                )
-//            )
-//        }
-//        Frame58(
-//            modifier = Modifier.boxAlign(
-//                alignment = Alignment.TopCenter,
-//                offset = DpOffset(
-//                    x = 0.0.dp,
-//                    y = 523.0.dp
-//                )
-//            )
-//        ) {
-//            Class84366295416(
-//                phoneNumberTextContent = phoneNumberTextContent,
-//                modifier = Modifier.boxAlign(
-//                    alignment = Alignment.TopStart,
-//                    offset = DpOffset(
-//                        x = 15.0.dp,
-//                        y = 16.0.dp
-//                    )
-//                )
-//            )
-//        }
-//        Frame59(
-//            modifier = Modifier.boxAlign(
-//                alignment = Alignment.TopCenter,
-//                offset = DpOffset(
-//                    x = 0.0.dp,
-//                    y = 617.0.dp
-//                )
-//            )
-//        ) {
-//            HoChiMinhCity(
-//                addressTextContent = addressTextContent,
-//                modifier = Modifier.boxAlign(
-//                    alignment = Alignment.TopStart,
-//                    offset = DpOffset(
-//                        x = 15.0.dp,
-//                        y = 16.0.dp
-//                    )
-//                )
-//            )
-//        }
-//        Frame60(
-//            modifier = Modifier.boxAlign(
-//                alignment = Alignment.TopCenter,
-//                offset = DpOffset(
-//                    x = 0.0.dp,
-//                    y = 711.0.dp
-//                )
-//            )
-//        ) {
-//            Student(
-//                occupationTextContent = occupationTextContent,
-//                modifier = Modifier.boxAlign(
-//                    alignment = Alignment.TopStart,
-//                    offset = DpOffset(
-//                        x = 15.0.dp,
-//                        y = 16.0.dp
-//                    )
-//                )
-//            )
-//        }
-//        Frame61(
-//            modifier = Modifier.boxAlign(
-//                alignment = Alignment.TopCenter,
-//                offset = DpOffset(
-//                    x = 0.0.dp,
-//                    y = 805.0.dp
-//                )
-//            )
-//        ) {
-//            Female(
-//                genderTextContent = genderTextContent,
-//                modifier = Modifier.boxAlign(
-//                    alignment = Alignment.TopStart,
-//                    offset = DpOffset(
-//                        x = 15.0.dp,
-//                        y = 16.0.dp
-//                    )
-//                )
-//            )
-//            Vector321(
-//                onGenderOptionButtonTapped = onGenderOptionButtonTapped,
-//                modifier = Modifier.boxAlign(
-//                    alignment = Alignment.TopStart,
-//                    offset = DpOffset(
-//                        x = 315.68750006556706.dp,
-//                        y = 21.31250013933003.dp
-//                    )
-//                )
-//            )
-//        }
-//        Name(
-//            modifier = Modifier.boxAlign(
-//                alignment = Alignment.TopStart,
-//                offset = DpOffset(
-//                    x = 23.0.dp,
-//                    y = 309.0.dp
-//                )
-//            )
-//        )
-//        DayOfBirth(
-//            modifier = Modifier.boxAlign(
-//                alignment = Alignment.TopStart,
-//                offset = DpOffset(
-//                    x = 23.0.dp,
-//                    y = 403.0.dp
-//                )
-//            )
-//        )
-//        Phone(
-//            modifier = Modifier.boxAlign(
-//                alignment = Alignment.TopStart,
-//                offset = DpOffset(
-//                    x = 23.0.dp,
-//                    y = 497.0.dp
-//                )
-//            )
-//        )
-//        Address(
-//            modifier = Modifier.boxAlign(
-//                alignment = Alignment.TopStart,
-//                offset = DpOffset(
-//                    x = 23.0.dp,
-//                    y = 591.0.dp
-//                )
-//            )
-//        )
-//        Occupation(
-//            modifier = Modifier.boxAlign(
-//                alignment = Alignment.TopStart,
-//                offset = DpOffset(
-//                    x = 23.0.dp,
-//                    y = 685.0.dp
-//                )
-//            )
-//        )
-//        Gender(
-//            modifier = Modifier.boxAlign(
-//                alignment = Alignment.TopStart,
-//                offset = DpOffset(
-//                    x = 23.0.dp,
-//                    y = 779.0.dp
-//                )
-//            )
-//        )
-        FullNameTitle(
-            text = fullnameTextContent,
-            modifier = Modifier.boxAlign(
-                alignment = Alignment.TopCenter,
-                offset = DpOffset(
-                    x = 1.0.dp,
-                    y = 256.0.dp
-                )
-            )
-        )
-        Frame47(
-            modifier = Modifier.boxAlign(
-                alignment = Alignment.TopCenter,
-                offset = DpOffset(
-                    x = 0.0.dp,
-                    y = 886.0.dp
-                )
-            )
-        ) {
-            AccountLink(
-                modifier = Modifier.boxAlign(
-                    alignment = Alignment.TopStart,
-                    offset = DpOffset(
-                        x = 14.0.dp,
-                        y = 22.0.dp
-                    )
-                )
-            )
-            Frame48(
-                onGoogleAccountLinkButtonTapped = onGoogleAccountLinkButtonTapped,
-                modifier = Modifier.boxAlign(
-                    alignment = Alignment.TopCenter,
-                    offset = DpOffset(
-                        x = 0.5.dp,
-                        y = 56.0.dp
-                    )
-                )
+                    .align(Alignment.BottomCenter)
             ) {
-                Google(
+                Line12(
                     modifier = Modifier.boxAlign(
-                        alignment = Alignment.TopStart,
+                        alignment = Alignment.TopCenter,
                         offset = DpOffset(
-                            x = 69.0.dp,
-                            y = 16.0.dp
+                            x = -2.0.dp,
+                            y = 101.0.dp
                         )
                     )
                 )
-                Group99(
+                Frame43(
                     modifier = Modifier.boxAlign(
-                        alignment = Alignment.TopStart,
+                        alignment = Alignment.TopCenter,
                         offset = DpOffset(
-                            x = 21.0.dp,
-                            y = 10.0.dp
+                            x = 0.5.dp,
+                            y = 24.0.dp
                         )
                     )
                 ) {
-                    Ellipse1(
-                        modifier = Modifier.boxAlign(
-                            alignment = Alignment.Center,
-                            offset = DpOffset(
-                                x = 0.0.dp,
-                                y = 0.0.dp
-                            )
+                    Store(
+                        onStoreButtonTapped = onStoreButtonTapped,
+                        modifier = Modifier
+                            .rowWeight(1.0f)
+                            .columnWeight(1.0f)
+                    ) {
+                        Vector(
+                            modifier = Modifier
+                                .boxAlign(
+                                    alignment = Alignment.TopStart,
+                                    offset = DpOffset(
+                                        x = -0.875.dp,
+                                        y = -0.875.dp
+                                    )
+                                )
+                                .rowWeight(1.0f)
+                                .columnWeight(1.0f)
                         )
-                    )
-                    Ellipse35(
+                        Vector1(
+                            modifier = Modifier
+                                .boxAlign(
+                                    alignment = Alignment.TopStart,
+                                    offset = DpOffset(
+                                        x = -0.8751220703125.dp,
+                                        y = -0.875.dp
+                                    )
+                                )
+                                .rowWeight(1.0f)
+                                .columnWeight(1.0f)
+                        )
+                    }
+                    Statistic(
+                        onStatisticButtonTapped = onStatisticButtonTapped,
                         modifier = Modifier.boxAlign(
                             alignment = Alignment.TopStart,
                             offset = DpOffset(
-                                x = 7.25.dp,
-                                y = 7.25.dp
+                                x = 282.0.dp,
+                                y = 9.0.dp
                             )
                         )
-                    )
-                }
-            }
-            Frame49(
-                onFacebookAccountLinkButtonTapped = onFacebookAccountLinkButtonTapped,
-                modifier = Modifier.boxAlign(
-                    alignment = Alignment.TopCenter,
-                    offset = DpOffset(
-                        x = 0.5.dp,
-                        y = 115.0.dp
-                    )
-                )
-            ) {
-                Facebook(
-                    modifier = Modifier.boxAlign(
-                        alignment = Alignment.TopStart,
-                        offset = DpOffset(
-                            x = 70.0.dp,
-                            y = 16.0.dp
+                    ) {
+                        Vector2(
+                            modifier = Modifier
+                                .rowWeight(1.0f)
+                                .columnWeight(1.0f)
                         )
-                    )
-                )
-                Group98(
+                    }
+                    Archive(
+                        onInventoryButtonTapped = onInventoryButtonTapped,
+                        modifier = Modifier.boxAlign(
+                            alignment = Alignment.TopStart,
+                            offset = DpOffset(
+                                x = 87.0.dp,
+                                y = 14.0.dp
+                            )
+                        )
+                    ) {
+                        Vector3(
+                            modifier = Modifier
+                                .rowWeight(1.0f)
+                                .columnWeight(1.0f)
+                        )
+                        Vector4(
+                            modifier = Modifier
+                                .rowWeight(1.0f)
+                                .columnWeight(1.0f)
+                        )
+                    }
+                    History(
+                        onHistoryButtonTapped = onHistoryButtonTapped,
+                        modifier = Modifier.boxAlign(
+                            alignment = Alignment.TopStart,
+                            offset = DpOffset(
+                                x = 231.0.dp,
+                                y = 16.0.dp
+                            )
+                        )
+                    ) {
+                        Vector5(
+                            modifier = Modifier
+                                .rowWeight(1.0f)
+                                .columnWeight(1.0f)
+                        )
+                        Vector6(
+                            modifier = Modifier
+                                .rowWeight(1.0f)
+                                .columnWeight(1.0f)
+                        )
+                    }
+                }
+                Frame42(
+                    onHomepageButtonTapped = onHomepageButtonTapped,
                     modifier = Modifier.boxAlign(
                         alignment = Alignment.TopStart,
                         offset = DpOffset(
-                            x = 21.0.dp,
-                            y = 10.0.dp
+                            x = 165.0.dp,
+                            y = 6.0.dp
                         )
                     )
                 ) {
-                    Ellipse36(
-                        modifier = Modifier.boxAlign(
-                            alignment = Alignment.Center,
-                            offset = DpOffset(
-                                x = 0.0.dp,
-                                y = 0.0.dp
-                            )
-                        )
-                    )
-                    Ellipse2(
-                        modifier = Modifier.boxAlign(
-                            alignment = Alignment.Center,
-                            offset = DpOffset(
-                                x = 0.0.dp,
-                                y = 0.0.dp
-                            )
-                        )
-                    )
-                    Vector161(
-                        modifier = Modifier.boxAlign(
-                            alignment = Alignment.TopStart,
-                            offset = DpOffset(
-                                x = 11.0.dp,
-                                y = 8.00006103515625.dp
-                            )
-                        )
+                    Vector7(
+                        modifier = Modifier
+                            .rowWeight(1.0f)
+                            .columnWeight(1.0f)
                     )
                 }
             }
-            Rectangle67(
-                modifier = Modifier.boxAlign(
-                    alignment = Alignment.TopStart,
-                    offset = DpOffset(
-                        x = 0.0.dp,
-                        y = 182.0.dp
+            Frame54(
+                onBackToHomepageButtonTapped = onBackToHomepageButtonTapped,
+                modifier = modifier
+                    .align(Alignment.TopEnd)
+                    .padding(top = 25.dp, end = 25.dp)
+            ) {
+                Arrow3(
+                    modifier = Modifier.boxAlign(
+                        alignment = Alignment.TopStart,
+                        offset = DpOffset(
+                            x = 7.0.dp,
+                            y = 6.6360321044921875.dp
+                        )
                     )
                 )
+            }
+
+            Avatar(
+                modifier = modifier
+                    .align(Alignment.TopCenter)
+                    .padding(top = 50.dp)
+            ) {
+                Layer2(
+                    modifier = Modifier
+                        .rowWeight(1.0f)
+                        .columnWeight(1.0f)
+                ) {
+                    Class1(
+                        modifier = Modifier
+                            .rowWeight(1.0f)
+                            .columnWeight(1.0f)
+                    ) {
+                        Vector8(
+                            modifier = Modifier
+                                .rowWeight(1.0f)
+                                .columnWeight(1.0f)
+                        )
+                        Vector9(
+                            modifier = Modifier
+                                .rowWeight(1.0f)
+                                .columnWeight(1.0f)
+                        )
+                        Vector10(
+                            modifier = Modifier
+                                .rowWeight(1.0f)
+                                .columnWeight(1.0f)
+                        )
+                        Vector11(
+                            modifier = Modifier
+                                .rowWeight(1.0f)
+                                .columnWeight(1.0f)
+                        )
+                        ClipPathGroup(
+                            modifier = Modifier
+                                .rowWeight(1.0f)
+                                .columnWeight(1.0f)
+                        ) {
+                            A(
+                                modifier = Modifier
+                                    .rowWeight(1.0f)
+                                    .columnWeight(1.0f)
+                            ) {
+                                Vector19(
+                                    modifier = Modifier
+                                        .rowWeight(1.0f)
+                                        .columnWeight(1.0f)
+                                )
+                            }
+                            Group(
+                                modifier = Modifier
+                                    .rowWeight(1.0f)
+                                    .columnWeight(1.0f)
+                            ) {
+                                Vector20(
+                                    modifier = Modifier
+                                        .rowWeight(1.0f)
+                                        .columnWeight(1.0f)
+                                )
+                                Vector21(
+                                    modifier = Modifier
+                                        .rowWeight(1.0f)
+                                        .columnWeight(1.0f)
+                                )
+                                Vector22(
+                                    modifier = Modifier
+                                        .rowWeight(1.0f)
+                                        .columnWeight(1.0f)
+                                )
+                                Vector23(
+                                    modifier = Modifier
+                                        .rowWeight(1.0f)
+                                        .columnWeight(1.0f)
+                                )
+                                Vector24(
+                                    modifier = Modifier
+                                        .rowWeight(1.0f)
+                                        .columnWeight(1.0f)
+                                )
+                                Vector25(
+                                    modifier = Modifier
+                                        .rowWeight(1.0f)
+                                        .columnWeight(1.0f)
+                                )
+                                Vector26(
+                                    modifier = Modifier
+                                        .rowWeight(1.0f)
+                                        .columnWeight(1.0f)
+                                )
+                            }
+                        }
+                        Vector12(
+                            modifier = Modifier
+                                .rowWeight(1.0f)
+                                .columnWeight(1.0f)
+                        )
+                        Vector13(
+                            modifier = Modifier
+                                .rowWeight(1.0f)
+                                .columnWeight(1.0f)
+                        )
+                        ClipPathGroup1(
+                            modifier = Modifier
+                                .rowWeight(1.0f)
+                                .columnWeight(1.0f)
+                        ) {
+                            B(
+                                modifier = Modifier
+                                    .rowWeight(1.0f)
+                                    .columnWeight(1.0f)
+                            ) {
+                                Vector27(
+                                    modifier = Modifier
+                                        .rowWeight(1.0f)
+                                        .columnWeight(1.0f)
+                                )
+                            }
+                            Group1(
+                                modifier = Modifier
+                                    .rowWeight(1.0f)
+                                    .columnWeight(1.0f)
+                            ) {
+                                Vector28(
+                                    modifier = Modifier
+                                        .boxAlign(
+                                            alignment = Alignment.TopStart,
+                                            offset = DpOffset(
+                                                x = 0.0.dp,
+                                                y = 1.2065582275390625.dp
+                                            )
+                                        )
+                                        .rowWeight(1.0f)
+                                        .columnWeight(1.0f)
+                                )
+                            }
+                        }
+                        Vector14(
+                            modifier = Modifier
+                                .rowWeight(1.0f)
+                                .columnWeight(1.0f)
+                        )
+                        Vector15(
+                            modifier = Modifier
+                                .rowWeight(1.0f)
+                                .columnWeight(1.0f)
+                        )
+                        Vector16(
+                            modifier = Modifier
+                                .rowWeight(1.0f)
+                                .columnWeight(1.0f)
+                        )
+                        Vector17(
+                            modifier = Modifier
+                                .rowWeight(1.0f)
+                                .columnWeight(1.0f)
+                        )
+                        Vector18(
+                            modifier = Modifier
+                                .rowWeight(1.0f)
+                                .columnWeight(1.0f)
+                        )
+                    }
+                }
+            }
+
+            Profile(
+                modifier = modifier
+                    .align(Alignment.TopStart)
+                    .padding(top = 25.dp, start = 25.dp)
             )
-        }
-        Frame50(
-            onSignOutButtonTapped = onSignOutButtonTapped,
-            modifier = Modifier.boxAlign(
-                alignment = Alignment.TopStart,
-                offset = DpOffset(
-                    x = 23.0.dp,
-                    y = 1094.0.dp
-                )
-            )
-        ) {
-            SignOut(
-                modifier = Modifier.boxAlign(
-                    alignment = Alignment.TopCenter,
-                    offset = DpOffset(
-                        x = 0.5.dp,
-                        y = 11.0.dp
+
+            Box(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(
+                        top = 250.dp,
+                        bottom = 150.dp
+                    ) // Apply padding to the Box, not the Column
+            ) {
+                val scrollState = rememberScrollState()
+
+                Column(
+                    modifier = Modifier
+                        .fillMaxWidth(), // Use fillMaxWidth to avoid vertical overflow
+//                    .verticalScroll(scrollState),
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    verticalArrangement = Arrangement.spacedBy(14.dp),
+                ) {
+                    UserNameField(
+                        value = fullnameTextContent,
+                        onValueChange = onNameFieldChanged,
+                        modifier = Modifier.fillMaxWidth() // Explicit width modifier for each field
                     )
-                )
-            )
+                    DayOfBirthField(
+                        value = birthdateTextContent,
+                        onValueChange = onBirthDayFieldChanged,
+                        modifier = Modifier.fillMaxWidth()
+                    )
+                    PhoneField(
+                        value = phoneNumberTextContent,
+                        onValueChange = onPhoneFieldChanged,
+                        modifier = Modifier.fillMaxWidth()
+                    )
+                    AddressField(
+                        value = addressTextContent,
+                        onValueChange = onAddressFieldChanged,
+                        modifier = Modifier.fillMaxWidth()
+                    )
+                    OccupationField(
+                        value = occupationTextContent,
+                        onValueChange = onOccupationFieldChanged,
+                        modifier = Modifier.fillMaxWidth()
+                    )
+                    GenderDropdownField(
+                        onValueChange = onGenderFieldChanged,
+                        modifier = Modifier.fillMaxWidth()
+                    )
+                    FullNameTitle(
+                        text = fullnameTextContent,
+                        modifier = modifier
+                            .align(Alignment.CenterHorizontally)
+                    )
+
+                    Frame47(
+                        modifier = modifier
+                            .align(Alignment.CenterHorizontally)
+                    ) {
+                        AccountLink(
+                            modifier = Modifier.boxAlign(
+                                alignment = Alignment.TopStart,
+                                offset = DpOffset(
+                                    x = 14.0.dp,
+                                    y = 22.0.dp
+                                )
+                            )
+                        )
+                        Frame48(
+                            onGoogleAccountLinkButtonTapped = onGoogleAccountLinkButtonTapped,
+                            modifier = Modifier.boxAlign(
+                                alignment = Alignment.TopCenter,
+                                offset = DpOffset(
+                                    x = 0.5.dp,
+                                    y = 56.0.dp
+                                )
+                            )
+                        ) {
+                            Google(
+                                modifier = Modifier.boxAlign(
+                                    alignment = Alignment.TopStart,
+                                    offset = DpOffset(
+                                        x = 69.0.dp,
+                                        y = 16.0.dp
+                                    )
+                                )
+                            )
+                            Group99(
+                                modifier = Modifier.boxAlign(
+                                    alignment = Alignment.TopStart,
+                                    offset = DpOffset(
+                                        x = 21.0.dp,
+                                        y = 10.0.dp
+                                    )
+                                )
+                            ) {
+                                Ellipse1(
+                                    modifier = Modifier.boxAlign(
+                                        alignment = Alignment.Center,
+                                        offset = DpOffset(
+                                            x = 0.0.dp,
+                                            y = 0.0.dp
+                                        )
+                                    )
+                                )
+                                Ellipse35(
+                                    modifier = Modifier.boxAlign(
+                                        alignment = Alignment.TopStart,
+                                        offset = DpOffset(
+                                            x = 7.25.dp,
+                                            y = 7.25.dp
+                                        )
+                                    )
+                                )
+                            }
+                        }
+                        Frame49(
+                            onFacebookAccountLinkButtonTapped = onFacebookAccountLinkButtonTapped,
+                            modifier = Modifier.boxAlign(
+                                alignment = Alignment.TopCenter,
+                                offset = DpOffset(
+                                    x = 0.5.dp,
+                                    y = 115.0.dp
+                                )
+                            )
+                        ) {
+                            Facebook(
+                                modifier = Modifier.boxAlign(
+                                    alignment = Alignment.TopStart,
+                                    offset = DpOffset(
+                                        x = 70.0.dp,
+                                        y = 16.0.dp
+                                    )
+                                )
+                            )
+                            Group98(
+                                modifier = Modifier.boxAlign(
+                                    alignment = Alignment.TopStart,
+                                    offset = DpOffset(
+                                        x = 21.0.dp,
+                                        y = 10.0.dp
+                                    )
+                                )
+                            ) {
+                                Ellipse36(
+                                    modifier = Modifier.boxAlign(
+                                        alignment = Alignment.Center,
+                                        offset = DpOffset(
+                                            x = 0.0.dp,
+                                            y = 0.0.dp
+                                        )
+                                    )
+                                )
+                                Ellipse2(
+                                    modifier = Modifier.boxAlign(
+                                        alignment = Alignment.Center,
+                                        offset = DpOffset(
+                                            x = 0.0.dp,
+                                            y = 0.0.dp
+                                        )
+                                    )
+                                )
+                                Vector161(
+                                    modifier = Modifier.boxAlign(
+                                        alignment = Alignment.TopStart,
+                                        offset = DpOffset(
+                                            x = 11.0.dp,
+                                            y = 8.00006103515625.dp
+                                        )
+                                    )
+                                )
+                            }
+                        }
+                        Rectangle67(
+                            modifier = Modifier.boxAlign(
+                                alignment = Alignment.TopStart,
+                                offset = DpOffset(
+                                    x = 0.0.dp,
+                                    y = 182.0.dp
+                                )
+                            )
+                        )
+                    }
+
+                    Frame50(
+                        onSignOutButtonTapped = onSignOutButtonTapped,
+                        modifier = modifier
+                            .align(Alignment.CenterHorizontally)
+                            .padding(15.dp)
+                    ) {
+                        SignOut(
+                            modifier = Modifier.boxAlign(
+                                alignment = Alignment.Center,
+                                offset = DpOffset(x = 0.dp, y = 0.dp)
+                            )
+                        )
+                    }
+                }
+
+            }
         }
     }
 }
