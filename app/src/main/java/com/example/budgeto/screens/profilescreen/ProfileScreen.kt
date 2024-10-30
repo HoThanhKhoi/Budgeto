@@ -521,6 +521,12 @@ fun ProfileContent(
                     horizontalAlignment = Alignment.CenterHorizontally,
                     verticalArrangement = Arrangement.spacedBy(14.dp),
                 ) {
+                    FullNameTitle(
+                        text = fullnameTextContent,
+                        modifier = modifier
+                            .align(Alignment.CenterHorizontally)
+                    )
+                    
                     UserNameField(
                         value = fullnameTextContent,
                         onValueChange = onNameFieldChanged,
@@ -550,11 +556,7 @@ fun ProfileContent(
                         onValueChange = onGenderFieldChanged,
                         modifier = Modifier.fillMaxWidth()
                     )
-                    FullNameTitle(
-                        text = fullnameTextContent,
-                        modifier = modifier
-                            .align(Alignment.CenterHorizontally)
-                    )
+
 
                     Frame47(
                         modifier = modifier

@@ -51,8 +51,8 @@ fun BudgetoApp(
         val isUserLoggedIn by remember { mutableStateOf(loginViewModel.isUserLoggedIn()) }
         NavHost(
             navController = navController,
-            startDestination = if (isUserLoggedIn) BudgetoScreenEnum.ProfileScreen.name else BudgetoScreenEnum.Start.name,
-//            startDestination = BudgetoScreenEnum.Start.name,
+            startDestination = BudgetoScreenEnum.Start.name,
+//            startDestination = if (isUserLoggedIn) BudgetoScreenEnum.ProfileScreen.name else BudgetoScreenEnum.Start.name,
 //            startDestination = BudgetoScreenEnum.OpeningScreen.name,
 //            startDestination = BudgetoScreenEnum.ProfileScreen.name,
             modifier = Modifier
