@@ -70,8 +70,6 @@ fun ProfileScreen(
         }
     }
 
-    Log.d("ProfileScreen", "fullName: $localFullName gender: $localGender phoneNumber: $localPhoneNumber address: $localAddress occupation: $localOccupation birthDate: $localBirthDate")
-
     ProfileContent(
         fullnameTextContent = localFullName,
         birthdateTextContent = localBirthDate,
@@ -89,12 +87,59 @@ fun ProfileScreen(
         onGenderOptionButtonTapped = {},
         onGoogleAccountLinkButtonTapped = {},
         onFacebookAccountLinkButtonTapped = {},
-        onNameFieldChanged = {localFullName = it},
-        onPhoneFieldChanged = {localPhoneNumber = it},
-        onAddressFieldChanged = {localAddress = it},
-        onOccupationFieldChanged = {localOccupation = it},
-        onGenderFieldChanged = {localGender = it},
-        onBirthDayFieldChanged = {localBirthDate = it},
+        onNameFieldChanged = {
+            localFullName = it
+        },
+        onNameFieldUpdate = {
+            viewModel.updateUserGeneralInfoField { info ->
+                info.copy(fullName = localFullName)
+            }
+        },
+
+        onPhoneFieldChanged = {
+            localPhoneNumber = it
+        },
+        onPhoneFieldUpdate = {
+            viewModel.updateUserGeneralInfoField { info ->
+                info.copy(phone = localPhoneNumber)
+            }
+        },
+
+        onAddressFieldChanged = {
+            localAddress = it
+        },
+        onAddressFieldUpdate = {
+            viewModel.updateUserGeneralInfoField { info ->
+                info.copy(address = localAddress)
+            }
+        },
+
+        onOccupationFieldChanged = {
+            localOccupation = it
+        },
+        onOccupationFieldUpdate = {
+            viewModel.updateUserGeneralInfoField { info ->
+                info.copy(occupation = localOccupation)
+            }
+        },
+
+        onGenderFieldChanged = {
+            localGender = it
+        },
+        onGenderFieldUpdate = {
+            viewModel.updateUserGeneralInfoField { info ->
+                info.copy(gender = localGender)
+            }
+        },
+
+        onBirthDayFieldChanged = {
+            localBirthDate = it
+        },
+        onBirthDayFieldUpdate = {
+            viewModel.updateUserGeneralInfoField { info ->
+                info.copy(dateOfBirth = localBirthDate)
+            }
+        },
         modifier = modifier,
     )
 }
@@ -120,11 +165,17 @@ fun ProfileContent(
     onGoogleAccountLinkButtonTapped: () -> Unit = {},
     onFacebookAccountLinkButtonTapped: () -> Unit = {},
     onNameFieldChanged: (String) -> Unit = {},
+    onNameFieldUpdate: () -> Unit = {},
     onPhoneFieldChanged: (String) -> Unit = {},
+    onPhoneFieldUpdate: () -> Unit = {},
     onAddressFieldChanged: (String) -> Unit = {},
+    onAddressFieldUpdate: () -> Unit = {},
     onOccupationFieldChanged: (String) -> Unit = {},
+    onOccupationFieldUpdate: () -> Unit = {},
     onGenderFieldChanged: (UserGender) -> Unit = {},
+    onGenderFieldUpdate: () -> Unit = {},
     onBirthDayFieldChanged: (String) -> Unit = {},
+    onBirthDayFieldUpdate: () -> Unit = {},
 ) {
     TopLevel(modifier = modifier) {
         BottomNav(
@@ -472,27 +523,32 @@ fun ProfileContent(
             UserNameField(
                 value = fullnameTextContent,
                 onValueChange = onNameFieldChanged,
-                modifier = modifier
+                modifier = modifier,
+                onFieldUpdated = onNameFieldUpdate
             )
             DayOfBirthField(
                 value = birthdateTextContent,
                 onValueChange = onBirthDayFieldChanged,
-                modifier = modifier
+                modifier = modifier,
+                onFieldUpdated = onBirthDayFieldUpdate
             )
             PhoneField(
                 value = phoneNumberTextContent,
                 onValueChange = onPhoneFieldChanged,
-                modifier = modifier
+                modifier = modifier,
+                onFieldUpdated = onPhoneFieldUpdate
             )
             AddressField(
                 value = addressTextContent,
                 onValueChange = onAddressFieldChanged,
-                modifier = modifier
+                modifier = modifier,
+                onFieldUpdated = onAddressFieldUpdate
             )
             OccupationField(
                 value = occupationTextContent,
                 onValueChange = onOccupationFieldChanged,
-                modifier = modifier
+                modifier = modifier,
+                onFieldUpdated = onOccupationFieldUpdate
             )
 
             GenderDropdownField(
@@ -1793,9 +1849,10 @@ fun UserInfoTextField(
     label: String = "",
     value: String = "",
     placeholder: String = "",
-    onValueChange: (String) -> Unit,
+    onValueChange: (String) -> Unit = {},
     modifier: Modifier,
-    placeHolder: String = ""
+    placeHolder: String = "",
+    onFieldUpdated : () -> Unit = {}
 ) {
     Column(
         modifier = Modifier.width(344.dp)
@@ -1814,7 +1871,9 @@ fun UserInfoTextField(
             value = value,
             onValueChange = onValueChange,
             modifier = modifier,
-            placeholder = placeHolder
+            placeholder = placeHolder,
+            onEnterPressed = onFieldUpdated,
+            onExit = onFieldUpdated
         )
     }
 }
@@ -1856,14 +1915,16 @@ fun UserInfoDropDownField(
 fun UserNameField(
     value: String = "",
     onValueChange: (String) -> Unit,
-    modifier: Modifier
+    modifier: Modifier,
+    onFieldUpdated: () -> Unit = {}
 ) {
     UserInfoTextField(
         label = "Name",
         value = value,
         placeholder = "Enter your name",
         onValueChange = onValueChange,
-        modifier = modifier
+        modifier = modifier,
+        onFieldUpdated = onFieldUpdated
     )
 }
 
@@ -1871,14 +1932,16 @@ fun UserNameField(
 fun DayOfBirthField(
     value: String = "",
     onValueChange: (String) -> Unit,
-    modifier: Modifier
+    modifier: Modifier,
+    onFieldUpdated: () -> Unit = {}
 ) {
     UserInfoTextField(
         label = "Day of birth",
         value = value,
         onValueChange = onValueChange,
         modifier = modifier,
-        placeHolder = "yyyy-mm-dd"
+        placeHolder = "yyyy-mm-dd",
+        onFieldUpdated = onFieldUpdated
     )
 }
 
@@ -1886,13 +1949,16 @@ fun DayOfBirthField(
 fun PhoneField(
     value: String = "",
     onValueChange: (String) -> Unit,
-    modifier: Modifier
+    modifier: Modifier,
+    onFieldUpdated: () -> Unit = {}
 ) {
     UserInfoTextField(
         label = "Phone",
         value = value,
         onValueChange = onValueChange,
-        modifier = modifier
+        modifier = modifier,
+        placeHolder = "Enter your phone number",
+        onFieldUpdated = onFieldUpdated
     )
 }
 
@@ -1900,13 +1966,15 @@ fun PhoneField(
 fun AddressField(
     value: String = "",
     onValueChange: (String) -> Unit,
-    modifier: Modifier
+    modifier: Modifier,
+    onFieldUpdated: () -> Unit = {}
 ) {
     UserInfoTextField(
         label = "Address",
         value = value,
         onValueChange = onValueChange,
-        modifier = modifier
+        modifier = modifier,
+        onFieldUpdated = onFieldUpdated
     )
 }
 
@@ -1914,13 +1982,15 @@ fun AddressField(
 fun OccupationField(
     value: String = "",
     onValueChange: (String) -> Unit,
-    modifier: Modifier
+    modifier: Modifier,
+    onFieldUpdated: () -> Unit = {}
 ) {
     UserInfoTextField(
         label = "Occupation",
         value = value,
         onValueChange = onValueChange,
-        modifier = modifier
+        modifier = modifier,
+        onFieldUpdated = onFieldUpdated
     )
 }
 
