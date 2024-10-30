@@ -15,6 +15,8 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.KeyboardActions
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.DropdownMenu
@@ -33,12 +35,15 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.Dp
@@ -59,14 +64,20 @@ class ReusableComponent {
 @Composable
 fun UserInfoTextBox(
     value: String,
-    onValueChange: (String) -> Unit, // Callback to update the value
+    onValueChange: (String) -> Unit,
     modifier: Modifier = Modifier,
     placeholder: String,
-    visualTransformation: VisualTransformation = VisualTransformation.None, // Default to no transformation
-    trailingIcon: @Composable (() -> Unit)? = null // Optional trailing icon
+    visualTransformation: VisualTransformation = VisualTransformation.None,
+    trailingIcon: @Composable (() -> Unit)? = null,
+    onEnterPressed: () -> Unit = {}, // Function to execute on "Enter" key press
+    onExit: () -> Unit = {} // Function to execute when exiting the text field
 ) {
+    val focusManager = LocalFocusManager.current
+    var hasFocus by remember { mutableStateOf(false) }
+
     OutlinedTextField(
         value = value,
+        onValueChange = onValueChange,
         placeholder = {
             Text(
                 text = placeholder,
@@ -82,24 +93,40 @@ fun UserInfoTextBox(
             )
         },
         shape = RoundedCornerShape(10.dp),
-        onValueChange = onValueChange,
         textStyle = androidx.compose.ui.text.TextStyle(
             fontSize = 16.sp,
             color = Color.DarkGray,
-            fontFamily = com.example.budgeto.screensfonts.inter, // Keeping the original font family
+            fontFamily = com.example.budgeto.screensfonts.inter,
             letterSpacing = (-0.5).sp,
             fontWeight = FontWeight(500),
             textAlign = TextAlign.Left,
             lineHeight = 1.625.em
         ),
-        visualTransformation = visualTransformation, // Use visual transformation from parameters
-        trailingIcon = trailingIcon, // Use the trailing icon if provided
+        visualTransformation = visualTransformation,
+        trailingIcon = trailingIcon,
         modifier = modifier
             .fillMaxWidth()
             .padding(4.dp)
-            .border(1.dp, color = Color.DarkGray, shape = RoundedCornerShape(10.dp)),
+            .border(1.dp, color = Color.DarkGray, shape = RoundedCornerShape(10.dp))
+            .onFocusChanged { focusState ->
+                if (hasFocus && !focusState.isFocused) {
+                    onExit() // Run the exit function when focus is lost
+                }
+                hasFocus = focusState.isFocused
+            },
+        keyboardOptions = KeyboardOptions.Default.copy(
+            imeAction = ImeAction.Done
+        ),
+        keyboardActions = KeyboardActions(
+            onDone = {
+                onEnterPressed() // Call the function when "Enter" is pressed
+                focusManager.clearFocus() // Dismiss the keyboard
+            }
+        )
     )
 }
+
+
 
 @Composable
 fun <T> UserInfoDropDown(
