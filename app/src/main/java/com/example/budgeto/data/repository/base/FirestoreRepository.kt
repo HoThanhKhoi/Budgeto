@@ -102,28 +102,18 @@ open class FirestoreRepository @Inject constructor(
         subCollectionRef.delete().await()
     }
 
-    //9. Add nested subcollection
-    suspend fun <S : Any> addNestedSubcollection(
-        collectionPaths: List<String>,
-        item: S,
-        subItemId: String? = null
-    ): String {
-        require(collectionPaths.size % 2 == 1) { "Collection paths must have pairs of collection names and document IDs, ending with a collection name." }
+    override suspend fun <S : Any> updateSubcollectionDocument(
+        parentCollection: String,
+        parentId: String,
+        subcollectionPath: String,
+        subItemId: String,
+        updatedItem: S
+    ) {
+        val documentRef = firestore.collection(parentCollection)
+            .document(parentId)
+            .collection(subcollectionPath)
+            .document(subItemId)
 
-        var collectionRef: CollectionReference? = firestore.collection(collectionPaths[0])
-
-        // Traverse the path alternating between collection name and document ID
-        for (i in 1 until collectionPaths.size step 2) {
-            val documentId = collectionPaths[i]
-            val subcollectionName = collectionPaths[i + 1]
-            val documentRef = collectionRef?.document(documentId)
-            collectionRef = documentRef?.collection(subcollectionName)
-        }
-
-        // Now we're in the final sub-collection
-        val documentRef = subItemId?.let { collectionRef?.document(it) } ?: collectionRef?.document()
-        documentRef?.set(item)?.await()
-
-        return documentRef?.id ?: throw IllegalStateException("Document reference could not be created.")
+        documentRef.set(updatedItem).await() // Update the document
     }
 }

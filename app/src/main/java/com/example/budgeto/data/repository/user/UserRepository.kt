@@ -67,4 +67,14 @@ class UserRepository @Inject constructor(
             null
         }
     }
+
+    suspend fun updateUserGeneralInfo(userId: String, updatedUserGeneralInfo: UserGeneralInfo) {
+        try {
+            updateSubcollectionDocument(usersCollectionPath, userId, infoCollectionPath, "generalInfo", updatedUserGeneralInfo)
+            Log.d("UserRepository", "User's GeneralInfo updated successfully.")
+        } catch (e: Exception) {
+            e.printStackTrace()
+            Log.e("UserRepository", "Failed to update User's GeneralInfo: ${e.message}")
+        }
+    }
 }
