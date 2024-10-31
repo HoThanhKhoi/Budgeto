@@ -1796,15 +1796,21 @@ fun OccupationField(
 fun GenderDropdownField(
     selectedGender: UserGender = UserGender.NONE,
     onValueChange: (UserGender) -> Unit,
-    modifier: Modifier
+    modifier: Modifier = Modifier
 ) {
+    var gender by remember { mutableStateOf(selectedGender) }
+
     UserInfoDropDownField(
         label = "Gender",
-        value = selectedGender,
-        onValueChange = onValueChange,
+        value = gender,
+        onValueChange = { newGender ->
+            gender = newGender
+            onValueChange(newGender)
+        },
         modifier = modifier
     )
 }
+
 
 @Composable
 fun Frame56(
