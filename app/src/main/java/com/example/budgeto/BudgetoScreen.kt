@@ -88,8 +88,11 @@ fun BudgetoApp(
                 LoginScreen(
                     loginViewModel = loginViewModel,
                     onLoginButtonTapped = {
+
+                    },
+
+                    onLogginSucess = {
                         navController.navigate(BudgetoScreenEnum.ProfileScreen.name)
-                        //navController.navigate(BudgetoScreenEnum.OpeningScreen.name)
                     },
 
                     onSignUpTapped = { navController.navigate(BudgetoScreenEnum.SignUp.name) },

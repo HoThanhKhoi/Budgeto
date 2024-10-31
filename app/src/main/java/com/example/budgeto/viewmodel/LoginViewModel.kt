@@ -57,20 +57,22 @@ class LoginViewModel @Inject constructor(
     }
 
     fun googleLogin(credential: AuthCredential) = viewModelScope.launch {
+        Log.d("Login with google", "Google login")
+
         repository.googleSignIn(credential).collect { result ->
             when (result) {
                 is Resource.Success -> {
                     val firebaseUser = result.data?.user
                     firebaseUser?.let {
-                        // Check if the user exists in Firestore
                         val userId = firebaseUser.uid
                         val userInFirestore = userRepository.getUser(userId)
 
                         if (userInFirestore == null) {
-                            // If the user doesn't exist in Firestore, create a new user document
                             addNewUserToFirestore(firebaseUser)
                         }
-                        _googleState.value = GoogleLoginState(success = result.data)
+
+                        Log.d("Login with google", "Login success with user ID: $userId")
+                        _loginState.value = LoginState(isSuccess = "Login success") // Emit success state
                     }
                 }
 
@@ -79,7 +81,7 @@ class LoginViewModel @Inject constructor(
                 }
 
                 is Resource.Error -> {
-                    _googleState.value = GoogleLoginState(error = result.message!!)
+                    _loginState.value = LoginState(isError = result.message)
                 }
             }
 
