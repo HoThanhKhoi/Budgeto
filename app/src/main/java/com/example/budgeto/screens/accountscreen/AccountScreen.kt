@@ -7,8 +7,12 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.requiredHeight
 import androidx.compose.foundation.layout.requiredWidth
 import androidx.compose.foundation.layout.wrapContentHeight
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -65,108 +69,8 @@ fun Account1(
     onHistoryButtonTapped: () -> Unit = {}
 ) {
     TopLevel(modifier = modifier) {
-        BottomNav(
-            modifier = Modifier.boxAlign(
-                alignment = Alignment.TopStart,
-                offset = DpOffset(
-                    x = 0.0.dp,
-                    y = 731.0.dp
-                )
-            )
-        ) {
-            Line12(
-                modifier = Modifier.boxAlign(
-                    alignment = Alignment.TopCenter,
-                    offset = DpOffset(
-                        x = -2.0.dp,
-                        y = 101.0.dp
-                    )
-                )
-            )
-            Frame43(
-                modifier = Modifier.boxAlign(
-                    alignment = Alignment.TopCenter,
-                    offset = DpOffset(
-                        x = 0.5.dp,
-                        y = 24.0.dp
-                    )
-                )
-            ) {
-                Store(
-                    onStoreButtonTapped = onStoreButtonTapped,
-                    modifier = Modifier.rowWeight(1.0f).columnWeight(1.0f)
-                ) {
-                    Vector(
-                        modifier = Modifier.boxAlign(
-                            alignment = Alignment.TopStart,
-                            offset = DpOffset(
-                                x = -0.875.dp,
-                                y = -0.875.dp
-                            )
-                        ).rowWeight(1.0f).columnWeight(1.0f)
-                    )
-                    Vector1(
-                        modifier = Modifier.boxAlign(
-                            alignment = Alignment.TopStart,
-                            offset = DpOffset(
-                                x = -0.875.dp,
-                                y = -0.875.dp
-                            )
-                        ).rowWeight(1.0f).columnWeight(1.0f)
-                    )
-                }
-                Statistic(
-                    onStatisticButtonTapped = onStatisticButtonTapped,
-                    modifier = Modifier.boxAlign(
-                        alignment = Alignment.TopStart,
-                        offset = DpOffset(
-                            x = 282.0.dp,
-                            y = 9.0.dp
-                        )
-                    )
-                ) {
-                    Vector2(modifier = Modifier.rowWeight(1.0f).columnWeight(1.0f))
-                }
-                Archive(
-                    onInventoryButtonTapped = onInventoryButtonTapped,
-                    modifier = Modifier.boxAlign(
-                        alignment = Alignment.TopStart,
-                        offset = DpOffset(
-                            x = 87.0.dp,
-                            y = 14.0.dp
-                        )
-                    )
-                ) {
-                    Vector3(modifier = Modifier.rowWeight(1.0f).columnWeight(1.0f))
-                    Vector4(modifier = Modifier.rowWeight(1.0f).columnWeight(1.0f))
-                }
-                History(
-                    onHistoryButtonTapped = onHistoryButtonTapped,
-                    modifier = Modifier.boxAlign(
-                        alignment = Alignment.TopStart,
-                        offset = DpOffset(
-                            x = 231.0.dp,
-                            y = 16.0.dp
-                        )
-                    )
-                ) {
-                    Vector5(modifier = Modifier.rowWeight(1.0f).columnWeight(1.0f))
-                    Vector6(modifier = Modifier.rowWeight(1.0f).columnWeight(1.0f))
-                }
-            }
-            Frame42(
-                onHomepageButtonTapped = onHomepageButtonTapped,
-                modifier = Modifier.boxAlign(
-                    alignment = Alignment.TopStart,
-                    offset = DpOffset(
-                        x = 165.0.dp,
-                        y = 6.0.dp
-                    )
-                )
-            ) {
-                Vector7(modifier = Modifier.rowWeight(1.0f).columnWeight(1.0f))
-            }
-        }
+        
+        //region expenses & income
         Frame46(
             modifier = Modifier.boxAlign(
                 alignment = Alignment.TopStart,
@@ -231,6 +135,9 @@ fun Account1(
                 )
             )
         }
+        //endregion
+
+        //region Total Balance
         Frame35 {
             TotalBalance(
                 modifier = Modifier.boxAlign(
@@ -251,6 +158,39 @@ fun Account1(
                 )
             )
         }
+        //endregion
+
+//        AccountList(
+//            accounts = listOf(
+//                AccountData("1", "Default", "+ 75.000.000 VNĐ", "- 35.000.000 VNĐ", "40.000.000 VNĐ"),
+//                AccountData("2", "Tiền mẹ cho", "+ 50.000.000 VNĐ", "- 10.000.000 VNĐ", "40.000.000 VNĐ"),
+//                AccountData("3", "Tiền nuôi chó", "+ 5.000.000 VNĐ", "- 1.000.000 VNĐ", "4.000.000 VNĐ")
+//            )
+//        )
+
+        //region add new account
+        Frame50(
+            modifier = Modifier.boxAlign(
+                alignment = Alignment.TopStart,
+                offset = DpOffset(
+                    x = 23.0.dp,
+                    y = 679.0.dp
+                )
+            )
+        ) {
+            AddNewAccount(
+                modifier = Modifier.boxAlign(
+                    alignment = Alignment.TopCenter,
+                    offset = DpOffset(
+                        x = 0.5.dp,
+                        y = 11.0.dp
+                    )
+                )
+            )
+        }
+        //endregion
+
+        //region Account Default
         Frame47(
             modifier = Modifier.boxAlign(
                 alignment = Alignment.TopStart,
@@ -391,6 +331,9 @@ fun Account1(
                 )
             )
         }
+//endregion
+
+        //region account 2
         Frame48(
             modifier = Modifier.boxAlign(
                 alignment = Alignment.TopStart,
@@ -448,6 +391,9 @@ fun Account1(
                 }
             }
         }
+        //endregion
+
+        //region account 3
         Frame49(
             modifier = Modifier.boxAlign(
                 alignment = Alignment.TopStart,
@@ -505,27 +451,212 @@ fun Account1(
                 }
             }
         }
-        Frame50(
+        //endregion
+
+        //region navigation bar
+        BottomNav(
             modifier = Modifier.boxAlign(
                 alignment = Alignment.TopStart,
                 offset = DpOffset(
-                    x = 23.0.dp,
-                    y = 679.0.dp
+                    x = 0.0.dp,
+                    y = 731.0.dp
                 )
             )
         ) {
-            AddNewAccount(
+            Line12(
+                modifier = Modifier.boxAlign(
+                    alignment = Alignment.TopCenter,
+                    offset = DpOffset(
+                        x = -2.0.dp,
+                        y = 101.0.dp
+                    )
+                )
+            )
+            Frame43(
                 modifier = Modifier.boxAlign(
                     alignment = Alignment.TopCenter,
                     offset = DpOffset(
                         x = 0.5.dp,
-                        y = 11.0.dp
+                        y = 24.0.dp
                     )
                 )
+            ) {
+                Store(
+                    onStoreButtonTapped = onStoreButtonTapped,
+                    modifier = Modifier.rowWeight(1.0f).columnWeight(1.0f)
+                ) {
+                    Vector(
+                        modifier = Modifier.boxAlign(
+                            alignment = Alignment.TopStart,
+                            offset = DpOffset(
+                                x = -0.875.dp,
+                                y = -0.875.dp
+                            )
+                        ).rowWeight(1.0f).columnWeight(1.0f)
+                    )
+                    Vector1(
+                        modifier = Modifier.boxAlign(
+                            alignment = Alignment.TopStart,
+                            offset = DpOffset(
+                                x = -0.875.dp,
+                                y = -0.875.dp
+                            )
+                        ).rowWeight(1.0f).columnWeight(1.0f)
+                    )
+                }
+                Statistic(
+                    onStatisticButtonTapped = onStatisticButtonTapped,
+                    modifier = Modifier.boxAlign(
+                        alignment = Alignment.TopStart,
+                        offset = DpOffset(
+                            x = 282.0.dp,
+                            y = 9.0.dp
+                        )
+                    )
+                ) {
+                    Vector2(modifier = Modifier.rowWeight(1.0f).columnWeight(1.0f))
+                }
+                Archive(
+                    onInventoryButtonTapped = onInventoryButtonTapped,
+                    modifier = Modifier.boxAlign(
+                        alignment = Alignment.TopStart,
+                        offset = DpOffset(
+                            x = 87.0.dp,
+                            y = 14.0.dp
+                        )
+                    )
+                ) {
+                    Vector3(modifier = Modifier.rowWeight(1.0f).columnWeight(1.0f))
+                    Vector4(modifier = Modifier.rowWeight(1.0f).columnWeight(1.0f))
+                }
+                History(
+                    onHistoryButtonTapped = onHistoryButtonTapped,
+                    modifier = Modifier.boxAlign(
+                        alignment = Alignment.TopStart,
+                        offset = DpOffset(
+                            x = 231.0.dp,
+                            y = 16.0.dp
+                        )
+                    )
+                ) {
+                    Vector5(modifier = Modifier.rowWeight(1.0f).columnWeight(1.0f))
+                    Vector6(modifier = Modifier.rowWeight(1.0f).columnWeight(1.0f))
+                }
+            }
+            Frame42(
+                onHomepageButtonTapped = onHomepageButtonTapped,
+                modifier = Modifier.boxAlign(
+                    alignment = Alignment.TopStart,
+                    offset = DpOffset(
+                        x = 165.0.dp,
+                        y = 6.0.dp
+                    )
+                )
+            ) {
+                Vector7(modifier = Modifier.rowWeight(1.0f).columnWeight(1.0f))
+            }
+        }
+        //endregion
+    }
+}
+
+//region reusable relay code
+
+@Composable
+fun AccountList(accounts: List<AccountData>) {
+    val expandedAccountId = remember { mutableStateOf<String?>(null) }
+
+    LazyColumn(
+        modifier = Modifier.fillMaxHeight().padding(16.dp)
+    ) {
+        items(accounts) { account ->
+            AccountCard(
+                accountName = account.name,
+                incomes = account.incomes,
+                expenses = account.expenses,
+                balance = account.balance,
+                isExpanded = expandedAccountId.value == account.id,
+                onCardTapped = {
+                    expandedAccountId.value = if (expandedAccountId.value == account.id) null else account.id
+                }
             )
         }
     }
 }
+
+@Composable
+fun AccountCard(
+    accountName: String,
+    incomes: String,
+    expenses: String,
+    balance: String,
+    isExpanded: Boolean,
+    onCardTapped: () -> Unit,
+    modifier: Modifier = Modifier
+) {
+    RelayContainer(
+        modifier = modifier
+            .fillMaxWidth()
+            .padding(vertical = 8.dp)
+            .tappable(onTap = onCardTapped)
+    ) {
+        RelayText(
+            content = accountName,
+            fontSize = 16.sp,
+            fontWeight = FontWeight.Bold,
+            modifier = Modifier.padding(start = 16.dp, top = 8.dp)
+        )
+
+        if (isExpanded) {
+            IncomeExpenseBalanceSection(incomes, expenses, balance)
+        }
+    }
+}
+
+@Composable
+fun IncomeExpenseBalanceSection(
+    incomes: String,
+    expenses: String,
+    balance: String,
+    modifier: Modifier = Modifier
+) {
+    RelayContainer(
+        modifier = modifier
+            .fillMaxWidth()
+            .padding(horizontal = 16.dp, vertical = 8.dp)
+    ) {
+        RelayText(
+            content = "Incomes: $incomes",
+            fontSize = 14.sp,
+            fontWeight = FontWeight.Medium,
+            modifier = Modifier.padding(bottom = 4.dp)
+        )
+
+        RelayText(
+            content = "Expenses: $expenses",
+            fontSize = 14.sp,
+            fontWeight = FontWeight.Medium,
+            modifier = Modifier.padding(bottom = 4.dp)
+        )
+
+        RelayText(
+            content = "Balance: $balance",
+            fontSize = 14.sp,
+            fontWeight = FontWeight.Medium,
+            modifier = Modifier.padding(bottom = 4.dp)
+        )
+    }
+}
+
+data class AccountData(
+    val id: String,
+    val name: String,
+    val incomes: String,
+    val expenses: String,
+    val balance: String
+)
+
+//endregion
 
 @Preview(widthDp = 390, heightDp = 844)
 @Composable
@@ -545,179 +676,26 @@ private fun Account1Preview() {
 }
 
 @Composable
-fun Line12(modifier: Modifier = Modifier) {
-    RelayVector(
-        vector = painterResource(R.drawable.account_1_line_12),
-        modifier = modifier.requiredWidth(150.0.dp).requiredHeight(0.0.dp)
-    )
-}
-
-@Composable
-fun Vector(modifier: Modifier = Modifier) {
-    RelayVector(
-        vector = painterResource(R.drawable.account_1_vector),
-        modifier = modifier.padding(
-            paddingValues = PaddingValues(
-                start = 10.69775390625.dp,
-                top = 2.66668701171875.dp,
-                end = 10.697593688964844.dp,
-                bottom = 11.999979019165039.dp
-            )
-        ).fillMaxWidth(1.0f).fillMaxHeight(1.0f)
-    )
-}
-
-@Composable
-fun Vector1(modifier: Modifier = Modifier) {
-    RelayVector(
-        vector = painterResource(R.drawable.account_1_vector1),
-        modifier = modifier.padding(
-            paddingValues = PaddingValues(
-                start = 5.3486328125.dp,
-                top = 9.33331298828125.dp,
-                end = 4.193857192993164.dp,
-                bottom = 2.66668701171875.dp
-            )
-        ).fillMaxWidth(1.0f).fillMaxHeight(1.0f)
-    )
-}
-
-@Composable
-fun Store(
-    onStoreButtonTapped: () -> Unit,
+fun TopLevel(
     modifier: Modifier = Modifier,
     content: @Composable RelayContainerScope.() -> Unit
 ) {
     RelayContainer(
+        backgroundColor = Color(
+            alpha = 255,
+            red = 255,
+            green = 255,
+            blue = 255
+        ),
         isStructured = false,
         content = content,
-        modifier = modifier.padding(
-            paddingValues = PaddingValues(
-                start = 27.07861328125.dp,
-                top = 11.0.dp,
-                end = 285.82836532592773.dp,
-                bottom = 14.0.dp
-            )
-        ).tappable(onTap = onStoreButtonTapped).fillMaxWidth(1.0f).fillMaxHeight(1.0f)
+        modifier = modifier.fillMaxWidth(1.0f).fillMaxHeight(1.0f)
     )
 }
 
+//region expense income component
 @Composable
-fun Vector2(modifier: Modifier = Modifier) {
-    RelayVector(
-        vector = painterResource(R.drawable.account_1_vector2),
-        modifier = modifier.padding(
-            paddingValues = PaddingValues(
-                start = 3.509765625.dp,
-                top = 3.9000244140625.dp,
-                end = 3.510232925415039.dp,
-                bottom = 9.632976531982422.dp
-            )
-        ).fillMaxWidth(1.0f).fillMaxHeight(1.0f)
-    )
-}
-
-@Composable
-fun Statistic(
-    onStatisticButtonTapped: () -> Unit,
-    modifier: Modifier = Modifier,
-    content: @Composable RelayContainerScope.() -> Unit
-) {
-    RelayContainer(
-        isStructured = false,
-        content = content,
-        modifier = modifier.tappable(onTap = onStatisticButtonTapped).requiredWidth(39.0.dp).requiredHeight(39.0.dp)
-    )
-}
-
-@Composable
-fun Vector3(modifier: Modifier = Modifier) {
-    RelayVector(
-        vector = painterResource(R.drawable.account_1_vector3),
-        modifier = modifier.padding(
-            paddingValues = PaddingValues(
-                start = 3.75.dp,
-                top = 11.25.dp,
-                end = 3.75.dp,
-                bottom = 3.75.dp
-            )
-        ).fillMaxWidth(1.0f).fillMaxHeight(1.0f)
-    )
-}
-
-@Composable
-fun Vector4(modifier: Modifier = Modifier) {
-    RelayVector(
-        vector = painterResource(R.drawable.account_1_vector4),
-        modifier = modifier.padding(
-            paddingValues = PaddingValues(
-                start = 1.875.dp,
-                top = 3.75.dp,
-                end = 1.875.dp,
-                bottom = 13.125.dp
-            )
-        ).fillMaxWidth(1.0f).fillMaxHeight(1.0f)
-    )
-}
-
-@Composable
-fun Archive(
-    onInventoryButtonTapped: () -> Unit,
-    modifier: Modifier = Modifier,
-    content: @Composable RelayContainerScope.() -> Unit
-) {
-    RelayContainer(
-        isStructured = false,
-        content = content,
-        modifier = modifier.tappable(onTap = onInventoryButtonTapped).requiredWidth(30.0.dp).requiredHeight(30.0.dp)
-    )
-}
-
-@Composable
-fun Vector5(modifier: Modifier = Modifier) {
-    RelayVector(
-        vector = painterResource(R.drawable.account_1_vector5),
-        modifier = modifier.padding(
-            paddingValues = PaddingValues(
-                start = 1.08349609375.dp,
-                top = 1.08331298828125.dp,
-                end = 1.0831661224365234.dp,
-                bottom = 1.0833492279052734.dp
-            )
-        ).fillMaxWidth(1.0f).fillMaxHeight(1.0f)
-    )
-}
-
-@Composable
-fun Vector6(modifier: Modifier = Modifier) {
-    RelayVector(
-        vector = painterResource(R.drawable.account_1_vector6),
-        modifier = modifier.padding(
-            paddingValues = PaddingValues(
-                start = 7.58349609375.dp,
-                top = 5.41668701171875.dp,
-                end = 11.91650390625.dp,
-                bottom = 11.916646003723145.dp
-            )
-        ).fillMaxWidth(1.0f).fillMaxHeight(1.0f)
-    )
-}
-
-@Composable
-fun History(
-    onHistoryButtonTapped: () -> Unit,
-    modifier: Modifier = Modifier,
-    content: @Composable RelayContainerScope.() -> Unit
-) {
-    RelayContainer(
-        isStructured = false,
-        content = content,
-        modifier = modifier.tappable(onTap = onHistoryButtonTapped).requiredWidth(26.0.dp).requiredHeight(26.0.dp)
-    )
-}
-
-@Composable
-fun Frame43(
+fun Frame46(
     modifier: Modifier = Modifier,
     content: @Composable RelayContainerScope.() -> Unit
 ) {
@@ -738,79 +716,7 @@ fun Frame43(
             blue = 0
         ),
         content = content,
-        modifier = modifier.requiredWidth(345.0.dp).requiredHeight(57.0.dp)
-    )
-}
-
-@Composable
-fun Vector7(modifier: Modifier = Modifier) {
-    RelayVector(
-        vector = painterResource(R.drawable.account_1_vector7),
-        modifier = modifier.padding(
-            paddingValues = PaddingValues(
-                start = 14.0.dp,
-                top = 15.0.dp,
-                end = 14.058818817138672.dp,
-                bottom = 18.0.dp
-            )
-        ).fillMaxWidth(1.0f).fillMaxHeight(1.0f)
-    )
-}
-
-@Composable
-fun Frame42(
-    onHomepageButtonTapped: () -> Unit,
-    modifier: Modifier = Modifier,
-    content: @Composable RelayContainerScope.() -> Unit
-) {
-    RelayContainer(
-        backgroundColor = Color(
-            alpha = 255,
-            red = 0,
-            green = 0,
-            blue = 0
-        ),
-        isStructured = false,
-        radius = 50.0,
-        strokeWidth = 1.0,
-        strokeColor = Color(
-            alpha = 255,
-            red = 0,
-            green = 0,
-            blue = 0
-        ),
-        content = content,
-        modifier = modifier.tappable(onTap = onHomepageButtonTapped).requiredWidth(61.0.dp).requiredHeight(61.0.dp).relayDropShadow(
-            color = Color(
-                alpha = 63,
-                red = 80,
-                green = 78,
-                blue = 30
-            ),
-            borderRadius = 50.0.dp,
-            blur = 4.0.dp,
-            offsetX = 0.0.dp,
-            offsetY = 4.0.dp,
-            spread = 0.0.dp
-        )
-    )
-}
-
-@Composable
-fun BottomNav(
-    modifier: Modifier = Modifier,
-    content: @Composable RelayContainerScope.() -> Unit
-) {
-    RelayContainer(
-        backgroundColor = Color(
-            alpha = 255,
-            red = 255,
-            green = 255,
-            blue = 255
-        ),
-        isStructured = false,
-        content = content,
-        modifier = modifier.requiredWidth(390.0.dp).requiredHeight(113.0.dp)
+        modifier = modifier.requiredWidth(390.0.dp).requiredHeight(120.0.dp)
     )
 }
 
@@ -845,13 +751,13 @@ fun Txt400000(modifier: Modifier = Modifier) {
 }
 
 @Composable
-fun Txt501000(modifier: Modifier = Modifier) {
+fun Incomes(modifier: Modifier = Modifier) {
     RelayText(
-        content = "501.000 VNĐ",
-        fontSize = 20.0.sp,
+        content = "Incomes",
+        fontSize = 16.0.sp,
         fontFamily = inter,
-        height = 1.2102272033691406.em,
-        fontWeight = FontWeight(700.0.toInt()),
+        height = 1.2102272510528564.em,
+        fontWeight = FontWeight(500.0.toInt()),
         modifier = modifier.wrapContentHeight(
             align = Alignment.CenterVertically,
             unbounded = true
@@ -860,13 +766,13 @@ fun Txt501000(modifier: Modifier = Modifier) {
 }
 
 @Composable
-fun Incomes(modifier: Modifier = Modifier) {
+fun Txt501000(modifier: Modifier = Modifier) {
     RelayText(
-        content = "Incomes",
-        fontSize = 16.0.sp,
+        content = "501.000 VNĐ",
+        fontSize = 20.0.sp,
         fontFamily = inter,
-        height = 1.2102272510528564.em,
-        fontWeight = FontWeight(500.0.toInt()),
+        height = 1.2102272033691406.em,
+        fontWeight = FontWeight(700.0.toInt()),
         modifier = modifier.wrapContentHeight(
             align = Alignment.CenterVertically,
             unbounded = true
@@ -889,21 +795,22 @@ fun Rectangle63(modifier: Modifier = Modifier) {
         modifier = modifier.requiredWidth(401.0.dp).requiredHeight(14.0.dp)
     )
 }
+//endregion
 
+//region total component
 @Composable
-fun Frame46(
+fun Frame35(
     modifier: Modifier = Modifier,
     content: @Composable RelayContainerScope.() -> Unit
 ) {
     RelayContainer(
         backgroundColor = Color(
             alpha = 255,
-            red = 255,
-            green = 255,
-            blue = 255
+            red = 0,
+            green = 0,
+            blue = 0
         ),
         isStructured = false,
-        radius = 5.0,
         strokeWidth = 1.0,
         strokeColor = Color(
             alpha = 255,
@@ -912,7 +819,7 @@ fun Frame46(
             blue = 0
         ),
         content = content,
-        modifier = modifier.requiredWidth(390.0.dp).requiredHeight(120.0.dp)
+        modifier = modifier.requiredWidth(390.0.dp).requiredHeight(136.0.dp)
     )
 }
 
@@ -953,31 +860,9 @@ fun Txt101000(modifier: Modifier = Modifier) {
     )
 }
 
-@Composable
-fun Frame35(
-    modifier: Modifier = Modifier,
-    content: @Composable RelayContainerScope.() -> Unit
-) {
-    RelayContainer(
-        backgroundColor = Color(
-            alpha = 255,
-            red = 0,
-            green = 0,
-            blue = 0
-        ),
-        isStructured = false,
-        strokeWidth = 1.0,
-        strokeColor = Color(
-            alpha = 255,
-            red = 0,
-            green = 0,
-            blue = 0
-        ),
-        content = content,
-        modifier = modifier.requiredWidth(390.0.dp).requiredHeight(136.0.dp)
-    )
-}
+//endregion
 
+//region account component
 @Composable
 fun AccountDefault(modifier: Modifier = Modifier) {
     RelayText(
@@ -1427,25 +1312,9 @@ fun Frame49(
     )
 }
 
-@Composable
-fun AddNewAccount(modifier: Modifier = Modifier) {
-    RelayText(
-        content = "Add new account",
-        fontSize = 16.0.sp,
-        fontFamily = inter,
-        color = Color(
-            alpha = 255,
-            red = 255,
-            green = 255,
-            blue = 255
-        ),
-        height = 1.2102272510528564.em,
-        textAlign = TextAlign.Left,
-        fontWeight = FontWeight(700.0.toInt()),
-        modifier = modifier
-    )
-}
+//endregion
 
+//region add account component
 @Composable
 fun Frame50(
     modifier: Modifier = Modifier,
@@ -1473,7 +1342,28 @@ fun Frame50(
 }
 
 @Composable
-fun TopLevel(
+fun AddNewAccount(modifier: Modifier = Modifier) {
+    RelayText(
+        content = "Add new account",
+        fontSize = 16.0.sp,
+        fontFamily = inter,
+        color = Color(
+            alpha = 255,
+            red = 255,
+            green = 255,
+            blue = 255
+        ),
+        height = 1.2102272510528564.em,
+        textAlign = TextAlign.Left,
+        fontWeight = FontWeight(700.0.toInt()),
+        modifier = modifier
+    )
+}
+//endregion
+
+//region navigation component
+@Composable
+fun BottomNav(
     modifier: Modifier = Modifier,
     content: @Composable RelayContainerScope.() -> Unit
 ) {
@@ -1486,7 +1376,260 @@ fun TopLevel(
         ),
         isStructured = false,
         content = content,
-        modifier = modifier.fillMaxWidth(1.0f).fillMaxHeight(1.0f)
+        modifier = modifier.requiredWidth(390.0.dp).requiredHeight(113.0.dp)
     )
 }
 
+@Composable
+fun Line12(modifier: Modifier = Modifier) {
+    RelayVector(
+        vector = painterResource(R.drawable.account_1_line_12),
+        modifier = modifier.requiredWidth(150.0.dp).requiredHeight(0.0.dp)
+    )
+}
+
+@Composable
+fun Frame43(
+    modifier: Modifier = Modifier,
+    content: @Composable RelayContainerScope.() -> Unit
+) {
+    RelayContainer(
+        backgroundColor = Color(
+            alpha = 255,
+            red = 255,
+            green = 255,
+            blue = 255
+        ),
+        isStructured = false,
+        radius = 5.0,
+        strokeWidth = 1.0,
+        strokeColor = Color(
+            alpha = 255,
+            red = 0,
+            green = 0,
+            blue = 0
+        ),
+        content = content,
+        modifier = modifier.requiredWidth(345.0.dp).requiredHeight(57.0.dp)
+    )
+}
+
+@Composable
+fun Store(
+    onStoreButtonTapped: () -> Unit,
+    modifier: Modifier = Modifier,
+    content: @Composable RelayContainerScope.() -> Unit
+) {
+    RelayContainer(
+        isStructured = false,
+        content = content,
+        modifier = modifier.padding(
+            paddingValues = PaddingValues(
+                start = 27.07861328125.dp,
+                top = 11.0.dp,
+                end = 285.82836532592773.dp,
+                bottom = 14.0.dp
+            )
+        ).tappable(onTap = onStoreButtonTapped).fillMaxWidth(1.0f).fillMaxHeight(1.0f)
+    )
+}
+
+@Composable
+fun Vector(modifier: Modifier = Modifier) {
+    RelayVector(
+        vector = painterResource(R.drawable.account_1_vector),
+        modifier = modifier.padding(
+            paddingValues = PaddingValues(
+                start = 10.69775390625.dp,
+                top = 2.66668701171875.dp,
+                end = 10.697593688964844.dp,
+                bottom = 11.999979019165039.dp
+            )
+        ).fillMaxWidth(1.0f).fillMaxHeight(1.0f)
+    )
+}
+
+@Composable
+fun Vector1(modifier: Modifier = Modifier) {
+    RelayVector(
+        vector = painterResource(R.drawable.account_1_vector1),
+        modifier = modifier.padding(
+            paddingValues = PaddingValues(
+                start = 5.3486328125.dp,
+                top = 9.33331298828125.dp,
+                end = 4.193857192993164.dp,
+                bottom = 2.66668701171875.dp
+            )
+        ).fillMaxWidth(1.0f).fillMaxHeight(1.0f)
+    )
+}
+
+@Composable
+fun Statistic(
+    onStatisticButtonTapped: () -> Unit,
+    modifier: Modifier = Modifier,
+    content: @Composable RelayContainerScope.() -> Unit
+) {
+    RelayContainer(
+        isStructured = false,
+        content = content,
+        modifier = modifier.tappable(onTap = onStatisticButtonTapped).requiredWidth(39.0.dp).requiredHeight(39.0.dp)
+    )
+}
+
+@Composable
+fun Vector2(modifier: Modifier = Modifier) {
+    RelayVector(
+        vector = painterResource(R.drawable.account_1_vector2),
+        modifier = modifier.padding(
+            paddingValues = PaddingValues(
+                start = 3.509765625.dp,
+                top = 3.9000244140625.dp,
+                end = 3.510232925415039.dp,
+                bottom = 9.632976531982422.dp
+            )
+        ).fillMaxWidth(1.0f).fillMaxHeight(1.0f)
+    )
+}
+
+@Composable
+fun Archive(
+    onInventoryButtonTapped: () -> Unit,
+    modifier: Modifier = Modifier,
+    content: @Composable RelayContainerScope.() -> Unit
+) {
+    RelayContainer(
+        isStructured = false,
+        content = content,
+        modifier = modifier.tappable(onTap = onInventoryButtonTapped).requiredWidth(30.0.dp).requiredHeight(30.0.dp)
+    )
+}
+
+@Composable
+fun Vector3(modifier: Modifier = Modifier) {
+    RelayVector(
+        vector = painterResource(R.drawable.account_1_vector3),
+        modifier = modifier.padding(
+            paddingValues = PaddingValues(
+                start = 3.75.dp,
+                top = 11.25.dp,
+                end = 3.75.dp,
+                bottom = 3.75.dp
+            )
+        ).fillMaxWidth(1.0f).fillMaxHeight(1.0f)
+    )
+}
+
+@Composable
+fun Vector4(modifier: Modifier = Modifier) {
+    RelayVector(
+        vector = painterResource(R.drawable.account_1_vector4),
+        modifier = modifier.padding(
+            paddingValues = PaddingValues(
+                start = 1.875.dp,
+                top = 3.75.dp,
+                end = 1.875.dp,
+                bottom = 13.125.dp
+            )
+        ).fillMaxWidth(1.0f).fillMaxHeight(1.0f)
+    )
+}
+
+@Composable
+fun History(
+    onHistoryButtonTapped: () -> Unit,
+    modifier: Modifier = Modifier,
+    content: @Composable RelayContainerScope.() -> Unit
+) {
+    RelayContainer(
+        isStructured = false,
+        content = content,
+        modifier = modifier.tappable(onTap = onHistoryButtonTapped).requiredWidth(26.0.dp).requiredHeight(26.0.dp)
+    )
+}
+
+@Composable
+fun Vector5(modifier: Modifier = Modifier) {
+    RelayVector(
+        vector = painterResource(R.drawable.account_1_vector5),
+        modifier = modifier.padding(
+            paddingValues = PaddingValues(
+                start = 1.08349609375.dp,
+                top = 1.08331298828125.dp,
+                end = 1.0831661224365234.dp,
+                bottom = 1.0833492279052734.dp
+            )
+        ).fillMaxWidth(1.0f).fillMaxHeight(1.0f)
+    )
+}
+
+@Composable
+fun Vector6(modifier: Modifier = Modifier) {
+    RelayVector(
+        vector = painterResource(R.drawable.account_1_vector6),
+        modifier = modifier.padding(
+            paddingValues = PaddingValues(
+                start = 7.58349609375.dp,
+                top = 5.41668701171875.dp,
+                end = 11.91650390625.dp,
+                bottom = 11.916646003723145.dp
+            )
+        ).fillMaxWidth(1.0f).fillMaxHeight(1.0f)
+    )
+}
+
+@Composable
+fun Frame42(
+    onHomepageButtonTapped: () -> Unit,
+    modifier: Modifier = Modifier,
+    content: @Composable RelayContainerScope.() -> Unit
+) {
+    RelayContainer(
+        backgroundColor = Color(
+            alpha = 255,
+            red = 0,
+            green = 0,
+            blue = 0
+        ),
+        isStructured = false,
+        radius = 50.0,
+        strokeWidth = 1.0,
+        strokeColor = Color(
+            alpha = 255,
+            red = 0,
+            green = 0,
+            blue = 0
+        ),
+        content = content,
+        modifier = modifier.tappable(onTap = onHomepageButtonTapped).requiredWidth(61.0.dp).requiredHeight(61.0.dp).relayDropShadow(
+            color = Color(
+                alpha = 63,
+                red = 80,
+                green = 78,
+                blue = 30
+            ),
+            borderRadius = 50.0.dp,
+            blur = 4.0.dp,
+            offsetX = 0.0.dp,
+            offsetY = 4.0.dp,
+            spread = 0.0.dp
+        )
+    )
+}
+
+@Composable
+fun Vector7(modifier: Modifier = Modifier) {
+    RelayVector(
+        vector = painterResource(R.drawable.account_1_vector7),
+        modifier = modifier.padding(
+            paddingValues = PaddingValues(
+                start = 14.0.dp,
+                top = 15.0.dp,
+                end = 14.058818817138672.dp,
+                bottom = 18.0.dp
+            )
+        ).fillMaxWidth(1.0f).fillMaxHeight(1.0f)
+    )
+}
+
+//endregion

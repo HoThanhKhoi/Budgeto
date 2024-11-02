@@ -17,6 +17,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.example.budgeto.screens.accountscreen.AccountScreen
 import com.example.budgeto.screens.homepagescreen.HomepageScreen
 import com.example.budgeto.screens.loginscreen.LoginScreen
 import com.example.budgeto.screens.openingscreen.OpeningScreenExpensesInputScreen
@@ -39,6 +40,7 @@ enum class BudgetoScreenEnum(@StringRes val title: Int) {
     InventoryScreen(title = R.string.InventoryScreen),
     HistoryScreen(title = R.string.HistoryScreen),
     StatisticScreen(title = R.string.StatisticScreen),
+    AccountScreen(title = R.string.AccountScreen)
 }
 
 @Composable
@@ -51,9 +53,9 @@ fun BudgetoApp(
         val isUserLoggedIn by remember { mutableStateOf(loginViewModel.isUserLoggedIn()) }
         NavHost(
             navController = navController,
-            startDestination = BudgetoScreenEnum.Start.name,
+              //startDestination = BudgetoScreenEnum.Start.name,
 //            startDestination = if (isUserLoggedIn) BudgetoScreenEnum.ProfileScreen.name else BudgetoScreenEnum.Start.name,
-//            startDestination = BudgetoScreenEnum.OpeningScreen.name,
+              startDestination = BudgetoScreenEnum.AccountScreen.name,
 //            startDestination = BudgetoScreenEnum.ProfileScreen.name,
             modifier = Modifier
                 .fillMaxSize()
@@ -127,6 +129,11 @@ fun BudgetoApp(
                     onStatisticButtonTapped = { navController.navigate(BudgetoScreenEnum.StatisticScreen.name) },
                 )
             }
+
+            composable(route = BudgetoScreenEnum.AccountScreen.name) {
+                AccountScreen()
+            }
+
         }
 
     }
