@@ -84,7 +84,7 @@ fun Account1(
     onHistoryButtonTapped: () -> Unit = {}
 ) {
 
-    TopLevel(modifier = modifier) {
+    TopLevel(modifier = modifier.fillMaxWidth()) {
 
         //region expenses & income
         Frame46(
@@ -94,7 +94,7 @@ fun Account1(
                     x = 0.0.dp,
                     y = 120.0.dp
                 )
-            )
+            ).fillMaxWidth()
         ) {
             Expenses(
                 modifier = Modifier.boxAlign(
@@ -154,7 +154,7 @@ fun Account1(
         //endregion
 
         //region Total Balance
-        Frame35 {
+        Frame35(modifier = modifier.fillMaxWidth()) {
             TotalBalance(
                 modifier = Modifier.boxAlign(
                     alignment = Alignment.TopStart,
@@ -209,14 +209,14 @@ fun Account1(
         //endregion
 
         //region add new account
-        Frame50(
+        Frame50 (
             modifier = Modifier.boxAlign(
                 alignment = Alignment.TopStart,
                 offset = DpOffset(
-                    x = 23.0.dp,
+                    x = 0.dp,
                     y = 679.0.dp
                 )
-            )
+            ).fillMaxWidth()
         ) {
             AddNewAccount(
                 modifier = Modifier.boxAlign(
@@ -225,7 +225,7 @@ fun Account1(
                         x = 0.5.dp,
                         y = 11.0.dp
                     )
-                )
+                ).fillMaxWidth()
             )
         }
         //endregion
@@ -505,7 +505,7 @@ fun Account1(
                     x = 0.0.dp,
                     y = 731.0.dp
                 )
-            )
+            ).fillMaxWidth()
         ) {
             Line12(
                 modifier = Modifier.boxAlign(
@@ -1394,7 +1394,7 @@ fun AddNewAccount(modifier: Modifier = Modifier) {
             blue = 255
         ),
         height = 1.2102272510528564.em,
-        textAlign = TextAlign.Left,
+        textAlign = TextAlign.Center,
         fontWeight = FontWeight(700.0.toInt()),
         modifier = modifier
     )
