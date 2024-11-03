@@ -1,18 +1,27 @@
 package com.example.budgeto.screens.accountscreen
 
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.requiredHeight
 import androidx.compose.foundation.layout.requiredWidth
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -26,12 +35,18 @@ import androidx.compose.ui.unit.em
 import androidx.compose.ui.unit.sp
 import com.example.budgeto.R
 import com.example.budgeto.screensfonts.inter
+import com.google.relay.compose.BoxScopeInstance.boxAlign
 import com.google.relay.compose.BoxScopeInstance.columnWeight
 import com.google.relay.compose.BoxScopeInstance.rowWeight
+import com.google.relay.compose.ColumnScopeInstanceImpl.weight
+import com.google.relay.compose.RelayColumn
 import com.google.relay.compose.RelayContainer
+import com.google.relay.compose.RelayContainerArrangement
 import com.google.relay.compose.RelayContainerScope
+import com.google.relay.compose.RelayRow
 import com.google.relay.compose.RelayText
 import com.google.relay.compose.RelayVector
+import com.google.relay.compose.RowScopeInstanceImpl.align
 import com.google.relay.compose.relayDropShadow
 import com.google.relay.compose.tappable
 
@@ -68,8 +83,9 @@ fun Account1(
     onInventoryButtonTapped: () -> Unit = {},
     onHistoryButtonTapped: () -> Unit = {}
 ) {
+
     TopLevel(modifier = modifier) {
-        
+
         //region expenses & income
         Frame46(
             modifier = Modifier.boxAlign(
@@ -160,13 +176,37 @@ fun Account1(
         }
         //endregion
 
-//        AccountList(
-//            accounts = listOf(
-//                AccountData("1", "Default", "+ 75.000.000 VNĐ", "- 35.000.000 VNĐ", "40.000.000 VNĐ"),
-//                AccountData("2", "Tiền mẹ cho", "+ 50.000.000 VNĐ", "- 10.000.000 VNĐ", "40.000.000 VNĐ"),
-//                AccountData("3", "Tiền nuôi chó", "+ 5.000.000 VNĐ", "- 1.000.000 VNĐ", "4.000.000 VNĐ")
-//            )
-//        )
+        //region recycler view
+
+        RelayContainer(
+            scrollable = true,
+            arrangement = RelayContainerArrangement.Column,
+            modifier = Modifier.boxAlign(
+                alignment = Alignment.TopStart,
+                offset = DpOffset(0.dp, 263.dp)
+            ).fillMaxWidth().height(400.dp)
+        ) {
+            AccountSection(
+                accountTitle = "Account: Default",
+                income = "+ 75.000.000 VNĐ",
+                expense = "- 35.000.000 VNĐ",
+                balance = "40.000.000 VNĐ"
+            )
+            AccountSection(
+                accountTitle = "Account: Tiền mẹ cho",
+                income = "+ 50.000.000 VNĐ",
+                expense = "- 10.000.000 VNĐ",
+                balance = "40.000.000 VNĐ"
+            )
+            AccountSection(
+                accountTitle = "Account: Tiền nuôi chó",
+                income = "+ 5.000.000 VNĐ",
+                expense = "- 1.000.000 VNĐ",
+                balance = "4.000.000 VNĐ"
+            )
+        }
+
+        //endregion
 
         //region add new account
         Frame50(
@@ -190,267 +230,271 @@ fun Account1(
         }
         //endregion
 
-        //region Account Default
-        Frame47(
-            modifier = Modifier.boxAlign(
-                alignment = Alignment.TopStart,
-                offset = DpOffset(
-                    x = 23.0.dp,
-                    y = 263.0.dp
-                )
-            )
-        ) {
-            AccountDefault(
-                modifier = Modifier.boxAlign(
-                    alignment = Alignment.TopStart,
-                    offset = DpOffset(
-                        x = 14.0.dp,
-                        y = 22.0.dp
-                    )
-                )
-            )
-            Frame51(
-                modifier = Modifier.boxAlign(
-                    alignment = Alignment.TopCenter,
-                    offset = DpOffset(
-                        x = 0.5.dp,
-                        y = 56.0.dp
-                    )
-                )
-            ) {
-                Incomes1(
-                    modifier = Modifier.boxAlign(
-                        alignment = Alignment.TopStart,
-                        offset = DpOffset(
-                            x = 15.0.dp,
-                            y = 16.0.dp
-                        )
-                    )
-                )
-                TxtAddition75000000(
-                    modifier = Modifier.boxAlign(
-                        alignment = Alignment.TopStart,
-                        offset = DpOffset(
-                            x = 163.0.dp,
-                            y = 16.0.dp
-                        )
-                    )
-                )
-            }
-            Frame52(
-                modifier = Modifier.boxAlign(
-                    alignment = Alignment.TopCenter,
-                    offset = DpOffset(
-                        x = 0.5.dp,
-                        y = 115.0.dp
-                    )
-                )
-            ) {
-                Expenses1(
-                    modifier = Modifier.boxAlign(
-                        alignment = Alignment.TopStart,
-                        offset = DpOffset(
-                            x = 15.0.dp,
-                            y = 16.0.dp
-                        )
-                    )
-                )
-                TxtMinus35000000(
-                    modifier = Modifier.boxAlign(
-                        alignment = Alignment.TopStart,
-                        offset = DpOffset(
-                            x = 165.0.dp,
-                            y = 16.0.dp
-                        )
-                    )
-                )
-            }
-            Frame53(
-                modifier = Modifier.boxAlign(
-                    alignment = Alignment.TopCenter,
-                    offset = DpOffset(
-                        x = 0.5.dp,
-                        y = 174.0.dp
-                    )
-                )
-            ) {
-                Balance(
-                    modifier = Modifier.boxAlign(
-                        alignment = Alignment.TopStart,
-                        offset = DpOffset(
-                            x = 15.0.dp,
-                            y = 16.0.dp
-                        )
-                    )
-                )
-                Txt40000000(
-                    modifier = Modifier.boxAlign(
-                        alignment = Alignment.TopStart,
-                        offset = DpOffset(
-                            x = 176.0.dp,
-                            y = 16.0.dp
-                        )
-                    )
-                )
-            }
-            Frame54(
-                modifier = Modifier.boxAlign(
-                    alignment = Alignment.TopStart,
-                    offset = DpOffset(
-                        x = 258.0.dp,
-                        y = 20.0.dp
-                    )
-                )
-            ) {
-                More(
-                    modifier = Modifier.boxAlign(
-                        alignment = Alignment.TopStart,
-                        offset = DpOffset(
-                            x = 15.0.dp,
-                            y = 2.0.dp
-                        )
-                    )
-                )
-                Vector321(
-                    modifier = Modifier.boxAlign(
-                        alignment = Alignment.TopStart,
-                        offset = DpOffset(
-                            x = 59.0.dp,
-                            y = 6.999996185302734.dp
-                        )
-                    )
-                )
-            }
-            Rectangle67(
-                modifier = Modifier.boxAlign(
-                    alignment = Alignment.TopStart,
-                    offset = DpOffset(
-                        x = 0.0.dp,
-                        y = 240.0.dp
-                    )
-                )
-            )
-        }
-//endregion
+        //region earased
+//
+//        //region Account Default
+//        Frame47(
+//            modifier = Modifier.boxAlign(
+//                alignment = Alignment.TopStart,
+//                offset = DpOffset(
+//                    x = 23.0.dp,
+//                    y = 263.0.dp
+//                )
+//            )
+//        ) {
+//            AccountDefault(
+//                modifier = Modifier.boxAlign(
+//                    alignment = Alignment.TopStart,
+//                    offset = DpOffset(
+//                        x = 14.0.dp,
+//                        y = 22.0.dp
+//                    )
+//                )
+//            )
+//            Frame51(
+//                modifier = Modifier.boxAlign(
+//                    alignment = Alignment.TopCenter,
+//                    offset = DpOffset(
+//                        x = 0.5.dp,
+//                        y = 56.0.dp
+//                    )
+//                )
+//            ) {
+//                Incomes1(
+//                    modifier = Modifier.boxAlign(
+//                        alignment = Alignment.TopStart,
+//                        offset = DpOffset(
+//                            x = 15.0.dp,
+//                            y = 16.0.dp
+//                        )
+//                    )
+//                )
+//                TxtAddition75000000(
+//                    modifier = Modifier.boxAlign(
+//                        alignment = Alignment.TopStart,
+//                        offset = DpOffset(
+//                            x = 163.0.dp,
+//                            y = 16.0.dp
+//                        )
+//                    )
+//                )
+//            }
+//            Frame52(
+//                modifier = Modifier.boxAlign(
+//                    alignment = Alignment.TopCenter,
+//                    offset = DpOffset(
+//                        x = 0.5.dp,
+//                        y = 115.0.dp
+//                    )
+//                )
+//            ) {
+//                Expenses1(
+//                    modifier = Modifier.boxAlign(
+//                        alignment = Alignment.TopStart,
+//                        offset = DpOffset(
+//                            x = 15.0.dp,
+//                            y = 16.0.dp
+//                        )
+//                    )
+//                )
+//                TxtMinus35000000(
+//                    modifier = Modifier.boxAlign(
+//                        alignment = Alignment.TopStart,
+//                        offset = DpOffset(
+//                            x = 165.0.dp,
+//                            y = 16.0.dp
+//                        )
+//                    )
+//                )
+//            }
+//            Frame53(
+//                modifier = Modifier.boxAlign(
+//                    alignment = Alignment.TopCenter,
+//                    offset = DpOffset(
+//                        x = 0.5.dp,
+//                        y = 174.0.dp
+//                    )
+//                )
+//            ) {
+//                Balance(
+//                    modifier = Modifier.boxAlign(
+//                        alignment = Alignment.TopStart,
+//                        offset = DpOffset(
+//                            x = 15.0.dp,
+//                            y = 16.0.dp
+//                        )
+//                    )
+//                )
+//                Txt40000000(
+//                    modifier = Modifier.boxAlign(
+//                        alignment = Alignment.TopStart,
+//                        offset = DpOffset(
+//                            x = 176.0.dp,
+//                            y = 16.0.dp
+//                        )
+//                    )
+//                )
+//            }
+//            Frame54(
+//                modifier = Modifier.boxAlign(
+//                    alignment = Alignment.TopStart,
+//                    offset = DpOffset(
+//                        x = 258.0.dp,
+//                        y = 20.0.dp
+//                    )
+//                )
+//            ) {
+//                More(
+//                    modifier = Modifier.boxAlign(
+//                        alignment = Alignment.TopStart,
+//                        offset = DpOffset(
+//                            x = 15.0.dp,
+//                            y = 2.0.dp
+//                        )
+//                    )
+//                )
+//                Vector321(
+//                    modifier = Modifier.boxAlign(
+//                        alignment = Alignment.TopStart,
+//                        offset = DpOffset(
+//                            x = 59.0.dp,
+//                            y = 6.999996185302734.dp
+//                        )
+//                    )
+//                )
+//            }
+//            Rectangle67(
+//                modifier = Modifier.boxAlign(
+//                    alignment = Alignment.TopStart,
+//                    offset = DpOffset(
+//                        x = 0.0.dp,
+//                        y = 240.0.dp
+//                    )
+//                )
+//            )
+//        }
+//              //endregion
+//
+//        //region account 2
+//        Frame48(
+//            modifier = Modifier.boxAlign(
+//                alignment = Alignment.TopStart,
+//                offset = DpOffset(
+//                    x = 23.0.dp,
+//                    y = 535.0.dp
+//                )
+//            )
+//        ) {
+//            AccountTiNMCho(
+//                modifier = Modifier.boxAlign(
+//                    alignment = Alignment.TopStart,
+//                    offset = DpOffset(
+//                        x = 14.0.dp,
+//                        y = 22.0.dp
+//                    )
+//                )
+//            )
+//            Frame55(
+//                modifier = Modifier.boxAlign(
+//                    alignment = Alignment.TopStart,
+//                    offset = DpOffset(
+//                        x = 310.0.dp,
+//                        y = 20.0.dp
+//                    )
+//                )
+//            ) {
+//                Group2(
+//                    modifier = Modifier.boxAlign(
+//                        alignment = Alignment.Center,
+//                        offset = DpOffset(
+//                            x = -0.25.dp,
+//                            y = -0.25.dp
+//                        )
+//                    )
+//                ) {
+//                    Vector319(
+//                        modifier = Modifier.boxAlign(
+//                            alignment = Alignment.TopStart,
+//                            offset = DpOffset(
+//                                x = 2.75.dp,
+//                                y = -1.0.dp
+//                            )
+//                        )
+//                    )
+//                    Vector320(
+//                        modifier = Modifier.boxAlign(
+//                            alignment = Alignment.TopStart,
+//                            offset = DpOffset(
+//                                x = 2.75.dp,
+//                                y = -0.9999998360822691.dp
+//                            )
+//                        )
+//                    )
+//                }
+//            }
+//        }
+//        //endregion
+//
+//        //region account 3
+//        Frame49(
+//            modifier = Modifier.boxAlign(
+//                alignment = Alignment.TopStart,
+//                offset = DpOffset(
+//                    x = 23.0.dp,
+//                    y = 604.0.dp
+//                )
+//            )
+//        ) {
+//            AccountTiNNuICh(
+//                modifier = Modifier.boxAlign(
+//                    alignment = Alignment.TopStart,
+//                    offset = DpOffset(
+//                        x = 14.0.dp,
+//                        y = 22.0.dp
+//                    )
+//                )
+//            )
+//            Frame56(
+//                modifier = Modifier.boxAlign(
+//                    alignment = Alignment.TopStart,
+//                    offset = DpOffset(
+//                        x = 310.0.dp,
+//                        y = 20.0.dp
+//                    )
+//                )
+//            ) {
+//                Group3(
+//                    modifier = Modifier.boxAlign(
+//                        alignment = Alignment.Center,
+//                        offset = DpOffset(
+//                            x = -0.25.dp,
+//                            y = -0.25.dp
+//                        )
+//                    )
+//                ) {
+//                    Vector322(
+//                        modifier = Modifier.boxAlign(
+//                            alignment = Alignment.TopStart,
+//                            offset = DpOffset(
+//                                x = 2.75.dp,
+//                                y = -1.0.dp
+//                            )
+//                        )
+//                    )
+//                    Vector323(
+//                        modifier = Modifier.boxAlign(
+//                            alignment = Alignment.TopStart,
+//                            offset = DpOffset(
+//                                x = 2.75.dp,
+//                                y = -0.9999998360822691.dp
+//                            )
+//                        )
+//                    )
+//                }
+//            }
+//        }
+//        //endregion
 
-        //region account 2
-        Frame48(
-            modifier = Modifier.boxAlign(
-                alignment = Alignment.TopStart,
-                offset = DpOffset(
-                    x = 23.0.dp,
-                    y = 535.0.dp
-                )
-            )
-        ) {
-            AccountTiNMCho(
-                modifier = Modifier.boxAlign(
-                    alignment = Alignment.TopStart,
-                    offset = DpOffset(
-                        x = 14.0.dp,
-                        y = 22.0.dp
-                    )
-                )
-            )
-            Frame55(
-                modifier = Modifier.boxAlign(
-                    alignment = Alignment.TopStart,
-                    offset = DpOffset(
-                        x = 310.0.dp,
-                        y = 20.0.dp
-                    )
-                )
-            ) {
-                Group2(
-                    modifier = Modifier.boxAlign(
-                        alignment = Alignment.Center,
-                        offset = DpOffset(
-                            x = -0.25.dp,
-                            y = -0.25.dp
-                        )
-                    )
-                ) {
-                    Vector319(
-                        modifier = Modifier.boxAlign(
-                            alignment = Alignment.TopStart,
-                            offset = DpOffset(
-                                x = 2.75.dp,
-                                y = -1.0.dp
-                            )
-                        )
-                    )
-                    Vector320(
-                        modifier = Modifier.boxAlign(
-                            alignment = Alignment.TopStart,
-                            offset = DpOffset(
-                                x = 2.75.dp,
-                                y = -0.9999998360822691.dp
-                            )
-                        )
-                    )
-                }
-            }
-        }
-        //endregion
-
-        //region account 3
-        Frame49(
-            modifier = Modifier.boxAlign(
-                alignment = Alignment.TopStart,
-                offset = DpOffset(
-                    x = 23.0.dp,
-                    y = 604.0.dp
-                )
-            )
-        ) {
-            AccountTiNNuICh(
-                modifier = Modifier.boxAlign(
-                    alignment = Alignment.TopStart,
-                    offset = DpOffset(
-                        x = 14.0.dp,
-                        y = 22.0.dp
-                    )
-                )
-            )
-            Frame56(
-                modifier = Modifier.boxAlign(
-                    alignment = Alignment.TopStart,
-                    offset = DpOffset(
-                        x = 310.0.dp,
-                        y = 20.0.dp
-                    )
-                )
-            ) {
-                Group3(
-                    modifier = Modifier.boxAlign(
-                        alignment = Alignment.Center,
-                        offset = DpOffset(
-                            x = -0.25.dp,
-                            y = -0.25.dp
-                        )
-                    )
-                ) {
-                    Vector322(
-                        modifier = Modifier.boxAlign(
-                            alignment = Alignment.TopStart,
-                            offset = DpOffset(
-                                x = 2.75.dp,
-                                y = -1.0.dp
-                            )
-                        )
-                    )
-                    Vector323(
-                        modifier = Modifier.boxAlign(
-                            alignment = Alignment.TopStart,
-                            offset = DpOffset(
-                                x = 2.75.dp,
-                                y = -0.9999998360822691.dp
-                            )
-                        )
-                    )
-                }
-            }
-        }
         //endregion
 
         //region navigation bar
@@ -563,98 +607,94 @@ fun Account1(
 //region reusable relay code
 
 @Composable
-fun AccountList(accounts: List<AccountData>) {
-    val expandedAccountId = remember { mutableStateOf<String?>(null) }
-
-    LazyColumn(
-        modifier = Modifier.fillMaxHeight().padding(16.dp)
+fun AccountSection(
+    accountTitle: String,
+    income: String,
+    expense: String,
+    balance: String,
+    modifier: Modifier = Modifier
+) {
+    Frame47(
+        modifier = modifier.boxAlign(Alignment.TopStart, DpOffset(0.dp, 0.dp))
     ) {
-        items(accounts) { account ->
-            AccountCard(
-                accountName = account.name,
-                incomes = account.incomes,
-                expenses = account.expenses,
-                balance = account.balance,
-                isExpanded = expandedAccountId.value == account.id,
-                onCardTapped = {
-                    expandedAccountId.value = if (expandedAccountId.value == account.id) null else account.id
-                }
+        RelayText(
+            content = accountTitle,
+            fontSize = 16.sp,
+            fontFamily = inter,
+            fontWeight = FontWeight(700),
+            modifier = Modifier.boxAlign(Alignment.TopStart, DpOffset(14.dp, 22.dp))
+        )
+
+        Frame54(
+            modifier = Modifier.boxAlign(
+                alignment = Alignment.TopStart,
+                offset = DpOffset(258.dp, 20.dp)
+            )
+        ) {
+            More(
+                modifier = Modifier.boxAlign(Alignment.TopStart, DpOffset(15.dp, 2.dp))
+            )
+            Vector321(
+                modifier = Modifier.boxAlign(Alignment.TopStart, DpOffset(59.dp, 6.999.dp))
+            )
+        }
+
+        Frame51(
+            modifier = Modifier.boxAlign(Alignment.TopCenter, DpOffset(0.5.dp, 56.dp))
+        ) {
+            RelayText(
+                content = "Incomes",
+                fontSize = 16.sp,
+                fontFamily = inter,
+                fontWeight = FontWeight(500),
+                modifier = Modifier.boxAlign(Alignment.TopStart, DpOffset(15.dp, 16.dp))
+            )
+            RelayText(
+                content = income,
+                fontSize = 16.sp,
+                fontFamily = inter,
+                fontWeight = FontWeight(600),
+                modifier = Modifier.boxAlign(Alignment.TopStart, DpOffset(163.dp, 16.dp))
+            )
+        }
+        Frame52(
+            modifier = Modifier.boxAlign(Alignment.TopCenter, DpOffset(0.5.dp, 115.dp))
+        ) {
+            RelayText(
+                content = "Expenses",
+                fontSize = 16.sp,
+                fontFamily = inter,
+                fontWeight = FontWeight(500),
+                modifier = Modifier.boxAlign(Alignment.TopStart, DpOffset(15.dp, 16.dp))
+            )
+            RelayText(
+                content = expense,
+                fontSize = 16.sp,
+                fontFamily = inter,
+                fontWeight = FontWeight(600),
+                modifier = Modifier.boxAlign(Alignment.TopStart, DpOffset(165.dp, 16.dp))
+            )
+        }
+        Frame53(
+            modifier = Modifier.boxAlign(Alignment.TopCenter, DpOffset(0.5.dp, 174.dp))
+        ) {
+            RelayText(
+                content = "Balance",
+                fontSize = 16.sp,
+                fontFamily = inter,
+                fontWeight = FontWeight(500),
+                modifier = Modifier.boxAlign(Alignment.TopStart, DpOffset(15.dp, 16.dp))
+            )
+            RelayText(
+                content = balance,
+                fontSize = 16.sp,
+                fontFamily = inter,
+                fontWeight = FontWeight(600),
+                modifier = Modifier.boxAlign(Alignment.TopStart, DpOffset(176.dp, 16.dp))
             )
         }
     }
 }
-
-@Composable
-fun AccountCard(
-    accountName: String,
-    incomes: String,
-    expenses: String,
-    balance: String,
-    isExpanded: Boolean,
-    onCardTapped: () -> Unit,
-    modifier: Modifier = Modifier
-) {
-    RelayContainer(
-        modifier = modifier
-            .fillMaxWidth()
-            .padding(vertical = 8.dp)
-            .tappable(onTap = onCardTapped)
-    ) {
-        RelayText(
-            content = accountName,
-            fontSize = 16.sp,
-            fontWeight = FontWeight.Bold,
-            modifier = Modifier.padding(start = 16.dp, top = 8.dp)
-        )
-
-        if (isExpanded) {
-            IncomeExpenseBalanceSection(incomes, expenses, balance)
-        }
-    }
-}
-
-@Composable
-fun IncomeExpenseBalanceSection(
-    incomes: String,
-    expenses: String,
-    balance: String,
-    modifier: Modifier = Modifier
-) {
-    RelayContainer(
-        modifier = modifier
-            .fillMaxWidth()
-            .padding(horizontal = 16.dp, vertical = 8.dp)
-    ) {
-        RelayText(
-            content = "Incomes: $incomes",
-            fontSize = 14.sp,
-            fontWeight = FontWeight.Medium,
-            modifier = Modifier.padding(bottom = 4.dp)
-        )
-
-        RelayText(
-            content = "Expenses: $expenses",
-            fontSize = 14.sp,
-            fontWeight = FontWeight.Medium,
-            modifier = Modifier.padding(bottom = 4.dp)
-        )
-
-        RelayText(
-            content = "Balance: $balance",
-            fontSize = 14.sp,
-            fontWeight = FontWeight.Medium,
-            modifier = Modifier.padding(bottom = 4.dp)
-        )
-    }
-}
-
-data class AccountData(
-    val id: String,
-    val name: String,
-    val incomes: String,
-    val expenses: String,
-    val balance: String
-)
 
 //endregion
 
