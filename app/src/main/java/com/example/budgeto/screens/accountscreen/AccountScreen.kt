@@ -98,12 +98,6 @@ fun Account1(
     onInventoryButtonTapped: () -> Unit = {},
     onHistoryButtonTapped: () -> Unit = {}
 ) {
-    val accounts = listOf(
-        AccountData("Account: Tiền mẹ cho", "+ 50.000.000 VNĐ", "- 10.000.000 VNĐ", "40.000.000 VNĐ"),
-        AccountData("Account: Tiền nuôi chó", "+ 5.000.000 VNĐ", "- 1.000.000 VNĐ", "4.000.000 VNĐ")
-    )
-
-
     TopLevel(modifier = modifier.fillMaxWidth()) {
 
         //region expenses & income
@@ -196,7 +190,7 @@ fun Account1(
         }
         //endregion
 
-        //region account section 
+        //region account section
 
         RelayContainer(
             scrollable = true,
