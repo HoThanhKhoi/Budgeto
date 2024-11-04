@@ -20,7 +20,7 @@ class AccountRepository @Inject constructor(
         account: Account,
         userId: String
     ) {
-        addSubcollection(userCollectionPath,userId,accountCollectionPath,account)
+        addDocumentToSubcollection(userCollectionPath,userId,accountCollectionPath,account)
     }
 
 

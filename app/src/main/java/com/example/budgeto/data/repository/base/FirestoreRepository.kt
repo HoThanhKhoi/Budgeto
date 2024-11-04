@@ -1,6 +1,5 @@
 package com.example.budgeto.data.repository.base
 
-import com.google.firebase.firestore.CollectionReference
 import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.coroutines.tasks.await
 import javax.inject.Inject
@@ -9,7 +8,8 @@ open class FirestoreRepository @Inject constructor(
     private val firestore: FirebaseFirestore
 ) : IFirestoreRepository {
 
-    // 1. Add or update a new document to a specific collection (optionally with a document ID)
+    //region Handle documents in parent collection
+    // 1. Add new document to a collection - if documentId is null then it is random generated
     override suspend fun <T : Any> add(collectionName: String, item: T, documentId: String?): String {
         val collectionRef = firestore.collection(collectionName)
         val documentRef = documentId?.let { collectionRef.document(it) } ?: collectionRef.document()
@@ -17,34 +17,57 @@ open class FirestoreRepository @Inject constructor(
         return documentRef.id
     }
 
-    // 2. Retrieve all documents from a specific collection
+    // 2. Get all documents from a parent collection
     override suspend fun <T : Any> getAll(collectionName: String, clazz: Class<T>): List<T> {
         val collectionRef = firestore.collection(collectionName)
         val documents = collectionRef.get().await()
         return documents.mapNotNull { it.toObject(clazz) }
     }
 
-    // 3. Retrieve a specific document by ID from a collection
+    // 3. Get a specific document by ID from parent collection
     override suspend fun <T : Any> get(collectionName: String, id: String, clazz: Class<T>): T? {
         val documentRef = firestore.collection(collectionName).document(id)
         val document = documentRef.get().await()
         return document.toObject(clazz)
     }
 
-    // 4. Update a document in a collection
+    // 4. Update a document in parent collection
     override suspend fun <T : Any> update(collectionName: String, id: String, item: T) {
         val documentRef = firestore.collection(collectionName).document(id)
         documentRef.set(item).await()
     }
 
-    // 5. Delete a document by ID from a collection
+    // 5. Delete a document by ID from parent collection
     override suspend fun delete(collectionName: String, id: String) {
         val documentRef = firestore.collection(collectionName).document(id)
         documentRef.delete().await()
     }
 
-    // 6. Add or update a sub-collection document (optionally with a subItemId)
-    override suspend fun <S : Any> addSubcollection(
+    //6. Update multiple fields in a document from parent collection
+    override suspend fun updateFields(
+        collectionName: String,
+        documentId: String,
+        updates: Map<String, Any>
+    ) {
+        val documentRef = firestore.collection(collectionName).document(documentId)
+        documentRef.update(updates).await()
+    }
+
+    //7. Update one field in a document from parent collection
+    override suspend fun updateField(
+        collectionName: String,
+        documentId: String,
+        field: String,
+        value: Any
+    ) {
+        val documentRef = firestore.collection(collectionName).document(documentId)
+        documentRef.update(field, value).await()
+    }
+    //endregion
+
+    //region Handle documents in sub-collection
+    // 1. Add a sub-collection document (optionally with a subItemId, if null then random generated)
+    override suspend fun <S : Any> addDocumentToSubcollection(
         parentCollection: String,
         parentId: String,
         subcollectionPath: String,
@@ -59,7 +82,7 @@ open class FirestoreRepository @Inject constructor(
         return documentRef.id
     }
 
-    // 7. Retrieve all documents from a sub-collection
+    // 2. Get all documents from a sub-collection
     override suspend fun <S : Any> getAllDocumentsFromSubcollection(
         parentCollection: String,
         parentId: String,
@@ -73,6 +96,7 @@ open class FirestoreRepository @Inject constructor(
         return documents.mapNotNull { it.toObject(clazz) }
     }
 
+    // 3. Get a specific document from a sub-collection by ID
     override suspend fun <S : Any> getSubcollectionDocument(
         parentCollection: String,
         parentId: String,
@@ -88,7 +112,7 @@ open class FirestoreRepository @Inject constructor(
         return document.toObject(clazz)
     }
 
-    // 8. Delete a sub-collection document
+    // 4. Delete a sub-collection document by ID
     override suspend fun deleteSubcollectionDocument(
         parentCollection: String,
         parentId: String,
@@ -102,6 +126,7 @@ open class FirestoreRepository @Inject constructor(
         subCollectionRef.delete().await()
     }
 
+    //5. Update a sub-collection by Id
     override suspend fun <S : Any> updateSubcollectionDocument(
         parentCollection: String,
         parentId: String,
@@ -116,4 +141,38 @@ open class FirestoreRepository @Inject constructor(
 
         documentRef.set(updatedItem).await() // Update the document
     }
+
+    //6. Update multiple fields in a sub-collection document
+    override suspend fun updateSubcollectionFields(
+        parentCollection: String,
+        parentId: String,
+        subcollectionPath: String,
+        subItemId: String,
+        updates: Map<String, Any>
+    ) {
+        val documentRef = firestore.collection(parentCollection)
+            .document(parentId)
+            .collection(subcollectionPath)
+            .document(subItemId)
+
+        documentRef.update(updates).await()
+    }
+
+    // 7. Update one field in a sub-collection document
+    override suspend fun updateSubcollectionField(
+        parentCollection: String,
+        parentId: String,
+        subcollectionPath: String,
+        subItemId: String,
+        field: String,
+        value: Any
+    ) {
+        val documentRef = firestore.collection(parentCollection)
+            .document(parentId)
+            .collection(subcollectionPath)
+            .document(subItemId)
+
+        documentRef.update(field, value).await()
+    }
+    //endregion
 }

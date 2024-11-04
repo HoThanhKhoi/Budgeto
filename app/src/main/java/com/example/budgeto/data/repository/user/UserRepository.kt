@@ -46,15 +46,15 @@ class UserRepository @Inject constructor(
 
     // Add or update gameInfo in a sub-collection for a specific user
     suspend fun addGameInfo(userId: String, userGameInfo: UserGameInfo) : String{
-        return addSubcollection(usersCollectionPath, userId, infoCollectionPath, userGameInfo, "gameInfo")
+        return addDocumentToSubcollection(usersCollectionPath, userId, infoCollectionPath, userGameInfo, "gameInfo")
     }
 
     suspend fun addGeneralInfo(userId: String, userGeneralInfo: UserGeneralInfo) : String{
-        return addSubcollection(usersCollectionPath, userId, infoCollectionPath, userGeneralInfo, "generalInfo")
+        return addDocumentToSubcollection(usersCollectionPath, userId, infoCollectionPath, userGeneralInfo, "generalInfo")
     }
 
     suspend fun addMoneyInfo(userId: String, moneyInfo: MoneyInfo) : String {
-        return addSubcollection(usersCollectionPath, userId, infoCollectionPath, moneyInfo, "moneyInfo")
+        return addDocumentToSubcollection(usersCollectionPath, userId, infoCollectionPath, moneyInfo, "moneyInfo")
     }
 
     suspend fun getUserGeneralInfo(userId: String): UserGeneralInfo? {
