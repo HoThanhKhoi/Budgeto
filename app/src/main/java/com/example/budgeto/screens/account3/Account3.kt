@@ -46,7 +46,7 @@ fun Account3(
     AccountDetails(
         onTransferButtonTapped = onTransferButtonTapped,
         onXButtonTapped = onXButtonTapped,
-        modifier = modifier.rowWeight(1.0f).columnWeight(1.0f)
+        modifier = modifier.fillMaxWidth().fillMaxHeight()
     )
 }
 
@@ -58,7 +58,7 @@ fun AccountDetails(
     onXButtonTapped: () -> Unit = {},
 ) {
     TopLevel(modifier = modifier) {
-        Rectangle65()
+        //Rectangle65()
         Frame53(
             modifier = Modifier.boxAlign(
                 alignment = Alignment.Center,
