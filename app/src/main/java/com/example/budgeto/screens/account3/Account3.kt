@@ -1,17 +1,25 @@
 package com.example.budgeto.screens.account3
 
+import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.requiredHeight
 import androidx.compose.foundation.layout.requiredWidth
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentHeight
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.layout.ContentScale
@@ -27,6 +35,7 @@ import androidx.compose.ui.unit.sp
 import com.example.budgeto.R
 import com.google.relay.compose.BoxScopeInstance.columnWeight
 import com.google.relay.compose.BoxScopeInstance.rowWeight
+import com.google.relay.compose.BoxScopeInstanceImpl.align
 import com.google.relay.compose.RelayContainer
 import com.google.relay.compose.RelayContainerScope
 import com.google.relay.compose.RelayImage
@@ -84,40 +93,11 @@ fun AccountDetails(
                 modifier = Modifier.boxAlign(
                     alignment = Alignment.TopStart,
                     offset = DpOffset(
-                        x = 339.0.dp,
+                        x = 315.0.dp,
                         y = 18.0.dp
                     )
                 )
-            ) {
-                Group2(
-                    modifier = Modifier.boxAlign(
-                        alignment = Alignment.Center,
-                        offset = DpOffset(
-                            x = 0.30330076813697815.dp,
-                            y = 0.3033008575439453.dp
-                        )
-                    )
-                ) {
-                    Vector319(
-                        modifier = Modifier.boxAlign(
-                            alignment = Alignment.TopStart,
-                            offset = DpOffset(
-                                x = 1.65185546875.dp,
-                                y = 1.651651293039322.dp
-                            )
-                        )
-                    )
-                    Vector320(
-                        modifier = Modifier.boxAlign(
-                            alignment = Alignment.TopStart,
-                            offset = DpOffset(
-                                x = 2.75.dp,
-                                y = (-0.9999978989412046).dp
-                            )
-                        )
-                    )
-                }
-            }
+            )
             //endregion
 
             //region default and balance Sections
@@ -501,7 +481,7 @@ fun Frame53(
         isStructured = false,
         radius = 5.0,
         content = content,
-        modifier = modifier.requiredWidth(390.0.dp).requiredHeight(637.0.dp)
+        modifier = modifier.requiredWidth(390.0.dp).requiredHeight(600.0.dp)
     )
 }
 
@@ -522,59 +502,34 @@ fun Account(modifier: Modifier = Modifier) {
 @Composable
 fun Frame54(
     onXButtonTapped: () -> Unit,
-    modifier: Modifier = Modifier,
-    content: @Composable RelayContainerScope.() -> Unit
+    modifier: Modifier = Modifier
 ) {
-    RelayContainer(
-        backgroundColor = Color(
-            alpha = 255,
-            red = 0,
-            green = 91,
-            blue = 228
-        ),
-        isStructured = false,
-        radius = 5.0,
-        strokeWidth = 1.0,
-        strokeColor = Color(
-            alpha = 255,
-            red = 0,
-            green = 0,
-            blue = 0
-        ),
-        content = content,
-        modifier = modifier.tappable(onTap = onXButtonTapped).requiredWidth(28.0.dp).requiredHeight(28.0.dp)
-    )
-}
-
-
-@Composable
-fun Group2(
-    modifier: Modifier = Modifier,
-    content: @Composable RelayContainerScope.() -> Unit
-) {
-    RelayContainer(
-        isStructured = false,
-        clipToParent = false,
-        content = content,
-        modifier = modifier.graphicsLayer(rotationZ = -45.0f).requiredWidth(7.5.dp).requiredHeight(7.5.dp)
-    )
-}
-
-
-@Composable
-fun Vector319(modifier: Modifier = Modifier) {
-    RelayVector(
-        vector = painterResource(R.drawable.account_3_vector_319),
-        modifier = modifier.requiredWidth(5.303300768136978.dp).requiredHeight(5.303300768136978.dp)
-    )
-}
-
-@Composable
-fun Vector320(modifier: Modifier = Modifier) {
-    RelayVector(
-        vector = painterResource(R.drawable.account_3_vector_320),
-        modifier = modifier.requiredWidth(0.0.dp).requiredHeight(7.5.dp)
-    )
+    Box(
+        modifier = modifier
+            .size(36.dp) // Adjust size as needed
+            .background(Color.Blue, shape = RoundedCornerShape(8.dp))
+            .clickable(onClick = onXButtonTapped),
+        contentAlignment = Alignment.Center
+    ) {
+        Canvas(
+            modifier = Modifier.size(16.dp) // Size for the "X" shape
+        ) {
+            val strokeWidth = 2.dp.toPx() // Width of the "X" lines
+            val halfSize = size.minDimension / 2
+            drawLine(
+                color = Color.White,
+                start = Offset(x = 0f, y = 0f),
+                end = Offset(x = size.width, y = size.height),
+                strokeWidth = strokeWidth
+            )
+            drawLine(
+                color = Color.White,
+                start = Offset(x = size.width, y = 0f),
+                end = Offset(x = 0f, y = size.height),
+                strokeWidth = strokeWidth
+            )
+        }
+    }
 }
 
 //endregion

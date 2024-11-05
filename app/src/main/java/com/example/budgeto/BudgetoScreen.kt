@@ -17,6 +17,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.example.budgeto.screens.BudgetoBottomNav
 import com.example.budgeto.screens.account3.Account3
 import com.example.budgeto.screens.accountscreen.AccountScreen
 import com.example.budgeto.screens.homepagescreen.HomepageScreen
@@ -49,7 +50,18 @@ enum class BudgetoScreenEnum(@StringRes val title: Int) {
 fun BudgetoApp(
     navController: NavHostController = rememberNavController()
 ) {
-    Scaffold() { innerPadding ->
+    Scaffold(
+        bottomBar = {
+            BudgetoBottomNav(
+                navController = navController,
+                onHomepageButtonTapped = { navController.navigate(BudgetoScreenEnum.HomepageScreen.name) },
+                onStoreButtonTapped = { navController.navigate(BudgetoScreenEnum.StoreScreen.name) },
+                onInventoryButtonTapped = { navController.navigate(BudgetoScreenEnum.InventoryScreen.name) },
+                onHistoryButtonTapped = { navController.navigate(BudgetoScreenEnum.HistoryScreen.name) },
+                onStatisticButtonTapped = { navController.navigate(BudgetoScreenEnum.StatisticScreen.name) }
+            )
+        }
+    ) { innerPadding ->
         val loginViewModel: LoginViewModel = hiltViewModel()
         val isUserLoggedIn by remember { mutableStateOf(loginViewModel.isUserLoggedIn()) }
         NavHost(

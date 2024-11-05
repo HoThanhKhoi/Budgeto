@@ -129,9 +129,7 @@ fun Account1(
             Account3(
                 onTransferButtonTapped = { /* Handle transfer action if needed */ },
                 onXButtonTapped = { showAccountPopup = false },
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .wrapContentHeight() // Only take up necessary height
+                modifier = Modifier.height(600.dp)
             )
         }
     }
@@ -540,110 +538,110 @@ fun Account1(
 
         //endregion
 
-        //region navigation bar
-        BottomNav(
-            modifier = Modifier.boxAlign(
-                alignment = Alignment.TopStart,
-                offset = DpOffset(
-                    x = 0.0.dp,
-                    y = 731.0.dp
-                )
-            ).fillMaxWidth()
-        ) {
-            Line12(
-                modifier = Modifier.boxAlign(
-                    alignment = Alignment.TopCenter,
-                    offset = DpOffset(
-                        x = -2.0.dp,
-                        y = 101.0.dp
-                    )
-                )
-            )
-            Frame43(
-                modifier = Modifier.boxAlign(
-                    alignment = Alignment.TopCenter,
-                    offset = DpOffset(
-                        x = 0.5.dp,
-                        y = 24.0.dp
-                    )
-                )
-            ) {
-                Store(
-                    onStoreButtonTapped = onStoreButtonTapped,
-                    modifier = Modifier.rowWeight(1.0f).columnWeight(1.0f)
-                ) {
-                    Vector(
-                        modifier = Modifier.boxAlign(
-                            alignment = Alignment.TopStart,
-                            offset = DpOffset(
-                                x = -0.875.dp,
-                                y = -0.875.dp
-                            )
-                        ).rowWeight(1.0f).columnWeight(1.0f)
-                    )
-                    Vector1(
-                        modifier = Modifier.boxAlign(
-                            alignment = Alignment.TopStart,
-                            offset = DpOffset(
-                                x = -0.875.dp,
-                                y = -0.875.dp
-                            )
-                        ).rowWeight(1.0f).columnWeight(1.0f)
-                    )
-                }
-                Statistic(
-                    onStatisticButtonTapped = onStatisticButtonTapped,
-                    modifier = Modifier.boxAlign(
-                        alignment = Alignment.TopStart,
-                        offset = DpOffset(
-                            x = 282.0.dp,
-                            y = 9.0.dp
-                        )
-                    )
-                ) {
-                    Vector2(modifier = Modifier.rowWeight(1.0f).columnWeight(1.0f))
-                }
-                Archive(
-                    onInventoryButtonTapped = onInventoryButtonTapped,
-                    modifier = Modifier.boxAlign(
-                        alignment = Alignment.TopStart,
-                        offset = DpOffset(
-                            x = 87.0.dp,
-                            y = 14.0.dp
-                        )
-                    )
-                ) {
-                    Vector3(modifier = Modifier.rowWeight(1.0f).columnWeight(1.0f))
-                    Vector4(modifier = Modifier.rowWeight(1.0f).columnWeight(1.0f))
-                }
-                History(
-                    onHistoryButtonTapped = onHistoryButtonTapped,
-                    modifier = Modifier.boxAlign(
-                        alignment = Alignment.TopStart,
-                        offset = DpOffset(
-                            x = 231.0.dp,
-                            y = 16.0.dp
-                        )
-                    )
-                ) {
-                    Vector5(modifier = Modifier.rowWeight(1.0f).columnWeight(1.0f))
-                    Vector6(modifier = Modifier.rowWeight(1.0f).columnWeight(1.0f))
-                }
-            }
-            Frame42(
-                onHomepageButtonTapped = onHomepageButtonTapped,
-                modifier = Modifier.boxAlign(
-                    alignment = Alignment.TopStart,
-                    offset = DpOffset(
-                        x = 165.0.dp,
-                        y = 6.0.dp
-                    )
-                )
-            ) {
-                Vector7(modifier = Modifier.rowWeight(1.0f).columnWeight(1.0f))
-            }
-        }
-        //endregion
+//        //region navigation bar
+//        BottomNav(
+//            modifier = Modifier.boxAlign(
+//                alignment = Alignment.TopStart,
+//                offset = DpOffset(
+//                    x = 0.0.dp,
+//                    y = 731.0.dp
+//                )
+//            ).fillMaxWidth()
+//        ) {
+//            Line12(
+//                modifier = Modifier.boxAlign(
+//                    alignment = Alignment.TopCenter,
+//                    offset = DpOffset(
+//                        x = -2.0.dp,
+//                        y = 101.0.dp
+//                    )
+//                )
+//            )
+//            Frame43(
+//                modifier = Modifier.boxAlign(
+//                    alignment = Alignment.TopCenter,
+//                    offset = DpOffset(
+//                        x = 0.5.dp,
+//                        y = 24.0.dp
+//                    )
+//                )
+//            ) {
+//                Store(
+//                    onStoreButtonTapped = onStoreButtonTapped,
+//                    modifier = Modifier.rowWeight(1.0f).columnWeight(1.0f)
+//                ) {
+//                    Vector(
+//                        modifier = Modifier.boxAlign(
+//                            alignment = Alignment.TopStart,
+//                            offset = DpOffset(
+//                                x = -0.875.dp,
+//                                y = -0.875.dp
+//                            )
+//                        ).rowWeight(1.0f).columnWeight(1.0f)
+//                    )
+//                    Vector1(
+//                        modifier = Modifier.boxAlign(
+//                            alignment = Alignment.TopStart,
+//                            offset = DpOffset(
+//                                x = -0.875.dp,
+//                                y = -0.875.dp
+//                            )
+//                        ).rowWeight(1.0f).columnWeight(1.0f)
+//                    )
+//                }
+//                Statistic(
+//                    onStatisticButtonTapped = onStatisticButtonTapped,
+//                    modifier = Modifier.boxAlign(
+//                        alignment = Alignment.TopStart,
+//                        offset = DpOffset(
+//                            x = 282.0.dp,
+//                            y = 9.0.dp
+//                        )
+//                    )
+//                ) {
+//                    Vector2(modifier = Modifier.rowWeight(1.0f).columnWeight(1.0f))
+//                }
+//                Archive(
+//                    onInventoryButtonTapped = onInventoryButtonTapped,
+//                    modifier = Modifier.boxAlign(
+//                        alignment = Alignment.TopStart,
+//                        offset = DpOffset(
+//                            x = 87.0.dp,
+//                            y = 14.0.dp
+//                        )
+//                    )
+//                ) {
+//                    Vector3(modifier = Modifier.rowWeight(1.0f).columnWeight(1.0f))
+//                    Vector4(modifier = Modifier.rowWeight(1.0f).columnWeight(1.0f))
+//                }
+//                History(
+//                    onHistoryButtonTapped = onHistoryButtonTapped,
+//                    modifier = Modifier.boxAlign(
+//                        alignment = Alignment.TopStart,
+//                        offset = DpOffset(
+//                            x = 231.0.dp,
+//                            y = 16.0.dp
+//                        )
+//                    )
+//                ) {
+//                    Vector5(modifier = Modifier.rowWeight(1.0f).columnWeight(1.0f))
+//                    Vector6(modifier = Modifier.rowWeight(1.0f).columnWeight(1.0f))
+//                }
+//            }
+//            Frame42(
+//                onHomepageButtonTapped = onHomepageButtonTapped,
+//                modifier = Modifier.boxAlign(
+//                    alignment = Alignment.TopStart,
+//                    offset = DpOffset(
+//                        x = 165.0.dp,
+//                        y = 6.0.dp
+//                    )
+//                )
+//            ) {
+//                Vector7(modifier = Modifier.rowWeight(1.0f).columnWeight(1.0f))
+//            }
+//        }
+//        //endregion
     }
 
 }
