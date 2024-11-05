@@ -11,4 +11,5 @@
     <string name="HistoryScreen">History</string>
     <string name="StatisticScreen">Statistic</string>
     <string name="AccountScreen">AccountScreen</string>
+    <string name="Account3">Account3</string>
 </resources>

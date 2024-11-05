@@ -1,8 +1,5 @@
 package com.example.budgeto.screens.accountscreen
 
-import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.animation.core.animateDpAsState
-import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
@@ -16,18 +13,13 @@ import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.heightIn
-import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.requiredHeight
 import androidx.compose.foundation.layout.requiredWidth
-import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentHeight
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -38,30 +30,29 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.DpOffset
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.em
 import androidx.compose.ui.unit.sp
+import androidx.compose.ui.window.Dialog
 import com.example.budgeto.R
+import com.example.budgeto.screens.account3.Account3
 import com.example.budgeto.screensfonts.inter
 import com.google.relay.compose.BoxScopeInstance.boxAlign
 import com.google.relay.compose.BoxScopeInstance.columnWeight
 import com.google.relay.compose.BoxScopeInstance.rowWeight
-import com.google.relay.compose.ColumnScopeInstanceImpl.weight
-import com.google.relay.compose.RelayColumn
+import com.google.relay.compose.MainAxisAlignment
 import com.google.relay.compose.RelayContainer
 import com.google.relay.compose.RelayContainerArrangement
 import com.google.relay.compose.RelayContainerScope
-import com.google.relay.compose.RelayRow
 import com.google.relay.compose.RelayText
 import com.google.relay.compose.RelayVector
-import com.google.relay.compose.RowScopeInstanceImpl.align
 import com.google.relay.compose.relayDropShadow
 import com.google.relay.compose.tappable
 
@@ -87,7 +78,40 @@ fun AccountScreen(
     )
 }
 
+data class AccountData(
+    val title: String,
+    val income: String,
+    val expense: String,
+    val balance: String
+)
 
+val accounts = listOf(
+    AccountData(
+        title = "Account: Default",
+        income = "+ 75.000.000 VNĐ",
+        expense = "- 35.000.000 VNĐ",
+        balance = "40.000.000 VNĐ"
+    ),
+    AccountData(
+        title = "Account: Tiền mẹ cho",
+        income = "+ 50.000.000 VNĐ",
+        expense = "- 10.000.000 VNĐ",
+        balance = "40.000.000 VNĐ"
+    ),
+    AccountData(
+        title = "Account: Tiền nuôi chó",
+        income = "+ 5.000.000 VNĐ",
+        expense = "- 1.000.000 VNĐ",
+        balance = "4.000.000 VNĐ"
+    ),
+    AccountData(
+        title = "Account: Tiền nuôi chó",
+        income = "+ 5.000.000 VNĐ",
+        expense = "- 1.000.000 VNĐ",
+        balance = "4.000.000 VNĐ"
+    )
+    // Add more accounts as needed
+)
 
 @Composable
 fun Account1(
@@ -98,6 +122,18 @@ fun Account1(
     onInventoryButtonTapped: () -> Unit = {},
     onHistoryButtonTapped: () -> Unit = {}
 ) {
+    var showAccountPopup by remember { mutableStateOf(false) }
+
+    if (showAccountPopup) {
+        Dialog(onDismissRequest = { showAccountPopup = false }) {
+            Account3(
+                onTransferButtonTapped = { /* Handle transfer action if needed */ },
+                onXButtonTapped = { showAccountPopup = false },
+                modifier = Modifier.height(600.dp)
+            )
+        }
+    }
+
     TopLevel(modifier = modifier.fillMaxWidth()) {
 
         //region expenses & income
@@ -195,29 +231,20 @@ fun Account1(
         RelayContainer(
             scrollable = true,
             arrangement = RelayContainerArrangement.Column,
+            mainAxisAlignment = MainAxisAlignment.Start,
             modifier = Modifier.boxAlign(
                 alignment = Alignment.TopStart,
-                offset = DpOffset(0.dp, 263.dp)
-            ).fillMaxWidth().height(400.dp)
+                offset = DpOffset(0.dp, 240.dp)
+            ).fillMaxWidth().height(400.dp).padding(8.dp)
         ) {
-            AccountSection(
-                accountTitle = "Account: Default",
-                income = "+ 75.000.000 VNĐ",
-                expense = "- 35.000.000 VNĐ",
-                balance = "40.000.000 VNĐ"
-            )
-            AccountSection(
-                accountTitle = "Account: Tiền mẹ cho",
-                income = "+ 50.000.000 VNĐ",
-                expense = "- 10.000.000 VNĐ",
-                balance = "40.000.000 VNĐ"
-            )
-            AccountSection(
-                accountTitle = "Account: Tiền nuôi chó",
-                income = "+ 5.000.000 VNĐ",
-                expense = "- 1.000.000 VNĐ",
-                balance = "4.000.000 VNĐ"
-            )
+            accounts.forEach { account ->
+                AccountSection(
+                    accountTitle = account.title,
+                    income = account.income,
+                    expense = account.expense,
+                    balance = account.balance
+                )
+            }
         }
 
         //endregion
@@ -239,12 +266,12 @@ fun Account1(
                         x = 0.5.dp,
                         y = 11.0.dp
                     )
-                ).fillMaxWidth()
+                ).fillMaxWidth().clickable{showAccountPopup = true}
             )
         }
         //endregion
 
-        //region earased
+        //region earased account section
 //
 //        //region Account Default
 //        Frame47(
@@ -511,285 +538,115 @@ fun Account1(
 
         //endregion
 
-        //region navigation bar
-        BottomNav(
-            modifier = Modifier.boxAlign(
-                alignment = Alignment.TopStart,
-                offset = DpOffset(
-                    x = 0.0.dp,
-                    y = 731.0.dp
-                )
-            ).fillMaxWidth()
-        ) {
-            Line12(
-                modifier = Modifier.boxAlign(
-                    alignment = Alignment.TopCenter,
-                    offset = DpOffset(
-                        x = -2.0.dp,
-                        y = 101.0.dp
-                    )
-                )
-            )
-            Frame43(
-                modifier = Modifier.boxAlign(
-                    alignment = Alignment.TopCenter,
-                    offset = DpOffset(
-                        x = 0.5.dp,
-                        y = 24.0.dp
-                    )
-                )
-            ) {
-                Store(
-                    onStoreButtonTapped = onStoreButtonTapped,
-                    modifier = Modifier.rowWeight(1.0f).columnWeight(1.0f)
-                ) {
-                    Vector(
-                        modifier = Modifier.boxAlign(
-                            alignment = Alignment.TopStart,
-                            offset = DpOffset(
-                                x = -0.875.dp,
-                                y = -0.875.dp
-                            )
-                        ).rowWeight(1.0f).columnWeight(1.0f)
-                    )
-                    Vector1(
-                        modifier = Modifier.boxAlign(
-                            alignment = Alignment.TopStart,
-                            offset = DpOffset(
-                                x = -0.875.dp,
-                                y = -0.875.dp
-                            )
-                        ).rowWeight(1.0f).columnWeight(1.0f)
-                    )
-                }
-                Statistic(
-                    onStatisticButtonTapped = onStatisticButtonTapped,
-                    modifier = Modifier.boxAlign(
-                        alignment = Alignment.TopStart,
-                        offset = DpOffset(
-                            x = 282.0.dp,
-                            y = 9.0.dp
-                        )
-                    )
-                ) {
-                    Vector2(modifier = Modifier.rowWeight(1.0f).columnWeight(1.0f))
-                }
-                Archive(
-                    onInventoryButtonTapped = onInventoryButtonTapped,
-                    modifier = Modifier.boxAlign(
-                        alignment = Alignment.TopStart,
-                        offset = DpOffset(
-                            x = 87.0.dp,
-                            y = 14.0.dp
-                        )
-                    )
-                ) {
-                    Vector3(modifier = Modifier.rowWeight(1.0f).columnWeight(1.0f))
-                    Vector4(modifier = Modifier.rowWeight(1.0f).columnWeight(1.0f))
-                }
-                History(
-                    onHistoryButtonTapped = onHistoryButtonTapped,
-                    modifier = Modifier.boxAlign(
-                        alignment = Alignment.TopStart,
-                        offset = DpOffset(
-                            x = 231.0.dp,
-                            y = 16.0.dp
-                        )
-                    )
-                ) {
-                    Vector5(modifier = Modifier.rowWeight(1.0f).columnWeight(1.0f))
-                    Vector6(modifier = Modifier.rowWeight(1.0f).columnWeight(1.0f))
-                }
-            }
-            Frame42(
-                onHomepageButtonTapped = onHomepageButtonTapped,
-                modifier = Modifier.boxAlign(
-                    alignment = Alignment.TopStart,
-                    offset = DpOffset(
-                        x = 165.0.dp,
-                        y = 6.0.dp
-                    )
-                )
-            ) {
-                Vector7(modifier = Modifier.rowWeight(1.0f).columnWeight(1.0f))
-            }
-        }
-        //endregion
-    }
-}
-
-//region scrollable and hide section (can keep the original design)
-
-@Composable
-fun AccountSection(
-    accountTitle: String,
-    income: String,
-    expense: String,
-    balance: String,
-    modifier: Modifier = Modifier
-) {
-    var isExpanded by remember { mutableStateOf(false) }
-    Spacer(modifier = Modifier.height(16.dp))
-    Frame47(
-        modifier = modifier.boxAlign(Alignment.TopStart, DpOffset(0.dp, 0.dp))
-    ) {
-        // Account Title
-        RelayText(
-            content = accountTitle,
-            fontSize = 16.sp,
-            fontFamily = inter,
-            fontWeight = FontWeight(700),
-            modifier = Modifier.boxAlign(Alignment.TopStart, DpOffset(14.dp, 22.dp))
-        )
-
-        // "More" Button
-        Frame54(
-            modifier = Modifier
-                .boxAlign(Alignment.TopStart, DpOffset(258.dp, 20.dp))
-                .clickable { isExpanded = !isExpanded } // Toggle expand/collapse
-        ) {
-            More(
-                modifier = Modifier.boxAlign(Alignment.TopStart, DpOffset(15.dp, 2.dp))
-            )
-            Vector321(
-                modifier = Modifier.boxAlign(Alignment.TopStart, DpOffset(59.dp, 6.999.dp))
-            )
-        }
-
-        // Conditionally show details based on isExpanded
-        if (isExpanded) {
-
-            Spacer(modifier = Modifier.height(16.dp))
-            
-            Frame51(
-                modifier = Modifier.boxAlign(Alignment.TopCenter, DpOffset(0.5.dp, 56.dp))
-            ) {
-                RelayText(
-                    content = "Incomes",
-                    fontSize = 16.sp,
-                    fontFamily = inter,
-                    fontWeight = FontWeight(500),
-                    modifier = Modifier.boxAlign(Alignment.TopStart, DpOffset(15.dp, 16.dp))
-                )
-                RelayText(
-                    content = income,
-                    fontSize = 16.sp,
-                    fontFamily = inter,
-                    fontWeight = FontWeight(600),
-                    modifier = Modifier.boxAlign(Alignment.TopStart, DpOffset(163.dp, 16.dp))
-                )
-            }
-            Frame52(
-                modifier = Modifier.boxAlign(Alignment.TopCenter, DpOffset(0.5.dp, 115.dp))
-            ) {
-                RelayText(
-                    content = "Expenses",
-                    fontSize = 16.sp,
-                    fontFamily = inter,
-                    fontWeight = FontWeight(500),
-                    modifier = Modifier.boxAlign(Alignment.TopStart, DpOffset(15.dp, 16.dp))
-                )
-                RelayText(
-                    content = expense,
-                    fontSize = 16.sp,
-                    fontFamily = inter,
-                    fontWeight = FontWeight(600),
-                    modifier = Modifier.boxAlign(Alignment.TopStart, DpOffset(165.dp, 16.dp))
-                )
-            }
-            Frame53(
-                modifier = Modifier.boxAlign(Alignment.TopCenter, DpOffset(0.5.dp, 174.dp))
-            ) {
-                RelayText(
-                    content = "Balance",
-                    fontSize = 16.sp,
-                    fontFamily = inter,
-                    fontWeight = FontWeight(500),
-                    modifier = Modifier.boxAlign(Alignment.TopStart, DpOffset(15.dp, 16.dp))
-                )
-                RelayText(
-                    content = balance,
-                    fontSize = 16.sp,
-                    fontFamily = inter,
-                    fontWeight = FontWeight(600),
-                    modifier = Modifier.boxAlign(Alignment.TopStart, DpOffset(176.dp, 16.dp))
-                )
-            }
-        }
-    }
-}
-
-//endregion
-
-
-//region account section demo 1 component (not keep the design but best in function)
-//@Composable
-//fun AccountSection(
-//    accountTitle: String,
-//    income: String,
-//    expense: String,
-//    balance: String,
-//    modifier: Modifier = Modifier
-//) {
-//    var isExpanded by remember { mutableStateOf(false) }
-//
-//    // Toggle expansion on clicking the "More" button
-//    Column(
-//        modifier = modifier
-//            .fillMaxWidth()
-//            .border(1.dp, Color.Black, RoundedCornerShape(8.dp))
-//            .padding(8.dp)
-//    ) {
-//        Row(
-//            verticalAlignment = Alignment.CenterVertically,
-//            modifier = Modifier
-//                .fillMaxWidth()
-//                .clickable { isExpanded = !isExpanded }
+//        //region navigation bar
+//        BottomNav(
+//            modifier = Modifier.boxAlign(
+//                alignment = Alignment.TopStart,
+//                offset = DpOffset(
+//                    x = 0.0.dp,
+//                    y = 731.0.dp
+//                )
+//            ).fillMaxWidth()
 //        ) {
-//            Text(
-//                text = accountTitle,
-//                fontSize = 16.sp,
-//                fontWeight = FontWeight.Bold,
-//                modifier = Modifier.weight(1f)
+//            Line12(
+//                modifier = Modifier.boxAlign(
+//                    alignment = Alignment.TopCenter,
+//                    offset = DpOffset(
+//                        x = -2.0.dp,
+//                        y = 101.0.dp
+//                    )
+//                )
 //            )
-//            Button(onClick = { isExpanded = !isExpanded }) {
-//                Text(text = if (isExpanded) "Less" else "More")
+//            Frame43(
+//                modifier = Modifier.boxAlign(
+//                    alignment = Alignment.TopCenter,
+//                    offset = DpOffset(
+//                        x = 0.5.dp,
+//                        y = 24.0.dp
+//                    )
+//                )
+//            ) {
+//                Store(
+//                    onStoreButtonTapped = onStoreButtonTapped,
+//                    modifier = Modifier.rowWeight(1.0f).columnWeight(1.0f)
+//                ) {
+//                    Vector(
+//                        modifier = Modifier.boxAlign(
+//                            alignment = Alignment.TopStart,
+//                            offset = DpOffset(
+//                                x = -0.875.dp,
+//                                y = -0.875.dp
+//                            )
+//                        ).rowWeight(1.0f).columnWeight(1.0f)
+//                    )
+//                    Vector1(
+//                        modifier = Modifier.boxAlign(
+//                            alignment = Alignment.TopStart,
+//                            offset = DpOffset(
+//                                x = -0.875.dp,
+//                                y = -0.875.dp
+//                            )
+//                        ).rowWeight(1.0f).columnWeight(1.0f)
+//                    )
+//                }
+//                Statistic(
+//                    onStatisticButtonTapped = onStatisticButtonTapped,
+//                    modifier = Modifier.boxAlign(
+//                        alignment = Alignment.TopStart,
+//                        offset = DpOffset(
+//                            x = 282.0.dp,
+//                            y = 9.0.dp
+//                        )
+//                    )
+//                ) {
+//                    Vector2(modifier = Modifier.rowWeight(1.0f).columnWeight(1.0f))
+//                }
+//                Archive(
+//                    onInventoryButtonTapped = onInventoryButtonTapped,
+//                    modifier = Modifier.boxAlign(
+//                        alignment = Alignment.TopStart,
+//                        offset = DpOffset(
+//                            x = 87.0.dp,
+//                            y = 14.0.dp
+//                        )
+//                    )
+//                ) {
+//                    Vector3(modifier = Modifier.rowWeight(1.0f).columnWeight(1.0f))
+//                    Vector4(modifier = Modifier.rowWeight(1.0f).columnWeight(1.0f))
+//                }
+//                History(
+//                    onHistoryButtonTapped = onHistoryButtonTapped,
+//                    modifier = Modifier.boxAlign(
+//                        alignment = Alignment.TopStart,
+//                        offset = DpOffset(
+//                            x = 231.0.dp,
+//                            y = 16.0.dp
+//                        )
+//                    )
+//                ) {
+//                    Vector5(modifier = Modifier.rowWeight(1.0f).columnWeight(1.0f))
+//                    Vector6(modifier = Modifier.rowWeight(1.0f).columnWeight(1.0f))
+//                }
+//            }
+//            Frame42(
+//                onHomepageButtonTapped = onHomepageButtonTapped,
+//                modifier = Modifier.boxAlign(
+//                    alignment = Alignment.TopStart,
+//                    offset = DpOffset(
+//                        x = 165.0.dp,
+//                        y = 6.0.dp
+//                    )
+//                )
+//            ) {
+//                Vector7(modifier = Modifier.rowWeight(1.0f).columnWeight(1.0f))
 //            }
 //        }
-//
-//        if (isExpanded) {
-//            Spacer(modifier = Modifier.height(8.dp))
-//            AccountDetailRow(label = "Incomes", amount = income)
-//            AccountDetailRow(label = "Expenses", amount = expense)
-//            AccountDetailRow(label = "Balance", amount = balance)
-//        }
-//    }
-//}
-//
-//@Composable
-//fun AccountDetailRow(label: String, amount: String) {
-//    Row(
-//        modifier = Modifier
-//            .fillMaxWidth()
-//            .padding(vertical = 4.dp)
-//            .border(1.dp, Color.Gray, RoundedCornerShape(4.dp))
-//            .padding(8.dp),
-//        horizontalArrangement = Arrangement.SpaceBetween
-//    ) {
-//        Text(
-//            text = label,
-//            fontSize = 16.sp,
-//            fontWeight = FontWeight.Medium
-//        )
-//        Text(
-//            text = amount,
-//            fontSize = 16.sp,
-//            fontWeight = FontWeight.Bold
-//        )
-//    }
-//}
-//endregion
+//        //endregion
+    }
 
+}
+
+//region scrollable and hide section (can keep the original design but not flexible)
 
 //@Composable
 //fun AccountSection(
@@ -800,9 +657,9 @@ fun AccountSection(
 //    modifier: Modifier = Modifier
 //) {
 //    var isExpanded by remember { mutableStateOf(false) }
-//
+//    Spacer(modifier = Modifier.height(16.dp))
 //    Frame47(
-//        modifier = modifier.boxAlign(Alignment.TopStart, DpOffset(0.dp, 0.dp)).height(if (isExpanded) Dp.Unspecified else 80.dp)
+//        modifier = modifier.boxAlign(Alignment.TopStart, DpOffset(0.dp, 0.dp))
 //    ) {
 //        // Account Title
 //        RelayText(
@@ -816,10 +673,8 @@ fun AccountSection(
 //        // "More" Button
 //        Frame54(
 //            modifier = Modifier
-//                .boxAlign(alignment = Alignment.TopEnd,
-//                    offset = DpOffset((-16).dp, 20.dp)
-//                )
-//                .tappable { isExpanded = !isExpanded }
+//                .boxAlign(Alignment.TopStart, DpOffset(258.dp, 20.dp))
+//                .clickable { isExpanded = !isExpanded } // Toggle expand/collapse
 //        ) {
 //            More(
 //                modifier = Modifier.boxAlign(Alignment.TopStart, DpOffset(15.dp, 2.dp))
@@ -830,78 +685,8 @@ fun AccountSection(
 //        }
 //
 //        // Conditionally show details based on isExpanded
-//
-//        //region animated method
-////        AnimatedVisibility(visible = isExpanded) {
-////            Column(modifier = Modifier.padding(top = 10.dp)) {
-////                Frame51(
-////                    modifier = Modifier
-////                        .then(
-////                            Modifier.offset(x = 0.dp, y = 10.dp) // Replace boxAlign with offset
-////                        )
-////                ) {
-////                    RelayText(
-////                        content = "Incomes",
-////                        fontSize = 16.sp,
-////                        fontFamily = inter,
-////                        fontWeight = FontWeight(500),
-////                        modifier = Modifier.boxAlign(Alignment.TopStart, DpOffset(15.dp, 16.dp))
-////                    )
-////                    RelayText(
-////                        content = income,
-////                        fontSize = 16.sp,
-////                        fontFamily = inter,
-////                        fontWeight = FontWeight(600),
-////                        modifier = Modifier.boxAlign(Alignment.TopStart, DpOffset(163.dp, 16.dp))
-////                    )
-////                }
-////                Frame52(
-////                    modifier = Modifier
-////                        .then(
-////                            Modifier.offset(x = 0.dp, y = 10.dp) // Replace boxAlign with offset
-////                        )
-////                ) {
-////                    RelayText(
-////                        content = "Expenses",
-////                        fontSize = 16.sp,
-////                        fontFamily = inter,
-////                        fontWeight = FontWeight(500),
-////                        modifier = Modifier.boxAlign(Alignment.TopStart, DpOffset(15.dp, 16.dp))
-////                    )
-////                    RelayText(
-////                        content = expense,
-////                        fontSize = 16.sp,
-////                        fontFamily = inter,
-////                        fontWeight = FontWeight(600),
-////                        modifier = Modifier.boxAlign(Alignment.TopStart, DpOffset(165.dp, 16.dp))
-////                    )
-////                }
-////                Frame53(
-////                    modifier = Modifier
-////                        .then(
-////                            Modifier.offset(x = 0.dp, y = 10.dp) // Replace boxAlign with offset
-////                        )
-////                ) {
-////                    RelayText(
-////                        content = "Balance",
-////                        fontSize = 16.sp,
-////                        fontFamily = inter,
-////                        fontWeight = FontWeight(500),
-////                        modifier = Modifier.boxAlign(Alignment.TopStart, DpOffset(15.dp, 16.dp))
-////                    )
-////                    RelayText(
-////                        content = balance,
-////                        fontSize = 16.sp,
-////                        fontFamily = inter,
-////                        fontWeight = FontWeight(600),
-////                        modifier = Modifier.boxAlign(Alignment.TopStart, DpOffset(176.dp, 16.dp))
-////                    )
-////                }
-////            }
-////        }
-//        //endregion
-//
 //        if (isExpanded) {
+//
 //            Spacer(modifier = Modifier.height(16.dp))
 //
 //            Frame51(
@@ -961,6 +746,79 @@ fun AccountSection(
 //        }
 //    }
 //}
+
+//endregion
+
+
+//region account section demo 1 component (not keep the design but best in function)
+@Composable
+fun AccountSection(
+    accountTitle: String,
+    income: String,
+    expense: String,
+    balance: String,
+    modifier: Modifier = Modifier
+) {
+    var isExpanded by remember { mutableStateOf(false) }
+
+    Spacer(modifier = Modifier.height(16.dp))
+
+    Column(
+        modifier = modifier
+            .fillMaxWidth()
+            .border(1.dp, Color.Black, RoundedCornerShape(8.dp))
+            .padding(8.dp)
+    ) {
+        Row(
+            verticalAlignment = Alignment.CenterVertically,
+            modifier = Modifier
+                .fillMaxWidth()
+                .clickable { isExpanded = !isExpanded }
+        ) {
+            Text(
+                text = accountTitle,
+                fontSize = 16.sp,
+                fontWeight = FontWeight.Bold,
+                modifier = Modifier.weight(1f)
+            )
+            Button(onClick = { isExpanded = !isExpanded }) {
+                Text(text = if (isExpanded) "Less" else "More")
+            }
+        }
+
+        if (isExpanded) {
+            Spacer(modifier = Modifier.height(8.dp))
+            AccountDetailRow(label = "Incomes", amount = income)
+            AccountDetailRow(label = "Expenses", amount = expense)
+            AccountDetailRow(label = "Balance", amount = balance)
+        }
+    }
+}
+
+@Composable
+fun AccountDetailRow(label: String, amount: String) {
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(vertical = 4.dp)
+            .border(1.dp, Color.Gray, RoundedCornerShape(4.dp))
+            .padding(16.dp),
+        horizontalArrangement = Arrangement.SpaceBetween
+    ) {
+        Text(
+            text = label,
+            fontSize = 16.sp,
+            fontWeight = FontWeight.Medium
+        )
+        Text(
+            text = amount,
+            fontSize = 16.sp,
+            fontWeight = FontWeight.Bold
+        )
+    }
+}
+//endregion
+
 
 @Preview(widthDp = 390, heightDp = 844)
 @Composable
