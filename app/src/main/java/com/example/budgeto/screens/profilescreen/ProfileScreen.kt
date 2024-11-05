@@ -1,6 +1,6 @@
 package com.example.budgeto.screens.profilescreen
 
-import android.util.Log
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -11,6 +11,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.requiredHeight
 import androidx.compose.foundation.layout.requiredWidth
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.material3.MaterialTheme
@@ -37,6 +38,7 @@ import com.example.budgeto.R
 import com.example.budgeto.data.enums.user.UserGender
 import com.example.budgeto.screensfonts.inter
 import com.example.budgeto.viewmodel.ProfileViewModel
+import com.google.relay.compose.BoxScopeInstanceImpl.align
 import com.google.relay.compose.RelayContainer
 import com.google.relay.compose.RelayContainerScope
 import com.google.relay.compose.RelayText
@@ -346,153 +348,11 @@ fun ProfileContent(
                             .rowWeight(1.0f)
                             .columnWeight(1.0f)
                     ) {
-                        Vector8(
-                            modifier = Modifier
-                                .rowWeight(1.0f)
-                                .columnWeight(1.0f)
-                        )
-                        Vector9(
-                            modifier = Modifier
-                                .rowWeight(1.0f)
-                                .columnWeight(1.0f)
-                        )
-                        Vector10(
-                            modifier = Modifier
-                                .rowWeight(1.0f)
-                                .columnWeight(1.0f)
-                        )
-                        Vector11(
-                            modifier = Modifier
-                                .rowWeight(1.0f)
-                                .columnWeight(1.0f)
-                        )
-                        ClipPathGroup(
-                            modifier = Modifier
-                                .rowWeight(1.0f)
-                                .columnWeight(1.0f)
-                        ) {
-                            A(
-                                modifier = Modifier
-                                    .rowWeight(1.0f)
-                                    .columnWeight(1.0f)
-                            ) {
-                                Vector19(
-                                    modifier = Modifier
-                                        .rowWeight(1.0f)
-                                        .columnWeight(1.0f)
-                                )
-                            }
-                            Group(
-                                modifier = Modifier
-                                    .rowWeight(1.0f)
-                                    .columnWeight(1.0f)
-                            ) {
-                                Vector20(
-                                    modifier = Modifier
-                                        .rowWeight(1.0f)
-                                        .columnWeight(1.0f)
-                                )
-                                Vector21(
-                                    modifier = Modifier
-                                        .rowWeight(1.0f)
-                                        .columnWeight(1.0f)
-                                )
-                                Vector22(
-                                    modifier = Modifier
-                                        .rowWeight(1.0f)
-                                        .columnWeight(1.0f)
-                                )
-                                Vector23(
-                                    modifier = Modifier
-                                        .rowWeight(1.0f)
-                                        .columnWeight(1.0f)
-                                )
-                                Vector24(
-                                    modifier = Modifier
-                                        .rowWeight(1.0f)
-                                        .columnWeight(1.0f)
-                                )
-                                Vector25(
-                                    modifier = Modifier
-                                        .rowWeight(1.0f)
-                                        .columnWeight(1.0f)
-                                )
-                                Vector26(
-                                    modifier = Modifier
-                                        .rowWeight(1.0f)
-                                        .columnWeight(1.0f)
-                                )
-                            }
-                        }
-                        Vector12(
-                            modifier = Modifier
-                                .rowWeight(1.0f)
-                                .columnWeight(1.0f)
-                        )
-                        Vector13(
-                            modifier = Modifier
-                                .rowWeight(1.0f)
-                                .columnWeight(1.0f)
-                        )
-                        ClipPathGroup1(
-                            modifier = Modifier
-                                .rowWeight(1.0f)
-                                .columnWeight(1.0f)
-                        ) {
-                            B(
-                                modifier = Modifier
-                                    .rowWeight(1.0f)
-                                    .columnWeight(1.0f)
-                            ) {
-                                Vector27(
-                                    modifier = Modifier
-                                        .rowWeight(1.0f)
-                                        .columnWeight(1.0f)
-                                )
-                            }
-                            Group1(
-                                modifier = Modifier
-                                    .rowWeight(1.0f)
-                                    .columnWeight(1.0f)
-                            ) {
-                                Vector28(
-                                    modifier = Modifier
-                                        .boxAlign(
-                                            alignment = Alignment.TopStart,
-                                            offset = DpOffset(
-                                                x = 0.0.dp,
-                                                y = 1.2065582275390625.dp
-                                            )
-                                        )
-                                        .rowWeight(1.0f)
-                                        .columnWeight(1.0f)
-                                )
-                            }
-                        }
-                        Vector14(
-                            modifier = Modifier
-                                .rowWeight(1.0f)
-                                .columnWeight(1.0f)
-                        )
-                        Vector15(
-                            modifier = Modifier
-                                .rowWeight(1.0f)
-                                .columnWeight(1.0f)
-                        )
-                        Vector16(
-                            modifier = Modifier
-                                .rowWeight(1.0f)
-                                .columnWeight(1.0f)
-                        )
-                        Vector17(
-                            modifier = Modifier
-                                .rowWeight(1.0f)
-                                .columnWeight(1.0f)
-                        )
-                        Vector18(
-                            modifier = Modifier
-                                .rowWeight(1.0f)
-                                .columnWeight(1.0f)
+                        Image(
+                            painter = painterResource(id = R.drawable.z5984713760376_5a890c725e3882c36b5b405cae1bdedd),
+                            contentDescription = "Back Arrow",
+                            modifier = modifier
+                                .fillMaxSize()
                         )
                     }
                 }
@@ -526,7 +386,7 @@ fun ProfileContent(
                         modifier = modifier
                             .align(Alignment.CenterHorizontally)
                     )
-                    
+
                     UserNameField(
                         value = fullnameTextContent,
                         onValueChange = onNameFieldChanged,
@@ -1086,13 +946,21 @@ fun Frame54(
             green = 0,
             blue = 0
         ),
-        content = content,
         modifier = modifier
             .tappable(onTap = onBackToHomepageButtonTapped)
-            .requiredWidth(28.0.dp)
-            .requiredHeight(28.0.dp)
-    )
+            .requiredWidth(32.0.dp)
+            .requiredHeight(32.0.dp)
+    ) {
+        Image(
+            painter = painterResource(id = R.drawable.profile_1_arrow_3),
+            contentDescription = "Back Arrow",
+            modifier = Modifier
+                .size(24.dp)
+                .align(Alignment.Center)
+        )
+    }
 }
+
 
 @Composable
 fun Vector8(modifier: Modifier = Modifier) {
@@ -1650,7 +1518,7 @@ fun UserInfoTextField(
     onValueChange: (String) -> Unit = {},
     modifier: Modifier,
     placeHolder: String = "",
-    onFieldUpdated : () -> Unit = {}
+    onFieldUpdated: () -> Unit = {}
 ) {
     Column(
         modifier = Modifier.width(344.dp)

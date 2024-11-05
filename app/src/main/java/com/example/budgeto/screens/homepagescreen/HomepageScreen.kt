@@ -1,7 +1,10 @@
 package com.example.budgeto.screens.homepagescreen
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.absoluteOffset
 import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.requiredHeight
@@ -27,6 +30,7 @@ import com.example.budgeto.screensfonts.inter
 import com.example.budgeto.screensfonts.kurale
 import com.google.relay.compose.BoxScopeInstance.columnWeight
 import com.google.relay.compose.BoxScopeInstance.rowWeight
+import com.google.relay.compose.BoxScopeInstanceImpl.align
 import com.google.relay.compose.RelayContainer
 import com.google.relay.compose.RelayContainerScope
 import com.google.relay.compose.RelayImage
@@ -53,7 +57,9 @@ fun HomepageScreen(
         onHistoryButtonTapped = onHistoryButtonTapped,
         onStatisticButtonTapped = onStatisticButtonTapped,
 
-        modifier = modifier.rowWeight(1.0f).columnWeight(1.0f),
+        modifier = modifier
+            .rowWeight(1.0f)
+            .columnWeight(1.0f),
     )
 }
 
@@ -77,15 +83,14 @@ fun Homepage02(
     onRankButtonTapped: () -> Unit = {},
     onProfileButtonTapped: () -> Unit = {}
 ) {
-    TopLevel(modifier = modifier) {
+    TopLevel(
+        modifier = modifier
+    ) {
+
         Statistics(
-            modifier = Modifier.boxAlign(
-                alignment = Alignment.TopStart,
-                offset = DpOffset(
-                    x = -2.0.dp,
-                    y = 570.0.dp
-                )
-            )
+            modifier = modifier
+                .align(Alignment.Center)
+                .padding(top = 450.dp)
         ) {
             Frame44(
                 onNewOperationButtonTapped = onNewOperationButtonTapped,
@@ -170,24 +175,18 @@ fun Homepage02(
                 }
             }
         }
+
         WishBanner(
-            modifier = Modifier.boxAlign(
-                alignment = Alignment.TopStart,
-                offset = DpOffset(
-                    x = -1.0.dp,
-                    y = 271.0.dp
-                )
-            )
+            modifier = modifier
+                .fillMaxWidth()
+                .align(Alignment.Center)
+                .padding(top = 25.dp)
         ) {
             Class01(
                 onLeftBannerTapped = onLeftBannerTapped,
-                modifier = Modifier.boxAlign(
-                    alignment = Alignment.TopStart,
-                    offset = DpOffset(
-                        x = -11.0.dp,
-                        y = 97.0.dp
-                    )
-                )
+                modifier = modifier
+                    .align(Alignment.CenterStart)
+                    .absoluteOffset(x = -30.dp, y = 0.dp)
             ) {
                 Vector317(
                     modifier = Modifier.boxAlign(
@@ -210,13 +209,9 @@ fun Homepage02(
             }
             Class3(
                 onRightBannerTapped = onRightBannerTapped,
-                modifier = Modifier.boxAlign(
-                    alignment = Alignment.TopStart,
-                    offset = DpOffset(
-                        x = 346.0.dp,
-                        y = 97.0.dp
-                    )
-                )
+                modifier = modifier
+                    .align(Alignment.CenterEnd)
+                    .absoluteOffset(x = 30.dp, y = 0.dp)
             ) {
                 Vector318(
                     modifier = Modifier.boxAlign(
@@ -231,13 +226,9 @@ fun Homepage02(
             }
             Class2(
                 onMainBannerTapped = onMainBannerTapped,
-                modifier = Modifier.boxAlign(
-                    alignment = Alignment.TopCenter,
-                    offset = DpOffset(
-                        x = 0.0.dp,
-                        y = 60.0.dp
-                    )
-                )
+                modifier = modifier
+                    .align(Alignment.Center)
+                    .padding()
             ) {
                 Frame36(
                     modifier = Modifier.boxAlign(
@@ -278,15 +269,13 @@ fun Homepage02(
                     }
                 }
                 Class4(
-                    modifier = Modifier.boxAlign(
-                        alignment = Alignment.TopCenter,
-                        offset = DpOffset(
-                            x = 0.0.dp,
-                            y = 0.0.dp
-                        )
-                    )
+                    modifier = modifier
+                        .align(Alignment.Center)
                 ) {
-                    Z555214942458944f4f29198b0d1e91c35ad51fb03e8f72()
+                    Z555214942458944f4f29198b0d1e91c35ad51fb03e8f72(
+                        modifier = modifier
+                            .align(Alignment.Center)
+                    )
                     Frame38(
                         modifier = Modifier.boxAlign(
                             alignment = Alignment.TopCenter,
@@ -725,23 +714,15 @@ fun Homepage02(
                 }
             }
             WishBanner(
-                modifier = Modifier.boxAlign(
-                    alignment = Alignment.TopStart,
-                    offset = DpOffset(
-                        x = 27.0.dp,
-                        y = 11.0.dp
-                    )
-                )
+                modifier = modifier
+                    .align(Alignment.CenterStart)
+                    .padding(start = 35.dp, bottom = 300.dp)
             )
         }
         Hero(
-            modifier = Modifier.boxAlign(
-                alignment = Alignment.TopStart,
-                offset = DpOffset(
-                    x = 24.0.dp,
-                    y = 156.0.dp
-                )
-            )
+            modifier = modifier
+                .align(Alignment.TopCenter)
+                .padding(top = 130.dp)
         ) {
             Frame35(
                 onAccountsButtonTapped = onAccountsButtonTapped,
@@ -801,23 +782,18 @@ fun Homepage02(
                     )
                 )
                 Button1(
-                    modifier = Modifier.boxAlign(
-                        alignment = Alignment.TopStart,
-                        offset = DpOffset(
-                            x = 86.0.dp,
-                            y = 50.0.dp
-                        )
-                    )
+                    modifier = modifier
+                        .align(Alignment.TopStart)
+                        .padding(99.dp, 75.dp)
                 ) {
-                    Ellipse4()
+                    Ellipse4(
+                        modifier = modifier
+                            .fillMaxSize()
+                    )
                     Arrow1(
-                        modifier = Modifier.boxAlign(
-                            alignment = Alignment.TopStart,
-                            offset = DpOffset(
-                                x = 9.15409697765108.dp,
-                                y = 17.49998497090428.dp
-                            )
-                        )
+                        modifier = modifier
+                            .align(Alignment.Center)
+                            .fillMaxSize()
                     )
                 }
             }
@@ -832,13 +808,8 @@ fun Homepage02(
             )
         }
         BottomNav(
-            modifier = Modifier.boxAlign(
-                alignment = Alignment.TopStart,
-                offset = DpOffset(
-                    x = 0.0.dp,
-                    y = 731.0.dp
-                )
-            )
+            modifier = modifier
+                .align(Alignment.BottomCenter)
         ) {
             Line12(
                 modifier = Modifier.boxAlign(
@@ -933,13 +904,9 @@ fun Homepage02(
             }
         }
         TopNav(
-            modifier = Modifier.boxAlign(
-                alignment = Alignment.TopStart,
-                offset = DpOffset(
-                    x = 23.0.dp,
-                    y = 30.0.dp
-                )
-            )
+            modifier = modifier
+                .align(Alignment.TopCenter)
+                .padding(top = 20.dp)
         ) {
             NameFrame(
                 modifier = Modifier.boxAlign(
@@ -2595,7 +2562,10 @@ fun Ellipse4(modifier: Modifier = Modifier) {
 fun Arrow1(modifier: Modifier = Modifier) {
     RelayVector(
         vector = painterResource(R.drawable.homepage_02_arrow_1),
-        modifier = modifier.requiredWidth(17.69180679321289.dp).requiredHeight(0.0.dp)
+        modifier = modifier
+            .requiredWidth(20.0.dp).requiredHeight(20.0.dp)
+            .align(Alignment.Center)
+            .align(Alignment.Center)
     )
 }
 
@@ -2608,7 +2578,7 @@ fun Button1(
         isStructured = false,
         clipToParent = false,
         content = content,
-        modifier = modifier.requiredWidth(38.0.dp).requiredHeight(38.0.dp)
+        modifier = modifier.requiredWidth(30.0.dp).requiredHeight(30.0.dp)
     )
 }
 
@@ -4102,6 +4072,6 @@ fun TopLevel(
         ),
         isStructured = false,
         content = content,
-        modifier = modifier.fillMaxWidth(1.0f).fillMaxHeight(1.0f)
+        modifier = modifier.fillMaxSize()
     )
 }
