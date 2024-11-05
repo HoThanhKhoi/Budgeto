@@ -1,19 +1,32 @@
 package com.example.budgeto.data.repository.user
 
 import android.util.Log
+import com.example.budgeto.data.model.dailySummary.DailySummary
 import com.example.budgeto.data.model.user.UserGameInfo
 import com.example.budgeto.data.model.user.UserGeneralInfo
 import com.example.budgeto.data.model.user.MoneyInfo
 import com.example.budgeto.data.repository.base.FirestoreRepository
 import com.example.budgeto.data.model.user.User
+import com.google.firebase.Timestamp
 import com.google.firebase.firestore.FirebaseFirestore
 import javax.inject.Inject
 
 class UserRepository @Inject constructor(
-    firestore: FirebaseFirestore
+    firestore: FirebaseFirestore,
 ) : FirestoreRepository(firestore) {
     private val usersCollectionPath = "users" // Firestore collection name for users
     private val infoCollectionPath = "info"
+    private val loginLogsCollectionPath = "loginLogs"
+
+    suspend fun getAllUsers() : List<User> {
+        val users = getAll(usersCollectionPath, User::class.java)
+        return users
+    }
+
+    suspend fun countUsers(): Int {
+        val users = getAllUsers()
+        return users.size
+    }
 
     // Add a new user document
     suspend fun addUser(
@@ -34,6 +47,10 @@ class UserRepository @Inject constructor(
         return get(usersCollectionPath, userId, User::class.java)
     }
 
+    suspend fun updateUserLastSignInTime(userId: String) {
+        updateField(usersCollectionPath, userId, "lastSignInTime", Timestamp.now())
+    }
+
     // Update a user's document
     suspend fun updateUser(userId: String, user: User) {
         update(usersCollectionPath, userId, user)
@@ -46,15 +63,15 @@ class UserRepository @Inject constructor(
 
     // Add or update gameInfo in a sub-collection for a specific user
     suspend fun addGameInfo(userId: String, userGameInfo: UserGameInfo) : String{
-        return addSubcollection(usersCollectionPath, userId, infoCollectionPath, userGameInfo, "gameInfo")
+        return addDocumentToSubcollection(usersCollectionPath, userId, infoCollectionPath, userGameInfo, "gameInfo")
     }
 
     suspend fun addGeneralInfo(userId: String, userGeneralInfo: UserGeneralInfo) : String{
-        return addSubcollection(usersCollectionPath, userId, infoCollectionPath, userGeneralInfo, "generalInfo")
+        return addDocumentToSubcollection(usersCollectionPath, userId, infoCollectionPath, userGeneralInfo, "generalInfo")
     }
 
     suspend fun addMoneyInfo(userId: String, moneyInfo: MoneyInfo) : String {
-        return addSubcollection(usersCollectionPath, userId, infoCollectionPath, moneyInfo, "moneyInfo")
+        return addDocumentToSubcollection(usersCollectionPath, userId, infoCollectionPath, moneyInfo, "moneyInfo")
     }
 
     suspend fun getUserGeneralInfo(userId: String): UserGeneralInfo? {

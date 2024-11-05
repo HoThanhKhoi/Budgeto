@@ -7,4 +7,5 @@ data class User(
     val userId: String = "",
     val createdAt: Timestamp = Timestamp.now(),
     val status: UserStatus = UserStatus.ACTIVE,
+    val lastSignInTime: Timestamp = Timestamp.now()
 )

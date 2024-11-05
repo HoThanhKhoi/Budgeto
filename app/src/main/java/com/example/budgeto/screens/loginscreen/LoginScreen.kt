@@ -74,6 +74,7 @@ import com.google.relay.compose.tappable
 
 @Composable
 fun LoginScreen(
+
     email: String = "",
     password: String = "",
     onLoginButtonTapped: () -> Unit = {},
@@ -81,6 +82,7 @@ fun LoginScreen(
     onForgotPasswordTapped: () -> Unit,
     onLoginWithGoogleTapped: (AuthCredential) -> Unit,
     onLoginWithFacebookTapped: () -> Unit,
+    onLogginSucess: () -> Unit = {},
     modifier: Modifier = Modifier,
     loginViewModel: LoginViewModel
 ) {
@@ -90,6 +92,7 @@ fun LoginScreen(
 
     var isPasswordVisible by remember { mutableStateOf(false) }
 
+    //gg login
     val context = LocalContext.current
 
     val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
@@ -132,7 +135,8 @@ fun LoginScreen(
     LaunchedEffect(loginState.isSuccess) {
         loginState.isSuccess?.let {
             if (loginViewModel.isUserLoggedIn()) {
-                onLoginButtonTapped() // Navigate to Profile screen on success
+//                onLoginButtonTapped() // Navigate to Profile screen on success
+                onLogginSucess()
                 loginViewModel.resetLoginState() // Reset login state after navigation
             }
         }

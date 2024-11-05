@@ -99,7 +99,6 @@ fun ProfileScreen(
                 info.copy(fullName = localFullName)
             }
         },
-
         onPhoneFieldChanged = {
             localPhoneNumber = it
         },
@@ -108,7 +107,6 @@ fun ProfileScreen(
                 info.copy(phone = localPhoneNumber)
             }
         },
-
         onAddressFieldChanged = {
             localAddress = it
         },
@@ -117,7 +115,6 @@ fun ProfileScreen(
                 info.copy(address = localAddress)
             }
         },
-
         onOccupationFieldChanged = {
             localOccupation = it
         },
@@ -126,7 +123,6 @@ fun ProfileScreen(
                 info.copy(occupation = localOccupation)
             }
         },
-
         onGenderFieldChanged = {
             localGender = it
         },
@@ -135,7 +131,6 @@ fun ProfileScreen(
                 info.copy(gender = localGender)
             }
         },
-
         onBirthDayFieldChanged = {
             localBirthDate = it
         },
@@ -390,31 +385,36 @@ fun ProfileContent(
                     UserNameField(
                         value = fullnameTextContent,
                         onValueChange = onNameFieldChanged,
-                        modifier = Modifier.fillMaxWidth() // Explicit width modifier for each field
+                        modifier = Modifier.fillMaxWidth(),
+                        onFieldUpdated = onNameFieldUpdate
                     )
                     DayOfBirthField(
                         value = birthdateTextContent,
                         onValueChange = onBirthDayFieldChanged,
-                        modifier = Modifier.fillMaxWidth()
+                        modifier = Modifier.fillMaxWidth(),
+                        onFieldUpdated = onBirthDayFieldUpdate
                     )
                     PhoneField(
                         value = phoneNumberTextContent,
                         onValueChange = onPhoneFieldChanged,
-                        modifier = Modifier.fillMaxWidth()
+                        modifier = Modifier.fillMaxWidth(),
+                        onFieldUpdated = onPhoneFieldUpdate
                     )
                     AddressField(
                         value = addressTextContent,
                         onValueChange = onAddressFieldChanged,
-                        modifier = Modifier.fillMaxWidth()
+                        modifier = Modifier.fillMaxWidth(),
+                        onFieldUpdated = onAddressFieldUpdate
                     )
                     OccupationField(
                         value = occupationTextContent,
                         onValueChange = onOccupationFieldChanged,
-                        modifier = Modifier.fillMaxWidth()
+                        modifier = Modifier.fillMaxWidth(),
+                        onFieldUpdated = onOccupationFieldUpdate
                     )
                     GenderDropdownField(
                         onValueChange = onGenderFieldChanged,
-                        modifier = Modifier.fillMaxWidth()
+                        modifier = Modifier.fillMaxWidth(),
                     )
 
 
@@ -1514,11 +1514,10 @@ fun BaoNgu1(
 fun UserInfoTextField(
     label: String = "",
     value: String = "",
-    placeholder: String = "",
     onValueChange: (String) -> Unit = {},
     modifier: Modifier,
-    placeHolder: String = "",
-    onFieldUpdated: () -> Unit = {}
+    placeHolder: String = "...",
+    onFieldUpdated : () -> Unit = {}
 ) {
     Column(
         modifier = Modifier.width(344.dp)
@@ -1587,7 +1586,7 @@ fun UserNameField(
     UserInfoTextField(
         label = "Name",
         value = value,
-        placeholder = "Enter your name",
+        placeHolder = "Enter your name",
         onValueChange = onValueChange,
         modifier = modifier,
         onFieldUpdated = onFieldUpdated
@@ -1606,7 +1605,7 @@ fun DayOfBirthField(
         value = value,
         onValueChange = onValueChange,
         modifier = modifier,
-        placeHolder = "yyyy-mm-dd",
+        placeHolder = "Enter day of birth (yyyy-mm-dd)",
         onFieldUpdated = onFieldUpdated
     )
 }
@@ -1640,7 +1639,8 @@ fun AddressField(
         value = value,
         onValueChange = onValueChange,
         modifier = modifier,
-        onFieldUpdated = onFieldUpdated
+        onFieldUpdated = onFieldUpdated,
+        placeHolder = "Enter your address"
     )
 }
 
@@ -1656,7 +1656,8 @@ fun OccupationField(
         value = value,
         onValueChange = onValueChange,
         modifier = modifier,
-        onFieldUpdated = onFieldUpdated
+        onFieldUpdated = onFieldUpdated,
+        placeHolder = "Enter occupation"
     )
 }
 
