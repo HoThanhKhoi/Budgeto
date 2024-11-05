@@ -43,8 +43,19 @@ class AuthRepositoryImplement(
             emit(Resource.Loading())
             val result = firebaseAuth.signInWithCredential(credential).await()
             emit(Resource.Success(result))
-        }.catch {
-            emit(Resource.Error(it.message.toString()))
+        }.catch { e ->
+            when (e) {
+                is FirebaseAuthInvalidUserException -> {
+                    Log.e("AuthRepository", "Invalid user: ${e.localizedMessage}", e)
+                }
+                is FirebaseAuthInvalidCredentialsException -> {
+                    Log.e("AuthRepository", "Invalid credentials: ${e.localizedMessage}", e)
+                }
+                else -> {
+                    Log.e("AuthRepository", "Google Sign-In failed with exception: ${e.localizedMessage}", e)
+                }
+            }
+            emit(Resource.Error(e.message.toString()))
         }
     }
 

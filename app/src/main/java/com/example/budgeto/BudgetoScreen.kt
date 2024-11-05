@@ -96,7 +96,7 @@ fun BudgetoApp(
             navController = navController,
               startDestination = BudgetoScreenEnum.Start.name,
 //            startDestination = if (isUserLoggedIn) BudgetoScreenEnum.ProfileScreen.name else BudgetoScreenEnum.Start.name,
-              startDestination = BudgetoScreenEnum.Start.name,
+//              startDestination = BudgetoScreenEnum.AccountScreen.name,
 //            startDestination = BudgetoScreenEnum.ProfileScreen.name,
             modifier = Modifier
                 .fillMaxSize()
@@ -108,7 +108,6 @@ fun BudgetoApp(
                     onSignUpTapped = { navController.navigate(BudgetoScreenEnum.SignUp.name) },
                     onLoginTapped = { navController.navigate(BudgetoScreenEnum.Login.name) }
                 )
-//                OpeningScreenExpensesInputScreen()
             }
             composable(route = BudgetoScreenEnum.SignUp.name) {
                 val signUpViewModel: SignUpViewModel = hiltViewModel()
