@@ -17,16 +17,20 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.example.budgeto.screens.BudgetoBottomNav
 import com.example.budgeto.screens.account3.Account3
 import com.example.budgeto.screens.accountscreen.AccountScreen
+import com.example.budgeto.screens.historyscreen.HistoryScreen
 import com.example.budgeto.screens.homepagescreen.HomepageScreen
+import com.example.budgeto.screens.inventoryscreen.InventoryScreen
 import com.example.budgeto.screens.loginscreen.LoginScreen
 import com.example.budgeto.screens.openingscreen.OpeningScreenExpensesInputScreen
 import com.example.budgeto.screens.profilescreen.ProfileScreen
 import com.example.budgeto.screens.signuploginscreen.SignUpLoginScreen
 import com.example.budgeto.screens.signupscreen.SignUpScreen
+import com.example.budgeto.screens.statisticscreen.StatisticScreen
 import com.example.budgeto.screens.storescreen.StoreScreen
 import com.example.budgeto.viewmodel.SignUpViewModel
 import com.example.budgeto.viewmodel.LoginViewModel
@@ -50,17 +54,31 @@ enum class BudgetoScreenEnum(@StringRes val title: Int) {
 @Composable
 fun BudgetoApp(
     navController: NavHostController = rememberNavController()
+
 ) {
+    val screensWithBottomNav = setOf(
+        BudgetoScreenEnum.HomepageScreen.name,
+        BudgetoScreenEnum.StoreScreen.name,
+        BudgetoScreenEnum.InventoryScreen.name,
+        BudgetoScreenEnum.HistoryScreen.name,
+        BudgetoScreenEnum.StatisticScreen.name,
+        BudgetoScreenEnum.ProfileScreen.name
+    )
     Scaffold(
         bottomBar = {
-            BudgetoBottomNav(
-                navController = navController,
-                onHomepageButtonTapped = { navController.navigate(BudgetoScreenEnum.HomepageScreen.name) },
-                onStoreButtonTapped = { navController.navigate(BudgetoScreenEnum.StoreScreen.name) },
-                onInventoryButtonTapped = { navController.navigate(BudgetoScreenEnum.InventoryScreen.name) },
-                onHistoryButtonTapped = { navController.navigate(BudgetoScreenEnum.HistoryScreen.name) },
-                onStatisticButtonTapped = { navController.navigate(BudgetoScreenEnum.StatisticScreen.name) }
-            )
+            val currentBackStackEntry = navController.currentBackStackEntryAsState().value
+            val currentScreen = currentBackStackEntry?.destination?.route
+
+            if (currentScreen in screensWithBottomNav) {
+                BudgetoBottomNav(
+                    navController = navController,
+                    onHomepageButtonTapped = { navController.navigate(BudgetoScreenEnum.HomepageScreen.name) },
+                    onStoreButtonTapped = { navController.navigate(BudgetoScreenEnum.StoreScreen.name) },
+                    onInventoryButtonTapped = { navController.navigate(BudgetoScreenEnum.InventoryScreen.name) },
+                    onHistoryButtonTapped = { navController.navigate(BudgetoScreenEnum.HistoryScreen.name) },
+                    onStatisticButtonTapped = { navController.navigate(BudgetoScreenEnum.StatisticScreen.name) }
+                )
+            }
         }
     ) { innerPadding ->
         val loginViewModel: LoginViewModel = hiltViewModel()
@@ -153,6 +171,18 @@ fun BudgetoApp(
                     onHistoryButtonTapped = { navController.navigate(BudgetoScreenEnum.HistoryScreen.name) },
                     onStatisticButtonTapped = { navController.navigate(BudgetoScreenEnum.StatisticScreen.name) },
                 )
+            }
+
+            composable(route = BudgetoScreenEnum.InventoryScreen.name) {
+                InventoryScreen()
+            }
+
+            composable(route = BudgetoScreenEnum.HistoryScreen.name) {
+                HistoryScreen()
+            }
+
+            composable(route = BudgetoScreenEnum.StatisticScreen.name) {
+                StatisticScreen()
             }
 
             composable(route = BudgetoScreenEnum.AccountScreen.name) {
