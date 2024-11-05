@@ -28,6 +28,7 @@ import com.example.budgeto.screens.inventoryscreen.InventoryScreen
 import com.example.budgeto.screens.loginscreen.LoginScreen
 import com.example.budgeto.screens.openingscreen.OpeningScreenExpensesInputScreen
 import com.example.budgeto.screens.profilescreen.ProfileScreen
+import com.example.budgeto.screens.settingscreen.SettingScreen
 import com.example.budgeto.screens.signuploginscreen.SignUpLoginScreen
 import com.example.budgeto.screens.signupscreen.SignUpScreen
 import com.example.budgeto.screens.statisticscreen.StatisticScreen
@@ -48,7 +49,7 @@ enum class BudgetoScreenEnum(@StringRes val title: Int) {
     HistoryScreen(title = R.string.HistoryScreen),
     StatisticScreen(title = R.string.StatisticScreen),
     AccountScreen(title = R.string.AccountScreen),
-    Account3(title = R.string.Account3),
+    SettingsScreen(title = R.string.SettingsScreen),
 }
 
 @Composable
@@ -62,7 +63,8 @@ fun BudgetoApp(
         BudgetoScreenEnum.InventoryScreen.name,
         BudgetoScreenEnum.HistoryScreen.name,
         BudgetoScreenEnum.StatisticScreen.name,
-        BudgetoScreenEnum.ProfileScreen.name
+        BudgetoScreenEnum.ProfileScreen.name,
+        BudgetoScreenEnum.AccountScreen.name,
     )
     Scaffold(
         bottomBar = {
@@ -150,11 +152,8 @@ fun BudgetoApp(
             composable(route = BudgetoScreenEnum.HomepageScreen.name) {
                 HomepageScreen(
                     onProfileButtonTapped = { navController.navigate(BudgetoScreenEnum.ProfileScreen.name) },
-                    onStoreButtonTapped = { navController.navigate(BudgetoScreenEnum.StoreScreen.name) },
-                    onInventoryButtonTapped = { navController.navigate(BudgetoScreenEnum.InventoryScreen.name) },
-                    onHistoryButtonTapped = { navController.navigate(BudgetoScreenEnum.HistoryScreen.name) },
-                    onStatisticButtonTapped = { navController.navigate(BudgetoScreenEnum.StatisticScreen.name) },
-
+                    onAccountsButtonTapped = { navController.navigate(BudgetoScreenEnum.AccountScreen.name) },
+                    onSettingButtonTapped = {navController.navigate(BudgetoScreenEnum.SettingsScreen.name)}
                 )
             }
             composable(route = BudgetoScreenEnum.ProfileScreen.name) {
@@ -189,11 +188,9 @@ fun BudgetoApp(
                 AccountScreen()
             }
 
-//            composable(route = BudgetoScreenEnum.Account3.name) {
-//                Account3(
-//
-//                )
-//            }
+            composable(route = BudgetoScreenEnum.SettingsScreen.name) {
+                SettingScreen()
+            }
 
         }
 
