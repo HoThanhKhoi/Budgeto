@@ -8,6 +8,7 @@ import androidx.lifecycle.viewModelScope
 import com.example.budgeto.data.AuthRepository
 import com.example.budgeto.data.model.user.UserGeneralInfo
 import com.example.budgeto.data.model.user.User
+import com.example.budgeto.data.repository.dailySummary.DailySummaryRepository
 import com.example.budgeto.data.repository.user.UserRepository
 import com.example.budgeto.state.GoogleLoginState
 import com.example.budgeto.state.LoginState
@@ -25,16 +26,22 @@ import javax.inject.Inject
 @HiltViewModel
 class LoginViewModel @Inject constructor(
     private val repository: AuthRepository,
-    private val userRepository: UserRepository
+    private val userRepository: UserRepository,
+    private val dailySummaryRepository: DailySummaryRepository
 ) : ViewModel() {
+
     private val _loginState = MutableStateFlow(LoginState())
     val loginState = _loginState.asStateFlow()
 
     val _googleState = mutableStateOf(GoogleLoginState())
     val googleState: State<GoogleLoginState> = _googleState
 
-    fun isUserLoggedIn(): Boolean{
+    fun isUserLoggedIn(): Boolean {
         return repository.getCurrentUser() != null
+    }
+
+    fun getCurrentUser(): FirebaseUser? {
+        return repository.getCurrentUser()
     }
 
     fun loginUser(email: String, password: String) = viewModelScope.launch {
@@ -42,35 +49,42 @@ class LoginViewModel @Inject constructor(
         repository.login(email, password).collect { result ->
             when (result) {
                 is Resource.Success -> {
-                    Log.d("Login", "Login success with user ID: ${result.data?.user?.uid}")
-                    _loginState.value = LoginState(isSuccess = "Login success") // Emit success state
+                    val userId = result.data?.user?.uid
+
+                    userId?.let {
+                        logDailyActivity(it)
+                    }
+                    _loginState.value = LoginState(isSuccess = "Login success")
                 }
+
                 is Resource.Loading -> {
                     Log.d("Login", "Loading...")
                 }
+
                 is Resource.Error -> {
                     Log.d("Login", "Login fail with error: ${result.message}")
-                    _loginState.value = LoginState(isError = result.message) // Emit error state
+                    _loginState.value = LoginState(isError = result.message)
                 }
             }
         }
     }
 
     fun googleLogin(credential: AuthCredential) = viewModelScope.launch {
+        Log.d("Login with google", "Google login")
         repository.googleSignIn(credential).collect { result ->
             when (result) {
                 is Resource.Success -> {
                     val firebaseUser = result.data?.user
                     firebaseUser?.let {
-                        // Check if the user exists in Firestore
                         val userId = firebaseUser.uid
                         val userInFirestore = userRepository.getUser(userId)
 
                         if (userInFirestore == null) {
-                            // If the user doesn't exist in Firestore, create a new user document
                             addNewUserToFirestore(firebaseUser)
                         }
-                        _googleState.value = GoogleLoginState(success = result.data)
+
+                        logDailyActivity(userId)
+                        _loginState.value = LoginState(isSuccess = "Login success")
                     }
                 }
 
@@ -79,10 +93,9 @@ class LoginViewModel @Inject constructor(
                 }
 
                 is Resource.Error -> {
-                    _googleState.value = GoogleLoginState(error = result.message!!)
+                    _loginState.value = LoginState(isError = result.message)
                 }
             }
-
         }
     }
 
@@ -93,14 +106,16 @@ class LoginViewModel @Inject constructor(
             imgURL = firebaseUser.photoUrl?.toString() ?: ""
         )
 
-        val user = User(
-            userId = firebaseUser.uid,
-        )
-
+        val user = User(userId = firebaseUser.uid)
         userRepository.addUser(user, userGeneralInfo)
     }
 
     fun resetLoginState() {
-        _loginState.value = LoginState() // Reset to idle state
+        _loginState.value = LoginState()
+    }
+
+    suspend fun logDailyActivity(userId: String) {
+        userRepository.updateUserLastSignInTime(userId)
+        dailySummaryRepository.incrementLoginCount(userId)
     }
 }

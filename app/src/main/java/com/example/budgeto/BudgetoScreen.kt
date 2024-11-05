@@ -7,6 +7,7 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -82,9 +83,18 @@ fun BudgetoApp(
     ) { innerPadding ->
         val loginViewModel: LoginViewModel = hiltViewModel()
         val isUserLoggedIn by remember { mutableStateOf(loginViewModel.isUserLoggedIn()) }
+
+        var currentUser = loginViewModel.getCurrentUser()
+
+        if (isUserLoggedIn) {
+            LaunchedEffect(currentUser?.uid) {
+                loginViewModel.logDailyActivity(currentUser?.uid?: "")
+            }
+        }
+
         NavHost(
             navController = navController,
-              //startDestination = BudgetoScreenEnum.Start.name,
+              startDestination = BudgetoScreenEnum.Start.name,
 //            startDestination = if (isUserLoggedIn) BudgetoScreenEnum.ProfileScreen.name else BudgetoScreenEnum.Start.name,
               startDestination = BudgetoScreenEnum.Start.name,
 //            startDestination = BudgetoScreenEnum.ProfileScreen.name,
@@ -121,8 +131,11 @@ fun BudgetoApp(
                 LoginScreen(
                     loginViewModel = loginViewModel,
                     onLoginButtonTapped = {
+
+                    },
+
+                    onLogginSucess = {
                         navController.navigate(BudgetoScreenEnum.ProfileScreen.name)
-                        //navController.navigate(BudgetoScreenEnum.OpeningScreen.name)
                     },
 
                     onSignUpTapped = { navController.navigate(BudgetoScreenEnum.SignUp.name) },
