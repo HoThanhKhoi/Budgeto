@@ -20,6 +20,7 @@ import androidx.navigation.compose.rememberNavController
 import com.example.budgeto.R
 import com.example.budgeto.screens.accountscreen.Account1
 import com.google.relay.compose.BoxScopeInstance.boxAlign
+import com.google.relay.compose.BoxScopeInstanceImpl.align
 import com.google.relay.compose.RelayContainer
 import com.google.relay.compose.RelayContainerScope
 import com.google.relay.compose.RelayVector
@@ -49,7 +50,7 @@ fun BudgetoBottomNav(
             modifier = Modifier.boxAlign(
                 alignment = Alignment.TopCenter,
                 offset = DpOffset(
-                    x = -2.0.dp,
+                    x = 0.0.dp,
                     y = 101.0.dp
                 )
             )
@@ -134,21 +135,17 @@ fun BudgetoBottomNav(
                     modifier = Modifier.rowWeight(1.0f).columnWeight(1.0f)
                 )
             }
-        }
-        Frame42(
-            onHomepageButtonTapped = onHomepageButtonTapped,
-            modifier = Modifier.boxAlign(
-                alignment = Alignment.TopStart,
-                offset = DpOffset(
-                    x = 165.0.dp,
-                    y = 6.0.dp
+            Frame42(
+                onHomepageButtonTapped = onHomepageButtonTapped,
+                modifier = Modifier
+                    .align(Alignment.Center)
+            ) {
+                Vector7(
+                    modifier = Modifier.rowWeight(1.0f).columnWeight(1.0f)
                 )
-            )
-        ) {
-            Vector7(
-                modifier = Modifier.rowWeight(1.0f).columnWeight(1.0f)
-            )
+            }
         }
+
     }
     //endregion
 }
@@ -188,7 +185,7 @@ fun BottomNav(
         ),
         isStructured = false,
         content = content,
-        modifier = modifier.requiredWidth(390.0.dp).requiredHeight(113.0.dp)
+        modifier = modifier.fillMaxWidth(   ).requiredHeight(113.0.dp)
     )
 }
 
