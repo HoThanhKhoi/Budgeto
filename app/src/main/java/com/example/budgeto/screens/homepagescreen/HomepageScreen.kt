@@ -15,6 +15,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -55,13 +56,21 @@ fun HomepageScreen(
     onProfileButtonTapped: () -> Unit = {},
     onAccountsButtonTapped: () -> Unit = {},
     onSettingButtonTapped: () -> Unit = {},
+    showBottomSheetInitially: Boolean = false,
     modifier: Modifier = Modifier
 ) {
     val bottomSheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
     val coroutineScope = rememberCoroutineScope()
 
-    var isBottomSheetVisible by remember { mutableStateOf(false) }
+    var isBottomSheetVisible by remember { mutableStateOf(showBottomSheetInitially) }
 
+    LaunchedEffect(isBottomSheetVisible) {
+        if (isBottomSheetVisible) {
+            coroutineScope.launch {
+                bottomSheetState.show()
+            }
+        }
+    }
     // Main content of the homepage
     Homepage02(
         onProfileButtonTapped = onProfileButtonTapped,

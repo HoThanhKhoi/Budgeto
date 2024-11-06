@@ -96,7 +96,7 @@ fun BudgetoApp(
 
         NavHost(
             navController = navController,
-              startDestination = BudgetoScreenEnum.HomepageScreen.name,
+              startDestination = BudgetoScreenEnum.Start.name,
 //            startDestination = if (isUserLoggedIn) BudgetoScreenEnum.ProfileScreen.name else BudgetoScreenEnum.Start.name,
 //              startDestination = BudgetoScreenEnum.AccountScreen.name,
 //            startDestination = BudgetoScreenEnum.ProfileScreen.name,
@@ -136,7 +136,9 @@ fun BudgetoApp(
                     },
 
                     onLogginSucess = {
-                        navController.navigate(BudgetoScreenEnum.ProfileScreen.name)
+                        navController.navigate("${BudgetoScreenEnum.HomepageScreen.name}/true") {
+                            popUpTo(BudgetoScreenEnum.Login.name) { inclusive = true }
+                        }
                     },
 
                     onSignUpTapped = { navController.navigate(BudgetoScreenEnum.SignUp.name) },
@@ -149,11 +151,14 @@ fun BudgetoApp(
                 OpeningScreenExpensesInputScreen(
                 )
             }
-            composable(route = BudgetoScreenEnum.HomepageScreen.name) {
+            composable(route = "${BudgetoScreenEnum.HomepageScreen.name}/{showBottomSheetInitially}") { backStackEntry ->
+                val showBottomSheetInitially = backStackEntry.arguments?.getString("showBottomSheetInitially") == "true"
+
                 HomepageScreen(
                     onProfileButtonTapped = { navController.navigate(BudgetoScreenEnum.ProfileScreen.name) },
                     onAccountsButtonTapped = { navController.navigate(BudgetoScreenEnum.AccountScreen.name) },
-                    onSettingButtonTapped = {navController.navigate(BudgetoScreenEnum.SettingsScreen.name)}
+                    onSettingButtonTapped = {navController.navigate(BudgetoScreenEnum.SettingsScreen.name)},
+                    showBottomSheetInitially  = showBottomSheetInitially
                 )
             }
             composable(route = BudgetoScreenEnum.ProfileScreen.name) {
