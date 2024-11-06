@@ -20,7 +20,7 @@ class AccountRepository @Inject constructor(
     }
 
     suspend fun getAllAccounts(userId: String): List<Account> {
-        var account:Account = Account()
+        var account = Account()
         return getAllDocumentsFromSubcollection(userCollectionPath,userId,accountCollectionPath, account::class.java)
     }
 }
