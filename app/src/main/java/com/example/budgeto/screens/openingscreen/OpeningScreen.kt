@@ -78,6 +78,7 @@ fun OpeningScreenExpensesInputScreen(
     var note by remember { mutableStateOf("") }
     var type by remember { mutableStateOf(TransactionType.EXPENSE) }
 
+    //region account selection
     var isAccountPopupVisible by remember { mutableStateOf(false) }
     var selectedAccount by remember { mutableStateOf<Account?>(null) }
 
@@ -86,6 +87,9 @@ fun OpeningScreenExpensesInputScreen(
     LaunchedEffect(Unit) {
         accountViewModel.fetchAllAccounts()
     }
+    //endregion
+
+    var selectedTransactionType by remember { mutableStateOf(TransactionType.EXPENSE) }
 
     OpeningScreenExpensesInput(
         modifier = modifier.rowWeight(1.0f).columnWeight(1.0f),
@@ -93,13 +97,14 @@ fun OpeningScreenExpensesInputScreen(
         resultTextContent = resultText,
         selectedAccount = selectedAccount?.name ?: "No Account Selected",
         onNumberButtonTapped = { number -> openingScreenViewModel.appendNumber(number) },
+        selectedTransactionType = selectedTransactionType,
 
         //Row 1
         onTaxButtonTapped = { /* Implement tax logic if needed */ },
         onPercentButtonTapped = { openingScreenViewModel.appendOperation("%") },
         onAccountButtonTapped = { isAccountPopupVisible = true },
-        onInputButtonTapped = { /* Handle input button if needed */ },
-        onOutputButtonTapped = { /* Handle output button if needed */ },
+        onInputButtonTapped = { selectedTransactionType = TransactionType.INCOME},
+        onOutputButtonTapped = { selectedTransactionType = TransactionType.EXPENSE },
 
         //Row 2
         onDeleteButtonTapped = { openingScreenViewModel.deleteLast() },
@@ -124,7 +129,7 @@ fun OpeningScreenExpensesInputScreen(
                 amount = amount,
                 description = description,
                 note = note,
-                type = type
+                type = selectedTransactionType
             )
         },
 
@@ -205,6 +210,7 @@ fun OpeningScreenExpensesInput(
 
     onNumberButtonTapped: (String) -> Unit = {},
     selectedAccount: String = "No Account Selected",
+    selectedTransactionType: TransactionType,
 
     //Row 1
     onTaxButtonTapped: () -> Unit = {},
@@ -350,8 +356,19 @@ fun OpeningScreenExpensesInput(
                         RelayCalculateButton(icon = painterResource(R.drawable.opening_screen_expenses_input_tax_icon), onClick = onTaxButtonTapped, modifier = Modifier.weight(1f))
                         RelayCalculateButton(label = "%", onClick = onPercentButtonTapped, modifier = Modifier.weight(1f))
                         RelayCalculateButton(icon = painterResource(R.drawable.opening_screen_expenses_input_account_icon), onClick = {}, modifier = Modifier.weight(1f))
-                        RelayCalculateButton(icon = painterResource(R.drawable.opening_screen_expenses_input_money_in_icon), onClick = onInputButtonTapped, modifier = Modifier.weight(1f))
-                        RelayCalculateButton(icon = painterResource(R.drawable.opening_screen_expenses_input_money_out_icon), onClick = onOutputButtonTapped, modifier = Modifier.weight(1f))
+                        RelayCalculateButton(
+                            icon = painterResource(R.drawable.opening_screen_expenses_input_money_in_icon),
+                            onClick = onInputButtonTapped,
+                            backgroundColor = if (selectedTransactionType == TransactionType.INCOME) Color.Yellow else Color.LightGray,
+                            modifier = Modifier.weight(1f)
+                        )
+
+                        RelayCalculateButton(
+                            icon = painterResource(R.drawable.opening_screen_expenses_input_money_out_icon),
+                            onClick = onOutputButtonTapped,
+                            backgroundColor = if (selectedTransactionType == TransactionType.EXPENSE) Color.Yellow else Color.LightGray,
+                            modifier = Modifier.weight(1f)
+                        )
                     }
 
                     // Row 2
@@ -520,6 +537,7 @@ private fun OpeningScreenExpensesInputPreview() {
                 resultTextContent = "2.000",
                 dateTextContent = "June, 14th 2024",
                 noteTextContent = "Expenses at 14:35’",
+                selectedTransactionType = TransactionType.INCOME,
                 modifier = Modifier.rowWeight(1.0f).columnWeight(1.0f)
             )
         }
