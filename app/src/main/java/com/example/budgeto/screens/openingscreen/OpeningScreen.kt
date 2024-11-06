@@ -38,6 +38,7 @@ import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.em
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.budgeto.R
 import com.example.budgeto.screensfonts.inter
@@ -62,7 +63,7 @@ import java.util.Stack
 @Composable
 fun OpeningScreenExpensesInputScreen(
     modifier: Modifier = Modifier,
-    viewModel: OpeningScreenViewModel = viewModel()
+    viewModel: OpeningScreenViewModel = hiltViewModel<OpeningScreenViewModel>()
 ) {
     var operationText by viewModel.operationText
     var resultText by viewModel.resultText
@@ -434,14 +435,6 @@ private fun OpeningScreenExpensesInputPreview() {
         }
     }
 }
-
-//@Composable
-//fun Rectangle65(modifier: Modifier = Modifier) {
-//    RelayVector(
-//        vector = painterResource(R.drawable.opening_screen_expenses_input_rectangle_65),
-//        modifier = modifier.requiredWidth(393.0.dp).requiredHeight(845.0.dp)
-//    )
-//}
 
 @Composable
 fun TxtDefault(
