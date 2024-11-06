@@ -3,6 +3,7 @@ package com.example.budgeto.screens.openingscreen
 import androidx.compose.foundation.background
 import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
@@ -13,9 +14,14 @@ import androidx.compose.foundation.layout.requiredHeight
 import androidx.compose.foundation.layout.requiredWidth
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.material3.AlertDialog
+import androidx.compose.material3.Button
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -31,7 +37,9 @@ import androidx.compose.ui.unit.em
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.budgeto.R
+import com.example.budgeto.data.model.account.Account
 import com.example.budgeto.screensfonts.inter
+import com.example.budgeto.viewmodel.AccountViewModel
 import com.example.budgeto.viewmodel.OpeningScreenViewModel
 import com.google.relay.compose.BoxScopeInstance.columnWeight
 import com.google.relay.compose.BoxScopeInstance.rowWeight
@@ -50,10 +58,16 @@ import com.google.relay.compose.relayDropShadow
 @Composable
 fun OpeningScreenExpensesInputScreen(
     modifier: Modifier = Modifier,
-    viewModel: OpeningScreenViewModel = hiltViewModel<OpeningScreenViewModel>()
+    viewModel: OpeningScreenViewModel = hiltViewModel<OpeningScreenViewModel>(),
+    accountViewModel: AccountViewModel = hiltViewModel()
 ) {
     var operationText by viewModel.operationText
     var resultText by viewModel.resultText
+
+    var isAccountPopupVisible by remember { mutableStateOf(false) }
+    var selectedAccount by remember { mutableStateOf<Account?>(null) }
+
+    val accountList by accountViewModel.accountList
 
     OpeningScreenExpensesInput(
         modifier = modifier.rowWeight(1.0f).columnWeight(1.0f),
@@ -64,7 +78,7 @@ fun OpeningScreenExpensesInputScreen(
         //Row 1
         onTaxButtonTapped = { /* Implement tax logic if needed */ },
         onPercentButtonTapped = { viewModel.appendOperation("%") },
-        onAccountButtonTapped = { /* Implement account logic if needed */ },
+        onAccountButtonTapped = { isAccountPopupVisible = true  },
         onInputButtonTapped = { /* Handle input button if needed */ },
         onOutputButtonTapped = { /* Handle output button if needed */ },
 
@@ -86,6 +100,51 @@ fun OpeningScreenExpensesInputScreen(
         onDotButtonTapped = { viewModel.appendNumber(".") },
         onDoneButtonTapped = { /* Handle done action if needed */ },
 
+    )
+    if (isAccountPopupVisible) {
+        AccountSelectionDialog(
+            accountList = accountList,
+            onAccountSelected = { account ->
+                selectedAccount = account // Save the selected account
+                isAccountPopupVisible = false // Close the dialog
+            },
+            onDismissRequest = { isAccountPopupVisible = false } // Close dialog on outside tap
+        )
+    }
+}
+
+@Composable
+fun AccountSelectionDialog(
+    accountList: List<Account>,
+    onAccountSelected: (Account) -> Unit,
+    onDismissRequest: () -> Unit
+) {
+    AlertDialog(
+        onDismissRequest = onDismissRequest,
+        title = {
+            Text(text = "Select Account")
+        },
+        text = {
+            // Display a list of accounts
+            Column {
+                accountList.forEach { account ->
+                    Button(
+                        onClick = {
+                            onAccountSelected(account)
+                        },
+                        modifier = Modifier.fillMaxWidth().padding(vertical = 4.dp)
+                    ) {
+                        Text(text = account.name)
+                    }
+                }
+            }
+        },
+        confirmButton = {
+            // Optional: Add a close button or any other actions
+            Button(onClick = onDismissRequest) {
+                Text("Close")
+            }
+        }
     )
 }
 
