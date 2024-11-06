@@ -8,7 +8,7 @@ data class Transaction(
     val categoryId: String = "",
     val amount: Double = 0.0,
     val description: String = "",
-    val date: String = "",
+    val date: String = Timestamp.now().toDate().toString(),
     val type: TransactionType = TransactionType.EXPENSE,
     val createdTime: Timestamp = Timestamp.now(),
     val note: String = "${type.name} at ${createdTime.toDate()}"
