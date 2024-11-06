@@ -11,7 +11,6 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
@@ -20,7 +19,6 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.example.budgeto.screens.BudgetoBottomNav
-import com.example.budgeto.screens.account3.Account3
 import com.example.budgeto.screens.accountscreen.AccountScreen
 import com.example.budgeto.screens.historyscreen.HistoryScreen
 import com.example.budgeto.screens.homepagescreen.HomepageScreen
@@ -33,8 +31,10 @@ import com.example.budgeto.screens.signuploginscreen.SignUpLoginScreen
 import com.example.budgeto.screens.signupscreen.SignUpScreen
 import com.example.budgeto.screens.statisticscreen.StatisticScreen
 import com.example.budgeto.screens.storescreen.StoreScreen
+import com.example.budgeto.viewmodel.AccountViewModel
 import com.example.budgeto.viewmodel.SignUpViewModel
 import com.example.budgeto.viewmodel.LoginViewModel
+import com.example.budgeto.viewmodel.OpeningScreenViewModel
 import com.example.budgeto.viewmodel.ProfileViewModel
 
 enum class BudgetoScreenEnum(@StringRes val title: Int) {
@@ -66,6 +66,13 @@ fun BudgetoApp(
         BudgetoScreenEnum.ProfileScreen.name,
         BudgetoScreenEnum.AccountScreen.name,
     )
+
+    val loginViewModel: LoginViewModel = hiltViewModel()
+    val signUpViewModel: SignUpViewModel = hiltViewModel()
+    val openingScreenViewModel: OpeningScreenViewModel = hiltViewModel()
+    val accountViewModel: AccountViewModel = hiltViewModel()
+    val profileViewModel: ProfileViewModel = hiltViewModel()
+
     Scaffold(
         bottomBar = {
             val currentBackStackEntry = navController.currentBackStackEntryAsState().value
@@ -82,8 +89,8 @@ fun BudgetoApp(
                 )
             }
         }
-    ) { innerPadding ->
-        val loginViewModel: LoginViewModel = hiltViewModel()
+    ) {
+        innerPadding ->
         val isUserLoggedIn by remember { mutableStateOf(loginViewModel.isUserLoggedIn()) }
 
         var currentUser = loginViewModel.getCurrentUser()
@@ -94,10 +101,11 @@ fun BudgetoApp(
             }
         }
 
+
         NavHost(
             navController = navController,
-              startDestination = BudgetoScreenEnum.Start.name,
-//            startDestination = if (isUserLoggedIn) BudgetoScreenEnum.ProfileScreen.name else BudgetoScreenEnum.Start.name,
+//              startDestination = BudgetoScreenEnum.Start.name,
+            startDestination = if (isUserLoggedIn) BudgetoScreenEnum.AccountScreen.name else BudgetoScreenEnum.Start.name,
 //              startDestination = BudgetoScreenEnum.AccountScreen.name,
 //            startDestination = BudgetoScreenEnum.ProfileScreen.name,
             modifier = Modifier
@@ -112,7 +120,6 @@ fun BudgetoApp(
                 )
             }
             composable(route = BudgetoScreenEnum.SignUp.name) {
-                val signUpViewModel: SignUpViewModel = hiltViewModel()
                 SignUpScreen(
                     signUpViewModel = signUpViewModel,
                     onSignUpButtonTapped = {
@@ -127,8 +134,6 @@ fun BudgetoApp(
                 )
             }
             composable(route = BudgetoScreenEnum.Login.name) {
-
-                val loginViewModel: LoginViewModel = hiltViewModel()
                 LoginScreen(
                     loginViewModel = loginViewModel,
                     onLoginButtonTapped = {
@@ -136,7 +141,7 @@ fun BudgetoApp(
                     },
 
                     onLogginSucess = {
-                        navController.navigate(BudgetoScreenEnum.ProfileScreen.name)
+                        navController.navigate(BudgetoScreenEnum.AccountScreen.name)
                     },
 
                     onSignUpTapped = { navController.navigate(BudgetoScreenEnum.SignUp.name) },
@@ -147,6 +152,7 @@ fun BudgetoApp(
             }
             composable(route = BudgetoScreenEnum.OpeningScreen.name) {
                 OpeningScreenExpensesInputScreen(
+                    viewModel = openingScreenViewModel,
                 )
             }
             composable(route = BudgetoScreenEnum.HomepageScreen.name) {
@@ -157,7 +163,6 @@ fun BudgetoApp(
                 )
             }
             composable(route = BudgetoScreenEnum.ProfileScreen.name) {
-                val profileViewModel: ProfileViewModel = hiltViewModel()
                 ProfileScreen(
                     viewModel = profileViewModel,
                 )
@@ -185,7 +190,9 @@ fun BudgetoApp(
             }
 
             composable(route = BudgetoScreenEnum.AccountScreen.name) {
-                AccountScreen()
+                AccountScreen(
+                    accountViewModel = accountViewModel
+                )
             }
 
             composable(route = BudgetoScreenEnum.SettingsScreen.name) {

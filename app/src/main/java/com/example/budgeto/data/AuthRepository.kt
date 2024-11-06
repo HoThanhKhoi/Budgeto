@@ -13,7 +13,7 @@ interface AuthRepository {
     fun googleSignIn(credential: AuthCredential): Flow<Resource<AuthResult>>
 
     fun getCurrentUser(): FirebaseUser?
-    fun getCurrentUserId(): Int?
+    fun getCurrentUserId(): String?
     fun signOut()
     fun resetPassword(email: String): Flow<Resource<Void>>
 }

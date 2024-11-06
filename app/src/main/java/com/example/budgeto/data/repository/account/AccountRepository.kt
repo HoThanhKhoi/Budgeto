@@ -1,6 +1,6 @@
 package com.example.budgeto.data.repository.account
 
-import android.accounts.Account
+import com.example.budgeto.data.model.account.Account
 import com.example.budgeto.data.repository.base.FirestoreRepository
 import com.google.firebase.firestore.FirebaseFirestore
 import javax.inject.Inject
@@ -17,8 +17,8 @@ class AccountRepository @Inject constructor(
     }
 
     suspend fun addAccount(
-        account: Account,
-        userId: String
+        userId: String,
+        account: Account
     ) {
         addDocumentToSubcollection(userCollectionPath,userId,accountCollectionPath,account)
     }

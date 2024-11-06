@@ -1,24 +1,18 @@
 package com.example.budgeto.screens.accountscreen
 
-import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.requiredHeight
 import androidx.compose.foundation.layout.requiredWidth
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentHeight
-import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.MaterialTheme
@@ -30,7 +24,6 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
@@ -41,10 +34,11 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.em
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.budgeto.R
-import com.example.budgeto.screens.account3.Account3
+import com.example.budgeto.screens.addAccount.AddAccountScreen
 import com.example.budgeto.screensfonts.inter
-import com.google.relay.compose.BoxScopeInstance.boxAlign
+import com.example.budgeto.viewmodel.AccountViewModel
 import com.google.relay.compose.BoxScopeInstance.columnWeight
 import com.google.relay.compose.BoxScopeInstance.rowWeight
 import com.google.relay.compose.MainAxisAlignment
@@ -54,15 +48,16 @@ import com.google.relay.compose.RelayContainerScope
 import com.google.relay.compose.RelayText
 import com.google.relay.compose.RelayVector
 import com.google.relay.compose.relayDropShadow
-import com.google.relay.compose.tappable
 
 
 @Composable
 fun AccountScreen(
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    accountViewModel: AccountViewModel = hiltViewModel()
 ){
     Account1(
         modifier = modifier.rowWeight(1.0f).columnWeight(1.0f),
+        accountViewModel = accountViewModel
     )
 }
 
@@ -103,16 +98,18 @@ val accounts = listOf(
 
 @Composable
 fun Account1(
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    accountViewModel: AccountViewModel = hiltViewModel()
 ) {
     var showAccountPopup by remember { mutableStateOf(false) }
 
     if (showAccountPopup) {
         Dialog(onDismissRequest = { showAccountPopup = false }) {
-            Account3(
+            AddAccountScreen(
                 onTransferButtonTapped = { /* Handle transfer action if needed */ },
                 onXButtonTapped = { showAccountPopup = false },
-                modifier = Modifier.height(600.dp)
+                modifier = Modifier.height(600.dp),
+                accountViewModel = accountViewModel
             )
         }
     }
@@ -705,7 +702,7 @@ private fun Account1Preview() {
     MaterialTheme {
         RelayContainer {
             Account1(
-                modifier = Modifier.rowWeight(1.0f).columnWeight(1.0f)
+                modifier = Modifier.rowWeight(1.0f).columnWeight(1.0f),
             )
         }
     }
