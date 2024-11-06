@@ -11,6 +11,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
@@ -36,6 +37,7 @@ import com.example.budgeto.viewmodel.SignUpViewModel
 import com.example.budgeto.viewmodel.LoginViewModel
 import com.example.budgeto.viewmodel.OpeningScreenViewModel
 import com.example.budgeto.viewmodel.ProfileViewModel
+import com.example.budgeto.viewmodel.TransactionViewModel
 
 enum class BudgetoScreenEnum(@StringRes val title: Int) {
     Start(title = R.string.SignUpLoginScreen),
@@ -72,16 +74,24 @@ fun BudgetoApp(
     val openingScreenViewModel: OpeningScreenViewModel = hiltViewModel()
     val accountViewModel: AccountViewModel = hiltViewModel()
     val profileViewModel: ProfileViewModel = hiltViewModel()
+    val transactionViewModel: TransactionViewModel = hiltViewModel()
+
+    val isUserLoggedIn by remember { mutableStateOf(loginViewModel.isUserLoggedIn()) }
+    var hasNavigatedToHome by remember { mutableStateOf(false) }
 
     Scaffold(
         bottomBar = {
             val currentBackStackEntry = navController.currentBackStackEntryAsState().value
             val currentScreen = currentBackStackEntry?.destination?.route
 
-            if (currentScreen in screensWithBottomNav) {
+            if (currentScreen != null && screensWithBottomNav.any { currentScreen.startsWith(it) }) {
                 BudgetoBottomNav(
                     navController = navController,
-                    onHomepageButtonTapped = { navController.navigate(BudgetoScreenEnum.HomepageScreen.name) },
+                    onHomepageButtonTapped = {
+                        navController.navigate("${BudgetoScreenEnum.HomepageScreen.name}/true") {
+                            popUpTo(BudgetoScreenEnum.Login.name) { inclusive = true }
+                        }
+                    },
                     onStoreButtonTapped = { navController.navigate(BudgetoScreenEnum.StoreScreen.name) },
                     onInventoryButtonTapped = { navController.navigate(BudgetoScreenEnum.InventoryScreen.name) },
                     onHistoryButtonTapped = { navController.navigate(BudgetoScreenEnum.HistoryScreen.name) },
@@ -89,23 +99,20 @@ fun BudgetoApp(
                 )
             }
         }
-    ) {
-        innerPadding ->
-        val isUserLoggedIn by remember { mutableStateOf(loginViewModel.isUserLoggedIn()) }
-
-        var currentUser = loginViewModel.getCurrentUser()
-
-        if (isUserLoggedIn) {
-            LaunchedEffect(currentUser?.uid) {
-                loginViewModel.logDailyActivity(currentUser?.uid?: "")
+    ) { innerPadding ->
+        LaunchedEffect(isUserLoggedIn) {
+            if (isUserLoggedIn && !hasNavigatedToHome) {
+                hasNavigatedToHome = true // Prevents repeated navigation
+                navController.navigate("${BudgetoScreenEnum.HomepageScreen.name}/true") {
+                    popUpTo(BudgetoScreenEnum.Login.name) { inclusive = true }
+                }
             }
         }
-
 
         NavHost(
             navController = navController,
 //              startDestination = BudgetoScreenEnum.Start.name,
-            startDestination = if (isUserLoggedIn) BudgetoScreenEnum.AccountScreen.name else BudgetoScreenEnum.Start.name,
+            startDestination = BudgetoScreenEnum.Start.name,
 //              startDestination = BudgetoScreenEnum.AccountScreen.name,
 //            startDestination = BudgetoScreenEnum.ProfileScreen.name,
             modifier = Modifier
@@ -154,17 +161,19 @@ fun BudgetoApp(
             }
             composable(route = BudgetoScreenEnum.OpeningScreen.name) {
                 OpeningScreenExpensesInputScreen(
-                    viewModel = openingScreenViewModel,
+                    transactionViewModel = transactionViewModel,
+                    openingScreenViewModel = openingScreenViewModel,
                 )
             }
             composable(route = "${BudgetoScreenEnum.HomepageScreen.name}/{showBottomSheetInitially}") { backStackEntry ->
-                val showBottomSheetInitially = backStackEntry.arguments?.getString("showBottomSheetInitially") == "true"
+                val showBottomSheetInitially =
+                    backStackEntry.arguments?.getString("showBottomSheetInitially") == "true"
 
                 HomepageScreen(
                     onProfileButtonTapped = { navController.navigate(BudgetoScreenEnum.ProfileScreen.name) },
                     onAccountsButtonTapped = { navController.navigate(BudgetoScreenEnum.AccountScreen.name) },
-                    onSettingButtonTapped = {navController.navigate(BudgetoScreenEnum.SettingsScreen.name)},
-                    showBottomSheetInitially  = showBottomSheetInitially
+                    onSettingButtonTapped = { navController.navigate(BudgetoScreenEnum.SettingsScreen.name) },
+                    showBottomSheetInitially = showBottomSheetInitially
                 )
             }
             composable(route = BudgetoScreenEnum.ProfileScreen.name) {

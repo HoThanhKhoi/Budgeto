@@ -16,6 +16,8 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -31,8 +33,10 @@ import androidx.compose.ui.unit.em
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.budgeto.R
+import com.example.budgeto.data.enums.transaction.TransactionType
 import com.example.budgeto.screensfonts.inter
 import com.example.budgeto.viewmodel.OpeningScreenViewModel
+import com.example.budgeto.viewmodel.TransactionViewModel
 import com.google.relay.compose.BoxScopeInstance.columnWeight
 import com.google.relay.compose.BoxScopeInstance.rowWeight
 import com.google.relay.compose.BoxScopeInstanceImpl.align
@@ -50,41 +54,60 @@ import com.google.relay.compose.relayDropShadow
 @Composable
 fun OpeningScreenExpensesInputScreen(
     modifier: Modifier = Modifier,
-    viewModel: OpeningScreenViewModel = hiltViewModel<OpeningScreenViewModel>()
+    openingScreenViewModel: OpeningScreenViewModel = hiltViewModel<OpeningScreenViewModel>(),
+    transactionViewModel: TransactionViewModel = hiltViewModel<TransactionViewModel>()
 ) {
-    var operationText by viewModel.operationText
-    var resultText by viewModel.resultText
+    var operationText by openingScreenViewModel.operationText
+    var resultText by openingScreenViewModel.resultText
+
+    var accountId by remember {mutableStateOf("")}
+    var amount by remember { mutableStateOf(0.0) }
+    var categoryId by remember { mutableStateOf("") }
+    var description by remember { mutableStateOf("") }
+    var date by remember { mutableStateOf("") }
+    var note by remember { mutableStateOf("") }
+    var type by remember { mutableStateOf(TransactionType.EXPENSE) }
+
 
     OpeningScreenExpensesInput(
         modifier = modifier.rowWeight(1.0f).columnWeight(1.0f),
         operationTextContent = operationText,
         resultTextContent = resultText,
-        onNumberButtonTapped = { number -> viewModel.appendNumber(number) },
+        onNumberButtonTapped = { number -> openingScreenViewModel.appendNumber(number) },
 
         //Row 1
         onTaxButtonTapped = { /* Implement tax logic if needed */ },
-        onPercentButtonTapped = { viewModel.appendOperation("%") },
+        onPercentButtonTapped = { openingScreenViewModel.appendOperation("%") },
         onAccountButtonTapped = { /* Implement account logic if needed */ },
         onInputButtonTapped = { /* Handle input button if needed */ },
         onOutputButtonTapped = { /* Handle output button if needed */ },
 
         //Row 2
-        onDeleteButtonTapped = { viewModel.deleteLast() },
-        onEqualButtonTapped = { viewModel.calculateResult() },
+        onDeleteButtonTapped = { openingScreenViewModel.deleteLast() },
+        onEqualButtonTapped = { openingScreenViewModel.calculateResult() },
 
         //Row 3
-        onMultiplyButtonTapped = { viewModel.appendOperation("*") },
-        onDivideButtonTapped = { viewModel.appendOperation("/") },
+        onMultiplyButtonTapped = { openingScreenViewModel.appendOperation("*") },
+        onDivideButtonTapped = { openingScreenViewModel.appendOperation("/") },
 
         //Row 4
-        onAdditionButtonTapped = { viewModel.appendOperation("+") },
-        onMinusButtonTapped = { viewModel.appendOperation("-") },
+        onAdditionButtonTapped = { openingScreenViewModel.appendOperation("+") },
+        onMinusButtonTapped = { openingScreenViewModel.appendOperation("-") },
 
         //Row 5
-        onOpenParenthesesButtonTapped = { viewModel.appendNumber("(") },
-        onCloseParenthesesButtonTapped = { viewModel.appendNumber(")") },
-        onDotButtonTapped = { viewModel.appendNumber(".") },
-        onDoneButtonTapped = { /* Handle done action if needed */ },
+        onOpenParenthesesButtonTapped = { openingScreenViewModel.appendNumber("(") },
+        onCloseParenthesesButtonTapped = { openingScreenViewModel.appendNumber(")") },
+        onDotButtonTapped = { openingScreenViewModel.appendNumber(".") },
+        onDoneButtonTapped = {
+            transactionViewModel.addTransaction(
+                accountId = accountId,
+                categoryId = categoryId,
+                amount = amount,
+                description = description,
+                note = note,
+                type = type
+            )
+        },
 
     )
 }
