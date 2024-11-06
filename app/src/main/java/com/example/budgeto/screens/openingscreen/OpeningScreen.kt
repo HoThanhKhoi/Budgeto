@@ -12,34 +12,24 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.requiredHeight
 import androidx.compose.foundation.layout.requiredWidth
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.layout.wrapContentHeight
-import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.setValue
-import androidx.compose.ui.AbsoluteAlignment
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.graphicsLayer
-import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.DpOffset
 import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.em
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.budgeto.R
 import com.example.budgeto.screensfonts.inter
 import com.example.budgeto.viewmodel.OpeningScreenViewModel
@@ -52,13 +42,10 @@ import com.google.relay.compose.RelayCalculateButton
 import com.google.relay.compose.RelayColumn
 import com.google.relay.compose.RelayContainer
 import com.google.relay.compose.RelayContainerScope
-import com.google.relay.compose.RelayImage
 import com.google.relay.compose.RelayRow
 import com.google.relay.compose.RelayText
 import com.google.relay.compose.RelayVector
 import com.google.relay.compose.relayDropShadow
-import com.google.relay.compose.tappable
-import java.util.Stack
 
 @Composable
 fun OpeningScreenExpensesInputScreen(
@@ -98,7 +85,25 @@ fun OpeningScreenExpensesInputScreen(
         onCloseParenthesesButtonTapped = { viewModel.appendNumber(")") },
         onDotButtonTapped = { viewModel.appendNumber(".") },
         onDoneButtonTapped = { /* Handle done action if needed */ },
+
     )
+}
+
+fun calculateFontSize(
+    textContent: String,
+    maxFontSize: TextUnit = 24.sp,
+    minFontSize: TextUnit = 12.sp
+): TextUnit {
+    val length = textContent.length
+
+    // Convert TextUnit to Float for calculation
+    val fontSize = when {
+        length < 10 -> maxFontSize
+        length < 20 -> (maxFontSize.value - (maxFontSize.value - minFontSize.value) * 0.3f).sp
+        length < 30 -> (maxFontSize.value - (maxFontSize.value - minFontSize.value) * 0.6f).sp
+        else -> minFontSize
+    }
+    return fontSize
 }
 
 @Composable
@@ -139,7 +144,7 @@ fun OpeningScreenExpensesInput(
     onDoneButtonTapped: () -> Unit = {},
 
 ) {
-    TopLevel(modifier = modifier) {
+    TopLevel(modifier = modifier.height(630.dp)) {
         MAINFRAME(
             modifier = Modifier
                 .fillMaxSize()
@@ -147,13 +152,13 @@ fun OpeningScreenExpensesInput(
         ) {
             Category(
                 modifier = Modifier
-                    .fillMaxWidth() // Makes Category take the full width of the container
-                    .padding(top = 16.dp, start = 200.dp) // Relative positioning using padding
+                    .fillMaxWidth()
+                    .padding(top = 16.dp, start = 200.dp)
             ) {
                 FrameCategory(
                     modifier = Modifier
-                        .fillMaxWidth() // Makes FrameCategory responsive to Category width
-                        .padding(top = 31.dp) // Positioning within Category
+                        .fillMaxWidth()
+                        .padding(top = 31.dp)
                 ) {
                     TxtDefault(
                         categoryTextContent = categoryTextContent,
@@ -212,7 +217,6 @@ fun OpeningScreenExpensesInput(
                         )
                     }
 
-                    // Optional: Fade effect for overflow indicator
                     Box(
                         modifier = Modifier
                             .align(Alignment.CenterEnd)
@@ -291,98 +295,99 @@ fun OpeningScreenExpensesInput(
                         RelayCalculateButton(icon = painterResource(R.drawable.opening_screen_expenses_input_vector_318), backgroundColor = Color.Green, onClick = onDoneButtonTapped, modifier = Modifier.weight(1f))
                     }
                 }
+
             }
         }
 
-        Note(
-            modifier = modifier
-                .align(Alignment.TopStart)
-                .padding(start = 30.dp, end = 0.dp, top = 157.dp, bottom = 0.dp)
-        ) {
-            Rectangle60(
-                modifier = Modifier.boxAlign(
-                    alignment = Alignment.TopStart,
-                    offset = DpOffset(
-                        x = 0.0.dp,
-                        y = 137.0.dp
-                    )
-                )
-            )
-            June14th2024(
-                dateTextContent = dateTextContent,
-                modifier = Modifier.boxAlign(
-                    alignment = Alignment.TopStart,
-                    offset = DpOffset(
-                        x = 36.0.dp,
-                        y = 147.0.dp
-                    )
-                )
-            )
-            NOTE(
-                modifier = Modifier.boxAlign(
-                    alignment = Alignment.TopStart,
-                    offset = DpOffset(
-                        x = 69.0.dp,
-                        y = 16.0.dp
-                    )
-                )
-            )
-            ExpensesAt1435(
-                noteTextContent = noteTextContent,
-                modifier = Modifier.boxAlign(
-                    alignment = Alignment.TopStart,
-                    offset = DpOffset(
-                        x = 12.0.dp,
-                        y = 43.0.dp
-                    )
-                )
-            )
-            ExpensesAt2120(
-                modifier = Modifier.boxAlign(
-                    alignment = Alignment.TopStart,
-                    offset = DpOffset(
-                        x = 12.0.dp,
-                        y = 61.0.dp
-                    )
-                )
-            )
-            Line8(
-                modifier = Modifier.boxAlign(
-                    alignment = Alignment.TopStart,
-                    offset = DpOffset(
-                        x = 17.0.dp,
-                        y = 57.5.dp
-                    )
-                )
-            )
-            Line9(
-                modifier = Modifier.boxAlign(
-                    alignment = Alignment.TopStart,
-                    offset = DpOffset(
-                        x = 17.0.dp,
-                        y = 75.5.dp
-                    )
-                )
-            )
-            Line10(
-                modifier = Modifier.boxAlign(
-                    alignment = Alignment.TopStart,
-                    offset = DpOffset(
-                        x = 17.0.dp,
-                        y = 92.5.dp
-                    )
-                )
-            )
-            Line11(
-                modifier = Modifier.boxAlign(
-                    alignment = Alignment.TopStart,
-                    offset = DpOffset(
-                        x = 17.0.dp,
-                        y = 110.5.dp
-                    )
-                )
-            )
-        }
+//        Note(
+//            modifier = modifier
+//                .align(Alignment.TopStart)
+//                .padding(start = 30.dp, end = 0.dp, top = 157.dp, bottom = 0.dp)
+//        ) {
+//            Rectangle60(
+//                modifier = Modifier.boxAlign(
+//                    alignment = Alignment.TopStart,
+//                    offset = DpOffset(
+//                        x = 0.0.dp,
+//                        y = 137.0.dp
+//                    )
+//                )
+//            )
+//            June14th2024(
+//                dateTextContent = dateTextContent,
+//                modifier = Modifier.boxAlign(
+//                    alignment = Alignment.TopStart,
+//                    offset = DpOffset(
+//                        x = 36.0.dp,
+//                        y = 147.0.dp
+//                    )
+//                )
+//            )
+//            NOTE(
+//                modifier = Modifier.boxAlign(
+//                    alignment = Alignment.TopStart,
+//                    offset = DpOffset(
+//                        x = 69.0.dp,
+//                        y = 16.0.dp
+//                    )
+//                )
+//            )
+//            ExpensesAt1435(
+//                noteTextContent = noteTextContent,
+//                modifier = Modifier.boxAlign(
+//                    alignment = Alignment.TopStart,
+//                    offset = DpOffset(
+//                        x = 12.0.dp,
+//                        y = 43.0.dp
+//                    )
+//                )
+//            )
+//            ExpensesAt2120(
+//                modifier = Modifier.boxAlign(
+//                    alignment = Alignment.TopStart,
+//                    offset = DpOffset(
+//                        x = 12.0.dp,
+//                        y = 61.0.dp
+//                    )
+//                )
+//            )
+//            Line8(
+//                modifier = Modifier.boxAlign(
+//                    alignment = Alignment.TopStart,
+//                    offset = DpOffset(
+//                        x = 17.0.dp,
+//                        y = 57.5.dp
+//                    )
+//                )
+//            )
+//            Line9(
+//                modifier = Modifier.boxAlign(
+//                    alignment = Alignment.TopStart,
+//                    offset = DpOffset(
+//                        x = 17.0.dp,
+//                        y = 75.5.dp
+//                    )
+//                )
+//            )
+//            Line10(
+//                modifier = Modifier.boxAlign(
+//                    alignment = Alignment.TopStart,
+//                    offset = DpOffset(
+//                        x = 17.0.dp,
+//                        y = 92.5.dp
+//                    )
+//                )
+//            )
+//            Line11(
+//                modifier = Modifier.boxAlign(
+//                    alignment = Alignment.TopStart,
+//                    offset = DpOffset(
+//                        x = 17.0.dp,
+//                        y = 110.5.dp
+//                    )
+//                )
+//            )
+//        }
     }
 }
 
@@ -490,1077 +495,6 @@ fun Category(
     )
 }
 
-@Composable
-fun TaxIcon(modifier: Modifier = Modifier) {
-    RelayImage(
-        image = painterResource(R.drawable.opening_screen_expenses_input_tax_icon),
-        contentScale = ContentScale.Crop,
-        modifier = modifier.requiredWidth(32.0.dp).requiredHeight(32.0.dp)
-    )
-}
-
-@Composable
-fun Frame3(
-    onTaxButtonTapped: () -> Unit,
-    modifier: Modifier = Modifier,
-    content: @Composable RelayContainerScope.() -> Unit
-) {
-    RelayContainer(
-        backgroundColor = Color(
-            alpha = 255,
-            red = 255,
-            green = 255,
-            blue = 255
-        ),
-        isStructured = false,
-        radius = 5.0,
-        strokeWidth = 1.0,
-        strokeColor = Color(
-            alpha = 255,
-            red = 0,
-            green = 0,
-            blue = 0
-        ),
-        content = content,
-        modifier = modifier.tappable(onTap = onTaxButtonTapped).requiredWidth(63.0.dp).requiredHeight(63.0.dp)
-    )
-}
-
-@Composable
-fun PercentIcon(modifier: Modifier = Modifier) {
-    RelayImage(
-        image = painterResource(R.drawable.opening_screen_expenses_input_percent_icon),
-        contentScale = ContentScale.Crop,
-        modifier = modifier.graphicsLayer(rotationZ = 90.00000250447806f).requiredWidth(32.969696044921875.dp).requiredHeight(32.0.dp)
-    )
-}
-
-@Composable
-fun Frame8(
-    onPercentButtonTapped: () -> Unit,
-    modifier: Modifier = Modifier,
-    content: @Composable RelayContainerScope.() -> Unit
-) {
-    RelayContainer(
-        backgroundColor = Color(
-            alpha = 255,
-            red = 255,
-            green = 255,
-            blue = 255
-        ),
-        isStructured = false,
-        radius = 5.0,
-        strokeWidth = 1.0,
-        strokeColor = Color(
-            alpha = 255,
-            red = 0,
-            green = 0,
-            blue = 0
-        ),
-        content = content,
-        modifier = modifier.graphicsLayer(rotationZ = -90.00000250447806f).tappable(onTap = onPercentButtonTapped).requiredWidth(62.999996185302734.dp).requiredHeight(63.000003814697266.dp)
-    )
-}
-
-@Composable
-fun AccountIcon(modifier: Modifier = Modifier) {
-    RelayImage(
-        image = painterResource(R.drawable.opening_screen_expenses_input_account_icon),
-        contentScale = ContentScale.Crop,
-        modifier = modifier.graphicsLayer(rotationZ = 90.00000250447806f).requiredWidth(32.0.dp).requiredHeight(32.0.dp)
-    )
-}
-
-@Composable
-fun Frame10(
-    onAccountButtonTapped: () -> Unit,
-    modifier: Modifier = Modifier,
-    content: @Composable RelayContainerScope.() -> Unit
-) {
-    RelayContainer(
-        backgroundColor = Color(
-            alpha = 255,
-            red = 255,
-            green = 255,
-            blue = 255
-        ),
-        isStructured = false,
-        radius = 5.0,
-        strokeWidth = 1.0,
-        strokeColor = Color(
-            alpha = 255,
-            red = 0,
-            green = 0,
-            blue = 0
-        ),
-        content = content,
-        modifier = modifier.graphicsLayer(rotationZ = -90.00000250447806f).tappable(onTap = onAccountButtonTapped).requiredWidth(62.999996185302734.dp).requiredHeight(62.000003814697266.dp)
-    )
-}
-
-@Composable
-fun Txt4(modifier: Modifier = Modifier) {
-    RelayText(
-        content = "4",
-        fontSize = 30.0.sp,
-        fontFamily = inter,
-        color = Color(
-            alpha = 229,
-            red = 0,
-            green = 0,
-            blue = 0
-        ),
-        height = 1.2102272033691406.em,
-        fontWeight = FontWeight(500.0.toInt()),
-        maxLines = -1,
-        modifier = modifier.requiredWidth(47.0.dp).requiredHeight(51.0.dp).wrapContentHeight(
-            align = Alignment.CenterVertically,
-            unbounded = true
-        )
-    )
-}
-
-@Composable
-fun Frame5(
-    onNumberFourButtonTapped: () -> Unit,
-    modifier: Modifier = Modifier,
-    content: @Composable RelayContainerScope.() -> Unit
-) {
-    RelayContainer(
-        backgroundColor = Color(
-            alpha = 255,
-            red = 255,
-            green = 255,
-            blue = 255
-        ),
-        isStructured = false,
-        radius = 5.0,
-        strokeWidth = 1.0,
-        strokeColor = Color(
-            alpha = 255,
-            red = 0,
-            green = 0,
-            blue = 0
-        ),
-        content = content,
-        modifier = modifier.tappable(onTap = onNumberFourButtonTapped).requiredWidth(63.0.dp).requiredHeight(62.0.dp)
-    )
-}
-
-@Composable
-fun Txt5(modifier: Modifier = Modifier) {
-    RelayText(
-        content = "5",
-        fontSize = 30.0.sp,
-        fontFamily = inter,
-        color = Color(
-            alpha = 229,
-            red = 0,
-            green = 0,
-            blue = 0
-        ),
-        height = 1.2102272033691406.em,
-        fontWeight = FontWeight(500.0.toInt()),
-        maxLines = -1,
-        modifier = modifier.requiredWidth(47.0.dp).requiredHeight(51.0.dp).wrapContentHeight(
-            align = Alignment.CenterVertically,
-            unbounded = true
-        )
-    )
-}
-
-@Composable
-fun Frame12(
-    onButtonFiveButtonTapped: () -> Unit,
-    modifier: Modifier = Modifier,
-    content: @Composable RelayContainerScope.() -> Unit
-) {
-    RelayContainer(
-        backgroundColor = Color(
-            alpha = 255,
-            red = 255,
-            green = 255,
-            blue = 255
-        ),
-        isStructured = false,
-        radius = 5.0,
-        strokeWidth = 1.0,
-        strokeColor = Color(
-            alpha = 255,
-            red = 0,
-            green = 0,
-            blue = 0
-        ),
-        content = content,
-        modifier = modifier.tappable(onTap = onButtonFiveButtonTapped).requiredWidth(63.0.dp).requiredHeight(62.0.dp)
-    )
-}
-
-@Composable
-fun TxtMultiply(modifier: Modifier = Modifier) {
-    RelayText(
-        content = "×",
-        fontSize = 40.0.sp,
-        fontFamily = inter,
-        color = Color(
-            alpha = 229,
-            red = 0,
-            green = 0,
-            blue = 0
-        ),
-        height = 1.2102272033691406.em,
-        fontWeight = FontWeight(500.0.toInt()),
-        maxLines = -1,
-        modifier = modifier.requiredWidth(41.0.dp).requiredHeight(45.0.dp).wrapContentHeight(
-            align = Alignment.CenterVertically,
-            unbounded = true
-        )
-    )
-}
-
-@Composable
-fun Frame21(
-    onMultiplyButtonTapped: () -> Unit,
-    modifier: Modifier = Modifier,
-    content: @Composable RelayContainerScope.() -> Unit
-) {
-    RelayContainer(
-        backgroundColor = Color(
-            alpha = 255,
-            red = 255,
-            green = 255,
-            blue = 255
-        ),
-        isStructured = false,
-        radius = 5.0,
-        strokeWidth = 1.0,
-        strokeColor = Color(
-            alpha = 255,
-            red = 0,
-            green = 0,
-            blue = 0
-        ),
-        content = content,
-        modifier = modifier.tappable(onTap = onMultiplyButtonTapped).requiredWidth(63.0.dp).requiredHeight(62.0.dp)
-    )
-}
-
-@Composable
-fun Txt6(modifier: Modifier = Modifier) {
-    RelayText(
-        content = "6",
-        fontSize = 30.0.sp,
-        fontFamily = inter,
-        color = Color(
-            alpha = 229,
-            red = 0,
-            green = 0,
-            blue = 0
-        ),
-        height = 1.2102272033691406.em,
-        fontWeight = FontWeight(500.0.toInt()),
-        maxLines = -1,
-        modifier = modifier.requiredWidth(47.0.dp).requiredHeight(51.0.dp).wrapContentHeight(
-            align = Alignment.CenterVertically,
-            unbounded = true
-        )
-    )
-}
-
-@Composable
-fun Frame16(
-    onButtonSixButtonTapped: () -> Unit,
-    modifier: Modifier = Modifier,
-    content: @Composable RelayContainerScope.() -> Unit
-) {
-    RelayContainer(
-        backgroundColor = Color(
-            alpha = 255,
-            red = 255,
-            green = 255,
-            blue = 255
-        ),
-        isStructured = false,
-        radius = 5.0,
-        strokeWidth = 1.0,
-        strokeColor = Color(
-            alpha = 255,
-            red = 0,
-            green = 0,
-            blue = 0
-        ),
-        content = content,
-        modifier = modifier.tappable(onTap = onButtonSixButtonTapped).requiredWidth(63.0.dp).requiredHeight(62.0.dp)
-    )
-}
-
-@Composable
-fun TxtDivide(modifier: Modifier = Modifier) {
-    RelayText(
-        content = "÷",
-        fontSize = 40.0.sp,
-        fontFamily = inter,
-        color = Color(
-            alpha = 229,
-            red = 0,
-            green = 0,
-            blue = 0
-        ),
-        height = 1.2102272033691406.em,
-        fontWeight = FontWeight(500.0.toInt()),
-        maxLines = -1,
-        modifier = modifier.requiredWidth(55.0.dp).requiredHeight(59.0.dp).wrapContentHeight(
-            align = Alignment.CenterVertically,
-            unbounded = true
-        )
-    )
-}
-
-@Composable
-fun Frame22(
-    onDivideButtonTapped: () -> Unit,
-    modifier: Modifier = Modifier,
-    content: @Composable RelayContainerScope.() -> Unit
-) {
-    RelayContainer(
-        backgroundColor = Color(
-            alpha = 255,
-            red = 255,
-            green = 255,
-            blue = 255
-        ),
-        isStructured = false,
-        radius = 5.0,
-        strokeWidth = 1.0,
-        strokeColor = Color(
-            alpha = 255,
-            red = 0,
-            green = 0,
-            blue = 0
-        ),
-        content = content,
-        modifier = modifier.tappable(onTap = onDivideButtonTapped).requiredWidth(63.0.dp).requiredHeight(62.0.dp)
-    )
-}
-
-@Composable
-fun Txt7(modifier: Modifier = Modifier) {
-    RelayText(
-        content = "7",
-        fontSize = 30.0.sp,
-        fontFamily = inter,
-        color = Color(
-            alpha = 229,
-            red = 0,
-            green = 0,
-            blue = 0
-        ),
-        height = 1.2102272033691406.em,
-        fontWeight = FontWeight(500.0.toInt()),
-        maxLines = -1,
-        modifier = modifier.requiredWidth(47.0.dp).requiredHeight(51.0.dp).wrapContentHeight(
-            align = Alignment.CenterVertically,
-            unbounded = true
-        )
-    )
-}
-
-@Composable
-fun Frame4(
-    onNumberSevenButtonTapped: () -> Unit,
-    modifier: Modifier = Modifier,
-    content: @Composable RelayContainerScope.() -> Unit
-) {
-    RelayContainer(
-        backgroundColor = Color(
-            alpha = 255,
-            red = 255,
-            green = 255,
-            blue = 255
-        ),
-        isStructured = false,
-        radius = 5.0,
-        strokeWidth = 1.0,
-        strokeColor = Color(
-            alpha = 255,
-            red = 0,
-            green = 0,
-            blue = 0
-        ),
-        content = content,
-        modifier = modifier.tappable(onTap = onNumberSevenButtonTapped).requiredWidth(63.0.dp).requiredHeight(63.0.dp)
-    )
-}
-
-@Composable
-fun Txt8(modifier: Modifier = Modifier) {
-    RelayText(
-        content = "8",
-        fontSize = 30.0.sp,
-        fontFamily = inter,
-        color = Color(
-            alpha = 229,
-            red = 0,
-            green = 0,
-            blue = 0
-        ),
-        height = 1.2102272033691406.em,
-        fontWeight = FontWeight(500.0.toInt()),
-        maxLines = -1,
-        modifier = modifier.requiredWidth(47.0.dp).requiredHeight(51.0.dp).wrapContentHeight(
-            align = Alignment.CenterVertically,
-            unbounded = true
-        )
-    )
-}
-
-@Composable
-fun Frame13(
-    onNumberEightButtonTapped: () -> Unit,
-    modifier: Modifier = Modifier,
-    content: @Composable RelayContainerScope.() -> Unit
-) {
-    RelayContainer(
-        backgroundColor = Color(
-            alpha = 255,
-            red = 255,
-            green = 255,
-            blue = 255
-        ),
-        isStructured = false,
-        radius = 5.0,
-        strokeWidth = 1.0,
-        strokeColor = Color(
-            alpha = 255,
-            red = 0,
-            green = 0,
-            blue = 0
-        ),
-        content = content,
-        modifier = modifier.tappable(onTap = onNumberEightButtonTapped).requiredWidth(63.0.dp).requiredHeight(63.0.dp)
-    )
-}
-
-@Composable
-fun DelIcon(modifier: Modifier = Modifier) {
-    RelayImage(
-        image = painterResource(R.drawable.opening_screen_expenses_input_del_icon),
-        contentScale = ContentScale.Crop,
-        modifier = modifier.requiredWidth(33.0.dp).requiredHeight(29.0.dp)
-    )
-}
-
-@Composable
-fun Frame23(
-    onDeleteButtonTapped: () -> Unit,
-    modifier: Modifier = Modifier,
-    content: @Composable RelayContainerScope.() -> Unit
-) {
-    RelayContainer(
-        backgroundColor = Color(
-            alpha = 255,
-            red = 255,
-            green = 255,
-            blue = 255
-        ),
-        isStructured = false,
-        radius = 5.0,
-        strokeWidth = 1.0,
-        strokeColor = Color(
-            alpha = 255,
-            red = 0,
-            green = 0,
-            blue = 0
-        ),
-        content = content,
-        modifier = modifier.tappable(onTap = onDeleteButtonTapped).requiredWidth(63.0.dp).requiredHeight(63.0.dp)
-    )
-}
-
-@Composable
-fun Txt9(modifier: Modifier = Modifier) {
-    RelayText(
-        content = "9",
-        fontSize = 30.0.sp,
-        fontFamily = inter,
-        color = Color(
-            alpha = 229,
-            red = 0,
-            green = 0,
-            blue = 0
-        ),
-        height = 1.2102272033691406.em,
-        fontWeight = FontWeight(500.0.toInt()),
-        maxLines = -1,
-        modifier = modifier.requiredWidth(47.0.dp).requiredHeight(51.0.dp).wrapContentHeight(
-            align = Alignment.CenterVertically,
-            unbounded = true
-        )
-    )
-}
-
-@Composable
-fun Frame17(
-    onNumberNineButtonTapped: () -> Unit,
-    modifier: Modifier = Modifier,
-    content: @Composable RelayContainerScope.() -> Unit
-) {
-    RelayContainer(
-        backgroundColor = Color(
-            alpha = 255,
-            red = 255,
-            green = 255,
-            blue = 255
-        ),
-        isStructured = false,
-        radius = 5.0,
-        strokeWidth = 1.0,
-        strokeColor = Color(
-            alpha = 255,
-            red = 0,
-            green = 0,
-            blue = 0
-        ),
-        content = content,
-        modifier = modifier.tappable(onTap = onNumberNineButtonTapped).requiredWidth(63.0.dp).requiredHeight(63.0.dp)
-    )
-}
-
-@Composable
-fun TxtEqual(modifier: Modifier = Modifier) {
-    RelayText(
-        content = "=",
-        fontSize = 40.0.sp,
-        fontFamily = inter,
-        color = Color(
-            alpha = 229,
-            red = 0,
-            green = 0,
-            blue = 0
-        ),
-        height = 1.2102272033691406.em,
-        fontWeight = FontWeight(500.0.toInt()),
-        maxLines = -1,
-        modifier = modifier.requiredWidth(41.0.dp).requiredHeight(45.0.dp).wrapContentHeight(
-            align = Alignment.CenterVertically,
-            unbounded = true
-        )
-    )
-}
-
-@Composable
-fun Frame24(
-    onEqualButtonTapped: () -> Unit,
-    modifier: Modifier = Modifier,
-    content: @Composable RelayContainerScope.() -> Unit
-) {
-    RelayContainer(
-        backgroundColor = Color(
-            alpha = 255,
-            red = 255,
-            green = 255,
-            blue = 255
-        ),
-        isStructured = false,
-        radius = 5.0,
-        strokeWidth = 1.0,
-        strokeColor = Color(
-            alpha = 255,
-            red = 0,
-            green = 0,
-            blue = 0
-        ),
-        content = content,
-        modifier = modifier.tappable(onTap = onEqualButtonTapped).requiredWidth(63.0.dp).requiredHeight(63.0.dp)
-    )
-}
-
-@Composable
-fun Txt1(modifier: Modifier = Modifier) {
-    RelayText(
-        content = "1",
-        fontSize = 30.0.sp,
-        fontFamily = inter,
-        color = Color(
-            alpha = 229,
-            red = 0,
-            green = 0,
-            blue = 0
-        ),
-        height = 1.2102272033691406.em,
-        fontWeight = FontWeight(500.0.toInt()),
-        maxLines = -1,
-        modifier = modifier.requiredWidth(47.0.dp).requiredHeight(51.0.dp).wrapContentHeight(
-            align = Alignment.CenterVertically,
-            unbounded = true
-        )
-    )
-}
-
-@Composable
-fun Frame6(
-    onNumberOneButtonTapped: () -> Unit,
-    modifier: Modifier = Modifier,
-    content: @Composable RelayContainerScope.() -> Unit
-) {
-    RelayContainer(
-        backgroundColor = Color(
-            alpha = 255,
-            red = 255,
-            green = 255,
-            blue = 255
-        ),
-        isStructured = false,
-        radius = 5.0,
-        strokeWidth = 1.0,
-        strokeColor = Color(
-            alpha = 255,
-            red = 0,
-            green = 0,
-            blue = 0
-        ),
-        content = content,
-        modifier = modifier.tappable(onTap = onNumberOneButtonTapped).requiredWidth(63.0.dp).requiredHeight(63.0.dp)
-    )
-}
-
-@Composable
-fun Txt2(modifier: Modifier = Modifier) {
-    RelayText(
-        content = "2",
-        fontSize = 30.0.sp,
-        fontFamily = inter,
-        color = Color(
-            alpha = 229,
-            red = 0,
-            green = 0,
-            blue = 0
-        ),
-        height = 1.2102272033691406.em,
-        fontWeight = FontWeight(500.0.toInt()),
-        maxLines = -1,
-        modifier = modifier.requiredWidth(47.0.dp).requiredHeight(51.0.dp).wrapContentHeight(
-            align = Alignment.CenterVertically,
-            unbounded = true
-        )
-    )
-}
-
-@Composable
-fun Frame14(
-    onNumberTwoButtonTapped: () -> Unit,
-    modifier: Modifier = Modifier,
-    content: @Composable RelayContainerScope.() -> Unit
-) {
-    RelayContainer(
-        backgroundColor = Color(
-            alpha = 255,
-            red = 255,
-            green = 255,
-            blue = 255
-        ),
-        isStructured = false,
-        radius = 5.0,
-        strokeWidth = 1.0,
-        strokeColor = Color(
-            alpha = 255,
-            red = 0,
-            green = 0,
-            blue = 0
-        ),
-        content = content,
-        modifier = modifier.tappable(onTap = onNumberTwoButtonTapped).requiredWidth(63.0.dp).requiredHeight(63.0.dp)
-    )
-}
-
-@Composable
-fun TxtAddition(modifier: Modifier = Modifier) {
-    RelayText(
-        content = "+",
-        fontSize = 40.0.sp,
-        fontFamily = inter,
-        color = Color(
-            alpha = 229,
-            red = 0,
-            green = 0,
-            blue = 0
-        ),
-        height = 1.2102272033691406.em,
-        fontWeight = FontWeight(500.0.toInt()),
-        maxLines = -1,
-        modifier = modifier.requiredWidth(47.0.dp).requiredHeight(51.0.dp).wrapContentHeight(
-            align = Alignment.CenterVertically,
-            unbounded = true
-        )
-    )
-}
-
-@Composable
-fun Frame26(
-    onAdditionButtonTapped: () -> Unit,
-    modifier: Modifier = Modifier,
-    content: @Composable RelayContainerScope.() -> Unit
-) {
-    RelayContainer(
-        backgroundColor = Color(
-            alpha = 255,
-            red = 255,
-            green = 255,
-            blue = 255
-        ),
-        isStructured = false,
-        radius = 5.0,
-        strokeWidth = 1.0,
-        strokeColor = Color(
-            alpha = 255,
-            red = 0,
-            green = 0,
-            blue = 0
-        ),
-        content = content,
-        modifier = modifier.tappable(onTap = onAdditionButtonTapped).requiredWidth(63.0.dp).requiredHeight(63.0.dp)
-    )
-}
-
-@Composable
-fun Txt3(modifier: Modifier = Modifier) {
-    RelayText(
-        content = "3",
-        fontSize = 30.0.sp,
-        fontFamily = inter,
-        color = Color(
-            alpha = 229,
-            red = 0,
-            green = 0,
-            blue = 0
-        ),
-        height = 1.2102272033691406.em,
-        fontWeight = FontWeight(500.0.toInt()),
-        maxLines = -1,
-        modifier = modifier.requiredWidth(47.0.dp).requiredHeight(51.0.dp).wrapContentHeight(
-            align = Alignment.CenterVertically,
-            unbounded = true
-        )
-    )
-}
-
-@Composable
-fun Frame18(
-    onNumberThreeButtonTapped: () -> Unit,
-    modifier: Modifier = Modifier,
-    content: @Composable RelayContainerScope.() -> Unit
-) {
-    RelayContainer(
-        backgroundColor = Color(
-            alpha = 255,
-            red = 255,
-            green = 255,
-            blue = 255
-        ),
-        isStructured = false,
-        radius = 5.0,
-        strokeWidth = 1.0,
-        strokeColor = Color(
-            alpha = 255,
-            red = 0,
-            green = 0,
-            blue = 0
-        ),
-        content = content,
-        modifier = modifier.tappable(onTap = onNumberThreeButtonTapped).requiredWidth(63.0.dp).requiredHeight(63.0.dp)
-    )
-}
-
-@Composable
-fun TxtOpenParentheses(
-    text: String = "(",
-    fontSize: TextUnit = 30.sp,
-    fontFamily: FontFamily = inter, // Can be customized, e.g., "inter"
-    color: Color = Color(0, 0, 0, alpha = 229),
-    lineHeight: TextUnit = 1.21.em,
-    fontWeight: FontWeight = FontWeight.Medium, // Corresponds to weight 500
-    maxLines: Int = Int.MAX_VALUE,
-    modifier: Modifier = Modifier
-){
-    Text(
-        text = text,
-        fontSize = fontSize,
-        fontFamily = fontFamily,
-        color = color,
-        lineHeight = lineHeight,
-        fontWeight = fontWeight,
-        maxLines = maxLines,
-        modifier = modifier
-            .requiredWidth(47.dp)
-            .requiredHeight(51.dp)
-            .wrapContentHeight(
-                align = Alignment.CenterVertically,
-                unbounded = true
-            )
-            .wrapContentWidth(
-                align = Alignment.CenterHorizontally,
-                unbounded = true
-            )
-    )
-}
-
-@Composable
-fun Frame7(
-    onOpenParenthesesButtonTapped: () -> Unit,
-    modifier: Modifier = Modifier,
-    content: @Composable RelayContainerScope.() -> Unit
-) {
-    RelayContainer(
-        backgroundColor = Color(
-            alpha = 255,
-            red = 255,
-            green = 255,
-            blue = 255
-        ),
-        isStructured = false,
-        radius = 5.0,
-        strokeWidth = 1.0,
-        strokeColor = Color(
-            alpha = 255,
-            red = 0,
-            green = 0,
-            blue = 0
-        ),
-        content = content,
-        modifier = modifier.tappable(onTap = onOpenParenthesesButtonTapped).requiredWidth(63.0.dp).requiredHeight(62.0.dp)
-    )
-}
-
-@Composable
-fun Txt0(modifier: Modifier = Modifier) {
-    RelayText(
-        content = "0",
-        fontSize = 30.0.sp,
-        fontFamily = inter,
-        color = Color(
-            alpha = 229,
-            red = 0,
-            green = 0,
-            blue = 0
-        ),
-        height = 1.2102272033691406.em,
-        fontWeight = FontWeight(500.0.toInt()),
-        maxLines = -1,
-        modifier = modifier.requiredWidth(47.0.dp).requiredHeight(51.0.dp).wrapContentHeight(
-            align = Alignment.CenterVertically,
-            unbounded = true
-        )
-    )
-}
-
-@Composable
-fun Frame15(
-    onNumberZeroButtonTapped: () -> Unit,
-    modifier: Modifier = Modifier,
-    content: @Composable RelayContainerScope.() -> Unit
-) {
-    RelayContainer(
-        backgroundColor = Color(
-            alpha = 255,
-            red = 255,
-            green = 255,
-            blue = 255
-        ),
-        isStructured = false,
-        radius = 5.0,
-        strokeWidth = 1.0,
-        strokeColor = Color(
-            alpha = 255,
-            red = 0,
-            green = 0,
-            blue = 0
-        ),
-        content = content,
-        modifier = modifier.tappable(onTap = onNumberZeroButtonTapped).requiredWidth(63.0.dp).requiredHeight(62.0.dp)
-    )
-}
-
-@Composable
-fun TxtDot(modifier: Modifier = Modifier) {
-    RelayText(
-        content = ".",
-        fontSize = 40.0.sp,
-        fontFamily = inter,
-        color = Color(
-            alpha = 229,
-            red = 0,
-            green = 0,
-            blue = 0
-        ),
-        height = 1.2102272033691406.em,
-        fontWeight = FontWeight(500.0.toInt()),
-        maxLines = -1,
-        modifier = modifier.requiredWidth(44.0.dp).requiredHeight(33.0.dp).wrapContentHeight(
-            align = Alignment.CenterVertically,
-            unbounded = true
-        )
-    )
-}
-
-@Composable
-fun Frame28(
-    onDotButtonTapped: () -> Unit,
-    modifier: Modifier = Modifier,
-    content: @Composable RelayContainerScope.() -> Unit
-) {
-    RelayContainer(
-        backgroundColor = Color(
-            alpha = 255,
-            red = 255,
-            green = 255,
-            blue = 255
-        ),
-        isStructured = false,
-        radius = 5.0,
-        strokeWidth = 1.0,
-        strokeColor = Color(
-            alpha = 255,
-            red = 0,
-            green = 0,
-            blue = 0
-        ),
-        content = content,
-        modifier = modifier.tappable(onTap = onDotButtonTapped).requiredWidth(63.0.dp).requiredHeight(62.0.dp)
-    )
-}
-
-@Composable
-fun TxtCloseParentheses(modifier: Modifier = Modifier) {
-    RelayText(
-        content = ")",
-        fontSize = 30.0.sp,
-        fontFamily = inter,
-        color = Color(
-            alpha = 229,
-            red = 0,
-            green = 0,
-            blue = 0
-        ),
-        height = 1.2102272033691406.em,
-        fontWeight = FontWeight(500.0.toInt()),
-        maxLines = -1,
-        modifier = modifier.requiredWidth(47.0.dp).requiredHeight(51.0.dp).wrapContentHeight(
-            align = Alignment.CenterVertically,
-            unbounded = true
-        )
-    )
-}
-
-@Composable
-fun Frame19(
-    onCloseParenthesesButtonTapped: () -> Unit,
-    modifier: Modifier = Modifier,
-    content: @Composable RelayContainerScope.() -> Unit
-) {
-    RelayContainer(
-        backgroundColor = Color(
-            alpha = 255,
-            red = 255,
-            green = 255,
-            blue = 255
-        ),
-        isStructured = false,
-        radius = 5.0,
-        strokeWidth = 1.0,
-        strokeColor = Color(
-            alpha = 255,
-            red = 0,
-            green = 0,
-            blue = 0
-        ),
-        content = content,
-        modifier = modifier.tappable(onTap = onCloseParenthesesButtonTapped).requiredWidth(63.0.dp).requiredHeight(62.0.dp)
-    )
-}
-
-@Composable
-fun TxtMinus(modifier: Modifier = Modifier) {
-    RelayText(
-        content = "-",
-        fontSize = 40.0.sp,
-        fontFamily = inter,
-        color = Color(
-            alpha = 229,
-            red = 0,
-            green = 0,
-            blue = 0
-        ),
-        height = 1.2102272033691406.em,
-        fontWeight = FontWeight(500.0.toInt()),
-        maxLines = -1,
-        modifier = modifier.requiredWidth(51.0.dp).requiredHeight(55.0.dp).wrapContentHeight(
-            align = Alignment.CenterVertically,
-            unbounded = true
-        )
-    )
-}
-
-@Composable
-fun Frame31(
-    onMinusButtonTapped: () -> Unit,
-    modifier: Modifier = Modifier,
-    content: @Composable RelayContainerScope.() -> Unit
-) {
-    RelayContainer(
-        backgroundColor = Color(
-            alpha = 255,
-            red = 255,
-            green = 255,
-            blue = 255
-        ),
-        isStructured = false,
-        radius = 5.0,
-        strokeWidth = 1.0,
-        strokeColor = Color(
-            alpha = 255,
-            red = 0,
-            green = 0,
-            blue = 0
-        ),
-        content = content,
-        modifier = modifier.tappable(onTap = onMinusButtonTapped).requiredWidth(63.0.dp).requiredHeight(63.0.dp)
-    )
-}
-
-@Composable
-fun Vector318(modifier: Modifier = Modifier) {
-    RelayVector(
-        vector = painterResource(R.drawable.opening_screen_expenses_input_vector_318),
-        modifier = modifier.requiredWidth(25.0.dp).requiredHeight(20.5.dp)
-    )
-}
-
-@Composable
-fun Done(
-    onDoneButtonTapped: () -> Unit,
-    modifier: Modifier = Modifier,
-    content: @Composable RelayContainerScope.() -> Unit
-) {
-    RelayContainer(
-        backgroundColor = Color(
-            alpha = 255,
-            red = 38,
-            green = 205,
-            blue = 45
-        ),
-        isStructured = false,
-        radius = 5.0,
-        strokeWidth = 1.0,
-        strokeColor = Color(
-            alpha = 255,
-            red = 0,
-            green = 0,
-            blue = 0
-        ),
-        content = content,
-        modifier = modifier.tappable(onTap = onDoneButtonTapped).requiredWidth(63.0.dp).requiredHeight(62.0.dp)
-    )
-}
 
 @Composable
 fun Vector49(modifier: Modifier = Modifier) {
@@ -1571,113 +505,10 @@ fun Vector49(modifier: Modifier = Modifier) {
 }
 
 @Composable
-fun Frame(
-    modifier: Modifier = Modifier,
-    content: @Composable RelayContainerScope.() -> Unit
-) {
-    RelayContainer(
-        isStructured = false,
-        content = content,
-        modifier = modifier.graphicsLayer(rotationZ = 90.00000250447806f).requiredWidth(42.0.dp).requiredHeight(42.0.dp).alpha(alpha = 0.4000000059604645f)
-    )
-}
-
-@Composable
-fun Frame20(
-    modifier: Modifier = Modifier,
-    content: @Composable RelayContainerScope.() -> Unit
-) {
-    RelayContainer(
-        backgroundColor = Color(
-            alpha = 255,
-            red = 249,
-            green = 249,
-            blue = 249
-        ),
-        isStructured = false,
-        radius = 5.0,
-        strokeWidth = 1.0,
-        strokeColor = Color(
-            alpha = 255,
-            red = 0,
-            green = 0,
-            blue = 0
-        ),
-        content = content,
-        modifier = modifier.graphicsLayer(rotationZ = -90.00000250447806f).requiredWidth(56.999996185302734.dp).requiredHeight(126.0.dp)
-    )
-}
-
-@Composable
-fun Frame1(
-    modifier: Modifier = Modifier,
-    content: @Composable RelayContainerScope.() -> Unit
-) {
-    RelayContainer(
-        isStructured = false,
-        content = content,
-        modifier = modifier.requiredWidth(40.0.dp).requiredHeight(40.0.dp)
-    )
-}
-
-@Composable
-fun Frame32(
-    onInputButtonTapped: () -> Unit,
-    modifier: Modifier = Modifier,
-    content: @Composable RelayContainerScope.() -> Unit
-) {
-    RelayContainer(
-        isStructured = false,
-        radius = 5.0,
-        content = content,
-        modifier = modifier.tappable(onTap = onInputButtonTapped).requiredWidth(60.0.dp).requiredHeight(57.0.dp)
-    )
-}
-
-@Composable
 fun Vector50(modifier: Modifier = Modifier) {
     RelayVector(
         vector = painterResource(R.drawable.opening_screen_expenses_input_vector50),
         modifier = modifier.fillMaxWidth(1.0f).fillMaxHeight(1.0f)
-    )
-}
-
-@Composable
-fun Frame2(
-    modifier: Modifier = Modifier,
-    content: @Composable RelayContainerScope.() -> Unit
-) {
-    RelayContainer(
-        isStructured = false,
-        content = content,
-        modifier = modifier.requiredWidth(40.0.dp).requiredHeight(40.0.dp)
-    )
-}
-
-@Composable
-fun Frame30(
-    onOutputButtonTapped: () -> Unit,
-    modifier: Modifier = Modifier,
-    content: @Composable RelayContainerScope.() -> Unit
-) {
-    RelayContainer(
-        backgroundColor = Color(
-            alpha = 255,
-            red = 248,
-            green = 223,
-            blue = 0
-        ),
-        isStructured = false,
-        radius = 5.0,
-        strokeWidth = 1.0,
-        strokeColor = Color(
-            alpha = 255,
-            red = 0,
-            green = 0,
-            blue = 0
-        ),
-        content = content,
-        modifier = modifier.tappable(onTap = onOutputButtonTapped).requiredWidth(60.0.dp).requiredHeight(57.0.dp)
     )
 }
 
@@ -1953,19 +784,4 @@ fun TopLevel(
     )
 }
 
-fun calculateFontSize(
-    textContent: String,
-    maxFontSize: TextUnit = 24.sp,
-    minFontSize: TextUnit = 12.sp
-): TextUnit {
-    val length = textContent.length
 
-    // Convert TextUnit to Float for calculation
-    val fontSize = when {
-        length < 10 -> maxFontSize
-        length < 20 -> (maxFontSize.value - (maxFontSize.value - minFontSize.value) * 0.3f).sp
-        length < 30 -> (maxFontSize.value - (maxFontSize.value - minFontSize.value) * 0.6f).sp
-        else -> minFontSize
-    }
-    return fontSize
-}

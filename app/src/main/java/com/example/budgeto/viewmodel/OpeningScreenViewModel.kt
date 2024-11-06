@@ -2,6 +2,7 @@ package com.example.budgeto.viewmodel
 
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
+import java.util.Locale
 import java.util.Stack
 
 class OpeningScreenViewModel: ViewModel() {
@@ -36,8 +37,17 @@ class OpeningScreenViewModel: ViewModel() {
     }
 
     fun calculateResult() {
-        resultText.value = evaluateExpression(operationText.value)
+        val rawResult = evaluateExpression(operationText.value)
+        resultText.value = formatResult(rawResult)
         isResultDisplayed = true
+    }
+
+    private fun formatResult(result: String): String {
+        return try {
+            String.format(Locale.getDefault(), "%.2f", result.toDouble())
+        } catch (e: NumberFormatException) {
+            "Error"
+        }
     }
 
     private fun evaluateExpression(expression: String): String {

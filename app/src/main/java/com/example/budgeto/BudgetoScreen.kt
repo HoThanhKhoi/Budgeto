@@ -141,7 +141,9 @@ fun BudgetoApp(
                     },
 
                     onLogginSucess = {
-                        navController.navigate(BudgetoScreenEnum.AccountScreen.name)
+                        navController.navigate("${BudgetoScreenEnum.HomepageScreen.name}/true") {
+                            popUpTo(BudgetoScreenEnum.Login.name) { inclusive = true }
+                        }
                     },
 
                     onSignUpTapped = { navController.navigate(BudgetoScreenEnum.SignUp.name) },
@@ -155,11 +157,14 @@ fun BudgetoApp(
                     viewModel = openingScreenViewModel,
                 )
             }
-            composable(route = BudgetoScreenEnum.HomepageScreen.name) {
+            composable(route = "${BudgetoScreenEnum.HomepageScreen.name}/{showBottomSheetInitially}") { backStackEntry ->
+                val showBottomSheetInitially = backStackEntry.arguments?.getString("showBottomSheetInitially") == "true"
+
                 HomepageScreen(
                     onProfileButtonTapped = { navController.navigate(BudgetoScreenEnum.ProfileScreen.name) },
                     onAccountsButtonTapped = { navController.navigate(BudgetoScreenEnum.AccountScreen.name) },
-                    onSettingButtonTapped = {navController.navigate(BudgetoScreenEnum.SettingsScreen.name)}
+                    onSettingButtonTapped = {navController.navigate(BudgetoScreenEnum.SettingsScreen.name)},
+                    showBottomSheetInitially  = showBottomSheetInitially
                 )
             }
             composable(route = BudgetoScreenEnum.ProfileScreen.name) {
