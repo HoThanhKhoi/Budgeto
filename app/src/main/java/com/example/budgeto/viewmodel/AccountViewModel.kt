@@ -6,6 +6,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.budgeto.data.AuthRepository
 import com.example.budgeto.data.model.account.Account
+import com.example.budgeto.data.model.user.UserMoneyInfo
 import com.example.budgeto.data.repository.account.AccountRepository
 import com.example.budgeto.data.repository.user.UserRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -21,6 +22,7 @@ class AccountViewModel @Inject constructor(
 
     val userId = authRepository.getCurrentUserId()
     var accountList = mutableStateOf<List<Account>>(emptyList())
+    var userMoneyInfo = mutableStateOf<UserMoneyInfo?>(null)
 
     fun addNewAccountToFireStore(
         accountName: String = "",
@@ -73,6 +75,35 @@ class AccountViewModel @Inject constructor(
             } catch (e: Exception) {
                 // Handle any errors that occur during data fetching
                 Log.d("Get all accounts", e.message.toString())
+            }
+        }
+    }
+
+    fun fetchUserMoneyInfo(){
+        viewModelScope.launch {
+            try {
+                if (userId != null) {
+                    // Fetch accounts from the repository and update the state
+                    val moneyInfo = userRepository.getUserMoneyInfo(userId)
+
+                    if (moneyInfo != null) {
+                        userMoneyInfo.value = moneyInfo
+                    }
+                    else
+                    {
+                        Log.d("Get money info", "User money info is null, cannot retrieve accounts.")
+                    }
+                } else {
+                    Log.d("Get money info", "User ID is null, cannot retrieve accounts.")
+                }
+
+
+            }
+            catch (
+                e: Exception
+            ) {
+                // Handle any errors that occur during data fetching
+                Log.d("Get money info", e.message.toString())
             }
         }
     }

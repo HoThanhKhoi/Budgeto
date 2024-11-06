@@ -1,10 +1,9 @@
 package com.example.budgeto.data.repository.user
 
 import android.util.Log
-import com.example.budgeto.data.model.dailySummary.DailySummary
 import com.example.budgeto.data.model.user.UserGameInfo
 import com.example.budgeto.data.model.user.UserGeneralInfo
-import com.example.budgeto.data.model.user.MoneyInfo
+import com.example.budgeto.data.model.user.UserMoneyInfo
 import com.example.budgeto.data.repository.base.FirestoreRepository
 import com.example.budgeto.data.model.user.User
 import com.google.firebase.Timestamp
@@ -33,12 +32,12 @@ class UserRepository @Inject constructor(
         user: User,
         userGeneralInfo: UserGeneralInfo = UserGeneralInfo(),
         userGameInfo: UserGameInfo = UserGameInfo(),
-        moneyInfo: MoneyInfo = MoneyInfo()
+        userMoneyInfo: UserMoneyInfo = UserMoneyInfo()
     ): String {
         val userId = add(usersCollectionPath, user, user.userId) // Using userId as the document ID
         addGeneralInfo(userId, userGeneralInfo)
         addGameInfo(userId, userGameInfo)
-        addMoneyInfo(userId, moneyInfo)
+        addMoneyInfo(userId, userMoneyInfo)
         return userId
     }
 
@@ -70,8 +69,8 @@ class UserRepository @Inject constructor(
         return addDocumentToSubcollection(usersCollectionPath, userId, infoCollectionPath, userGeneralInfo, "generalInfo")
     }
 
-    suspend fun addMoneyInfo(userId: String, moneyInfo: MoneyInfo) : String {
-        return addDocumentToSubcollection(usersCollectionPath, userId, infoCollectionPath, moneyInfo, "moneyInfo")
+    suspend fun addMoneyInfo(userId: String, userMoneyInfo: UserMoneyInfo) : String {
+        return addDocumentToSubcollection(usersCollectionPath, userId, infoCollectionPath, userMoneyInfo, "moneyInfo")
     }
 
     suspend fun getUserGeneralInfo(userId: String): UserGeneralInfo? {
@@ -92,6 +91,17 @@ class UserRepository @Inject constructor(
         } catch (e: Exception) {
             e.printStackTrace()
             Log.e("UserRepository", "Failed to update User's GeneralInfo: ${e.message}")
+        }
+    }
+
+    suspend fun getUserMoneyInfo(userId: String): UserMoneyInfo? {
+        return try {
+            val userMoneyInfo = getSubcollectionDocument(usersCollectionPath, userId, infoCollectionPath, "moneyInfo", UserMoneyInfo::class.java)
+            Log.d("UserRepository", "MoneyInfo: $userMoneyInfo")
+            userMoneyInfo
+        } catch (e: Exception) {
+            e.printStackTrace()
+            null
         }
     }
 }

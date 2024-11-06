@@ -38,6 +38,7 @@ import androidx.compose.ui.window.Dialog
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.budgeto.R
 import com.example.budgeto.data.model.account.Account
+import com.example.budgeto.data.model.user.UserMoneyInfo
 import com.example.budgeto.screens.addAccount.AddAccountScreen
 import com.example.budgeto.screensfonts.inter
 import com.example.budgeto.viewmodel.AccountViewModel
@@ -56,15 +57,21 @@ import com.google.relay.compose.relayDropShadow
 fun AccountScreen(
     modifier: Modifier = Modifier,
     accountViewModel: AccountViewModel = hiltViewModel()
-){
+) {
     var accountList = accountViewModel.accountList.value
+    var userMoneyInfo = accountViewModel.userMoneyInfo.value
+
     LaunchedEffect(Unit) {
         accountViewModel.fetchAllAccounts()
+        accountViewModel.fetchUserMoneyInfo()
     }
 
     Account1(
-        modifier = modifier.rowWeight(1.0f).columnWeight(1.0f),
+        modifier = modifier
+            .rowWeight(1.0f)
+            .columnWeight(1.0f),
         accountViewModel = accountViewModel,
+        userMoneyInfo = userMoneyInfo?: UserMoneyInfo(),
         accountList = accountList
     )
 }
@@ -74,7 +81,8 @@ fun AccountScreen(
 fun Account1(
     modifier: Modifier = Modifier,
     accountViewModel: AccountViewModel = hiltViewModel(),
-    accountList: List<Account> = emptyList()
+    accountList: List<Account> = emptyList(),
+    userMoneyInfo: UserMoneyInfo = UserMoneyInfo()
 ) {
     var showAccountPopup by remember { mutableStateOf(false) }
 
@@ -93,13 +101,15 @@ fun Account1(
 
         //region expenses & income
         Frame46(
-            modifier = Modifier.boxAlign(
-                alignment = Alignment.TopStart,
-                offset = DpOffset(
-                    x = 0.0.dp,
-                    y = 120.0.dp
+            modifier = Modifier
+                .boxAlign(
+                    alignment = Alignment.TopStart,
+                    offset = DpOffset(
+                        x = 0.0.dp,
+                        y = 120.0.dp
+                    )
                 )
-            ).fillMaxWidth()
+                .fillMaxWidth()
         ) {
             Expenses(
                 modifier = Modifier.boxAlign(
@@ -110,7 +120,8 @@ fun Account1(
                     )
                 )
             )
-            Txt400000(
+            ExpensesValue(
+                value = userMoneyInfo.totalIncome.toString(),
                 modifier = Modifier.boxAlign(
                     alignment = Alignment.TopStart,
                     offset = DpOffset(
@@ -119,7 +130,8 @@ fun Account1(
                     )
                 )
             )
-            Txt501000(
+            IncomesValue(
+                value = userMoneyInfo.totalExpense.toString(),
                 modifier = Modifier.boxAlign(
                     alignment = Alignment.TopStart,
                     offset = DpOffset(
@@ -169,7 +181,8 @@ fun Account1(
                     )
                 )
             )
-            Txt101000(
+            TotalBalanceValue(
+                value = userMoneyInfo.totalBalance.toString(),
                 modifier = Modifier.boxAlign(
                     alignment = Alignment.TopCenter,
                     offset = DpOffset(
@@ -187,10 +200,14 @@ fun Account1(
             scrollable = true,
             arrangement = RelayContainerArrangement.Column,
             mainAxisAlignment = MainAxisAlignment.Start,
-            modifier = Modifier.boxAlign(
-                alignment = Alignment.TopStart,
-                offset = DpOffset(0.dp, 240.dp)
-            ).fillMaxWidth().height(400.dp).padding(8.dp)
+            modifier = Modifier
+                .boxAlign(
+                    alignment = Alignment.TopStart,
+                    offset = DpOffset(0.dp, 240.dp)
+                )
+                .fillMaxWidth()
+                .height(400.dp)
+                .padding(8.dp)
         ) {
             accountList.forEach { account ->
                 AccountSection(
@@ -205,23 +222,28 @@ fun Account1(
         //endregion
 
         //region add new account
-        Frame50 (
-            modifier = Modifier.boxAlign(
-                alignment = Alignment.TopStart,
-                offset = DpOffset(
-                    x = 0.dp,
-                    y = 679.0.dp
+        Frame50(
+            modifier = Modifier
+                .boxAlign(
+                    alignment = Alignment.TopStart,
+                    offset = DpOffset(
+                        x = 0.dp,
+                        y = 679.0.dp
+                    )
                 )
-            ).fillMaxWidth()
+                .fillMaxWidth()
         ) {
             AddNewAccount(
-                modifier = Modifier.boxAlign(
-                    alignment = Alignment.TopCenter,
-                    offset = DpOffset(
-                        x = 0.5.dp,
-                        y = 11.0.dp
+                modifier = Modifier
+                    .boxAlign(
+                        alignment = Alignment.TopCenter,
+                        offset = DpOffset(
+                            x = 0.5.dp,
+                            y = 11.0.dp
+                        )
                     )
-                ).fillMaxWidth().clickable{showAccountPopup = true}
+                    .fillMaxWidth()
+                    .clickable { showAccountPopup = true }
             )
         }
         //endregion
@@ -680,7 +702,9 @@ private fun Account1Preview() {
     MaterialTheme {
         RelayContainer {
             Account1(
-                modifier = Modifier.rowWeight(1.0f).columnWeight(1.0f),
+                modifier = Modifier
+                    .rowWeight(1.0f)
+                    .columnWeight(1.0f),
             )
         }
     }
@@ -700,7 +724,9 @@ fun TopLevel(
         ),
         isStructured = false,
         content = content,
-        modifier = modifier.fillMaxWidth(1.0f).fillMaxHeight(1.0f)
+        modifier = modifier
+            .fillMaxWidth(1.0f)
+            .fillMaxHeight(1.0f)
     )
 }
 
@@ -727,7 +753,9 @@ fun Frame46(
             blue = 0
         ),
         content = content,
-        modifier = modifier.requiredWidth(390.0.dp).requiredHeight(120.0.dp)
+        modifier = modifier
+            .requiredWidth(390.0.dp)
+            .requiredHeight(120.0.dp)
     )
 }
 
@@ -747,9 +775,12 @@ fun Expenses(modifier: Modifier = Modifier) {
 }
 
 @Composable
-fun Txt400000(modifier: Modifier = Modifier) {
+fun ExpensesValue(
+    modifier: Modifier = Modifier,
+    value: String = ""
+) {
     RelayText(
-        content = "400.000 VNĐ",
+        content = value,
         fontSize = 20.0.sp,
         fontFamily = inter,
         height = 1.2102272033691406.em,
@@ -777,9 +808,12 @@ fun Incomes(modifier: Modifier = Modifier) {
 }
 
 @Composable
-fun Txt501000(modifier: Modifier = Modifier) {
+fun IncomesValue(
+    modifier: Modifier = Modifier,
+    value: String = ""
+) {
     RelayText(
-        content = "501.000 VNĐ",
+        content = value,
         fontSize = 20.0.sp,
         fontFamily = inter,
         height = 1.2102272033691406.em,
@@ -795,7 +829,9 @@ fun Txt501000(modifier: Modifier = Modifier) {
 fun Line13(modifier: Modifier = Modifier) {
     RelayVector(
         vector = painterResource(R.drawable.account_1_line_13),
-        modifier = modifier.requiredWidth(60.0.dp).requiredHeight(0.0.dp)
+        modifier = modifier
+            .requiredWidth(60.0.dp)
+            .requiredHeight(0.0.dp)
     )
 }
 
@@ -803,7 +839,9 @@ fun Line13(modifier: Modifier = Modifier) {
 fun Rectangle63(modifier: Modifier = Modifier) {
     RelayVector(
         vector = painterResource(R.drawable.account_1_rectangle_63),
-        modifier = modifier.requiredWidth(401.0.dp).requiredHeight(14.0.dp)
+        modifier = modifier
+            .requiredWidth(401.0.dp)
+            .requiredHeight(14.0.dp)
     )
 }
 //endregion
@@ -830,7 +868,9 @@ fun Frame35(
             blue = 0
         ),
         content = content,
-        modifier = modifier.requiredWidth(390.0.dp).requiredHeight(136.0.dp)
+        modifier = modifier
+            .requiredWidth(390.0.dp)
+            .requiredHeight(136.0.dp)
     )
 }
 
@@ -855,9 +895,12 @@ fun TotalBalance(
 }
 
 @Composable
-fun Txt101000(modifier: Modifier = Modifier) {
+fun TotalBalanceValue(
+    modifier: Modifier = Modifier,
+    value: String = ""
+) {
     RelayText(
-        content = "101.000 VNĐ",
+        content = value,
         fontSize = 32.0.sp,
         fontFamily = inter,
         color = Color(
@@ -937,7 +980,9 @@ fun Frame51(
             blue = 0
         ),
         content = content,
-        modifier = modifier.requiredWidth(321.0.dp).requiredHeight(52.0.dp)
+        modifier = modifier
+            .requiredWidth(321.0.dp)
+            .requiredHeight(52.0.dp)
     )
 }
 
@@ -989,7 +1034,9 @@ fun Frame52(
             blue = 0
         ),
         content = content,
-        modifier = modifier.requiredWidth(321.0.dp).requiredHeight(52.0.dp)
+        modifier = modifier
+            .requiredWidth(321.0.dp)
+            .requiredHeight(52.0.dp)
     )
 }
 
@@ -1041,7 +1088,9 @@ fun Frame53(
             blue = 0
         ),
         content = content,
-        modifier = modifier.requiredWidth(321.0.dp).requiredHeight(52.0.dp)
+        modifier = modifier
+            .requiredWidth(321.0.dp)
+            .requiredHeight(52.0.dp)
     )
 }
 
@@ -1061,7 +1110,9 @@ fun More(modifier: Modifier = Modifier) {
 fun Vector321(modifier: Modifier = Modifier) {
     RelayVector(
         vector = painterResource(R.drawable.account_1_vector_321),
-        modifier = modifier.requiredWidth(3.0.dp).requiredHeight(6.375.dp)
+        modifier = modifier
+            .requiredWidth(3.0.dp)
+            .requiredHeight(6.375.dp)
     )
 }
 
@@ -1087,7 +1138,9 @@ fun Frame54(
             blue = 0
         ),
         content = content,
-        modifier = modifier.requiredWidth(74.0.dp).requiredHeight(22.0.dp)
+        modifier = modifier
+            .requiredWidth(74.0.dp)
+            .requiredHeight(22.0.dp)
     )
 }
 
@@ -1095,7 +1148,9 @@ fun Frame54(
 fun Rectangle67(modifier: Modifier = Modifier) {
     RelayVector(
         vector = painterResource(R.drawable.account_1_rectangle_67),
-        modifier = modifier.requiredWidth(348.0.dp).requiredHeight(15.0.dp)
+        modifier = modifier
+            .requiredWidth(348.0.dp)
+            .requiredHeight(15.0.dp)
     )
 }
 
@@ -1121,19 +1176,22 @@ fun Frame47(
             blue = 0
         ),
         content = content,
-        modifier = modifier.requiredWidth(344.0.dp).requiredHeight(249.0.dp).relayDropShadow(
-            color = Color(
-                alpha = 38,
-                red = 0,
-                green = 0,
-                blue = 0
-            ),
-            borderRadius = 5.0.dp,
-            blur = 4.0.dp,
-            offsetX = 0.0.dp,
-            offsetY = 4.0.dp,
-            spread = 0.0.dp
-        )
+        modifier = modifier
+            .requiredWidth(344.0.dp)
+            .requiredHeight(249.0.dp)
+            .relayDropShadow(
+                color = Color(
+                    alpha = 38,
+                    red = 0,
+                    green = 0,
+                    blue = 0
+                ),
+                borderRadius = 5.0.dp,
+                blur = 4.0.dp,
+                offsetX = 0.0.dp,
+                offsetY = 4.0.dp,
+                spread = 0.0.dp
+            )
     )
 }
 
@@ -1154,7 +1212,9 @@ fun AccountTiNMCho(modifier: Modifier = Modifier) {
 fun Vector319(modifier: Modifier = Modifier) {
     RelayVector(
         vector = painterResource(R.drawable.account_1_vector_319),
-        modifier = modifier.requiredWidth(0.0.dp).requiredHeight(7.5.dp)
+        modifier = modifier
+            .requiredWidth(0.0.dp)
+            .requiredHeight(7.5.dp)
     )
 }
 
@@ -1162,7 +1222,9 @@ fun Vector319(modifier: Modifier = Modifier) {
 fun Vector320(modifier: Modifier = Modifier) {
     RelayVector(
         vector = painterResource(R.drawable.account_1_vector_320),
-        modifier = modifier.requiredWidth(0.0.dp).requiredHeight(7.5.dp)
+        modifier = modifier
+            .requiredWidth(0.0.dp)
+            .requiredHeight(7.5.dp)
     )
 }
 
@@ -1175,7 +1237,9 @@ fun Group2(
         isStructured = false,
         clipToParent = false,
         content = content,
-        modifier = modifier.requiredWidth(7.5.dp).requiredHeight(7.5.dp)
+        modifier = modifier
+            .requiredWidth(7.5.dp)
+            .requiredHeight(7.5.dp)
     )
 }
 
@@ -1201,7 +1265,9 @@ fun Frame55(
             blue = 0
         ),
         content = content,
-        modifier = modifier.requiredWidth(22.0.dp).requiredHeight(22.0.dp)
+        modifier = modifier
+            .requiredWidth(22.0.dp)
+            .requiredHeight(22.0.dp)
     )
 }
 
@@ -1227,7 +1293,9 @@ fun Frame48(
             blue = 0
         ),
         content = content,
-        modifier = modifier.requiredWidth(344.0.dp).requiredHeight(62.0.dp)
+        modifier = modifier
+            .requiredWidth(344.0.dp)
+            .requiredHeight(62.0.dp)
     )
 }
 
@@ -1248,7 +1316,9 @@ fun AccountTiNNuICh(modifier: Modifier = Modifier) {
 fun Vector322(modifier: Modifier = Modifier) {
     RelayVector(
         vector = painterResource(R.drawable.account_1_vector_322),
-        modifier = modifier.requiredWidth(0.0.dp).requiredHeight(7.5.dp)
+        modifier = modifier
+            .requiredWidth(0.0.dp)
+            .requiredHeight(7.5.dp)
     )
 }
 
@@ -1256,7 +1326,9 @@ fun Vector322(modifier: Modifier = Modifier) {
 fun Vector323(modifier: Modifier = Modifier) {
     RelayVector(
         vector = painterResource(R.drawable.account_1_vector_323),
-        modifier = modifier.requiredWidth(0.0.dp).requiredHeight(7.5.dp)
+        modifier = modifier
+            .requiredWidth(0.0.dp)
+            .requiredHeight(7.5.dp)
     )
 }
 
@@ -1269,7 +1341,9 @@ fun Group3(
         isStructured = false,
         clipToParent = false,
         content = content,
-        modifier = modifier.requiredWidth(7.5.dp).requiredHeight(7.5.dp)
+        modifier = modifier
+            .requiredWidth(7.5.dp)
+            .requiredHeight(7.5.dp)
     )
 }
 
@@ -1295,7 +1369,9 @@ fun Frame56(
             blue = 0
         ),
         content = content,
-        modifier = modifier.requiredWidth(22.0.dp).requiredHeight(22.0.dp)
+        modifier = modifier
+            .requiredWidth(22.0.dp)
+            .requiredHeight(22.0.dp)
     )
 }
 
@@ -1321,7 +1397,9 @@ fun Frame49(
             blue = 0
         ),
         content = content,
-        modifier = modifier.requiredWidth(344.0.dp).requiredHeight(62.0.dp)
+        modifier = modifier
+            .requiredWidth(344.0.dp)
+            .requiredHeight(62.0.dp)
     )
 }
 
@@ -1350,7 +1428,9 @@ fun Frame50(
             blue = 0
         ),
         content = content,
-        modifier = modifier.requiredWidth(344.0.dp).requiredHeight(41.0.dp)
+        modifier = modifier
+            .requiredWidth(344.0.dp)
+            .requiredHeight(41.0.dp)
     )
 }
 
