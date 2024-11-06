@@ -84,14 +84,10 @@ fun BudgetoApp(
             val currentBackStackEntry = navController.currentBackStackEntryAsState().value
             val currentScreen = currentBackStackEntry?.destination?.route
 
-            if (currentScreen != null && screensWithBottomNav.any { currentScreen.startsWith(it) }) {
+            if (currentScreen != null && (currentScreen.startsWith(BudgetoScreenEnum.HomepageScreen.name) || currentScreen in screensWithBottomNav)) {
                 BudgetoBottomNav(
                     navController = navController,
-                    onHomepageButtonTapped = {
-                        navController.navigate("${BudgetoScreenEnum.HomepageScreen.name}/true") {
-                            popUpTo(BudgetoScreenEnum.Login.name) { inclusive = true }
-                        }
-                    },
+                    onHomepageButtonTapped = { navController.navigate("${BudgetoScreenEnum.HomepageScreen.name}/false") },
                     onStoreButtonTapped = { navController.navigate(BudgetoScreenEnum.StoreScreen.name) },
                     onInventoryButtonTapped = { navController.navigate(BudgetoScreenEnum.InventoryScreen.name) },
                     onHistoryButtonTapped = { navController.navigate(BudgetoScreenEnum.HistoryScreen.name) },
@@ -112,7 +108,7 @@ fun BudgetoApp(
         NavHost(
             navController = navController,
 //              startDestination = BudgetoScreenEnum.Start.name,
-            startDestination = BudgetoScreenEnum.Start.name,
+                startDestination = BudgetoScreenEnum.Start.name,
 //              startDestination = BudgetoScreenEnum.AccountScreen.name,
 //            startDestination = BudgetoScreenEnum.ProfileScreen.name,
             modifier = Modifier

@@ -1,8 +1,10 @@
 package com.example.budgeto.screens.openingscreen
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
@@ -12,9 +14,14 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.requiredHeight
 import androidx.compose.foundation.layout.requiredWidth
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.material3.AlertDialog
+import androidx.compose.material3.Button
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -34,7 +41,9 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.budgeto.R
 import com.example.budgeto.data.enums.transaction.TransactionType
+import com.example.budgeto.data.model.account.Account
 import com.example.budgeto.screensfonts.inter
+import com.example.budgeto.viewmodel.AccountViewModel
 import com.example.budgeto.viewmodel.OpeningScreenViewModel
 import com.example.budgeto.viewmodel.TransactionViewModel
 import com.google.relay.compose.BoxScopeInstance.columnWeight
@@ -56,6 +65,7 @@ fun OpeningScreenExpensesInputScreen(
     modifier: Modifier = Modifier,
     openingScreenViewModel: OpeningScreenViewModel = hiltViewModel<OpeningScreenViewModel>(),
     transactionViewModel: TransactionViewModel,
+    accountViewModel: AccountViewModel = hiltViewModel(),
     onCloseCalculator: () -> Unit
 ) {
     var operationText by openingScreenViewModel.operationText
@@ -69,19 +79,33 @@ fun OpeningScreenExpensesInputScreen(
     var note by remember { mutableStateOf("") }
     var type by remember { mutableStateOf(TransactionType.EXPENSE) }
 
+    //region account selection
+    var isAccountPopupVisible by remember { mutableStateOf(false) }
+    var selectedAccount by remember { mutableStateOf<Account?>(null) }
+
+    val accountList by accountViewModel.accountList
+
+    LaunchedEffect(Unit) {
+        accountViewModel.fetchAllAccounts()
+    }
+    //endregion
+
+    var selectedTransactionType by remember { mutableStateOf(TransactionType.EXPENSE) }
 
     OpeningScreenExpensesInput(
         modifier = modifier.rowWeight(1.0f).columnWeight(1.0f),
         operationTextContent = operationText,
         resultTextContent = resultText,
+        selectedAccount = selectedAccount?.name ?: "No Account Selected",
         onNumberButtonTapped = { number -> openingScreenViewModel.appendNumber(number) },
+        selectedTransactionType = selectedTransactionType,
 
         //Row 1
         onTaxButtonTapped = { /* Implement tax logic if needed */ },
         onPercentButtonTapped = { openingScreenViewModel.appendOperation("%") },
-        onAccountButtonTapped = { /* Implement account logic if needed */ },
-        onInputButtonTapped = { /* Handle input button if needed */ },
-        onOutputButtonTapped = { /* Handle output button if needed */ },
+        onAccountButtonTapped = { isAccountPopupVisible = true },
+        onInputButtonTapped = { selectedTransactionType = TransactionType.INCOME},
+        onOutputButtonTapped = { selectedTransactionType = TransactionType.EXPENSE },
 
         //Row 2
         onDeleteButtonTapped = { openingScreenViewModel.deleteLast() },
@@ -102,15 +126,60 @@ fun OpeningScreenExpensesInputScreen(
         onDoneButtonTapped = {
             onCloseCalculator()
             transactionViewModel.addTransaction(
-                accountId = "Haha",
-                categoryId = "Haha",
-                amount = 1.0,
-                description = "description",
-                note = "note",
-                type = TransactionType.EXPENSE
+                accountId = accountId,
+                categoryId = categoryId,
+                amount = amount,
+                description = description,
+                note = note,
+                type = selectedTransactionType
             )
         },
 
+    )
+    if (isAccountPopupVisible) {
+        AccountSelectionDialog(
+            accountList = accountList,
+            onAccountSelected = { account ->
+                selectedAccount = account // Save the selected account
+                isAccountPopupVisible = false // Close the dialog
+            },
+            onDismissRequest = { isAccountPopupVisible = false } // Close dialog on outside tap
+        )
+    }
+}
+
+@Composable
+fun AccountSelectionDialog(
+    accountList: List<Account>,
+    onAccountSelected: (Account) -> Unit,
+    onDismissRequest: () -> Unit
+) {
+    AlertDialog(
+        onDismissRequest = onDismissRequest,
+        title = {
+            Text(text = "Select Account")
+        },
+        text = {
+            // Display a list of accounts
+            Column {
+                accountList.forEach { account ->
+                    Button(
+                        onClick = {
+                            onAccountSelected(account)
+                        },
+                        modifier = Modifier.fillMaxWidth().padding(vertical = 4.dp)
+                    ) {
+                        Text(text = account.name)
+                    }
+                }
+            }
+        },
+        confirmButton = {
+            // Optional: Add a close button or any other actions
+            Button(onClick = onDismissRequest) {
+                Text("Close")
+            }
+        }
     )
 }
 
@@ -142,6 +211,8 @@ fun OpeningScreenExpensesInput(
     noteTextContent: String = "",
 
     onNumberButtonTapped: (String) -> Unit = {},
+    selectedAccount: String = "No Account Selected",
+    selectedTransactionType: TransactionType,
 
     //Row 1
     onTaxButtonTapped: () -> Unit = {},
@@ -175,28 +246,43 @@ fun OpeningScreenExpensesInput(
                 .fillMaxSize()
                 .align(Alignment.BottomCenter)
         ) {
-            Category(
+            Row(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(top = 16.dp, start = 200.dp)
+                    .padding(top = 16.dp),
+                verticalAlignment = Alignment.CenterVertically
             ) {
-                FrameCategory(
+                AccountFrame(
+                    selectedAccount = selectedAccount,
                     modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(top = 31.dp)
+                        .weight(1f)
+                        .padding(start = 16.dp)
+                        .clickable(onClick = onAccountButtonTapped)
+                )
+
+                Category(
+                    modifier = Modifier
+                        .weight(1f)
+                        .padding(end = 16.dp)
                 ) {
-                    TxtDefault(
-                        categoryTextContent = categoryTextContent,
+                    FrameCategory(
                         modifier = Modifier
-                            .padding(start = 36.dp, top = 11.dp) // Relative padding for TxtDefault within FrameCategory
+                            .fillMaxWidth()
+                            .padding(top = 31.dp)
+                    ) {
+                        TxtDefault(
+                            categoryTextContent = categoryTextContent,
+                            modifier = Modifier
+                                .padding(start = 36.dp, top = 11.dp)
+                        )
+                    }
+                    Category1(
+                        modifier = Modifier
+                            .padding(start = 40.dp, top = 7.dp)
                     )
                 }
-
-                Category1(
-                    modifier = Modifier
-                        .padding(start = 40.dp, top = 7.dp) // Relative positioning within Category
-                )
             }
+
 
             val scrollState = rememberScrollState()
             Input(
@@ -271,9 +357,20 @@ fun OpeningScreenExpensesInput(
                         .padding(5.dp)) {
                         RelayCalculateButton(icon = painterResource(R.drawable.opening_screen_expenses_input_tax_icon), onClick = onTaxButtonTapped, modifier = Modifier.weight(1f))
                         RelayCalculateButton(label = "%", onClick = onPercentButtonTapped, modifier = Modifier.weight(1f))
-                        RelayCalculateButton(icon = painterResource(R.drawable.opening_screen_expenses_input_account_icon), onClick = onAccountButtonTapped, modifier = Modifier.weight(1f))
-                        RelayCalculateButton(icon = painterResource(R.drawable.opening_screen_expenses_input_money_in_icon), onClick = onInputButtonTapped, modifier = Modifier.weight(1f))
-                        RelayCalculateButton(icon = painterResource(R.drawable.opening_screen_expenses_input_money_out_icon), onClick = onOutputButtonTapped, modifier = Modifier.weight(1f))
+                        RelayCalculateButton(icon = painterResource(R.drawable.opening_screen_expenses_input_account_icon), onClick = {}, modifier = Modifier.weight(1f))
+                        RelayCalculateButton(
+                            icon = painterResource(R.drawable.opening_screen_expenses_input_money_in_icon),
+                            onClick = onInputButtonTapped,
+                            backgroundColor = if (selectedTransactionType == TransactionType.INCOME) Color.Yellow else Color.LightGray,
+                            modifier = Modifier.weight(1f)
+                        )
+
+                        RelayCalculateButton(
+                            icon = painterResource(R.drawable.opening_screen_expenses_input_money_out_icon),
+                            onClick = onOutputButtonTapped,
+                            backgroundColor = if (selectedTransactionType == TransactionType.EXPENSE) Color.Yellow else Color.LightGray,
+                            modifier = Modifier.weight(1f)
+                        )
                     }
 
                     // Row 2
@@ -442,11 +539,65 @@ private fun OpeningScreenExpensesInputPreview() {
                 resultTextContent = "2.000",
                 dateTextContent = "June, 14th 2024",
                 noteTextContent = "Expenses at 14:35’",
+                selectedTransactionType = TransactionType.INCOME,
                 modifier = Modifier.rowWeight(1.0f).columnWeight(1.0f)
             )
         }
     }
 }
+
+@Composable
+fun AccountFrame(
+    selectedAccount: String,
+    modifier: Modifier = Modifier
+) {
+    RelayContainer(
+        backgroundColor = Color(0xFF181818),
+        isStructured = false,
+        radius = 5.0,
+        modifier = modifier.requiredWidth(147.dp).requiredHeight(79.dp)
+    ) {
+        Column(
+            horizontalAlignment = Alignment.CenterHorizontally,
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(vertical = 8.dp)
+        ) {
+            RelayText(
+                content = "ACCOUNT",
+                fontSize = 12.sp,
+                fontFamily = inter,
+                color = Color.White,
+                fontWeight = FontWeight.Bold,
+                textAlign = TextAlign.Center,
+                modifier = Modifier.padding(bottom = 8.dp)
+            )
+
+            RelayContainer(
+                backgroundColor = Color.White,
+                radius = 4.dp.value.toDouble(),
+                modifier = Modifier
+                    .padding(horizontal = 8.dp)
+                    .fillMaxWidth()
+                    .width(110.dp)
+                    .height(45.dp)
+            ) {
+                RelayText(
+                    content = selectedAccount,
+                    fontSize = 16.sp,
+                    fontFamily = inter,
+                    color = Color.Black,
+                    fontWeight = FontWeight.Bold,
+                    textAlign = TextAlign.Center,
+                    modifier = Modifier
+                        .padding(vertical = 4.dp)
+                        .fillMaxWidth()
+                )
+            }
+        }
+    }
+}
+
 
 @Composable
 fun TxtDefault(
