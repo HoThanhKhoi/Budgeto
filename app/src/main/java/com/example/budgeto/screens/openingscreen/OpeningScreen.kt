@@ -55,7 +55,8 @@ import com.google.relay.compose.relayDropShadow
 fun OpeningScreenExpensesInputScreen(
     modifier: Modifier = Modifier,
     openingScreenViewModel: OpeningScreenViewModel = hiltViewModel<OpeningScreenViewModel>(),
-    transactionViewModel: TransactionViewModel = hiltViewModel<TransactionViewModel>()
+    transactionViewModel: TransactionViewModel,
+    onCloseCalculator: () -> Unit
 ) {
     var operationText by openingScreenViewModel.operationText
     var resultText by openingScreenViewModel.resultText
@@ -99,13 +100,14 @@ fun OpeningScreenExpensesInputScreen(
         onCloseParenthesesButtonTapped = { openingScreenViewModel.appendNumber(")") },
         onDotButtonTapped = { openingScreenViewModel.appendNumber(".") },
         onDoneButtonTapped = {
+            onCloseCalculator()
             transactionViewModel.addTransaction(
-                accountId = accountId,
-                categoryId = categoryId,
-                amount = amount,
-                description = description,
-                note = note,
-                type = type
+                accountId = "Haha",
+                categoryId = "Haha",
+                amount = 1.0,
+                description = "description",
+                note = "note",
+                type = TransactionType.EXPENSE
             )
         },
 

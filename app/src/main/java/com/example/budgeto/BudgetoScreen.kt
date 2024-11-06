@@ -159,12 +159,18 @@ fun BudgetoApp(
                     onLoginWithGoogleTapped = {}
                 )
             }
-            composable(route = BudgetoScreenEnum.OpeningScreen.name) {
-                OpeningScreenExpensesInputScreen(
-                    transactionViewModel = transactionViewModel,
-                    openingScreenViewModel = openingScreenViewModel,
-                )
-            }
+//            composable(route = BudgetoScreenEnum.OpeningScreen.name) {
+//                OpeningScreenExpensesInputScreen(
+//                    onCloseCalculator = {
+//                        navController.navigate(BudgetoScreenEnum.ProfileScreen.name)
+////                        navController.navigate("${BudgetoScreenEnum.HomepageScreen.name}/false") {
+////                            popUpTo(BudgetoScreenEnum.Login.name) { inclusive = true }
+////                        }
+//                    },
+//                    transactionViewModel = transactionViewModel,
+//                    openingScreenViewModel = openingScreenViewModel,
+//                )
+//            }
             composable(route = "${BudgetoScreenEnum.HomepageScreen.name}/{showBottomSheetInitially}") { backStackEntry ->
                 val showBottomSheetInitially =
                     backStackEntry.arguments?.getString("showBottomSheetInitially") == "true"
@@ -173,7 +179,8 @@ fun BudgetoApp(
                     onProfileButtonTapped = { navController.navigate(BudgetoScreenEnum.ProfileScreen.name) },
                     onAccountsButtonTapped = { navController.navigate(BudgetoScreenEnum.AccountScreen.name) },
                     onSettingButtonTapped = { navController.navigate(BudgetoScreenEnum.SettingsScreen.name) },
-                    showBottomSheetInitially = showBottomSheetInitially
+                    showBottomSheetInitially = showBottomSheetInitially,
+                    transactionViewModel = transactionViewModel
                 )
             }
             composable(route = BudgetoScreenEnum.ProfileScreen.name) {

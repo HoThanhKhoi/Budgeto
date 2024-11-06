@@ -3,6 +3,7 @@ package com.example.budgeto.di
 import com.example.budgeto.data.AuthRepository
 import com.example.budgeto.data.AuthRepositoryImplement
 import com.example.budgeto.data.repository.dailySummary.DailySummaryRepository
+import com.example.budgeto.data.repository.transaction.TransactionRepository
 import com.example.budgeto.data.repository.user.UserRepository
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
@@ -39,5 +40,11 @@ object AppModule {
     @Singleton
     fun provideDailySummaryRepository(firestore: FirebaseFirestore, userRepository: UserRepository): DailySummaryRepository {
         return DailySummaryRepository(firestore, userRepository)
+    }
+
+    @Provides
+    @Singleton
+    fun provideTransactionRepository(firestore: FirebaseFirestore, userRepository: UserRepository): TransactionRepository {
+        return TransactionRepository(firestore, userRepository)
     }
 }

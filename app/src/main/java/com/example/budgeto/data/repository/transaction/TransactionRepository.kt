@@ -17,6 +17,10 @@ class TransactionRepository @Inject constructor(
     private val transactionCollectionPath = "transactions"
 
     suspend fun addTransaction(userId:String, transaction: Transaction) {
-        addDocumentToSubcollection(userCollectionPath, userId, transactionCollectionPath, transaction)
+        addDocumentToSubcollection(
+            parentCollection = userCollectionPath,
+            parentId = userId,
+            subcollectionPath = transactionCollectionPath,
+            subItem = Transaction())
     }
 }

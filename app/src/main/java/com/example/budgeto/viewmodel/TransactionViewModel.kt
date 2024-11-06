@@ -15,7 +15,7 @@ import javax.inject.Inject
 class TransactionViewModel @Inject constructor(
     private val authRepository: AuthRepository,
     private val transactionRepository: TransactionRepository
-):ViewModel(){
+) : ViewModel() {
 
     val userId = authRepository.getCurrentUserId()
 
@@ -28,22 +28,22 @@ class TransactionViewModel @Inject constructor(
         note: String?
     ) {
         viewModelScope.launch {
+
             val createdTime = Timestamp.now()
             val transaction = Transaction(
-                accountId = accountId ?: "",
-                categoryId = categoryId ?: "",
-                amount = amount,
-                description = description ?: "",
-                type = type,
-                createdTime = createdTime,
+                accountId = "Haha",
+                categoryId = "ahha",
+                amount = 5.2,
+                description = "asd",
+                type = TransactionType.EXPENSE,
+                createdTime = Timestamp.now(),
                 date = createdTime.toDate().toString(),
-                note = note?: "${type.name} at ${createdTime.toDate()}"
+                note = note ?: "${type.name} at ${createdTime.toDate()}"
             )
 
-            if (userId != null) {
-                transactionRepository.addTransaction(userId, transaction)
-            }
+            transactionRepository.addTransaction(userId?:"", transaction)
         }
+
 
     }
 }
