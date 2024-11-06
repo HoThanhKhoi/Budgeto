@@ -67,6 +67,11 @@ class AuthRepositoryImplement(
         firebaseAuth.signOut()
     }
 
+    override fun getCurrentUserId(): Int? {
+        val user = getCurrentUser()
+        return user?.uid?.toIntOrNull()
+    }
+
     override fun resetPassword(email: String): Flow<Resource<Void>> {
         return flow {
             emit(Resource.Loading())

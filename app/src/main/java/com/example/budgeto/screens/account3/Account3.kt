@@ -4,15 +4,11 @@ import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.requiredHeight
 import androidx.compose.foundation.layout.requiredWidth
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.MaterialTheme
@@ -21,9 +17,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -33,15 +27,12 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.em
 import androidx.compose.ui.unit.sp
 import com.example.budgeto.R
-import com.google.relay.compose.BoxScopeInstance.columnWeight
-import com.google.relay.compose.BoxScopeInstance.rowWeight
-import com.google.relay.compose.BoxScopeInstanceImpl.align
+import com.example.budgeto.data.enums.account.AccountStatus
 import com.google.relay.compose.RelayContainer
 import com.google.relay.compose.RelayContainerScope
 import com.google.relay.compose.RelayImage
 import com.google.relay.compose.RelayText
 import com.google.relay.compose.RelayVector
-import com.google.relay.compose.relayDropShadow
 import com.google.relay.compose.tappable
 
 
@@ -65,6 +56,13 @@ fun AccountDetails(
     modifier: Modifier = Modifier,
     onTransferButtonTapped: () -> Unit = {},
     onXButtonTapped: () -> Unit = {},
+    accountName: String = "Default",
+    accountBalance: Int = 0,
+    accountExpense: Int = 0,
+    accountIncome: Int = 0,
+    accountIconLink: String = "",
+    accountCurrency: String = "VNĐ",
+
 ) {
     TopLevel(modifier = modifier) {
         //Rectangle65()
@@ -110,7 +108,7 @@ fun AccountDetails(
                     )
                 )
             ) {
-                Default(
+                AccountName(
                     modifier = Modifier.boxAlign(
                         alignment = Alignment.TopStart,
                         offset = DpOffset(
@@ -562,9 +560,12 @@ fun Frame49(
 }
 
 @Composable
-fun Default(modifier: Modifier = Modifier) {
+fun AccountName(
+    modifier: Modifier = Modifier,
+    value: String = "Default"
+) {
     RelayText(
-        content = "Default",
+        content = value,
         fontSize = 16.0.sp,
         fontFamily = com.example.budgeto.screensfonts.inter,
         height = 1.2102272510528564.em,

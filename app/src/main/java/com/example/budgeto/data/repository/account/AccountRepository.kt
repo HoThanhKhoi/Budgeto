@@ -22,7 +22,4 @@ class AccountRepository @Inject constructor(
     ) {
         addDocumentToSubcollection(userCollectionPath,userId,accountCollectionPath,account)
     }
-
-
-
 }
