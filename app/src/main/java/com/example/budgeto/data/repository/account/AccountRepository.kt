@@ -12,14 +12,15 @@ class AccountRepository @Inject constructor(
     private val userCollectionPath = "users"
     private val accountCollectionPath = "accounts"
 
-    suspend fun getAccount(accountId: String): Account? {
-        return null
-    }
-
     suspend fun addAccount(
         userId: String,
         account: Account
     ) {
         addDocumentToSubcollection(userCollectionPath,userId,accountCollectionPath,account)
+    }
+
+    suspend fun getAllAccounts(userId: String): List<Account> {
+        var account:Account = Account()
+        return getAllDocumentsFromSubcollection(userCollectionPath,userId,accountCollectionPath, account::class.java)
     }
 }

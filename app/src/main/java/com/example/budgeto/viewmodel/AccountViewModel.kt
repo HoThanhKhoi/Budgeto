@@ -5,7 +5,6 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.budgeto.data.AuthRepository
-import com.example.budgeto.data.AuthRepositoryImplement
 import com.example.budgeto.data.model.account.Account
 import com.example.budgeto.data.repository.account.AccountRepository
 import com.example.budgeto.data.repository.user.UserRepository
@@ -21,36 +20,60 @@ class AccountViewModel @Inject constructor(
 ) : ViewModel() {
 
     val userId = authRepository.getCurrentUserId()
+    var accountList = mutableStateOf<List<Account>>(emptyList())
 
     fun addNewAccountToFireStore(
-        accountName:String = "",
-        accountBalance:Int = 0,
-        accountExpense:Int = 0,
-        accountIncome:Int = 0,
-        accountIconLink:String = "",
-        accountCurrency:String = "")
-    {
+        accountName: String = "",
+        accountBalance: Int = 0,
+        accountExpense: Int = 0,
+        accountIncome: Int = 0,
+        accountIconLink: String = "",
+        accountCurrency: String = ""
+    ) {
         viewModelScope.launch {
             try {
                 if (userId != null) {
-                    val account = Account(
-                        name = accountName,
-                        balance = accountBalance.toDouble(),
-                        expense = accountExpense.toDouble(),
-                        income = accountIncome.toDouble(),
-                        iconLink = accountIconLink,
-                        currency = accountCurrency
-                    )
-                    accountRepository.addAccount(userId = userId, account = account)
+                    if(accountName.isNullOrEmpty())
+                    {
+                        Log.d("Add account", "Account name is null, cannot add account.")
+                    }
+                    else
+                    {
+                        val account = Account(
+                            name = accountName,
+                            balance = accountBalance.toDouble(),
+                            expense = accountExpense.toDouble(),
+                            income = accountIncome.toDouble(),
+                            iconLink = accountIconLink,
+                            currency = accountCurrency
+                        )
+
+                        accountRepository.addAccount(userId = userId, account = account)
+                        fetchAllAccounts()
+                    }
                 } else {
                     Log.d("Add account", "User ID is null, cannot add account.")
                 }
             } catch (e: Exception) {
                 // Capture the exception and set an error message
                 Log.d("Add account", e.message.toString())
-
             }
         }
     }
 
+    fun fetchAllAccounts() {
+        viewModelScope.launch {
+            try {
+                if (userId != null) {
+                    // Fetch accounts from the repository and update the state
+                    accountList.value = accountRepository.getAllAccounts(userId)
+                } else {
+                    Log.d("Get all accounts", "User ID is null, cannot retrieve accounts.")
+                }
+            } catch (e: Exception) {
+                // Handle any errors that occur during data fetching
+                Log.d("Get all accounts", e.message.toString())
+            }
+        }
+    }
 }

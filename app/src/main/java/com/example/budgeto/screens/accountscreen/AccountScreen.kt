@@ -18,6 +18,7 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -36,6 +37,7 @@ import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.budgeto.R
+import com.example.budgeto.data.model.account.Account
 import com.example.budgeto.screens.addAccount.AddAccountScreen
 import com.example.budgeto.screensfonts.inter
 import com.example.budgeto.viewmodel.AccountViewModel
@@ -55,51 +57,24 @@ fun AccountScreen(
     modifier: Modifier = Modifier,
     accountViewModel: AccountViewModel = hiltViewModel()
 ){
+    var accountList = accountViewModel.accountList.value
+    LaunchedEffect(Unit) {
+        accountViewModel.fetchAllAccounts()
+    }
+
     Account1(
         modifier = modifier.rowWeight(1.0f).columnWeight(1.0f),
-        accountViewModel = accountViewModel
+        accountViewModel = accountViewModel,
+        accountList = accountList
     )
 }
 
-data class AccountData(
-    val title: String,
-    val income: String,
-    val expense: String,
-    val balance: String
-)
-
-val accounts = listOf(
-    AccountData(
-        title = "Account: Default",
-        income = "+ 75.000.000 VNĐ",
-        expense = "- 35.000.000 VNĐ",
-        balance = "40.000.000 VNĐ"
-    ),
-    AccountData(
-        title = "Account: Tiền mẹ cho",
-        income = "+ 50.000.000 VNĐ",
-        expense = "- 10.000.000 VNĐ",
-        balance = "40.000.000 VNĐ"
-    ),
-    AccountData(
-        title = "Account: Tiền nuôi chó",
-        income = "+ 5.000.000 VNĐ",
-        expense = "- 1.000.000 VNĐ",
-        balance = "4.000.000 VNĐ"
-    ),
-    AccountData(
-        title = "Account: Tiền nuôi chó",
-        income = "+ 5.000.000 VNĐ",
-        expense = "- 1.000.000 VNĐ",
-        balance = "4.000.000 VNĐ"
-    )
-    // Add more accounts as needed
-)
 
 @Composable
 fun Account1(
     modifier: Modifier = Modifier,
-    accountViewModel: AccountViewModel = hiltViewModel()
+    accountViewModel: AccountViewModel = hiltViewModel(),
+    accountList: List<Account> = emptyList()
 ) {
     var showAccountPopup by remember { mutableStateOf(false) }
 
@@ -217,12 +192,12 @@ fun Account1(
                 offset = DpOffset(0.dp, 240.dp)
             ).fillMaxWidth().height(400.dp).padding(8.dp)
         ) {
-            accounts.forEach { account ->
+            accountList.forEach { account ->
                 AccountSection(
-                    accountTitle = account.title,
-                    income = account.income,
-                    expense = account.expense,
-                    balance = account.balance
+                    accountTitle = account.name,
+                    income = account.income.toString(),
+                    expense = account.expense.toString(),
+                    balance = account.balance.toString()
                 )
             }
         }
@@ -655,7 +630,8 @@ fun AccountSection(
                 text = accountTitle,
                 fontSize = 16.sp,
                 fontWeight = FontWeight.Bold,
-                modifier = Modifier.weight(1f)
+                modifier = Modifier.weight(1f),
+                color = Color.Black
             )
             Button(onClick = { isExpanded = !isExpanded }) {
                 Text(text = if (isExpanded) "Less" else "More")
@@ -684,12 +660,14 @@ fun AccountDetailRow(label: String, amount: String) {
         Text(
             text = label,
             fontSize = 16.sp,
-            fontWeight = FontWeight.Medium
+            fontWeight = FontWeight.Medium,
+            color = Color.Black
         )
         Text(
             text = amount,
             fontSize = 16.sp,
-            fontWeight = FontWeight.Bold
+            fontWeight = FontWeight.Bold,
+            color = Color.Black
         )
     }
 }
@@ -857,7 +835,9 @@ fun Frame35(
 }
 
 @Composable
-fun TotalBalance(modifier: Modifier = Modifier) {
+fun TotalBalance(
+    modifier: Modifier = Modifier,
+) {
     RelayText(
         content = "Total Balance",
         fontFamily = inter,
