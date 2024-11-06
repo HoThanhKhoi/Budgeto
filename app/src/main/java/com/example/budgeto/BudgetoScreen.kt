@@ -96,7 +96,7 @@ fun BudgetoApp(
 
         NavHost(
             navController = navController,
-              startDestination = BudgetoScreenEnum.OpeningScreen.name,
+              startDestination = BudgetoScreenEnum.HomepageScreen.name,
 //            startDestination = if (isUserLoggedIn) BudgetoScreenEnum.ProfileScreen.name else BudgetoScreenEnum.Start.name,
 //              startDestination = BudgetoScreenEnum.AccountScreen.name,
 //            startDestination = BudgetoScreenEnum.ProfileScreen.name,

@@ -94,6 +94,9 @@ dependencies {
 
     implementation ("com.firebaseui:firebase-ui-auth:7.2.0")
     implementation ("com.facebook.android:facebook-android-sdk:17.0.2")
+
+    implementation("androidx.compose.material3:material3:1.3.1")
+    implementation("androidx.compose.material:material:1.7.5")
 }
 
 kapt {

@@ -12,34 +12,24 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.requiredHeight
 import androidx.compose.foundation.layout.requiredWidth
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.layout.wrapContentHeight
-import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.setValue
-import androidx.compose.ui.AbsoluteAlignment
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.graphicsLayer
-import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.DpOffset
 import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.em
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.budgeto.R
 import com.example.budgeto.screensfonts.inter
 import com.example.budgeto.viewmodel.OpeningScreenViewModel
@@ -52,13 +42,10 @@ import com.google.relay.compose.RelayCalculateButton
 import com.google.relay.compose.RelayColumn
 import com.google.relay.compose.RelayContainer
 import com.google.relay.compose.RelayContainerScope
-import com.google.relay.compose.RelayImage
 import com.google.relay.compose.RelayRow
 import com.google.relay.compose.RelayText
 import com.google.relay.compose.RelayVector
 import com.google.relay.compose.relayDropShadow
-import com.google.relay.compose.tappable
-import java.util.Stack
 
 @Composable
 fun OpeningScreenExpensesInputScreen(
@@ -157,7 +144,7 @@ fun OpeningScreenExpensesInput(
     onDoneButtonTapped: () -> Unit = {},
 
 ) {
-    TopLevel(modifier = modifier) {
+    TopLevel(modifier = modifier.height(630.dp)) {
         MAINFRAME(
             modifier = Modifier
                 .fillMaxSize()
@@ -312,95 +299,95 @@ fun OpeningScreenExpensesInput(
             }
         }
 
-        Note(
-            modifier = modifier
-                .align(Alignment.TopStart)
-                .padding(start = 30.dp, end = 0.dp, top = 157.dp, bottom = 0.dp)
-        ) {
-            Rectangle60(
-                modifier = Modifier.boxAlign(
-                    alignment = Alignment.TopStart,
-                    offset = DpOffset(
-                        x = 0.0.dp,
-                        y = 137.0.dp
-                    )
-                )
-            )
-            June14th2024(
-                dateTextContent = dateTextContent,
-                modifier = Modifier.boxAlign(
-                    alignment = Alignment.TopStart,
-                    offset = DpOffset(
-                        x = 36.0.dp,
-                        y = 147.0.dp
-                    )
-                )
-            )
-            NOTE(
-                modifier = Modifier.boxAlign(
-                    alignment = Alignment.TopStart,
-                    offset = DpOffset(
-                        x = 69.0.dp,
-                        y = 16.0.dp
-                    )
-                )
-            )
-            ExpensesAt1435(
-                noteTextContent = noteTextContent,
-                modifier = Modifier.boxAlign(
-                    alignment = Alignment.TopStart,
-                    offset = DpOffset(
-                        x = 12.0.dp,
-                        y = 43.0.dp
-                    )
-                )
-            )
-            ExpensesAt2120(
-                modifier = Modifier.boxAlign(
-                    alignment = Alignment.TopStart,
-                    offset = DpOffset(
-                        x = 12.0.dp,
-                        y = 61.0.dp
-                    )
-                )
-            )
-            Line8(
-                modifier = Modifier.boxAlign(
-                    alignment = Alignment.TopStart,
-                    offset = DpOffset(
-                        x = 17.0.dp,
-                        y = 57.5.dp
-                    )
-                )
-            )
-            Line9(
-                modifier = Modifier.boxAlign(
-                    alignment = Alignment.TopStart,
-                    offset = DpOffset(
-                        x = 17.0.dp,
-                        y = 75.5.dp
-                    )
-                )
-            )
-            Line10(
-                modifier = Modifier.boxAlign(
-                    alignment = Alignment.TopStart,
-                    offset = DpOffset(
-                        x = 17.0.dp,
-                        y = 92.5.dp
-                    )
-                )
-            )
-            Line11(
-                modifier = Modifier.boxAlign(
-                    alignment = Alignment.TopStart,
-                    offset = DpOffset(
-                        x = 17.0.dp,
-                        y = 110.5.dp
-                    )
-                )
-            )
-        }
+//        Note(
+//            modifier = modifier
+//                .align(Alignment.TopStart)
+//                .padding(start = 30.dp, end = 0.dp, top = 157.dp, bottom = 0.dp)
+//        ) {
+//            Rectangle60(
+//                modifier = Modifier.boxAlign(
+//                    alignment = Alignment.TopStart,
+//                    offset = DpOffset(
+//                        x = 0.0.dp,
+//                        y = 137.0.dp
+//                    )
+//                )
+//            )
+//            June14th2024(
+//                dateTextContent = dateTextContent,
+//                modifier = Modifier.boxAlign(
+//                    alignment = Alignment.TopStart,
+//                    offset = DpOffset(
+//                        x = 36.0.dp,
+//                        y = 147.0.dp
+//                    )
+//                )
+//            )
+//            NOTE(
+//                modifier = Modifier.boxAlign(
+//                    alignment = Alignment.TopStart,
+//                    offset = DpOffset(
+//                        x = 69.0.dp,
+//                        y = 16.0.dp
+//                    )
+//                )
+//            )
+//            ExpensesAt1435(
+//                noteTextContent = noteTextContent,
+//                modifier = Modifier.boxAlign(
+//                    alignment = Alignment.TopStart,
+//                    offset = DpOffset(
+//                        x = 12.0.dp,
+//                        y = 43.0.dp
+//                    )
+//                )
+//            )
+//            ExpensesAt2120(
+//                modifier = Modifier.boxAlign(
+//                    alignment = Alignment.TopStart,
+//                    offset = DpOffset(
+//                        x = 12.0.dp,
+//                        y = 61.0.dp
+//                    )
+//                )
+//            )
+//            Line8(
+//                modifier = Modifier.boxAlign(
+//                    alignment = Alignment.TopStart,
+//                    offset = DpOffset(
+//                        x = 17.0.dp,
+//                        y = 57.5.dp
+//                    )
+//                )
+//            )
+//            Line9(
+//                modifier = Modifier.boxAlign(
+//                    alignment = Alignment.TopStart,
+//                    offset = DpOffset(
+//                        x = 17.0.dp,
+//                        y = 75.5.dp
+//                    )
+//                )
+//            )
+//            Line10(
+//                modifier = Modifier.boxAlign(
+//                    alignment = Alignment.TopStart,
+//                    offset = DpOffset(
+//                        x = 17.0.dp,
+//                        y = 92.5.dp
+//                    )
+//                )
+//            )
+//            Line11(
+//                modifier = Modifier.boxAlign(
+//                    alignment = Alignment.TopStart,
+//                    offset = DpOffset(
+//                        x = 17.0.dp,
+//                        y = 110.5.dp
+//                    )
+//                )
+//            )
+//        }
     }
 }
 
