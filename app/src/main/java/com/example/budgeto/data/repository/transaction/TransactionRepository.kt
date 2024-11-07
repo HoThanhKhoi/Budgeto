@@ -1,5 +1,6 @@
 package com.example.budgeto.data.repository.transaction
 
+import android.util.Log
 import com.example.budgeto.data.AuthRepository
 import com.example.budgeto.data.enums.transaction.TransactionType
 import com.example.budgeto.data.model.transaction.Transaction
@@ -16,11 +17,17 @@ class TransactionRepository @Inject constructor(
     private val userCollectionPath = "users"
     private val transactionCollectionPath = "transactions"
 
-    suspend fun addTransaction(userId:String, transaction: Transaction) {
-        addDocumentToSubcollection(
-            parentCollection = userCollectionPath,
-            parentId = userId,
-            subcollectionPath = transactionCollectionPath,
-            subItem = Transaction())
+    suspend fun addTransaction(userId: String, transaction: Transaction) {
+        try {
+            addDocumentToSubcollection(
+                parentCollection = userCollectionPath,
+                parentId = userId,
+                subcollectionPath = transactionCollectionPath,
+                subItem = transaction
+            )
+            Log.d("TransactionRepository", "Transaction added successfully")
+        } catch (e: Exception) {
+            Log.e("TransactionRepository", "Failed to add transaction: ${e.message}")
+        }
     }
 }
