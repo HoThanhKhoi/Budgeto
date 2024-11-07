@@ -405,7 +405,7 @@ fun TransactionEntry(
         )
 
         RelayText(
-            content = if (transaction.type == TransactionType.EXPENSE) "-" else "+" + transaction.amount,
+            content = (if (transaction.type == TransactionType.EXPENSE) "- " else "+ ") + transaction.amount.toString(),
             fontSize = 16.sp,
             fontFamily = com.example.budgeto.screensfonts.inter,
             height = 1.2102272510528564.em,

@@ -9,6 +9,8 @@ import com.example.budgeto.data.repository.transaction.TransactionRepository
 import com.google.firebase.Timestamp
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
+import java.text.SimpleDateFormat
+import java.util.Locale
 import javax.inject.Inject
 
 @HiltViewModel
@@ -38,7 +40,7 @@ class TransactionViewModel @Inject constructor(
                 description = description?:"",
                 type = TransactionType.EXPENSE,
                 createdTime = Timestamp.now(),
-                date = createdTime.toDate().toString(),
+                date = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(Timestamp.now().toDate()),
                 note = note ?: "${type.name} at ${createdTime.toDate()}"
             )
 
