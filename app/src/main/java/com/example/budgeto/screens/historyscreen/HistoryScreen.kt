@@ -1,7 +1,9 @@
 package com.example.budgeto.screens.historyscreen
 
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.requiredHeight
 import androidx.compose.foundation.layout.requiredWidth
 import androidx.compose.foundation.layout.wrapContentHeight
@@ -35,7 +37,7 @@ import com.google.relay.compose.RelayVector
 fun HistoryScreen(
     modifier: Modifier = Modifier,
     transactionViewModel: TransactionViewModel = hiltViewModel()
-){
+) {
     LaunchedEffect(Unit) {
         transactionViewModel.fetchTransactions()
     }
@@ -44,10 +46,11 @@ fun HistoryScreen(
 
     History1(
         transactions = transactions,
-        modifier = modifier.fillMaxWidth().fillMaxHeight(),
-        )
+        modifier = modifier
+            .fillMaxWidth()
+            .fillMaxHeight(),
+    )
 }
-
 
 
 @Composable
@@ -82,13 +85,15 @@ fun History1(
 
         //region expenses & incomes
         Frame46(
-            modifier = Modifier.boxAlign(
-                alignment = Alignment.TopCenter,
-                offset = DpOffset(
-                    x = 0.0.dp,
-                    y = 120.0.dp
+            modifier = Modifier
+                .boxAlign(
+                    alignment = Alignment.TopCenter,
+                    offset = DpOffset(
+                        x = 0.0.dp,
+                        y = 120.0.dp
+                    )
                 )
-            ).fillMaxWidth()
+                .fillMaxWidth()
         ) {
             Expenses(
                 modifier = Modifier.boxAlign(
@@ -148,7 +153,7 @@ fun History1(
         Frame35(
             modifier = modifier
                 .align(Alignment.TopCenter)
-        ){
+        ) {
             OverallBalance(
                 modifier = Modifier.boxAlign(
                     alignment = Alignment.TopStart,
@@ -168,62 +173,67 @@ fun History1(
                 )
             )
         }
-        Frame62(
-            modifier = Modifier.boxAlign(
-                alignment = Alignment.TopCenter,
-                offset = DpOffset(
-                    x = 0.0.dp,
-                    y = 267.0.dp
-                )
-            ).fillMaxWidth()
+        Box(
+            modifier = Modifier
+                .fillMaxWidth()
+                .align(Alignment.BottomCenter)
         ) {
-            Frame51(
-                modifier = Modifier.boxAlign(
-                    alignment = Alignment.TopCenter,
-                    offset = DpOffset(
-                        x = 0.0.dp,
-                        y = 6.0.dp
-                    )
-                )
+            Frame62(
+                modifier = modifier
+                    .align(Alignment.BottomCenter)
+                    .padding(bottom = 0.dp)
+                    .fillMaxWidth()
             ) {
-                June(
+                Frame51(
                     modifier = Modifier.boxAlign(
-                        alignment = Alignment.TopStart,
+                        alignment = Alignment.TopCenter,
                         offset = DpOffset(
-                            x = 59.0.dp,
+                            x = 0.0.dp,
                             y = 6.0.dp
                         )
                     )
-                )
-                Vector321(
-                    modifier = Modifier.boxAlign(
-                        alignment = Alignment.TopStart,
-                        offset = DpOffset(
-                            x = 136.0.dp,
-                            y = 12.0.dp
+                ) {
+                    June(
+                        modifier = Modifier.boxAlign(
+                            alignment = Alignment.TopStart,
+                            offset = DpOffset(
+                                x = 59.0.dp,
+                                y = 6.0.dp
+                            )
                         )
                     )
-                )
-                Vector322(
-                    modifier = Modifier.boxAlign(
-                        alignment = Alignment.TopStart,
-                        offset = DpOffset(
-                            x = 14.626708984375.dp,
-                            y = 12.0.dp
+                    Vector321(
+                        modifier = Modifier.boxAlign(
+                            alignment = Alignment.TopStart,
+                            offset = DpOffset(
+                                x = 136.0.dp,
+                                y = 12.0.dp
+                            )
                         )
                     )
-                )
-            }
-            transactions.forEachIndexed { index, transaction ->
-                TransactionEntry(
-                    transaction = transaction,
-                    modifier = Modifier.boxAlign(
-                        alignment = Alignment.TopCenter,
-                        offset = DpOffset(0.dp, 68.dp + (index * 59).dp) // Adjust spacing as needed
+                    Vector322(
+                        modifier = Modifier.boxAlign(
+                            alignment = Alignment.TopStart,
+                            offset = DpOffset(
+                                x = 14.626708984375.dp,
+                                y = 12.0.dp
+                            )
+                        )
                     )
-                )
-            }
-            //region history list
+                }
+                transactions.forEachIndexed { index, transaction ->
+                    TransactionEntry(
+                        transaction = transaction,
+                        modifier = Modifier.boxAlign(
+                            alignment = Alignment.TopCenter,
+                            offset = DpOffset(
+                                0.dp,
+                                68.dp + (index * 59).dp
+                            ) // Adjust spacing as needed
+                        )
+                    )
+                }
+                //region history list
 //            Frame48(
 //                modifier = Modifier.boxAlign(
 //                    alignment = Alignment.TopCenter,
@@ -365,7 +375,8 @@ fun History1(
 //                )
 //            }
 
-            //endregion
+                //endregion
+            }
         }
         //endregion
     }
@@ -378,7 +389,9 @@ private fun History1Preview() {
         RelayContainer {
             History1(
                 transactions = emptyList(),
-                modifier = Modifier.rowWeight(1.0f).columnWeight(1.0f)
+                modifier = Modifier
+                    .rowWeight(1.0f)
+                    .columnWeight(1.0f)
             )
         }
     }
@@ -395,7 +408,9 @@ fun TransactionEntry(
         radius = 5.0,
         strokeWidth = 1.0,
         strokeColor = Color.Black,
-        modifier = modifier.requiredWidth(346.dp).requiredHeight(52.dp)
+        modifier = modifier
+            .requiredWidth(346.dp)
+            .requiredHeight(52.dp)
     ) {
         RelayText(
             content = "${transaction.date}",
@@ -482,7 +497,9 @@ fun Incomes(modifier: Modifier = Modifier) {
 fun Line13(modifier: Modifier = Modifier) {
     RelayVector(
         vector = painterResource(R.drawable.history_1_line_13),
-        modifier = modifier.requiredWidth(60.0.dp).requiredHeight(0.0.dp)
+        modifier = modifier
+            .requiredWidth(60.0.dp)
+            .requiredHeight(0.0.dp)
     )
 }
 
@@ -490,7 +507,9 @@ fun Line13(modifier: Modifier = Modifier) {
 fun Rectangle63(modifier: Modifier = Modifier) {
     RelayVector(
         vector = painterResource(R.drawable.history_1_rectangle_63),
-        modifier = modifier.requiredWidth(401.0.dp).requiredHeight(14.0.dp)
+        modifier = modifier
+            .requiredWidth(401.0.dp)
+            .requiredHeight(14.0.dp)
     )
 }
 
@@ -516,7 +535,9 @@ fun Frame46(
             blue = 0
         ),
         content = content,
-        modifier = modifier.requiredWidth(390.0.dp).requiredHeight(120.0.dp)
+        modifier = modifier
+            .requiredWidth(390.0.dp)
+            .requiredHeight(120.0.dp)
     )
 }
 //endregion
@@ -580,7 +601,9 @@ fun Frame35(
             blue = 0
         ),
         content = content,
-        modifier = modifier.fillMaxWidth().requiredHeight(136.0.dp)
+        modifier = modifier
+            .fillMaxWidth()
+            .requiredHeight(136.0.dp)
     )
 }
 //endregion
@@ -595,7 +618,9 @@ fun Frame62(
         scrollable = true,
         isStructured = false,
         content = content,
-        modifier = modifier.requiredWidth(346.0.dp).requiredHeight(458.0.dp)
+        modifier = modifier
+            .requiredWidth(346.0.dp)
+            .requiredHeight(458.0.dp)
     )
 }
 
@@ -616,7 +641,9 @@ fun June(modifier: Modifier = Modifier) {
 fun Vector321(modifier: Modifier = Modifier) {
     RelayVector(
         vector = painterResource(R.drawable.history_1_vector_321),
-        modifier = modifier.requiredWidth(3.0.dp).requiredHeight(6.375.dp)
+        modifier = modifier
+            .requiredWidth(3.0.dp)
+            .requiredHeight(6.375.dp)
     )
 }
 
@@ -624,7 +651,9 @@ fun Vector321(modifier: Modifier = Modifier) {
 fun Vector322(modifier: Modifier = Modifier) {
     RelayVector(
         vector = painterResource(R.drawable.history_1_vector_322),
-        modifier = modifier.requiredWidth(3.0.dp).requiredHeight(6.375.dp)
+        modifier = modifier
+            .requiredWidth(3.0.dp)
+            .requiredHeight(6.375.dp)
     )
 }
 //endregion
@@ -652,7 +681,9 @@ fun Frame51(
             blue = 0
         ),
         content = content,
-        modifier = modifier.requiredWidth(155.0.dp).requiredHeight(31.0.dp)
+        modifier = modifier
+            .requiredWidth(155.0.dp)
+            .requiredHeight(31.0.dp)
     )
 }
 
@@ -703,7 +734,9 @@ fun Frame48(
             blue = 0
         ),
         content = content,
-        modifier = modifier.requiredWidth(346.0.dp).requiredHeight(52.0.dp)
+        modifier = modifier
+            .requiredWidth(346.0.dp)
+            .requiredHeight(52.0.dp)
     )
 }
 
@@ -754,7 +787,9 @@ fun Frame52(
             blue = 0
         ),
         content = content,
-        modifier = modifier.requiredWidth(346.0.dp).requiredHeight(52.0.dp)
+        modifier = modifier
+            .requiredWidth(346.0.dp)
+            .requiredHeight(52.0.dp)
     )
 }
 
@@ -805,7 +840,9 @@ fun Frame55(
             blue = 0
         ),
         content = content,
-        modifier = modifier.requiredWidth(346.0.dp).requiredHeight(52.0.dp)
+        modifier = modifier
+            .requiredWidth(346.0.dp)
+            .requiredHeight(52.0.dp)
     )
 }
 
@@ -856,7 +893,9 @@ fun Frame53(
             blue = 0
         ),
         content = content,
-        modifier = modifier.requiredWidth(346.0.dp).requiredHeight(52.0.dp)
+        modifier = modifier
+            .requiredWidth(346.0.dp)
+            .requiredHeight(52.0.dp)
     )
 }
 
@@ -907,7 +946,9 @@ fun Frame54(
             blue = 0
         ),
         content = content,
-        modifier = modifier.requiredWidth(346.0.dp).requiredHeight(52.0.dp)
+        modifier = modifier
+            .requiredWidth(346.0.dp)
+            .requiredHeight(52.0.dp)
     )
 }
 
@@ -929,6 +970,8 @@ fun TopLevel(
         ),
         isStructured = false,
         content = content,
-        modifier = modifier.fillMaxWidth(1.0f).fillMaxHeight(1.0f)
+        modifier = modifier
+            .fillMaxWidth(1.0f)
+            .fillMaxHeight(1.0f)
     )
 }
