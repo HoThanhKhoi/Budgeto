@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.requiredWidth
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -18,7 +19,11 @@ import androidx.compose.ui.unit.DpOffset
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.em
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.budgeto.R
+import com.example.budgeto.data.enums.transaction.TransactionType
+import com.example.budgeto.data.model.transaction.Transaction
+import com.example.budgeto.viewmodel.TransactionViewModel
 import com.google.relay.compose.BoxScopeInstanceImpl.align
 import com.google.relay.compose.RelayContainer
 import com.google.relay.compose.RelayContainerScope
@@ -28,21 +33,20 @@ import com.google.relay.compose.RelayVector
 
 @Composable
 fun HistoryScreen(
-    transactions: List<Transaction>,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    transactionViewModel: TransactionViewModel = hiltViewModel()
 ){
+    LaunchedEffect(Unit) {
+        transactionViewModel.fetchTransactions()
+    }
+
+    var transactions = transactionViewModel.transactions
+
     History1(
         transactions = transactions,
         modifier = modifier.fillMaxWidth().fillMaxHeight(),
         )
 }
-
-data class Transaction(
-    val date: String,
-    val day: String,
-    val amount: String,
-    val isExpense: Boolean // true if expense, false if income
-)
 
 
 
@@ -370,17 +374,10 @@ fun History1(
 @Preview(widthDp = 390, heightDp = 844)
 @Composable
 private fun History1Preview() {
-    val sampleTransactions = listOf(
-        Transaction(date = "June 29th", day = "Saturday", amount = "- 70.000 VNĐ", isExpense = true),
-        Transaction(date = "June 15th", day = "Tuesday", amount = "+ 100.000 VNĐ", isExpense = false),
-        Transaction(date = "June 13th", day = "Sunday", amount = "- 330.000 VNĐ", isExpense = true),
-        Transaction(date = "June 7th", day = "Monday", amount = "- 1.000.000 VNĐ", isExpense = true),
-        Transaction(date = "June 2nd", day = "Monday", amount = "+ 5.000.000 VNĐ", isExpense = false)
-    )
     MaterialTheme {
         RelayContainer {
             History1(
-                transactions = sampleTransactions,
+                transactions = emptyList(),
                 modifier = Modifier.rowWeight(1.0f).columnWeight(1.0f)
             )
         }
@@ -401,20 +398,20 @@ fun TransactionEntry(
         modifier = modifier.requiredWidth(346.dp).requiredHeight(52.dp)
     ) {
         RelayText(
-            content = "${transaction.date}, ${transaction.day}",
+            content = "${transaction.date}",
             fontFamily = com.example.budgeto.screensfonts.inter,
             fontWeight = FontWeight(500),
             modifier = Modifier.boxAlign(Alignment.TopStart, DpOffset(15.dp, 16.dp))
         )
 
         RelayText(
-            content = transaction.amount,
+            content = if (transaction.type == TransactionType.EXPENSE) "-" else "+" + transaction.amount,
             fontSize = 16.sp,
             fontFamily = com.example.budgeto.screensfonts.inter,
             height = 1.2102272510528564.em,
             fontWeight = FontWeight(500),
             textAlign = TextAlign.Right,
-            color = if (transaction.isExpense) Color.Red else Color.Green, // color based on income/expense
+            color = if (transaction.type == TransactionType.EXPENSE) Color.Red else Color.Green, // color based on income/expense
             modifier = Modifier.boxAlign(Alignment.TopStart, DpOffset(211.dp, 16.dp))
         )
     }
@@ -595,6 +592,7 @@ fun Frame62(
     content: @Composable RelayContainerScope.() -> Unit
 ) {
     RelayContainer(
+        scrollable = true,
         isStructured = false,
         content = content,
         modifier = modifier.requiredWidth(346.0.dp).requiredHeight(458.0.dp)
