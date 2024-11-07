@@ -31,10 +31,10 @@ class TransactionViewModel @Inject constructor(
 
             val createdTime = Timestamp.now()
             val transaction = Transaction(
-                accountId = "Haha",
-                categoryId = "ahha",
-                amount = 5.2,
-                description = "asd",
+                accountId = accountId?:"",
+                categoryId = categoryId?:"",
+                amount = amount,
+                description = description?:"",
                 type = TransactionType.EXPENSE,
                 createdTime = Timestamp.now(),
                 date = createdTime.toDate().toString(),
