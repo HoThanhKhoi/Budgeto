@@ -18,6 +18,7 @@ class TransactionViewModel @Inject constructor(
 ) : ViewModel() {
 
     val userId = authRepository.getCurrentUserId()
+    var transactions: List<Transaction> = emptyList()
 
     fun addTransaction(
         accountId: String?,
@@ -43,7 +44,11 @@ class TransactionViewModel @Inject constructor(
 
             transactionRepository.addTransaction(userId?:"", transaction)
         }
+    }
 
-
+    fun fetchTransactions() {
+        viewModelScope.launch {
+            transactions = transactionRepository.getAllTransactions(userId?:"")
+        }
     }
 }
