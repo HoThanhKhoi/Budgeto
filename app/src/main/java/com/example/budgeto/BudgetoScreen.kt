@@ -108,7 +108,7 @@ fun BudgetoApp(
         NavHost(
             navController = navController,
 //              startDestination = BudgetoScreenEnum.Start.name,
-                startDestination = BudgetoScreenEnum.Start.name,
+                startDestination = BudgetoScreenEnum.HistoryScreen.name,
 //              startDestination = BudgetoScreenEnum.AccountScreen.name,
 //            startDestination = BudgetoScreenEnum.ProfileScreen.name,
             modifier = Modifier
