@@ -1,9 +1,7 @@
 package com.example.budgeto.screens.historyscreen
 
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.requiredHeight
 import androidx.compose.foundation.layout.requiredWidth
 import androidx.compose.foundation.layout.wrapContentHeight
@@ -21,13 +19,11 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.em
 import androidx.compose.ui.unit.sp
 import com.example.budgeto.R
-import com.google.relay.compose.BoxScopeInstance.columnWeight
-import com.google.relay.compose.BoxScopeInstance.rowWeight
+import com.google.relay.compose.BoxScopeInstanceImpl.align
 import com.google.relay.compose.RelayContainer
 import com.google.relay.compose.RelayContainerScope
 import com.google.relay.compose.RelayText
 import com.google.relay.compose.RelayVector
-import com.google.relay.compose.tappable
 
 
 @Composable
@@ -48,7 +44,7 @@ fun History1(
     TopLevel(modifier = modifier.fillMaxWidth()) {
         Frame46(
             modifier = Modifier.boxAlign(
-                alignment = Alignment.TopStart,
+                alignment = Alignment.TopCenter,
                 offset = DpOffset(
                     x = 0.0.dp,
                     y = 120.0.dp
@@ -110,7 +106,10 @@ fun History1(
                 )
             )
         }
-        Frame35 {
+        Frame35(
+            modifier = modifier
+                .align(Alignment.TopCenter)
+        ){
             OverallBalance(
                 modifier = Modifier.boxAlign(
                     alignment = Alignment.TopStart,
@@ -132,9 +131,9 @@ fun History1(
         }
         Frame62(
             modifier = Modifier.boxAlign(
-                alignment = Alignment.TopStart,
+                alignment = Alignment.TopCenter,
                 offset = DpOffset(
-                    x = 22.0.dp,
+                    x = 0.0.dp,
                     y = 267.0.dp
                 )
             )
@@ -143,7 +142,7 @@ fun History1(
                 modifier = Modifier.boxAlign(
                     alignment = Alignment.TopCenter,
                     offset = DpOffset(
-                        x = 0.5.dp,
+                        x = 0.0.dp,
                         y = 6.0.dp
                     )
                 )

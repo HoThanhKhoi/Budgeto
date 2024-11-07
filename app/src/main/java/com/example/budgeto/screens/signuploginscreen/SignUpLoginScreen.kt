@@ -91,10 +91,10 @@ fun SignUpLogin(
         ) {
             SignUp(
                 modifier = Modifier.boxAlign(
-                    alignment = Alignment.TopStart,
+                    alignment = Alignment.Center,
                     offset = DpOffset(
-                        x = 148.0.dp,
-                        y = 13.0.dp
+                        x = 0.dp,
+                        y = 0.dp
                     )
                 )
             )
@@ -111,10 +111,10 @@ fun SignUpLogin(
         ) {
             Login(
                 modifier = Modifier.boxAlign(
-                    alignment = Alignment.TopStart,
+                    alignment = Alignment.Center,
                     offset = DpOffset(
-                        x = 156.0.dp,
-                        y = 13.0.dp
+                        x = 0.dp,
+                        y = 0.dp
                     )
                 )
             )

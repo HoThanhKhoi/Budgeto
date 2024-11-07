@@ -135,17 +135,17 @@ fun BudgetoBottomNav(
                     modifier = Modifier.rowWeight(1.0f).columnWeight(1.0f)
                 )
             }
-            Frame42(
-                onHomepageButtonTapped = onHomepageButtonTapped,
-                modifier = Modifier
-                    .align(Alignment.Center)
-            ) {
-                Vector7(
-                    modifier = Modifier.rowWeight(1.0f).columnWeight(1.0f)
-                )
-            }
         }
-
+        Frame42(
+            onHomepageButtonTapped = onHomepageButtonTapped,
+            modifier = Modifier
+                .align(Alignment.TopCenter)
+                .padding(top = 7.dp)
+        ) {
+            Vector7(
+                modifier = Modifier.rowWeight(1.0f).columnWeight(1.0f)
+            )
+        }
     }
     //endregion
 }
