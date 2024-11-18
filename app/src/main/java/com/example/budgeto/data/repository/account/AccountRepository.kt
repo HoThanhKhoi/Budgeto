@@ -16,7 +16,8 @@ class AccountRepository @Inject constructor(
         userId: String,
         account: Account
     ) {
-        addDocumentToSubcollection(userCollectionPath,userId,accountCollectionPath,account)
+        val accountId = addDocumentToSubcollection(userCollectionPath,userId,accountCollectionPath,account)
+        updateSubcollectionField(userCollectionPath,userId,accountCollectionPath,accountId,"id",accountId)
     }
 
     suspend fun getAllAccounts(userId: String): List<Account> {

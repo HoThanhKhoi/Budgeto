@@ -34,10 +34,12 @@ import androidx.compose.ui.unit.DpOffset
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.em
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.budgeto.R
 import com.example.budgeto.screens.openingscreen.OpeningScreenExpensesInputScreen
 import com.example.budgeto.screensfonts.inter
 import com.example.budgeto.screensfonts.kurale
+import com.example.budgeto.viewmodel.TransactionViewModel
 import com.google.relay.compose.BoxScopeInstance.columnWeight
 import com.google.relay.compose.BoxScopeInstance.rowWeight
 import com.google.relay.compose.BoxScopeInstanceImpl.align
@@ -57,6 +59,7 @@ fun HomepageScreen(
     onAccountsButtonTapped: () -> Unit = {},
     onSettingButtonTapped: () -> Unit = {},
     showBottomSheetInitially: Boolean = false,
+    transactionViewModel: TransactionViewModel,
     modifier: Modifier = Modifier
 ) {
     val bottomSheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
@@ -100,7 +103,11 @@ fun HomepageScreen(
             OpeningScreenExpensesInputScreen(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .wrapContentHeight()
+                    .wrapContentHeight(),
+                onCloseCalculator = {
+                    isBottomSheetVisible = false
+                },
+                transactionViewModel = transactionViewModel
             )
         }
     }
@@ -142,13 +149,15 @@ fun Homepage02(
                 )
             ) {
                 Ellipse147(
-                    modifier = Modifier.boxAlign(
-                        alignment = Alignment.TopCenter,
-                        offset = DpOffset(
-                            x = 0.0.dp,
-                            y = 0.0.dp
+                    modifier = Modifier
+                        .boxAlign(
+                            alignment = Alignment.TopCenter,
+                            offset = DpOffset(
+                                x = 0.0.dp,
+                                y = 0.0.dp
+                            )
                         )
-                    ).columnWeight(1.0f)
+                        .columnWeight(1.0f)
                 )
                 OperationIcon(
                     modifier = Modifier.boxAlign(
@@ -658,32 +667,50 @@ fun Homepage02(
                                 )
                             )
                         ) {
-                            Vector3(modifier = Modifier.rowWeight(1.0f).columnWeight(1.0f))
-                            Vector4(modifier = Modifier.rowWeight(1.0f).columnWeight(1.0f))
+                            Vector3(modifier = Modifier
+                                .rowWeight(1.0f)
+                                .columnWeight(1.0f))
+                            Vector4(modifier = Modifier
+                                .rowWeight(1.0f)
+                                .columnWeight(1.0f))
                         }
-                        Vector(modifier = Modifier.rowWeight(1.0f).columnWeight(1.0f))
-                        Vector1(modifier = Modifier.rowWeight(1.0f).columnWeight(1.0f))
-                        Store(modifier = Modifier.rowWeight(1.0f).columnWeight(1.0f)) {
+                        Vector(modifier = Modifier
+                            .rowWeight(1.0f)
+                            .columnWeight(1.0f))
+                        Vector1(modifier = Modifier
+                            .rowWeight(1.0f)
+                            .columnWeight(1.0f))
+                        Store(modifier = Modifier
+                            .rowWeight(1.0f)
+                            .columnWeight(1.0f)) {
                             Vector5(
-                                modifier = Modifier.boxAlign(
-                                    alignment = Alignment.TopStart,
-                                    offset = DpOffset(
-                                        x = -0.5.dp,
-                                        y = -0.5.dp
+                                modifier = Modifier
+                                    .boxAlign(
+                                        alignment = Alignment.TopStart,
+                                        offset = DpOffset(
+                                            x = -0.5.dp,
+                                            y = -0.5.dp
+                                        )
                                     )
-                                ).rowWeight(1.0f).columnWeight(1.0f)
+                                    .rowWeight(1.0f)
+                                    .columnWeight(1.0f)
                             )
                             Vector6(
-                                modifier = Modifier.boxAlign(
-                                    alignment = Alignment.TopStart,
-                                    offset = DpOffset(
-                                        x = -0.50030517578125.dp,
-                                        y = -0.5.dp
+                                modifier = Modifier
+                                    .boxAlign(
+                                        alignment = Alignment.TopStart,
+                                        offset = DpOffset(
+                                            x = -0.50030517578125.dp,
+                                            y = -0.5.dp
+                                        )
                                     )
-                                ).rowWeight(1.0f).columnWeight(1.0f)
+                                    .rowWeight(1.0f)
+                                    .columnWeight(1.0f)
                             )
                         }
-                        Vector2(modifier = Modifier.rowWeight(1.0f).columnWeight(1.0f))
+                        Vector2(modifier = Modifier
+                            .rowWeight(1.0f)
+                            .columnWeight(1.0f))
                         Level(
                             modifier = Modifier.boxAlign(
                                 alignment = Alignment.TopStart,
@@ -890,65 +917,123 @@ fun Homepage02(
                         )
                     }
                     Cup1 {
-                        Vector15(modifier = Modifier.rowWeight(1.0f).columnWeight(1.0f))
-                        Vector16(modifier = Modifier.rowWeight(1.0f).columnWeight(1.0f))
-                        Vector17(modifier = Modifier.rowWeight(1.0f).columnWeight(1.0f))
-                        Vector18(modifier = Modifier.rowWeight(1.0f).columnWeight(1.0f))
-                        Vector19(modifier = Modifier.rowWeight(1.0f).columnWeight(1.0f))
-                        Vector20(modifier = Modifier.rowWeight(1.0f).columnWeight(1.0f))
-                        Vector21(modifier = Modifier.rowWeight(1.0f).columnWeight(1.0f))
-                        Vector22(modifier = Modifier.rowWeight(1.0f).columnWeight(1.0f))
-                        Vector23(modifier = Modifier.rowWeight(1.0f).columnWeight(1.0f))
-                        Vector24(modifier = Modifier.rowWeight(1.0f).columnWeight(1.0f))
-                        Vector25(modifier = Modifier.rowWeight(1.0f).columnWeight(1.0f))
-                        Vector26(modifier = Modifier.rowWeight(1.0f).columnWeight(1.0f))
-                        Vector27(modifier = Modifier.rowWeight(1.0f).columnWeight(1.0f))
-                        Vector28(modifier = Modifier.rowWeight(1.0f).columnWeight(1.0f))
-                        Vector29(modifier = Modifier.rowWeight(1.0f).columnWeight(1.0f))
+                        Vector15(modifier = Modifier
+                            .rowWeight(1.0f)
+                            .columnWeight(1.0f))
+                        Vector16(modifier = Modifier
+                            .rowWeight(1.0f)
+                            .columnWeight(1.0f))
+                        Vector17(modifier = Modifier
+                            .rowWeight(1.0f)
+                            .columnWeight(1.0f))
+                        Vector18(modifier = Modifier
+                            .rowWeight(1.0f)
+                            .columnWeight(1.0f))
+                        Vector19(modifier = Modifier
+                            .rowWeight(1.0f)
+                            .columnWeight(1.0f))
+                        Vector20(modifier = Modifier
+                            .rowWeight(1.0f)
+                            .columnWeight(1.0f))
+                        Vector21(modifier = Modifier
+                            .rowWeight(1.0f)
+                            .columnWeight(1.0f))
+                        Vector22(modifier = Modifier
+                            .rowWeight(1.0f)
+                            .columnWeight(1.0f))
+                        Vector23(modifier = Modifier
+                            .rowWeight(1.0f)
+                            .columnWeight(1.0f))
+                        Vector24(modifier = Modifier
+                            .rowWeight(1.0f)
+                            .columnWeight(1.0f))
+                        Vector25(modifier = Modifier
+                            .rowWeight(1.0f)
+                            .columnWeight(1.0f))
+                        Vector26(modifier = Modifier
+                            .rowWeight(1.0f)
+                            .columnWeight(1.0f))
+                        Vector27(modifier = Modifier
+                            .rowWeight(1.0f)
+                            .columnWeight(1.0f))
+                        Vector28(modifier = Modifier
+                            .rowWeight(1.0f)
+                            .columnWeight(1.0f))
+                        Vector29(modifier = Modifier
+                            .rowWeight(1.0f)
+                            .columnWeight(1.0f))
                         Vector30(
-                            modifier = Modifier.boxAlign(
-                                alignment = Alignment.TopStart,
-                                offset = DpOffset(
-                                    x = -2.0.dp,
-                                    y = -2.0.dp
+                            modifier = Modifier
+                                .boxAlign(
+                                    alignment = Alignment.TopStart,
+                                    offset = DpOffset(
+                                        x = -2.0.dp,
+                                        y = -2.0.dp
+                                    )
                                 )
-                            ).rowWeight(1.0f).columnWeight(1.0f)
+                                .rowWeight(1.0f)
+                                .columnWeight(1.0f)
                         )
                         Vector31(
-                            modifier = Modifier.boxAlign(
-                                alignment = Alignment.TopStart,
-                                offset = DpOffset(
-                                    x = -2.0.dp,
-                                    y = -2.0.dp
+                            modifier = Modifier
+                                .boxAlign(
+                                    alignment = Alignment.TopStart,
+                                    offset = DpOffset(
+                                        x = -2.0.dp,
+                                        y = -2.0.dp
+                                    )
                                 )
-                            ).rowWeight(1.0f).columnWeight(1.0f)
+                                .rowWeight(1.0f)
+                                .columnWeight(1.0f)
                         )
-                        Vector32(modifier = Modifier.rowWeight(1.0f).columnWeight(1.0f))
+                        Vector32(modifier = Modifier
+                            .rowWeight(1.0f)
+                            .columnWeight(1.0f))
                         Vector33(
-                            modifier = Modifier.boxAlign(
-                                alignment = Alignment.TopStart,
-                                offset = DpOffset(
-                                    x = -1.0.dp,
-                                    y = -1.0.dp
+                            modifier = Modifier
+                                .boxAlign(
+                                    alignment = Alignment.TopStart,
+                                    offset = DpOffset(
+                                        x = -1.0.dp,
+                                        y = -1.0.dp
+                                    )
                                 )
-                            ).rowWeight(1.0f).columnWeight(1.0f)
+                                .rowWeight(1.0f)
+                                .columnWeight(1.0f)
                         )
-                        Vector34(modifier = Modifier.rowWeight(1.0f).columnWeight(1.0f))
-                        Vector35(modifier = Modifier.rowWeight(1.0f).columnWeight(1.0f))
-                        Vector36(modifier = Modifier.rowWeight(1.0f).columnWeight(1.0f))
-                        Vector37(modifier = Modifier.rowWeight(1.0f).columnWeight(1.0f))
-                        Vector38(modifier = Modifier.rowWeight(1.0f).columnWeight(1.0f))
+                        Vector34(modifier = Modifier
+                            .rowWeight(1.0f)
+                            .columnWeight(1.0f))
+                        Vector35(modifier = Modifier
+                            .rowWeight(1.0f)
+                            .columnWeight(1.0f))
+                        Vector36(modifier = Modifier
+                            .rowWeight(1.0f)
+                            .columnWeight(1.0f))
+                        Vector37(modifier = Modifier
+                            .rowWeight(1.0f)
+                            .columnWeight(1.0f))
+                        Vector38(modifier = Modifier
+                            .rowWeight(1.0f)
+                            .columnWeight(1.0f))
                         Vector39(
-                            modifier = Modifier.boxAlign(
-                                alignment = Alignment.TopStart,
-                                offset = DpOffset(
-                                    x = -1.0.dp,
-                                    y = -1.0.dp
+                            modifier = Modifier
+                                .boxAlign(
+                                    alignment = Alignment.TopStart,
+                                    offset = DpOffset(
+                                        x = -1.0.dp,
+                                        y = -1.0.dp
+                                    )
                                 )
-                            ).rowWeight(1.0f).columnWeight(1.0f)
+                                .rowWeight(1.0f)
+                                .columnWeight(1.0f)
                         )
-                        Vector40(modifier = Modifier.rowWeight(1.0f).columnWeight(1.0f))
-                        Vector41(modifier = Modifier.rowWeight(1.0f).columnWeight(1.0f))
+                        Vector40(modifier = Modifier
+                            .rowWeight(1.0f)
+                            .columnWeight(1.0f))
+                        Vector41(modifier = Modifier
+                            .rowWeight(1.0f)
+                            .columnWeight(1.0f))
                     }
                 }
                 Profile(
@@ -971,49 +1056,130 @@ fun Homepage02(
                         )
                     )
                     Avatar {
-                        Layer2(modifier = Modifier.rowWeight(1.0f).columnWeight(1.0f)) {
-                            Class1(modifier = Modifier.rowWeight(1.0f).columnWeight(1.0f)) {
-                                Vector42(modifier = Modifier.rowWeight(1.0f).columnWeight(1.0f))
-                                Vector43(modifier = Modifier.rowWeight(1.0f).columnWeight(1.0f))
-                                Vector44(modifier = Modifier.rowWeight(1.0f).columnWeight(1.0f))
-                                Vector45(modifier = Modifier.rowWeight(1.0f).columnWeight(1.0f))
-                                ClipPathGroup(modifier = Modifier.rowWeight(1.0f).columnWeight(1.0f)) {
-                                    A(modifier = Modifier.rowWeight(1.0f).columnWeight(1.0f)) {
-                                        Vector53(modifier = Modifier.rowWeight(1.0f).columnWeight(1.0f))
+                        Layer2(modifier = Modifier
+                            .rowWeight(1.0f)
+                            .columnWeight(1.0f)) {
+                            Class1(modifier = Modifier
+                                .rowWeight(1.0f)
+                                .columnWeight(1.0f)) {
+                                Vector42(modifier = Modifier
+                                    .rowWeight(1.0f)
+                                    .columnWeight(1.0f))
+                                Vector43(modifier = Modifier
+                                    .rowWeight(1.0f)
+                                    .columnWeight(1.0f))
+                                Vector44(modifier = Modifier
+                                    .rowWeight(1.0f)
+                                    .columnWeight(1.0f))
+                                Vector45(modifier = Modifier
+                                    .rowWeight(1.0f)
+                                    .columnWeight(1.0f))
+                                ClipPathGroup(
+                                    modifier = Modifier
+                                        .rowWeight(1.0f)
+                                        .columnWeight(1.0f)
+                                ) {
+                                    A(modifier = Modifier
+                                        .rowWeight(1.0f)
+                                        .columnWeight(1.0f)) {
+                                        Vector53(
+                                            modifier = Modifier
+                                                .rowWeight(1.0f)
+                                                .columnWeight(1.0f)
+                                        )
                                     }
-                                    Group(modifier = Modifier.rowWeight(1.0f).columnWeight(1.0f)) {
-                                        Vector54(modifier = Modifier.rowWeight(1.0f).columnWeight(1.0f))
-                                        Vector55(modifier = Modifier.rowWeight(1.0f).columnWeight(1.0f))
-                                        Vector56(modifier = Modifier.rowWeight(1.0f).columnWeight(1.0f))
-                                        Vector57(modifier = Modifier.rowWeight(1.0f).columnWeight(1.0f))
-                                        Vector58(modifier = Modifier.rowWeight(1.0f).columnWeight(1.0f))
-                                        Vector59(modifier = Modifier.rowWeight(1.0f).columnWeight(1.0f))
-                                        Vector60(modifier = Modifier.rowWeight(1.0f).columnWeight(1.0f))
-                                    }
-                                }
-                                Vector46(modifier = Modifier.rowWeight(1.0f).columnWeight(1.0f))
-                                Vector47(modifier = Modifier.rowWeight(1.0f).columnWeight(1.0f))
-                                ClipPathGroup1(modifier = Modifier.rowWeight(1.0f).columnWeight(1.0f)) {
-                                    B(modifier = Modifier.rowWeight(1.0f).columnWeight(1.0f)) {
-                                        Vector61(modifier = Modifier.rowWeight(1.0f).columnWeight(1.0f))
-                                    }
-                                    Group1(modifier = Modifier.rowWeight(1.0f).columnWeight(1.0f)) {
-                                        Vector62(
-                                            modifier = Modifier.boxAlign(
-                                                alignment = Alignment.TopStart,
-                                                offset = DpOffset(
-                                                    x = 0.0.dp,
-                                                    y = 0.24770355224609375.dp
-                                                )
-                                            ).rowWeight(1.0f).columnWeight(1.0f)
+                                    Group(modifier = Modifier
+                                        .rowWeight(1.0f)
+                                        .columnWeight(1.0f)) {
+                                        Vector54(
+                                            modifier = Modifier
+                                                .rowWeight(1.0f)
+                                                .columnWeight(1.0f)
+                                        )
+                                        Vector55(
+                                            modifier = Modifier
+                                                .rowWeight(1.0f)
+                                                .columnWeight(1.0f)
+                                        )
+                                        Vector56(
+                                            modifier = Modifier
+                                                .rowWeight(1.0f)
+                                                .columnWeight(1.0f)
+                                        )
+                                        Vector57(
+                                            modifier = Modifier
+                                                .rowWeight(1.0f)
+                                                .columnWeight(1.0f)
+                                        )
+                                        Vector58(
+                                            modifier = Modifier
+                                                .rowWeight(1.0f)
+                                                .columnWeight(1.0f)
+                                        )
+                                        Vector59(
+                                            modifier = Modifier
+                                                .rowWeight(1.0f)
+                                                .columnWeight(1.0f)
+                                        )
+                                        Vector60(
+                                            modifier = Modifier
+                                                .rowWeight(1.0f)
+                                                .columnWeight(1.0f)
                                         )
                                     }
                                 }
-                                Vector48(modifier = Modifier.rowWeight(1.0f).columnWeight(1.0f))
-                                Vector49(modifier = Modifier.rowWeight(1.0f).columnWeight(1.0f))
-                                Vector50(modifier = Modifier.rowWeight(1.0f).columnWeight(1.0f))
-                                Vector51(modifier = Modifier.rowWeight(1.0f).columnWeight(1.0f))
-                                Vector52(modifier = Modifier.rowWeight(1.0f).columnWeight(1.0f))
+                                Vector46(modifier = Modifier
+                                    .rowWeight(1.0f)
+                                    .columnWeight(1.0f))
+                                Vector47(modifier = Modifier
+                                    .rowWeight(1.0f)
+                                    .columnWeight(1.0f))
+                                ClipPathGroup1(
+                                    modifier = Modifier
+                                        .rowWeight(1.0f)
+                                        .columnWeight(1.0f)
+                                ) {
+                                    B(modifier = Modifier
+                                        .rowWeight(1.0f)
+                                        .columnWeight(1.0f)) {
+                                        Vector61(
+                                            modifier = Modifier
+                                                .rowWeight(1.0f)
+                                                .columnWeight(1.0f)
+                                        )
+                                    }
+                                    Group1(modifier = Modifier
+                                        .rowWeight(1.0f)
+                                        .columnWeight(1.0f)) {
+                                        Vector62(
+                                            modifier = Modifier
+                                                .boxAlign(
+                                                    alignment = Alignment.TopStart,
+                                                    offset = DpOffset(
+                                                        x = 0.0.dp,
+                                                        y = 0.24770355224609375.dp
+                                                    )
+                                                )
+                                                .rowWeight(1.0f)
+                                                .columnWeight(1.0f)
+                                        )
+                                    }
+                                }
+                                Vector48(modifier = Modifier
+                                    .rowWeight(1.0f)
+                                    .columnWeight(1.0f))
+                                Vector49(modifier = Modifier
+                                    .rowWeight(1.0f)
+                                    .columnWeight(1.0f))
+                                Vector50(modifier = Modifier
+                                    .rowWeight(1.0f)
+                                    .columnWeight(1.0f))
+                                Vector51(modifier = Modifier
+                                    .rowWeight(1.0f)
+                                    .columnWeight(1.0f))
+                                Vector52(modifier = Modifier
+                                    .rowWeight(1.0f)
+                                    .columnWeight(1.0f))
                             }
                         }
                     }
@@ -1038,7 +1204,9 @@ fun Homepage02(
                         )
                     )
                 ) {
-                    Vector63(modifier = Modifier.rowWeight(1.0f).columnWeight(1.0f))
+                    Vector63(modifier = Modifier
+                        .rowWeight(1.0f)
+                        .columnWeight(1.0f))
                 }
             }
             B1(
@@ -1149,7 +1317,9 @@ private fun Homepage02Preview() {
                 onSettingButtonTapped = {},
                 onRankButtonTapped = {},
                 onProfileButtonTapped = {},
-                modifier = Modifier.rowWeight(1.0f).columnWeight(1.0f)
+                modifier = Modifier
+                    .rowWeight(1.0f)
+                    .columnWeight(1.0f)
             )
         }
     }
@@ -1159,14 +1329,17 @@ private fun Homepage02Preview() {
 fun Ellipse147(modifier: Modifier = Modifier) {
     RelayVector(
         vector = painterResource(R.drawable.homepage_02_ellipse_147),
-        modifier = modifier.padding(
-            paddingValues = PaddingValues(
-                start = 0.0.dp,
-                top = 24.0.dp,
-                end = 0.0.dp,
-                bottom = 26.0.dp
+        modifier = modifier
+            .padding(
+                paddingValues = PaddingValues(
+                    start = 0.0.dp,
+                    top = 24.0.dp,
+                    end = 0.0.dp,
+                    bottom = 26.0.dp
+                )
             )
-        ).requiredWidth(32.0.dp).fillMaxHeight(1.0f)
+            .requiredWidth(32.0.dp)
+            .fillMaxHeight(1.0f)
     )
 }
 
@@ -1185,10 +1358,13 @@ fun OperationIcon(modifier: Modifier = Modifier) {
         height = 1.2102272033691406.em,
         fontWeight = FontWeight(700.0.toInt()),
         maxLines = -1,
-        modifier = modifier.requiredWidth(20.0.dp).requiredHeight(36.0.dp).wrapContentHeight(
-            align = Alignment.CenterVertically,
-            unbounded = true
-        )
+        modifier = modifier
+            .requiredWidth(20.0.dp)
+            .requiredHeight(36.0.dp)
+            .wrapContentHeight(
+                align = Alignment.CenterVertically,
+                unbounded = true
+            )
     )
 }
 
@@ -1215,7 +1391,10 @@ fun Frame44(
             blue = 0
         ),
         content = content,
-        modifier = modifier.tappable(onTap = onNewOperationButtonTapped).requiredWidth(190.0.dp).requiredHeight(82.0.dp)
+        modifier = modifier
+            .tappable(onTap = onNewOperationButtonTapped)
+            .requiredWidth(190.0.dp)
+            .requiredHeight(82.0.dp)
     )
 }
 
@@ -1224,7 +1403,9 @@ fun Asset61(modifier: Modifier = Modifier) {
     RelayImage(
         image = painterResource(R.drawable.homepage_02_asset_6_1),
         contentScale = ContentScale.Crop,
-        modifier = modifier.requiredWidth(33.53312301635742.dp).requiredHeight(31.82634735107422.dp)
+        modifier = modifier
+            .requiredWidth(33.53312301635742.dp)
+            .requiredHeight(31.82634735107422.dp)
     )
 }
 
@@ -1244,7 +1425,9 @@ fun B(modifier: Modifier = Modifier) {
         textAlign = TextAlign.Left,
         fontWeight = FontWeight(700.0.toInt()),
         maxLines = -1,
-        modifier = modifier.requiredWidth(3.212754487991333.dp).requiredHeight(5.823117256164551.dp)
+        modifier = modifier
+            .requiredWidth(3.212754487991333.dp)
+            .requiredHeight(5.823117256164551.dp)
     )
 }
 
@@ -1257,7 +1440,9 @@ fun Group33602(
         isStructured = false,
         clipToParent = false,
         content = content,
-        modifier = modifier.requiredWidth(33.53312301635742.dp).requiredHeight(31.82634735107422.dp)
+        modifier = modifier
+            .requiredWidth(33.53312301635742.dp)
+            .requiredHeight(31.82634735107422.dp)
     )
 }
 
@@ -1284,7 +1469,10 @@ fun Frame93(
             blue = 0
         ),
         content = content,
-        modifier = modifier.tappable(onTap = onBudgetoPassButtonTapped).requiredWidth(40.0.dp).requiredHeight(40.0.dp)
+        modifier = modifier
+            .tappable(onTap = onBudgetoPassButtonTapped)
+            .requiredWidth(40.0.dp)
+            .requiredHeight(40.0.dp)
     )
 }
 
@@ -1293,7 +1481,9 @@ fun Event1(modifier: Modifier = Modifier) {
     RelayImage(
         image = painterResource(R.drawable.homepage_02_event_1),
         contentScale = ContentScale.Crop,
-        modifier = modifier.requiredWidth(37.0.dp).requiredHeight(36.0.dp)
+        modifier = modifier
+            .requiredWidth(37.0.dp)
+            .requiredHeight(36.0.dp)
     )
 }
 
@@ -1319,7 +1509,9 @@ fun Frame95(
             blue = 0
         ),
         content = content,
-        modifier = modifier.requiredWidth(40.0.dp).requiredHeight(40.0.dp)
+        modifier = modifier
+            .requiredWidth(40.0.dp)
+            .requiredHeight(40.0.dp)
     )
 }
 
@@ -1346,7 +1538,10 @@ fun Frame94(
             blue = 0
         ),
         content = content,
-        modifier = modifier.tappable(onTap = onEventsButtonTapped).requiredWidth(40.0.dp).requiredHeight(40.0.dp)
+        modifier = modifier
+            .tappable(onTap = onEventsButtonTapped)
+            .requiredWidth(40.0.dp)
+            .requiredHeight(40.0.dp)
     )
 }
 
@@ -1364,7 +1559,9 @@ fun Statistics(
         ),
         isStructured = false,
         content = content,
-        modifier = modifier.requiredWidth(392.0.dp).requiredHeight(161.0.dp)
+        modifier = modifier
+            .requiredWidth(392.0.dp)
+            .requiredHeight(161.0.dp)
     )
 }
 
@@ -1372,7 +1569,9 @@ fun Statistics(
 fun Vector317(modifier: Modifier = Modifier) {
     RelayVector(
         vector = painterResource(R.drawable.homepage_02_vector_317),
-        modifier = modifier.requiredWidth(6.0.dp).requiredHeight(12.0.dp)
+        modifier = modifier
+            .requiredWidth(6.0.dp)
+            .requiredHeight(12.0.dp)
     )
 }
 
@@ -1381,7 +1580,9 @@ fun FloraBg3(modifier: Modifier = Modifier) {
     RelayImage(
         image = painterResource(R.drawable.homepage_02_flora_bg_3),
         contentScale = ContentScale.Crop,
-        modifier = modifier.requiredWidth(410.0.dp).requiredHeight(888.0.dp)
+        modifier = modifier
+            .requiredWidth(410.0.dp)
+            .requiredHeight(888.0.dp)
     )
 }
 
@@ -1408,7 +1609,10 @@ fun Class01(
             blue = 0
         ),
         content = content,
-        modifier = modifier.tappable(onTap = onLeftBannerTapped).requiredWidth(55.0.dp).requiredHeight(183.0.dp)
+        modifier = modifier
+            .tappable(onTap = onLeftBannerTapped)
+            .requiredWidth(55.0.dp)
+            .requiredHeight(183.0.dp)
     )
 }
 
@@ -1416,7 +1620,9 @@ fun Class01(
 fun Vector318(modifier: Modifier = Modifier) {
     RelayVector(
         vector = painterResource(R.drawable.homepage_02_vector_318),
-        modifier = modifier.requiredWidth(6.0.dp).requiredHeight(12.0.dp)
+        modifier = modifier
+            .requiredWidth(6.0.dp)
+            .requiredHeight(12.0.dp)
     )
 }
 
@@ -1425,7 +1631,9 @@ fun Z5567088375231Fe171d217e1379fb153ce5d62f7c44e52(modifier: Modifier = Modifie
     RelayImage(
         image = painterResource(R.drawable.homepage_02_z5567088375231_fe171d217e1379fb153ce5d62f7c44e5_2),
         contentScale = ContentScale.Crop,
-        modifier = modifier.requiredWidth(325.0.dp).requiredHeight(703.0.dp)
+        modifier = modifier
+            .requiredWidth(325.0.dp)
+            .requiredHeight(703.0.dp)
     )
 }
 
@@ -1452,7 +1660,10 @@ fun Class3(
             blue = 0
         ),
         content = content,
-        modifier = modifier.tappable(onTap = onRightBannerTapped).requiredWidth(55.0.dp).requiredHeight(183.0.dp)
+        modifier = modifier
+            .tappable(onTap = onRightBannerTapped)
+            .requiredWidth(55.0.dp)
+            .requiredHeight(183.0.dp)
     )
 }
 
@@ -1473,7 +1684,9 @@ fun Christmas(modifier: Modifier = Modifier) {
 fun Arrow2(modifier: Modifier = Modifier) {
     RelayVector(
         vector = painterResource(R.drawable.homepage_02_arrow_2),
-        modifier = modifier.requiredWidth(12.0.dp).requiredHeight(0.0.dp)
+        modifier = modifier
+            .requiredWidth(12.0.dp)
+            .requiredHeight(0.0.dp)
     )
 }
 
@@ -1499,7 +1712,9 @@ fun Frame37(
             blue = 0
         ),
         content = content,
-        modifier = modifier.requiredWidth(25.0.dp).requiredHeight(25.0.dp)
+        modifier = modifier
+            .requiredWidth(25.0.dp)
+            .requiredHeight(25.0.dp)
     )
 }
 
@@ -1525,7 +1740,9 @@ fun Frame36(
             blue = 0
         ),
         content = content,
-        modifier = modifier.requiredWidth(257.0.dp).requiredHeight(35.0.dp)
+        modifier = modifier
+            .requiredWidth(257.0.dp)
+            .requiredHeight(35.0.dp)
     )
 }
 
@@ -1534,7 +1751,9 @@ fun Z555214942458944f4f29198b0d1e91c35ad51fb03e8f72(modifier: Modifier = Modifie
     RelayImage(
         image = painterResource(R.drawable.homepage_02_z5552149424589_44f4f29198b0d1e91c35ad51fb03e8f7_2),
         contentScale = ContentScale.Crop,
-        modifier = modifier.requiredWidth(284.0.dp).requiredHeight(614.0.dp)
+        modifier = modifier
+            .requiredWidth(284.0.dp)
+            .requiredHeight(614.0.dp)
     )
 }
 
@@ -1555,7 +1774,9 @@ fun XMas2024(modifier: Modifier = Modifier) {
 fun Arrow3(modifier: Modifier = Modifier) {
     RelayVector(
         vector = painterResource(R.drawable.homepage_02_arrow_3),
-        modifier = modifier.requiredWidth(12.0.dp).requiredHeight(0.0.dp)
+        modifier = modifier
+            .requiredWidth(12.0.dp)
+            .requiredHeight(0.0.dp)
     )
 }
 
@@ -1581,7 +1802,9 @@ fun Frame39(
             blue = 0
         ),
         content = content,
-        modifier = modifier.requiredWidth(25.0.dp).requiredHeight(25.0.dp)
+        modifier = modifier
+            .requiredWidth(25.0.dp)
+            .requiredHeight(25.0.dp)
     )
 }
 
@@ -1607,7 +1830,9 @@ fun Frame38(
             blue = 0
         ),
         content = content,
-        modifier = modifier.requiredWidth(257.0.dp).requiredHeight(35.0.dp)
+        modifier = modifier
+            .requiredWidth(257.0.dp)
+            .requiredHeight(35.0.dp)
     )
 }
 
@@ -1634,7 +1859,10 @@ fun Frame45(
             blue = 0
         ),
         content = content,
-        modifier = modifier.graphicsLayer(rotationZ = 9.89433630752849f).requiredWidth(80.26248168945312.dp).requiredHeight(34.63959884643555.dp)
+        modifier = modifier
+            .graphicsLayer(rotationZ = 9.89433630752849f)
+            .requiredWidth(80.26248168945312.dp)
+            .requiredHeight(34.63959884643555.dp)
     )
 }
 
@@ -1642,7 +1870,9 @@ fun Frame45(
 fun Rectangle63(modifier: Modifier = Modifier) {
     RelayVector(
         vector = painterResource(R.drawable.homepage_02_rectangle_63),
-        modifier = modifier.requiredWidth(217.59122848510742.dp).requiredHeight(47.01435661315918.dp)
+        modifier = modifier
+            .requiredWidth(217.59122848510742.dp)
+            .requiredHeight(47.01435661315918.dp)
     )
 }
 
@@ -1681,7 +1911,10 @@ fun Frame40(
             blue = 0
         ),
         content = content,
-        modifier = modifier.graphicsLayer(rotationZ = -0.0f).requiredWidth(90.55841064453125.dp).requiredHeight(34.764129638671875.dp)
+        modifier = modifier
+            .graphicsLayer(rotationZ = -0.0f)
+            .requiredWidth(90.55841064453125.dp)
+            .requiredHeight(34.764129638671875.dp)
     )
 }
 
@@ -1690,7 +1923,10 @@ fun Snow1(modifier: Modifier = Modifier) {
     RelayImage(
         image = painterResource(R.drawable.homepage_02_snow_1),
         contentScale = ContentScale.Crop,
-        modifier = modifier.graphicsLayer(rotationZ = -3.227071276066092f).requiredWidth(77.6063003540039.dp).requiredHeight(43.961952209472656.dp)
+        modifier = modifier
+            .graphicsLayer(rotationZ = -3.227071276066092f)
+            .requiredWidth(77.6063003540039.dp)
+            .requiredHeight(43.961952209472656.dp)
     )
 }
 
@@ -1699,7 +1935,10 @@ fun Bow2(modifier: Modifier = Modifier) {
     RelayImage(
         image = painterResource(R.drawable.homepage_02_bow_1),
         contentScale = ContentScale.Crop,
-        modifier = modifier.graphicsLayer(rotationZ = -0.0f).requiredWidth(118.21710968017578.dp).requiredHeight(66.49712371826172.dp)
+        modifier = modifier
+            .graphicsLayer(rotationZ = -0.0f)
+            .requiredWidth(118.21710968017578.dp)
+            .requiredHeight(66.49712371826172.dp)
     )
 }
 
@@ -1712,7 +1951,10 @@ fun Group159(
         isStructured = false,
         clipToParent = false,
         content = content,
-        modifier = modifier.graphicsLayer(rotationZ = 8.753872748801426f).requiredWidth(183.88262939453125.dp).requiredHeight(66.49712371826172.dp)
+        modifier = modifier
+            .graphicsLayer(rotationZ = 8.753872748801426f)
+            .requiredWidth(183.88262939453125.dp)
+            .requiredHeight(66.49712371826172.dp)
     )
 }
 
@@ -1751,7 +1993,9 @@ fun Frame41(
             blue = 0
         ),
         content = content,
-        modifier = modifier.requiredWidth(94.21621175556584.dp).requiredHeight(45.95239131246183.dp)
+        modifier = modifier
+            .requiredWidth(94.21621175556584.dp)
+            .requiredHeight(45.95239131246183.dp)
     )
 }
 
@@ -1765,7 +2009,9 @@ fun Group130(
         clipToParent = false,
         radius = 5.0,
         content = content,
-        modifier = modifier.requiredWidth(94.21621175556584.dp).requiredHeight(45.95239131246183.dp)
+        modifier = modifier
+            .requiredWidth(94.21621175556584.dp)
+            .requiredHeight(45.95239131246183.dp)
     )
 }
 
@@ -1774,7 +2020,10 @@ fun Red3(modifier: Modifier = Modifier) {
     RelayImage(
         image = painterResource(R.drawable.homepage_02_red_3),
         contentScale = ContentScale.Crop,
-        modifier = modifier.graphicsLayer(rotationZ = -6.8852980717891015f).requiredWidth(134.31910705566406.dp).requiredHeight(75.68232727050781.dp)
+        modifier = modifier
+            .graphicsLayer(rotationZ = -6.8852980717891015f)
+            .requiredWidth(134.31910705566406.dp)
+            .requiredHeight(75.68232727050781.dp)
     )
 }
 
@@ -1787,7 +2036,10 @@ fun Group144(
         isStructured = false,
         clipToParent = false,
         content = content,
-        modifier = modifier.graphicsLayer(rotationZ = -7.281224353613574f).requiredWidth(145.8953399658203.dp).requiredHeight(91.23893737792969.dp)
+        modifier = modifier
+            .graphicsLayer(rotationZ = -7.281224353613574f)
+            .requiredWidth(145.8953399658203.dp)
+            .requiredHeight(91.23893737792969.dp)
     )
 }
 
@@ -1796,7 +2048,10 @@ fun Bow1(modifier: Modifier = Modifier) {
     RelayImage(
         image = painterResource(R.drawable.homepage_02_bow_1),
         contentScale = ContentScale.Crop,
-        modifier = modifier.graphicsLayer(rotationZ = 37.91902116177443f).requiredWidth(116.35713195800781.dp).requiredHeight(65.45088195800781.dp)
+        modifier = modifier
+            .graphicsLayer(rotationZ = 37.91902116177443f)
+            .requiredWidth(116.35713195800781.dp)
+            .requiredHeight(65.45088195800781.dp)
     )
 }
 
@@ -1805,7 +2060,10 @@ fun Red1(modifier: Modifier = Modifier) {
     RelayImage(
         image = painterResource(R.drawable.homepage_02_red_3),
         contentScale = ContentScale.Crop,
-        modifier = modifier.graphicsLayer(rotationZ = -6.8852980717891015f).requiredWidth(192.59548950195312.dp).requiredHeight(108.51825714111328.dp)
+        modifier = modifier
+            .graphicsLayer(rotationZ = -6.8852980717891015f)
+            .requiredWidth(192.59548950195312.dp)
+            .requiredHeight(108.51825714111328.dp)
     )
 }
 
@@ -1814,7 +2072,10 @@ fun Cup1(modifier: Modifier = Modifier) {
     RelayImage(
         image = painterResource(R.drawable.homepage_02_cup_1),
         contentScale = ContentScale.Crop,
-        modifier = modifier.graphicsLayer(rotationZ = -15.996283941053932f).requiredWidth(81.56813049316406.dp).requiredHeight(46.08599090576172.dp)
+        modifier = modifier
+            .graphicsLayer(rotationZ = -15.996283941053932f)
+            .requiredWidth(81.56813049316406.dp)
+            .requiredHeight(46.08599090576172.dp)
     )
 }
 
@@ -1827,7 +2088,10 @@ fun Group116(
         isStructured = false,
         clipToParent = false,
         content = content,
-        modifier = modifier.graphicsLayer(rotationZ = 9.89433630752849f).requiredWidth(204.2158966064453.dp).requiredHeight(130.82435607910156.dp)
+        modifier = modifier
+            .graphicsLayer(rotationZ = 9.89433630752849f)
+            .requiredWidth(204.2158966064453.dp)
+            .requiredHeight(130.82435607910156.dp)
     )
 }
 
@@ -1840,7 +2104,9 @@ fun Group142(
         isStructured = false,
         clipToParent = false,
         content = content,
-        modifier = modifier.requiredWidth(233.22698974609375.dp).requiredHeight(175.4685821533203.dp)
+        modifier = modifier
+            .requiredWidth(233.22698974609375.dp)
+            .requiredHeight(175.4685821533203.dp)
     )
 }
 
@@ -1879,7 +2145,9 @@ fun Frame42(
             blue = 0
         ),
         content = content,
-        modifier = modifier.requiredWidth(91.94988649112645.dp).requiredHeight(44.30467576466981.dp)
+        modifier = modifier
+            .requiredWidth(91.94988649112645.dp)
+            .requiredHeight(44.30467576466981.dp)
     )
 }
 
@@ -1893,7 +2161,10 @@ fun Group129(
         clipToParent = false,
         radius = 5.0,
         content = content,
-        modifier = modifier.graphicsLayer(rotationZ = 11.332718224376748f).requiredWidth(88.52732849121094.dp).requiredHeight(33.98442459106445.dp)
+        modifier = modifier
+            .graphicsLayer(rotationZ = 11.332718224376748f)
+            .requiredWidth(88.52732849121094.dp)
+            .requiredHeight(33.98442459106445.dp)
     )
 }
 
@@ -1902,7 +2173,10 @@ fun Mistletoe3(modifier: Modifier = Modifier) {
     RelayImage(
         image = painterResource(R.drawable.homepage_02_mistletoe_3),
         contentScale = ContentScale.Crop,
-        modifier = modifier.graphicsLayer(rotationZ = 11.332718224376748f).requiredWidth(90.59400939941406.dp).requiredHeight(49.90347671508789.dp)
+        modifier = modifier
+            .graphicsLayer(rotationZ = 11.332718224376748f)
+            .requiredWidth(90.59400939941406.dp)
+            .requiredHeight(49.90347671508789.dp)
     )
 }
 
@@ -1911,7 +2185,10 @@ fun Mistletoe4(modifier: Modifier = Modifier) {
     RelayImage(
         image = painterResource(R.drawable.homepage_02_mistletoe_3),
         contentScale = ContentScale.Crop,
-        modifier = modifier.graphicsLayer(rotationZ = 11.332718224376748f).requiredWidth(90.59400939941406.dp).requiredHeight(50.671226501464844.dp)
+        modifier = modifier
+            .graphicsLayer(rotationZ = 11.332718224376748f)
+            .requiredWidth(90.59400939941406.dp)
+            .requiredHeight(50.671226501464844.dp)
     )
 }
 
@@ -1920,7 +2197,10 @@ fun Snow2(modifier: Modifier = Modifier) {
     RelayImage(
         image = painterResource(R.drawable.homepage_02_snow_1),
         contentScale = ContentScale.Crop,
-        modifier = modifier.graphicsLayer(rotationZ = 17.897964967524214f).requiredWidth(89.91682434082031.dp).requiredHeight(50.935523986816406.dp)
+        modifier = modifier
+            .graphicsLayer(rotationZ = 17.897964967524214f)
+            .requiredWidth(89.91682434082031.dp)
+            .requiredHeight(50.935523986816406.dp)
     )
 }
 
@@ -1933,7 +2213,10 @@ fun Group143(
         isStructured = false,
         clipToParent = false,
         content = content,
-        modifier = modifier.graphicsLayer(rotationZ = -18.185553849107468f).requiredWidth(184.99993896484375.dp).requiredHeight(114.4934310913086.dp)
+        modifier = modifier
+            .graphicsLayer(rotationZ = -18.185553849107468f)
+            .requiredWidth(184.99993896484375.dp)
+            .requiredHeight(114.4934310913086.dp)
     )
 }
 
@@ -1959,7 +2242,9 @@ fun Setting(
             blue = 0
         ),
         content = content,
-        modifier = modifier.requiredWidth(18.0.dp).requiredHeight(20.0.dp)
+        modifier = modifier
+            .requiredWidth(18.0.dp)
+            .requiredHeight(20.0.dp)
     )
 }
 
@@ -1967,7 +2252,9 @@ fun Setting(
 fun Ellipse37(modifier: Modifier = Modifier) {
     RelayVector(
         vector = painterResource(R.drawable.homepage_02_ellipse_37),
-        modifier = modifier.requiredWidth(17.231096267700195.dp).requiredHeight(17.231096267700195.dp)
+        modifier = modifier
+            .requiredWidth(17.231096267700195.dp)
+            .requiredHeight(17.231096267700195.dp)
     )
 }
 
@@ -1980,7 +2267,9 @@ fun Group138(
         isStructured = false,
         clipToParent = false,
         content = content,
-        modifier = modifier.requiredWidth(17.231096267700195.dp).requiredHeight(17.231096267700195.dp)
+        modifier = modifier
+            .requiredWidth(17.231096267700195.dp)
+            .requiredHeight(17.231096267700195.dp)
     )
 }
 
@@ -1988,7 +2277,9 @@ fun Group138(
 fun Star9(modifier: Modifier = Modifier) {
     RelayVector(
         vector = painterResource(R.drawable.homepage_02_star_9),
-        modifier = modifier.requiredWidth(34.0.dp).requiredHeight(33.0.dp)
+        modifier = modifier
+            .requiredWidth(34.0.dp)
+            .requiredHeight(33.0.dp)
     )
 }
 
@@ -1996,7 +2287,9 @@ fun Star9(modifier: Modifier = Modifier) {
 fun Ellipse3(modifier: Modifier = Modifier) {
     RelayVector(
         vector = painterResource(R.drawable.homepage_02_ellipse_3),
-        modifier = modifier.requiredWidth(15.552168846130371.dp).requiredHeight(15.552168846130371.dp)
+        modifier = modifier
+            .requiredWidth(15.552168846130371.dp)
+            .requiredHeight(15.552168846130371.dp)
     )
 }
 
@@ -2009,7 +2302,9 @@ fun Button(
         isStructured = false,
         clipToParent = false,
         content = content,
-        modifier = modifier.requiredWidth(15.552168846130371.dp).requiredHeight(15.552168846130371.dp)
+        modifier = modifier
+            .requiredWidth(15.552168846130371.dp)
+            .requiredHeight(15.552168846130371.dp)
     )
 }
 
@@ -2017,7 +2312,9 @@ fun Button(
 fun Ellipse2(modifier: Modifier = Modifier) {
     RelayVector(
         vector = painterResource(R.drawable.homepage_02_ellipse_2),
-        modifier = modifier.requiredWidth(13.0.dp).requiredHeight(13.0.dp)
+        modifier = modifier
+            .requiredWidth(13.0.dp)
+            .requiredHeight(13.0.dp)
     )
 }
 
@@ -2043,7 +2340,9 @@ fun Setting1(
             blue = 0
         ),
         content = content,
-        modifier = modifier.requiredWidth(18.0.dp).requiredHeight(17.0.dp)
+        modifier = modifier
+            .requiredWidth(18.0.dp)
+            .requiredHeight(17.0.dp)
     )
 }
 
@@ -2069,7 +2368,9 @@ fun Frame46(
             blue = 0
         ),
         content = content,
-        modifier = modifier.requiredWidth(114.0.dp).requiredHeight(69.0.dp)
+        modifier = modifier
+            .requiredWidth(114.0.dp)
+            .requiredHeight(69.0.dp)
     )
 }
 
@@ -2095,7 +2396,9 @@ fun Frame47(
             blue = 0
         ),
         content = content,
-        modifier = modifier.requiredWidth(144.0.dp).requiredHeight(55.0.dp)
+        modifier = modifier
+            .requiredWidth(144.0.dp)
+            .requiredHeight(55.0.dp)
     )
 }
 
@@ -2103,14 +2406,17 @@ fun Frame47(
 fun Vector3(modifier: Modifier = Modifier) {
     RelayVector(
         vector = painterResource(R.drawable.homepage_02_vector3),
-        modifier = modifier.padding(
-            paddingValues = PaddingValues(
-                start = 0.5439453125.dp,
-                top = 0.520263671875.dp,
-                end = 0.5438909530639648.dp,
-                bottom = 0.5202751159667969.dp
+        modifier = modifier
+            .padding(
+                paddingValues = PaddingValues(
+                    start = 0.5439453125.dp,
+                    top = 0.520263671875.dp,
+                    end = 0.5438909530639648.dp,
+                    bottom = 0.5202751159667969.dp
+                )
             )
-        ).fillMaxWidth(1.0f).fillMaxHeight(1.0f)
+            .fillMaxWidth(1.0f)
+            .fillMaxHeight(1.0f)
     )
 }
 
@@ -2118,14 +2424,17 @@ fun Vector3(modifier: Modifier = Modifier) {
 fun Vector4(modifier: Modifier = Modifier) {
     RelayVector(
         vector = painterResource(R.drawable.homepage_02_vector4),
-        modifier = modifier.padding(
-            paddingValues = PaddingValues(
-                start = 3.80743408203125.dp,
-                top = 2.601348876953125.dp,
-                end = 5.98310661315918.dp,
-                bottom = 5.722975254058838.dp
+        modifier = modifier
+            .padding(
+                paddingValues = PaddingValues(
+                    start = 3.80743408203125.dp,
+                    top = 2.601348876953125.dp,
+                    end = 5.98310661315918.dp,
+                    bottom = 5.722975254058838.dp
+                )
             )
-        ).fillMaxWidth(1.0f).fillMaxHeight(1.0f)
+            .fillMaxWidth(1.0f)
+            .fillMaxHeight(1.0f)
     )
 }
 
@@ -2137,7 +2446,9 @@ fun History(
     RelayContainer(
         isStructured = false,
         content = content,
-        modifier = modifier.requiredWidth(13.054054260253906.dp).requiredHeight(12.486486434936523.dp)
+        modifier = modifier
+            .requiredWidth(13.054054260253906.dp)
+            .requiredHeight(12.486486434936523.dp)
     )
 }
 
@@ -2145,14 +2456,17 @@ fun History(
 fun Vector(modifier: Modifier = Modifier) {
     RelayVector(
         vector = painterResource(R.drawable.homepage_02_vector),
-        modifier = modifier.padding(
-            paddingValues = PaddingValues(
-                start = 51.729736328125.dp,
-                top = 6.8108062744140625.dp,
-                end = 62.4324254989624.dp,
-                bottom = 27.811078548431396.dp
+        modifier = modifier
+            .padding(
+                paddingValues = PaddingValues(
+                    start = 51.729736328125.dp,
+                    top = 6.8108062744140625.dp,
+                    end = 62.4324254989624.dp,
+                    bottom = 27.811078548431396.dp
+                )
             )
-        ).fillMaxWidth(1.0f).fillMaxHeight(1.0f)
+            .fillMaxWidth(1.0f)
+            .fillMaxHeight(1.0f)
     )
 }
 
@@ -2160,14 +2474,17 @@ fun Vector(modifier: Modifier = Modifier) {
 fun Vector1(modifier: Modifier = Modifier) {
     RelayVector(
         vector = painterResource(R.drawable.homepage_02_vector1),
-        modifier = modifier.padding(
-            paddingValues = PaddingValues(
-                start = 51.16217041015625.dp,
-                top = 2.8378448486328125.dp,
-                end = 61.8648567199707.dp,
-                bottom = 32.35160732269287.dp
+        modifier = modifier
+            .padding(
+                paddingValues = PaddingValues(
+                    start = 51.16217041015625.dp,
+                    top = 2.8378448486328125.dp,
+                    end = 61.8648567199707.dp,
+                    bottom = 32.35160732269287.dp
+                )
             )
-        ).fillMaxWidth(1.0f).fillMaxHeight(1.0f)
+            .fillMaxWidth(1.0f)
+            .fillMaxHeight(1.0f)
     )
 }
 
@@ -2175,14 +2492,17 @@ fun Vector1(modifier: Modifier = Modifier) {
 fun Vector5(modifier: Modifier = Modifier) {
     RelayVector(
         vector = painterResource(R.drawable.homepage_02_vector5),
-        modifier = modifier.padding(
-            paddingValues = PaddingValues(
-                start = 5.29730224609375.dp,
-                top = 1.2770233154296875.dp,
-                end = 5.297292232513428.dp,
-                bottom = 5.746625900268555.dp
+        modifier = modifier
+            .padding(
+                paddingValues = PaddingValues(
+                    start = 5.29730224609375.dp,
+                    top = 1.2770233154296875.dp,
+                    end = 5.297292232513428.dp,
+                    bottom = 5.746625900268555.dp
+                )
             )
-        ).fillMaxWidth(1.0f).fillMaxHeight(1.0f)
+            .fillMaxWidth(1.0f)
+            .fillMaxHeight(1.0f)
     )
 }
 
@@ -2190,14 +2510,17 @@ fun Vector5(modifier: Modifier = Modifier) {
 fun Vector6(modifier: Modifier = Modifier) {
     RelayVector(
         vector = painterResource(R.drawable.homepage_02_vector6),
-        modifier = modifier.padding(
-            paddingValues = PaddingValues(
-                start = 2.64862060546875.dp,
-                top = 4.4695892333984375.dp,
-                end = 2.076650619506836.dp,
-                bottom = 1.2770328521728516.dp
+        modifier = modifier
+            .padding(
+                paddingValues = PaddingValues(
+                    start = 2.64862060546875.dp,
+                    top = 4.4695892333984375.dp,
+                    end = 2.076650619506836.dp,
+                    bottom = 1.2770328521728516.dp
+                )
             )
-        ).fillMaxWidth(1.0f).fillMaxHeight(1.0f)
+            .fillMaxWidth(1.0f)
+            .fillMaxHeight(1.0f)
     )
 }
 
@@ -2209,14 +2532,17 @@ fun Store(
     RelayContainer(
         isStructured = false,
         content = content,
-        modifier = modifier.padding(
-            paddingValues = PaddingValues(
-                start = 84.0.dp,
-                top = 0.0.dp,
-                end = 25.054054260253906.dp,
-                bottom = 26.675938606262207.dp
+        modifier = modifier
+            .padding(
+                paddingValues = PaddingValues(
+                    start = 84.0.dp,
+                    top = 0.0.dp,
+                    end = 25.054054260253906.dp,
+                    bottom = 26.675938606262207.dp
+                )
             )
-        ).fillMaxWidth(1.0f).fillMaxHeight(1.0f)
+            .fillMaxWidth(1.0f)
+            .fillMaxHeight(1.0f)
     )
 }
 
@@ -2224,14 +2550,17 @@ fun Store(
 fun Vector2(modifier: Modifier = Modifier) {
     RelayVector(
         vector = painterResource(R.drawable.homepage_02_vector2),
-        modifier = modifier.padding(
-            paddingValues = PaddingValues(
-                start = 0.0.dp,
-                top = 22.134765625.dp,
-                end = 109.62162113189697.dp,
-                bottom = 7.9465789794921875.dp
+        modifier = modifier
+            .padding(
+                paddingValues = PaddingValues(
+                    start = 0.0.dp,
+                    top = 22.134765625.dp,
+                    end = 109.62162113189697.dp,
+                    bottom = 7.9465789794921875.dp
+                )
             )
-        ).fillMaxWidth(1.0f).fillMaxHeight(1.0f)
+            .fillMaxWidth(1.0f)
+            .fillMaxHeight(1.0f)
     )
 }
 
@@ -2239,7 +2568,9 @@ fun Vector2(modifier: Modifier = Modifier) {
 fun Star2(modifier: Modifier = Modifier) {
     RelayVector(
         vector = painterResource(R.drawable.homepage_02_star_2),
-        modifier = modifier.requiredWidth(21.27959632873535.dp).requiredHeight(21.27959632873535.dp)
+        modifier = modifier
+            .requiredWidth(21.27959632873535.dp)
+            .requiredHeight(21.27959632873535.dp)
     )
 }
 
@@ -2253,7 +2584,9 @@ fun Level(
         clipToParent = false,
         radius = 2.0,
         content = content,
-        modifier = modifier.requiredWidth(21.27959632873535.dp).requiredHeight(21.27959632873535.dp)
+        modifier = modifier
+            .requiredWidth(21.27959632873535.dp)
+            .requiredHeight(21.27959632873535.dp)
     )
 }
 
@@ -2261,7 +2594,9 @@ fun Level(
 fun Arrow4(modifier: Modifier = Modifier) {
     RelayVector(
         vector = painterResource(R.drawable.homepage_02_arrow_4),
-        modifier = modifier.requiredWidth(8.366100311279297.dp).requiredHeight(0.0.dp)
+        modifier = modifier
+            .requiredWidth(8.366100311279297.dp)
+            .requiredHeight(0.0.dp)
     )
 }
 
@@ -2269,7 +2604,9 @@ fun Arrow4(modifier: Modifier = Modifier) {
 fun Star12(modifier: Modifier = Modifier) {
     RelayVector(
         vector = painterResource(R.drawable.homepage_02_star_12),
-        modifier = modifier.requiredWidth(28.945945739746094.dp).requiredHeight(27.810810089111328.dp)
+        modifier = modifier
+            .requiredWidth(28.945945739746094.dp)
+            .requiredHeight(27.810810089111328.dp)
     )
 }
 
@@ -2282,7 +2619,9 @@ fun Group160(
         isStructured = false,
         clipToParent = false,
         content = content,
-        modifier = modifier.requiredWidth(124.9459457397461.dp).requiredHeight(42.00026321411133.dp)
+        modifier = modifier
+            .requiredWidth(124.9459457397461.dp)
+            .requiredHeight(42.00026321411133.dp)
     )
 }
 
@@ -2308,7 +2647,9 @@ fun Frame48(
             blue = 0
         ),
         content = content,
-        modifier = modifier.requiredWidth(131.0.dp).requiredHeight(29.0.dp)
+        modifier = modifier
+            .requiredWidth(131.0.dp)
+            .requiredHeight(29.0.dp)
     )
 }
 
@@ -2334,7 +2675,9 @@ fun Group161(
         clipToParent = false,
         radius = 5.0,
         content = content,
-        modifier = modifier.requiredWidth(131.0.dp).requiredHeight(29.0.dp)
+        modifier = modifier
+            .requiredWidth(131.0.dp)
+            .requiredHeight(29.0.dp)
     )
 }
 
@@ -2360,7 +2703,9 @@ fun Class4(
             blue = 0
         ),
         content = content,
-        modifier = modifier.requiredWidth(282.0.dp).requiredHeight(257.0.dp)
+        modifier = modifier
+            .requiredWidth(282.0.dp)
+            .requiredHeight(257.0.dp)
     )
 }
 
@@ -2387,7 +2732,10 @@ fun Class2(
             blue = 0
         ),
         content = content,
-        modifier = modifier.tappable(onTap = onMainBannerTapped).requiredWidth(282.0.dp).requiredHeight(257.0.dp)
+        modifier = modifier
+            .tappable(onTap = onMainBannerTapped)
+            .requiredWidth(282.0.dp)
+            .requiredHeight(257.0.dp)
     )
 }
 
@@ -2412,7 +2760,9 @@ fun WishBanner(
     RelayContainer(
         isStructured = false,
         content = content,
-        modifier = modifier.requiredWidth(390.0.dp).requiredHeight(330.0.dp)
+        modifier = modifier
+            .requiredWidth(390.0.dp)
+            .requiredHeight(330.0.dp)
     )
 }
 
@@ -2420,7 +2770,9 @@ fun WishBanner(
 fun Rectangle64(modifier: Modifier = Modifier) {
     RelayVector(
         vector = painterResource(R.drawable.homepage_02_rectangle_64),
-        modifier = modifier.requiredWidth(218.0.dp).requiredHeight(14.0.dp)
+        modifier = modifier
+            .requiredWidth(218.0.dp)
+            .requiredHeight(14.0.dp)
     )
 }
 
@@ -2466,7 +2818,10 @@ fun Frame35(
             blue = 0
         ),
         content = content,
-        modifier = modifier.tappable(onTap = onAccountsButtonTapped).requiredWidth(211.0.dp).requiredHeight(81.0.dp)
+        modifier = modifier
+            .tappable(onTap = onAccountsButtonTapped)
+            .requiredWidth(211.0.dp)
+            .requiredHeight(81.0.dp)
     )
 }
 
@@ -2493,7 +2848,9 @@ fun DailyMission(modifier: Modifier = Modifier) {
 fun Ellipse4(modifier: Modifier = Modifier) {
     RelayVector(
         vector = painterResource(R.drawable.homepage_02_ellipse_4),
-        modifier = modifier.requiredWidth(38.0.dp).requiredHeight(38.0.dp)
+        modifier = modifier
+            .requiredWidth(38.0.dp)
+            .requiredHeight(38.0.dp)
     )
 }
 
@@ -2502,7 +2859,8 @@ fun Arrow1(modifier: Modifier = Modifier) {
     RelayVector(
         vector = painterResource(R.drawable.homepage_02_arrow_1),
         modifier = modifier
-            .requiredWidth(20.0.dp).requiredHeight(20.0.dp)
+            .requiredWidth(20.0.dp)
+            .requiredHeight(20.0.dp)
             .align(Alignment.Center)
             .align(Alignment.Center)
     )
@@ -2517,7 +2875,9 @@ fun Button1(
         isStructured = false,
         clipToParent = false,
         content = content,
-        modifier = modifier.requiredWidth(30.0.dp).requiredHeight(30.0.dp)
+        modifier = modifier
+            .requiredWidth(30.0.dp)
+            .requiredHeight(30.0.dp)
     )
 }
 
@@ -2531,7 +2891,10 @@ fun Group1(
         isStructured = false,
         clipToParent = false,
         content = content,
-        modifier = modifier.tappable(onTap = onDailyMissionButtonTapped).requiredWidth(124.0.dp).requiredHeight(88.0.dp)
+        modifier = modifier
+            .tappable(onTap = onDailyMissionButtonTapped)
+            .requiredWidth(124.0.dp)
+            .requiredHeight(88.0.dp)
     )
 }
 
@@ -2562,7 +2925,9 @@ fun Hero(
     RelayContainer(
         isStructured = false,
         content = content,
-        modifier = modifier.requiredWidth(343.0.dp).requiredHeight(99.0.dp)
+        modifier = modifier
+            .requiredWidth(343.0.dp)
+            .requiredHeight(99.0.dp)
     )
 }
 
@@ -2608,7 +2973,9 @@ fun Cup(
             blue = 0
         ),
         content = content,
-        modifier = modifier.requiredWidth(84.0.dp).requiredHeight(24.0.dp)
+        modifier = modifier
+            .requiredWidth(84.0.dp)
+            .requiredHeight(24.0.dp)
     )
 }
 
@@ -2616,7 +2983,10 @@ fun Cup(
 fun Vector15(modifier: Modifier = Modifier) {
     RelayVector(
         vector = painterResource(R.drawable.homepage_02_vector15),
-        modifier = modifier.padding(paddingValues = PaddingValues(all = 1.09375.dp)).fillMaxWidth(1.0f).fillMaxHeight(1.0f)
+        modifier = modifier
+            .padding(paddingValues = PaddingValues(all = 1.09375.dp))
+            .fillMaxWidth(1.0f)
+            .fillMaxHeight(1.0f)
     )
 }
 
@@ -2624,14 +2994,17 @@ fun Vector15(modifier: Modifier = Modifier) {
 fun Vector16(modifier: Modifier = Modifier) {
     RelayVector(
         vector = painterResource(R.drawable.homepage_02_vector16),
-        modifier = modifier.padding(
-            paddingValues = PaddingValues(
-                start = 12.03125.dp,
-                top = 24.609375.dp,
-                end = 12.03125.dp,
-                bottom = 4.921875.dp
+        modifier = modifier
+            .padding(
+                paddingValues = PaddingValues(
+                    start = 12.03125.dp,
+                    top = 24.609375.dp,
+                    end = 12.03125.dp,
+                    bottom = 4.921875.dp
+                )
             )
-        ).fillMaxWidth(1.0f).fillMaxHeight(1.0f)
+            .fillMaxWidth(1.0f)
+            .fillMaxHeight(1.0f)
     )
 }
 
@@ -2639,14 +3012,17 @@ fun Vector16(modifier: Modifier = Modifier) {
 fun Vector17(modifier: Modifier = Modifier) {
     RelayVector(
         vector = painterResource(R.drawable.homepage_02_vector17),
-        modifier = modifier.padding(
-            paddingValues = PaddingValues(
-                start = 11.2109375.dp,
-                top = 30.078125.dp,
-                end = 11.2109375.dp,
-                bottom = 4.1015625.dp
+        modifier = modifier
+            .padding(
+                paddingValues = PaddingValues(
+                    start = 11.2109375.dp,
+                    top = 30.078125.dp,
+                    end = 11.2109375.dp,
+                    bottom = 4.1015625.dp
+                )
             )
-        ).fillMaxWidth(1.0f).fillMaxHeight(1.0f)
+            .fillMaxWidth(1.0f)
+            .fillMaxHeight(1.0f)
     )
 }
 
@@ -2654,14 +3030,17 @@ fun Vector17(modifier: Modifier = Modifier) {
 fun Vector18(modifier: Modifier = Modifier) {
     RelayVector(
         vector = painterResource(R.drawable.homepage_02_vector18),
-        modifier = modifier.padding(
-            paddingValues = PaddingValues(
-                start = 14.21875.dp,
-                top = 25.9765625.dp,
-                end = 14.21875.dp,
-                bottom = 6.015625.dp
+        modifier = modifier
+            .padding(
+                paddingValues = PaddingValues(
+                    start = 14.21875.dp,
+                    top = 25.9765625.dp,
+                    end = 14.21875.dp,
+                    bottom = 6.015625.dp
+                )
             )
-        ).fillMaxWidth(1.0f).fillMaxHeight(1.0f)
+            .fillMaxWidth(1.0f)
+            .fillMaxHeight(1.0f)
     )
 }
 
@@ -2669,14 +3048,17 @@ fun Vector18(modifier: Modifier = Modifier) {
 fun Vector19(modifier: Modifier = Modifier) {
     RelayVector(
         vector = painterResource(R.drawable.homepage_02_vector19),
-        modifier = modifier.padding(
-            paddingValues = PaddingValues(
-                start = 16.078125.dp,
-                top = 18.73046875.dp,
-                end = 16.050780296325684.dp,
-                bottom = 11.7578125.dp
+        modifier = modifier
+            .padding(
+                paddingValues = PaddingValues(
+                    start = 16.078125.dp,
+                    top = 18.73046875.dp,
+                    end = 16.050780296325684.dp,
+                    bottom = 11.7578125.dp
+                )
             )
-        ).fillMaxWidth(1.0f).fillMaxHeight(1.0f)
+            .fillMaxWidth(1.0f)
+            .fillMaxHeight(1.0f)
     )
 }
 
@@ -2684,14 +3066,17 @@ fun Vector19(modifier: Modifier = Modifier) {
 fun Vector20(modifier: Modifier = Modifier) {
     RelayVector(
         vector = painterResource(R.drawable.homepage_02_vector20),
-        modifier = modifier.padding(
-            paddingValues = PaddingValues(
-                start = 18.1015625.dp,
-                top = 18.73046875.dp,
-                end = 16.078125.dp,
-                bottom = 11.7578125.dp
+        modifier = modifier
+            .padding(
+                paddingValues = PaddingValues(
+                    start = 18.1015625.dp,
+                    top = 18.73046875.dp,
+                    end = 16.078125.dp,
+                    bottom = 11.7578125.dp
+                )
             )
-        ).fillMaxWidth(1.0f).fillMaxHeight(1.0f)
+            .fillMaxWidth(1.0f)
+            .fillMaxHeight(1.0f)
     )
 }
 
@@ -2699,14 +3084,17 @@ fun Vector20(modifier: Modifier = Modifier) {
 fun Vector21(modifier: Modifier = Modifier) {
     RelayVector(
         vector = painterResource(R.drawable.homepage_02_vector21),
-        modifier = modifier.padding(
-            paddingValues = PaddingValues(
-                start = 13.3984375.dp,
-                top = 22.96875.dp,
-                end = 13.3984375.dp,
-                bottom = 10.390625.dp
+        modifier = modifier
+            .padding(
+                paddingValues = PaddingValues(
+                    start = 13.3984375.dp,
+                    top = 22.96875.dp,
+                    end = 13.3984375.dp,
+                    bottom = 10.390625.dp
+                )
             )
-        ).fillMaxWidth(1.0f).fillMaxHeight(1.0f)
+            .fillMaxWidth(1.0f)
+            .fillMaxHeight(1.0f)
     )
 }
 
@@ -2714,14 +3102,17 @@ fun Vector21(modifier: Modifier = Modifier) {
 fun Vector22(modifier: Modifier = Modifier) {
     RelayVector(
         vector = painterResource(R.drawable.homepage_02_vector22),
-        modifier = modifier.padding(
-            paddingValues = PaddingValues(
-                start = 18.59375.dp,
-                top = 22.96875.dp,
-                end = 13.3984375.dp,
-                bottom = 10.390625.dp
+        modifier = modifier
+            .padding(
+                paddingValues = PaddingValues(
+                    start = 18.59375.dp,
+                    top = 22.96875.dp,
+                    end = 13.3984375.dp,
+                    bottom = 10.390625.dp
+                )
             )
-        ).fillMaxWidth(1.0f).fillMaxHeight(1.0f)
+            .fillMaxWidth(1.0f)
+            .fillMaxHeight(1.0f)
     )
 }
 
@@ -2729,14 +3120,17 @@ fun Vector22(modifier: Modifier = Modifier) {
 fun Vector23(modifier: Modifier = Modifier) {
     RelayVector(
         vector = painterResource(R.drawable.homepage_02_vector23),
-        modifier = modifier.padding(
-            paddingValues = PaddingValues(
-                start = 14.765625.dp,
-                top = 19.4140625.dp,
-                end = 14.765625.dp,
-                bottom = 13.9453125.dp
+        modifier = modifier
+            .padding(
+                paddingValues = PaddingValues(
+                    start = 14.765625.dp,
+                    top = 19.4140625.dp,
+                    end = 14.765625.dp,
+                    bottom = 13.9453125.dp
+                )
             )
-        ).fillMaxWidth(1.0f).fillMaxHeight(1.0f)
+            .fillMaxWidth(1.0f)
+            .fillMaxHeight(1.0f)
     )
 }
 
@@ -2744,14 +3138,17 @@ fun Vector23(modifier: Modifier = Modifier) {
 fun Vector24(modifier: Modifier = Modifier) {
     RelayVector(
         vector = painterResource(R.drawable.homepage_02_vector24),
-        modifier = modifier.padding(
-            paddingValues = PaddingValues(
-                start = 18.07421875.dp,
-                top = 19.4140625.dp,
-                end = 14.765624523162842.dp,
-                bottom = 13.9453125.dp
+        modifier = modifier
+            .padding(
+                paddingValues = PaddingValues(
+                    start = 18.07421875.dp,
+                    top = 19.4140625.dp,
+                    end = 14.765624523162842.dp,
+                    bottom = 13.9453125.dp
+                )
             )
-        ).fillMaxWidth(1.0f).fillMaxHeight(1.0f)
+            .fillMaxWidth(1.0f)
+            .fillMaxHeight(1.0f)
     )
 }
 
@@ -2759,14 +3156,17 @@ fun Vector24(modifier: Modifier = Modifier) {
 fun Vector25(modifier: Modifier = Modifier) {
     RelayVector(
         vector = painterResource(R.drawable.homepage_02_vector25),
-        modifier = modifier.padding(
-            paddingValues = PaddingValues(
-                start = 12.8515625.dp,
-                top = 24.0625.dp,
-                end = 12.8515625.dp,
-                bottom = 10.390625.dp
+        modifier = modifier
+            .padding(
+                paddingValues = PaddingValues(
+                    start = 12.8515625.dp,
+                    top = 24.0625.dp,
+                    end = 12.8515625.dp,
+                    bottom = 10.390625.dp
+                )
             )
-        ).fillMaxWidth(1.0f).fillMaxHeight(1.0f)
+            .fillMaxWidth(1.0f)
+            .fillMaxHeight(1.0f)
     )
 }
 
@@ -2774,14 +3174,17 @@ fun Vector25(modifier: Modifier = Modifier) {
 fun Vector26(modifier: Modifier = Modifier) {
     RelayVector(
         vector = painterResource(R.drawable.homepage_02_vector26),
-        modifier = modifier.padding(
-            paddingValues = PaddingValues(
-                start = 20.234375.dp,
-                top = 24.0625.dp,
-                end = 12.8515625.dp,
-                bottom = 10.390625.dp
+        modifier = modifier
+            .padding(
+                paddingValues = PaddingValues(
+                    start = 20.234375.dp,
+                    top = 24.0625.dp,
+                    end = 12.8515625.dp,
+                    bottom = 10.390625.dp
+                )
             )
-        ).fillMaxWidth(1.0f).fillMaxHeight(1.0f)
+            .fillMaxWidth(1.0f)
+            .fillMaxHeight(1.0f)
     )
 }
 
@@ -2789,14 +3192,17 @@ fun Vector26(modifier: Modifier = Modifier) {
 fun Vector27(modifier: Modifier = Modifier) {
     RelayVector(
         vector = painterResource(R.drawable.homepage_02_vector27),
-        modifier = modifier.padding(
-            paddingValues = PaddingValues(
-                start = 14.21875.dp,
-                top = 18.8671875.dp,
-                end = 14.21875.dp,
-                bottom = 14.765625.dp
+        modifier = modifier
+            .padding(
+                paddingValues = PaddingValues(
+                    start = 14.21875.dp,
+                    top = 18.8671875.dp,
+                    end = 14.21875.dp,
+                    bottom = 14.765625.dp
+                )
             )
-        ).fillMaxWidth(1.0f).fillMaxHeight(1.0f)
+            .fillMaxWidth(1.0f)
+            .fillMaxHeight(1.0f)
     )
 }
 
@@ -2804,14 +3210,17 @@ fun Vector27(modifier: Modifier = Modifier) {
 fun Vector28(modifier: Modifier = Modifier) {
     RelayVector(
         vector = painterResource(R.drawable.homepage_02_vector28),
-        modifier = modifier.padding(
-            paddingValues = PaddingValues(
-                start = 14.21875.dp,
-                top = 18.8671875.dp,
-                end = 14.21875.dp,
-                bottom = 14.765625.dp
+        modifier = modifier
+            .padding(
+                paddingValues = PaddingValues(
+                    start = 14.21875.dp,
+                    top = 18.8671875.dp,
+                    end = 14.21875.dp,
+                    bottom = 14.765625.dp
+                )
             )
-        ).fillMaxWidth(1.0f).fillMaxHeight(1.0f)
+            .fillMaxWidth(1.0f)
+            .fillMaxHeight(1.0f)
     )
 }
 
@@ -2819,14 +3228,17 @@ fun Vector28(modifier: Modifier = Modifier) {
 fun Vector29(modifier: Modifier = Modifier) {
     RelayVector(
         vector = painterResource(R.drawable.homepage_02_vector29),
-        modifier = modifier.padding(
-            paddingValues = PaddingValues(
-                start = 18.8671875.dp,
-                top = 18.8671875.dp,
-                end = 14.21875.dp,
-                bottom = 14.765625.dp
+        modifier = modifier
+            .padding(
+                paddingValues = PaddingValues(
+                    start = 18.8671875.dp,
+                    top = 18.8671875.dp,
+                    end = 14.21875.dp,
+                    bottom = 14.765625.dp
+                )
             )
-        ).fillMaxWidth(1.0f).fillMaxHeight(1.0f)
+            .fillMaxWidth(1.0f)
+            .fillMaxHeight(1.0f)
     )
 }
 
@@ -2834,14 +3246,17 @@ fun Vector29(modifier: Modifier = Modifier) {
 fun Vector30(modifier: Modifier = Modifier) {
     RelayVector(
         vector = painterResource(R.drawable.homepage_02_vector30),
-        modifier = modifier.padding(
-            paddingValues = PaddingValues(
-                start = 21.328125.dp,
-                top = 10.1171875.dp,
-                end = 8.4765625.dp,
-                bottom = 19.4140625.dp
+        modifier = modifier
+            .padding(
+                paddingValues = PaddingValues(
+                    start = 21.328125.dp,
+                    top = 10.1171875.dp,
+                    end = 8.4765625.dp,
+                    bottom = 19.4140625.dp
+                )
             )
-        ).fillMaxWidth(1.0f).fillMaxHeight(1.0f)
+            .fillMaxWidth(1.0f)
+            .fillMaxHeight(1.0f)
     )
 }
 
@@ -2849,14 +3264,17 @@ fun Vector30(modifier: Modifier = Modifier) {
 fun Vector31(modifier: Modifier = Modifier) {
     RelayVector(
         vector = painterResource(R.drawable.homepage_02_vector31),
-        modifier = modifier.padding(
-            paddingValues = PaddingValues(
-                start = 8.4765625.dp,
-                top = 10.1171875.dp,
-                end = 21.328125.dp,
-                bottom = 19.4140625.dp
+        modifier = modifier
+            .padding(
+                paddingValues = PaddingValues(
+                    start = 8.4765625.dp,
+                    top = 10.1171875.dp,
+                    end = 21.328125.dp,
+                    bottom = 19.4140625.dp
+                )
             )
-        ).fillMaxWidth(1.0f).fillMaxHeight(1.0f)
+            .fillMaxWidth(1.0f)
+            .fillMaxHeight(1.0f)
     )
 }
 
@@ -2864,14 +3282,17 @@ fun Vector31(modifier: Modifier = Modifier) {
 fun Vector32(modifier: Modifier = Modifier) {
     RelayVector(
         vector = painterResource(R.drawable.homepage_02_vector32),
-        modifier = modifier.padding(
-            paddingValues = PaddingValues(
-                start = 12.03125.dp,
-                top = 7.9296875.dp,
-                end = 12.03125.dp,
-                bottom = 15.3125.dp
+        modifier = modifier
+            .padding(
+                paddingValues = PaddingValues(
+                    start = 12.03125.dp,
+                    top = 7.9296875.dp,
+                    end = 12.03125.dp,
+                    bottom = 15.3125.dp
+                )
             )
-        ).fillMaxWidth(1.0f).fillMaxHeight(1.0f)
+            .fillMaxWidth(1.0f)
+            .fillMaxHeight(1.0f)
     )
 }
 
@@ -2879,14 +3300,17 @@ fun Vector32(modifier: Modifier = Modifier) {
 fun Vector33(modifier: Modifier = Modifier) {
     RelayVector(
         vector = painterResource(R.drawable.homepage_02_vector33),
-        modifier = modifier.padding(
-            paddingValues = PaddingValues(
-                start = 13.671875.dp,
-                top = 8.75.dp,
-                end = 21.328125.dp,
-                bottom = 20.78125.dp
+        modifier = modifier
+            .padding(
+                paddingValues = PaddingValues(
+                    start = 13.671875.dp,
+                    top = 8.75.dp,
+                    end = 21.328125.dp,
+                    bottom = 20.78125.dp
+                )
             )
-        ).fillMaxWidth(1.0f).fillMaxHeight(1.0f)
+            .fillMaxWidth(1.0f)
+            .fillMaxHeight(1.0f)
     )
 }
 
@@ -2894,14 +3318,17 @@ fun Vector33(modifier: Modifier = Modifier) {
 fun Vector34(modifier: Modifier = Modifier) {
     RelayVector(
         vector = painterResource(R.drawable.homepage_02_vector34),
-        modifier = modifier.padding(
-            paddingValues = PaddingValues(
-                start = 18.45703125.dp,
-                top = 7.9296875.dp,
-                end = 12.03125.dp,
-                bottom = 15.3125.dp
+        modifier = modifier
+            .padding(
+                paddingValues = PaddingValues(
+                    start = 18.45703125.dp,
+                    top = 7.9296875.dp,
+                    end = 12.03125.dp,
+                    bottom = 15.3125.dp
+                )
             )
-        ).fillMaxWidth(1.0f).fillMaxHeight(1.0f)
+            .fillMaxWidth(1.0f)
+            .fillMaxHeight(1.0f)
     )
 }
 
@@ -2909,14 +3336,17 @@ fun Vector34(modifier: Modifier = Modifier) {
 fun Vector35(modifier: Modifier = Modifier) {
     RelayVector(
         vector = painterResource(R.drawable.homepage_02_vector35),
-        modifier = modifier.padding(
-            paddingValues = PaddingValues(
-                start = 11.2109375.dp,
-                top = 7.9296875.dp,
-                end = 11.2109375.dp,
-                bottom = 26.25.dp
+        modifier = modifier
+            .padding(
+                paddingValues = PaddingValues(
+                    start = 11.2109375.dp,
+                    top = 7.9296875.dp,
+                    end = 11.2109375.dp,
+                    bottom = 26.25.dp
+                )
             )
-        ).fillMaxWidth(1.0f).fillMaxHeight(1.0f)
+            .fillMaxWidth(1.0f)
+            .fillMaxHeight(1.0f)
     )
 }
 
@@ -2924,14 +3354,17 @@ fun Vector35(modifier: Modifier = Modifier) {
 fun Vector36(modifier: Modifier = Modifier) {
     RelayVector(
         vector = painterResource(R.drawable.homepage_02_vector36),
-        modifier = modifier.padding(
-            paddingValues = PaddingValues(
-                start = 21.6015625.dp,
-                top = 7.9296875.dp,
-                end = 11.2109375.dp,
-                bottom = 26.25.dp
+        modifier = modifier
+            .padding(
+                paddingValues = PaddingValues(
+                    start = 21.6015625.dp,
+                    top = 7.9296875.dp,
+                    end = 11.2109375.dp,
+                    bottom = 26.25.dp
+                )
             )
-        ).fillMaxWidth(1.0f).fillMaxHeight(1.0f)
+            .fillMaxWidth(1.0f)
+            .fillMaxHeight(1.0f)
     )
 }
 
@@ -2939,14 +3372,17 @@ fun Vector36(modifier: Modifier = Modifier) {
 fun Vector37(modifier: Modifier = Modifier) {
     RelayVector(
         vector = painterResource(R.drawable.homepage_02_vector37),
-        modifier = modifier.padding(
-            paddingValues = PaddingValues(
-                start = 10.390625.dp,
-                top = 6.8359375.dp,
-                end = 10.390625.dp,
-                bottom = 27.0703125.dp
+        modifier = modifier
+            .padding(
+                paddingValues = PaddingValues(
+                    start = 10.390625.dp,
+                    top = 6.8359375.dp,
+                    end = 10.390625.dp,
+                    bottom = 27.0703125.dp
+                )
             )
-        ).fillMaxWidth(1.0f).fillMaxHeight(1.0f)
+            .fillMaxWidth(1.0f)
+            .fillMaxHeight(1.0f)
     )
 }
 
@@ -2954,14 +3390,17 @@ fun Vector37(modifier: Modifier = Modifier) {
 fun Vector38(modifier: Modifier = Modifier) {
     RelayVector(
         vector = painterResource(R.drawable.homepage_02_vector38),
-        modifier = modifier.padding(
-            paddingValues = PaddingValues(
-                start = 22.421875.dp,
-                top = 6.8359375.dp,
-                end = 10.390625.dp,
-                bottom = 27.0703125.dp
+        modifier = modifier
+            .padding(
+                paddingValues = PaddingValues(
+                    start = 22.421875.dp,
+                    top = 6.8359375.dp,
+                    end = 10.390625.dp,
+                    bottom = 27.0703125.dp
+                )
             )
-        ).fillMaxWidth(1.0f).fillMaxHeight(1.0f)
+            .fillMaxWidth(1.0f)
+            .fillMaxHeight(1.0f)
     )
 }
 
@@ -2969,14 +3408,17 @@ fun Vector38(modifier: Modifier = Modifier) {
 fun Vector39(modifier: Modifier = Modifier) {
     RelayVector(
         vector = painterResource(R.drawable.homepage_02_vector39),
-        modifier = modifier.padding(
-            paddingValues = PaddingValues(
-                start = 13.671875.dp,
-                top = 15.421875.dp,
-                end = 21.328125.dp,
-                bottom = 18.949218928813934.dp
+        modifier = modifier
+            .padding(
+                paddingValues = PaddingValues(
+                    start = 13.671875.dp,
+                    top = 15.421875.dp,
+                    end = 21.328125.dp,
+                    bottom = 18.949218928813934.dp
+                )
             )
-        ).fillMaxWidth(1.0f).fillMaxHeight(1.0f)
+            .fillMaxWidth(1.0f)
+            .fillMaxHeight(1.0f)
     )
 }
 
@@ -2984,14 +3426,17 @@ fun Vector39(modifier: Modifier = Modifier) {
 fun Vector40(modifier: Modifier = Modifier) {
     RelayVector(
         vector = painterResource(R.drawable.homepage_02_vector40),
-        modifier = modifier.padding(
-            paddingValues = PaddingValues(
-                start = 12.16796875.dp,
-                top = 5.359375.dp,
-                end = 19.8515625.dp,
-                bottom = 26.660155773162842.dp
+        modifier = modifier
+            .padding(
+                paddingValues = PaddingValues(
+                    start = 12.16796875.dp,
+                    top = 5.359375.dp,
+                    end = 19.8515625.dp,
+                    bottom = 26.660155773162842.dp
+                )
             )
-        ).fillMaxWidth(1.0f).fillMaxHeight(1.0f)
+            .fillMaxWidth(1.0f)
+            .fillMaxHeight(1.0f)
     )
 }
 
@@ -2999,14 +3444,17 @@ fun Vector40(modifier: Modifier = Modifier) {
 fun Vector41(modifier: Modifier = Modifier) {
     RelayVector(
         vector = painterResource(R.drawable.homepage_02_vector41),
-        modifier = modifier.padding(
-            paddingValues = PaddingValues(
-                start = 15.16259765625.dp,
-                top = 11.087890625.dp,
-                end = 15.189902782440186.dp,
-                bottom = 19.4444637298584.dp
+        modifier = modifier
+            .padding(
+                paddingValues = PaddingValues(
+                    start = 15.16259765625.dp,
+                    top = 11.087890625.dp,
+                    end = 15.189902782440186.dp,
+                    bottom = 19.4444637298584.dp
+                )
             )
-        ).fillMaxWidth(1.0f).fillMaxHeight(1.0f)
+            .fillMaxWidth(1.0f)
+            .fillMaxHeight(1.0f)
     )
 }
 
@@ -3018,7 +3466,9 @@ fun Cup1(
     RelayContainer(
         isStructured = false,
         content = content,
-        modifier = modifier.requiredWidth(35.0.dp).requiredHeight(35.0.dp)
+        modifier = modifier
+            .requiredWidth(35.0.dp)
+            .requiredHeight(35.0.dp)
     )
 }
 
@@ -3032,7 +3482,10 @@ fun Rank(
         isStructured = false,
         clipToParent = false,
         content = content,
-        modifier = modifier.tappable(onTap = onRankButtonTapped).requiredWidth(102.0.dp).requiredHeight(35.0.dp)
+        modifier = modifier
+            .tappable(onTap = onRankButtonTapped)
+            .requiredWidth(102.0.dp)
+            .requiredHeight(35.0.dp)
     )
 }
 
@@ -3053,14 +3506,17 @@ fun Abrabra(modifier: Modifier = Modifier) {
 fun Vector42(modifier: Modifier = Modifier) {
     RelayVector(
         vector = painterResource(R.drawable.homepage_02_vector42),
-        modifier = modifier.padding(
-            paddingValues = PaddingValues(
-                start = 8.89776611328125.dp,
-                top = 4.177520751953125.dp,
-                end = 8.561704635620117.dp,
-                bottom = 8.968406677246094.dp
+        modifier = modifier
+            .padding(
+                paddingValues = PaddingValues(
+                    start = 8.89776611328125.dp,
+                    top = 4.177520751953125.dp,
+                    end = 8.561704635620117.dp,
+                    bottom = 8.968406677246094.dp
+                )
             )
-        ).fillMaxWidth(1.0f).fillMaxHeight(1.0f)
+            .fillMaxWidth(1.0f)
+            .fillMaxHeight(1.0f)
     )
 }
 
@@ -3068,7 +3524,9 @@ fun Vector42(modifier: Modifier = Modifier) {
 fun Vector43(modifier: Modifier = Modifier) {
     RelayVector(
         vector = painterResource(R.drawable.homepage_02_vector43),
-        modifier = modifier.fillMaxWidth(1.0f).fillMaxHeight(1.0f)
+        modifier = modifier
+            .fillMaxWidth(1.0f)
+            .fillMaxHeight(1.0f)
     )
 }
 
@@ -3076,14 +3534,17 @@ fun Vector43(modifier: Modifier = Modifier) {
 fun Vector44(modifier: Modifier = Modifier) {
     RelayVector(
         vector = painterResource(R.drawable.homepage_02_vector44),
-        modifier = modifier.padding(
-            paddingValues = PaddingValues(
-                start = 4.2315673828125.dp,
-                top = 19.16301727294922.dp,
-                end = 4.3703765869140625.dp,
-                bottom = 0.0001678466796875.dp
+        modifier = modifier
+            .padding(
+                paddingValues = PaddingValues(
+                    start = 4.2315673828125.dp,
+                    top = 19.16301727294922.dp,
+                    end = 4.3703765869140625.dp,
+                    bottom = 0.0001678466796875.dp
+                )
             )
-        ).fillMaxWidth(1.0f).fillMaxHeight(1.0f)
+            .fillMaxWidth(1.0f)
+            .fillMaxHeight(1.0f)
     )
 }
 
@@ -3091,14 +3552,17 @@ fun Vector44(modifier: Modifier = Modifier) {
 fun Vector45(modifier: Modifier = Modifier) {
     RelayVector(
         vector = painterResource(R.drawable.homepage_02_vector45),
-        modifier = modifier.padding(
-            paddingValues = PaddingValues(
-                start = 4.2315673828125.dp,
-                top = 23.332611083984375.dp,
-                end = 4.3703765869140625.dp,
-                bottom = 0.00017309188842773438.dp
+        modifier = modifier
+            .padding(
+                paddingValues = PaddingValues(
+                    start = 4.2315673828125.dp,
+                    top = 23.332611083984375.dp,
+                    end = 4.3703765869140625.dp,
+                    bottom = 0.00017309188842773438.dp
+                )
             )
-        ).fillMaxWidth(1.0f).fillMaxHeight(1.0f)
+            .fillMaxWidth(1.0f)
+            .fillMaxHeight(1.0f)
     )
 }
 
@@ -3106,7 +3570,9 @@ fun Vector45(modifier: Modifier = Modifier) {
 fun Vector53(modifier: Modifier = Modifier) {
     RelayVector(
         vector = painterResource(R.drawable.homepage_02_vector53),
-        modifier = modifier.fillMaxWidth(1.0f).fillMaxHeight(1.0f)
+        modifier = modifier
+            .fillMaxWidth(1.0f)
+            .fillMaxHeight(1.0f)
     )
 }
 
@@ -3119,7 +3585,9 @@ fun A(
         isStructured = false,
         clipToParent = false,
         content = content,
-        modifier = modifier.fillMaxWidth(1.0f).fillMaxHeight(1.0f)
+        modifier = modifier
+            .fillMaxWidth(1.0f)
+            .fillMaxHeight(1.0f)
     )
 }
 
@@ -3127,14 +3595,17 @@ fun A(
 fun Vector54(modifier: Modifier = Modifier) {
     RelayVector(
         vector = painterResource(R.drawable.homepage_02_vector54),
-        modifier = modifier.padding(
-            paddingValues = PaddingValues(
-                start = 0.0.dp,
-                top = 0.14318084716796875.dp,
-                end = 15.75291395187378.dp,
-                bottom = 5.036615967750549.dp
+        modifier = modifier
+            .padding(
+                paddingValues = PaddingValues(
+                    start = 0.0.dp,
+                    top = 0.14318084716796875.dp,
+                    end = 15.75291395187378.dp,
+                    bottom = 5.036615967750549.dp
+                )
             )
-        ).fillMaxWidth(1.0f).fillMaxHeight(1.0f)
+            .fillMaxWidth(1.0f)
+            .fillMaxHeight(1.0f)
     )
 }
 
@@ -3142,14 +3613,17 @@ fun Vector54(modifier: Modifier = Modifier) {
 fun Vector55(modifier: Modifier = Modifier) {
     RelayVector(
         vector = painterResource(R.drawable.homepage_02_vector55),
-        modifier = modifier.padding(
-            paddingValues = PaddingValues(
-                start = 0.7529296875.dp,
-                top = 3.23272705078125.dp,
-                end = 14.99998426437378.dp,
-                bottom = 1.947069764137268.dp
+        modifier = modifier
+            .padding(
+                paddingValues = PaddingValues(
+                    start = 0.7529296875.dp,
+                    top = 3.23272705078125.dp,
+                    end = 14.99998426437378.dp,
+                    bottom = 1.947069764137268.dp
+                )
             )
-        ).fillMaxWidth(1.0f).fillMaxHeight(1.0f)
+            .fillMaxWidth(1.0f)
+            .fillMaxHeight(1.0f)
     )
 }
 
@@ -3157,14 +3631,17 @@ fun Vector55(modifier: Modifier = Modifier) {
 fun Vector56(modifier: Modifier = Modifier) {
     RelayVector(
         vector = painterResource(R.drawable.homepage_02_vector56),
-        modifier = modifier.padding(
-            paddingValues = PaddingValues(
-                start = 4.333984375.dp,
-                top = 3.3897857666015625.dp,
-                end = 11.418928861618042.dp,
-                bottom = 1.7900091409683228.dp
+        modifier = modifier
+            .padding(
+                paddingValues = PaddingValues(
+                    start = 4.333984375.dp,
+                    top = 3.3897857666015625.dp,
+                    end = 11.418928861618042.dp,
+                    bottom = 1.7900091409683228.dp
+                )
             )
-        ).fillMaxWidth(1.0f).fillMaxHeight(1.0f)
+            .fillMaxWidth(1.0f)
+            .fillMaxHeight(1.0f)
     )
 }
 
@@ -3172,14 +3649,17 @@ fun Vector56(modifier: Modifier = Modifier) {
 fun Vector57(modifier: Modifier = Modifier) {
     RelayVector(
         vector = painterResource(R.drawable.homepage_02_vector57),
-        modifier = modifier.padding(
-            paddingValues = PaddingValues(
-                start = 8.10772705078125.dp,
-                top = 5.179801940917969.dp,
-                end = 7.645186185836792.dp,
-                bottom = 0.0.dp
+        modifier = modifier
+            .padding(
+                paddingValues = PaddingValues(
+                    start = 8.10772705078125.dp,
+                    top = 5.179801940917969.dp,
+                    end = 7.645186185836792.dp,
+                    bottom = 0.0.dp
+                )
             )
-        ).fillMaxWidth(1.0f).fillMaxHeight(1.0f)
+            .fillMaxWidth(1.0f)
+            .fillMaxHeight(1.0f)
     )
 }
 
@@ -3187,14 +3667,17 @@ fun Vector57(modifier: Modifier = Modifier) {
 fun Vector58(modifier: Modifier = Modifier) {
     RelayVector(
         vector = painterResource(R.drawable.homepage_02_vector58),
-        modifier = modifier.padding(
-            paddingValues = PaddingValues(
-                start = 11.8990478515625.dp,
-                top = 3.1455307006835938.dp,
-                end = 3.8538671731948853.dp,
-                bottom = 2.0342642068862915.dp
+        modifier = modifier
+            .padding(
+                paddingValues = PaddingValues(
+                    start = 11.8990478515625.dp,
+                    top = 3.1455307006835938.dp,
+                    end = 3.8538671731948853.dp,
+                    bottom = 2.0342642068862915.dp
+                )
             )
-        ).fillMaxWidth(1.0f).fillMaxHeight(1.0f)
+            .fillMaxWidth(1.0f)
+            .fillMaxHeight(1.0f)
     )
 }
 
@@ -3202,14 +3685,17 @@ fun Vector58(modifier: Modifier = Modifier) {
 fun Vector59(modifier: Modifier = Modifier) {
     RelayVector(
         vector = painterResource(R.drawable.homepage_02_vector59),
-        modifier = modifier.padding(
-            paddingValues = PaddingValues(
-                start = 15.498046875.dp,
-                top = 3.2252960205078125.dp,
-                end = 0.254866361618042.dp,
-                bottom = 1.9545007944107056.dp
+        modifier = modifier
+            .padding(
+                paddingValues = PaddingValues(
+                    start = 15.498046875.dp,
+                    top = 3.2252960205078125.dp,
+                    end = 0.254866361618042.dp,
+                    bottom = 1.9545007944107056.dp
+                )
             )
-        ).fillMaxWidth(1.0f).fillMaxHeight(1.0f)
+            .fillMaxWidth(1.0f)
+            .fillMaxHeight(1.0f)
     )
 }
 
@@ -3217,14 +3703,17 @@ fun Vector59(modifier: Modifier = Modifier) {
 fun Vector60(modifier: Modifier = Modifier) {
     RelayVector(
         vector = painterResource(R.drawable.homepage_02_vector60),
-        modifier = modifier.padding(
-            paddingValues = PaddingValues(
-                start = 15.7529296875.dp,
-                top = 0.0.dp,
-                end = 0.0.dp,
-                bottom = 5.179794907569885.dp
+        modifier = modifier
+            .padding(
+                paddingValues = PaddingValues(
+                    start = 15.7529296875.dp,
+                    top = 0.0.dp,
+                    end = 0.0.dp,
+                    bottom = 5.179794907569885.dp
+                )
             )
-        ).fillMaxWidth(1.0f).fillMaxHeight(1.0f)
+            .fillMaxWidth(1.0f)
+            .fillMaxHeight(1.0f)
     )
 }
 
@@ -3237,14 +3726,17 @@ fun Group(
         isStructured = false,
         clipToParent = false,
         content = content,
-        modifier = modifier.padding(
-            paddingValues = PaddingValues(
-                start = 2.3524169921875.dp,
-                top = 0.9408340454101562.dp,
-                end = 1.777191162109375.dp,
-                bottom = 0.0.dp
+        modifier = modifier
+            .padding(
+                paddingValues = PaddingValues(
+                    start = 2.3524169921875.dp,
+                    top = 0.9408340454101562.dp,
+                    end = 1.777191162109375.dp,
+                    bottom = 0.0.dp
+                )
             )
-        ).fillMaxWidth(1.0f).fillMaxHeight(1.0f)
+            .fillMaxWidth(1.0f)
+            .fillMaxHeight(1.0f)
     )
 }
 
@@ -3257,14 +3749,17 @@ fun ClipPathGroup(
         isStructured = false,
         clipToParent = false,
         content = content,
-        modifier = modifier.padding(
-            paddingValues = PaddingValues(
-                start = 4.2315673828125.dp,
-                top = 23.332611083984375.dp,
-                end = 4.3703765869140625.dp,
-                bottom = 0.00017309188842773438.dp
+        modifier = modifier
+            .padding(
+                paddingValues = PaddingValues(
+                    start = 4.2315673828125.dp,
+                    top = 23.332611083984375.dp,
+                    end = 4.3703765869140625.dp,
+                    bottom = 0.00017309188842773438.dp
+                )
             )
-        ).fillMaxWidth(1.0f).fillMaxHeight(1.0f)
+            .fillMaxWidth(1.0f)
+            .fillMaxHeight(1.0f)
     )
 }
 
@@ -3272,14 +3767,17 @@ fun ClipPathGroup(
 fun Vector46(modifier: Modifier = Modifier) {
     RelayVector(
         vector = painterResource(R.drawable.homepage_02_vector46),
-        modifier = modifier.padding(
-            paddingValues = PaddingValues(
-                start = 18.2823486328125.dp,
-                top = 17.021743774414062.dp,
-                end = 2.5859460830688477.dp,
-                bottom = 7.237176418304443.dp
+        modifier = modifier
+            .padding(
+                paddingValues = PaddingValues(
+                    start = 18.2823486328125.dp,
+                    top = 17.021743774414062.dp,
+                    end = 2.5859460830688477.dp,
+                    bottom = 7.237176418304443.dp
+                )
             )
-        ).fillMaxWidth(1.0f).fillMaxHeight(1.0f)
+            .fillMaxWidth(1.0f)
+            .fillMaxHeight(1.0f)
     )
 }
 
@@ -3287,14 +3785,17 @@ fun Vector46(modifier: Modifier = Modifier) {
 fun Vector47(modifier: Modifier = Modifier) {
     RelayVector(
         vector = painterResource(R.drawable.homepage_02_vector47),
-        modifier = modifier.padding(
-            paddingValues = PaddingValues(
-                start = 11.32257080078125.dp,
-                top = 19.379501342773438.dp,
-                end = 10.596769332885742.dp,
-                bottom = 5.687982082366943.dp
+        modifier = modifier
+            .padding(
+                paddingValues = PaddingValues(
+                    start = 11.32257080078125.dp,
+                    top = 19.379501342773438.dp,
+                    end = 10.596769332885742.dp,
+                    bottom = 5.687982082366943.dp
+                )
             )
-        ).fillMaxWidth(1.0f).fillMaxHeight(1.0f)
+            .fillMaxWidth(1.0f)
+            .fillMaxHeight(1.0f)
     )
 }
 
@@ -3302,7 +3803,9 @@ fun Vector47(modifier: Modifier = Modifier) {
 fun Vector61(modifier: Modifier = Modifier) {
     RelayVector(
         vector = painterResource(R.drawable.homepage_02_vector61),
-        modifier = modifier.fillMaxWidth(1.0f).fillMaxHeight(1.0f)
+        modifier = modifier
+            .fillMaxWidth(1.0f)
+            .fillMaxHeight(1.0f)
     )
 }
 
@@ -3315,7 +3818,9 @@ fun B(
         isStructured = false,
         clipToParent = false,
         content = content,
-        modifier = modifier.fillMaxWidth(1.0f).fillMaxHeight(1.0f)
+        modifier = modifier
+            .fillMaxWidth(1.0f)
+            .fillMaxHeight(1.0f)
     )
 }
 
@@ -3323,7 +3828,9 @@ fun B(
 fun Vector62(modifier: Modifier = Modifier) {
     RelayVector(
         vector = painterResource(R.drawable.homepage_02_vector62),
-        modifier = modifier.fillMaxWidth(1.0f).fillMaxHeight(1.0f)
+        modifier = modifier
+            .fillMaxWidth(1.0f)
+            .fillMaxHeight(1.0f)
     )
 }
 
@@ -3336,14 +3843,17 @@ fun Group1(
         isStructured = false,
         clipToParent = false,
         content = content,
-        modifier = modifier.padding(
-            paddingValues = PaddingValues(
-                start = 0.42303466796875.dp,
-                top = 0.0.dp,
-                end = 0.0.dp,
-                bottom = 1.374589443206787.dp
+        modifier = modifier
+            .padding(
+                paddingValues = PaddingValues(
+                    start = 0.42303466796875.dp,
+                    top = 0.0.dp,
+                    end = 0.0.dp,
+                    bottom = 1.374589443206787.dp
+                )
             )
-        ).fillMaxWidth(1.0f).fillMaxHeight(1.0f)
+            .fillMaxWidth(1.0f)
+            .fillMaxHeight(1.0f)
     )
 }
 
@@ -3356,14 +3866,17 @@ fun ClipPathGroup1(
         isStructured = false,
         clipToParent = false,
         content = content,
-        modifier = modifier.padding(
-            paddingValues = PaddingValues(
-                start = 11.32257080078125.dp,
-                top = 19.379501342773438.dp,
-                end = 10.596769332885742.dp,
-                bottom = 5.687982082366943.dp
+        modifier = modifier
+            .padding(
+                paddingValues = PaddingValues(
+                    start = 11.32257080078125.dp,
+                    top = 19.379501342773438.dp,
+                    end = 10.596769332885742.dp,
+                    bottom = 5.687982082366943.dp
+                )
             )
-        ).fillMaxWidth(1.0f).fillMaxHeight(1.0f)
+            .fillMaxWidth(1.0f)
+            .fillMaxHeight(1.0f)
     )
 }
 
@@ -3371,14 +3884,17 @@ fun ClipPathGroup1(
 fun Vector48(modifier: Modifier = Modifier) {
     RelayVector(
         vector = painterResource(R.drawable.homepage_02_vector48),
-        modifier = modifier.padding(
-            paddingValues = PaddingValues(
-                start = 8.6163330078125.dp,
-                top = 11.980667114257812.dp,
-                end = 8.219209671020508.dp,
-                bottom = 14.978997230529785.dp
+        modifier = modifier
+            .padding(
+                paddingValues = PaddingValues(
+                    start = 8.6163330078125.dp,
+                    top = 11.980667114257812.dp,
+                    end = 8.219209671020508.dp,
+                    bottom = 14.978997230529785.dp
+                )
             )
-        ).fillMaxWidth(1.0f).fillMaxHeight(1.0f)
+            .fillMaxWidth(1.0f)
+            .fillMaxHeight(1.0f)
     )
 }
 
@@ -3386,14 +3902,17 @@ fun Vector48(modifier: Modifier = Modifier) {
 fun Vector49(modifier: Modifier = Modifier) {
     RelayVector(
         vector = painterResource(R.drawable.homepage_02_vector49),
-        modifier = modifier.padding(
-            paddingValues = PaddingValues(
-                start = 9.109619140625.dp,
-                top = 4.29345703125.dp,
-                end = 8.77364730834961.dp,
-                bottom = 9.084831237792969.dp
+        modifier = modifier
+            .padding(
+                paddingValues = PaddingValues(
+                    start = 9.109619140625.dp,
+                    top = 4.29345703125.dp,
+                    end = 8.77364730834961.dp,
+                    bottom = 9.084831237792969.dp
+                )
             )
-        ).fillMaxWidth(1.0f).fillMaxHeight(1.0f)
+            .fillMaxWidth(1.0f)
+            .fillMaxHeight(1.0f)
     )
 }
 
@@ -3401,14 +3920,17 @@ fun Vector49(modifier: Modifier = Modifier) {
 fun Vector50(modifier: Modifier = Modifier) {
     RelayVector(
         vector = painterResource(R.drawable.homepage_02_vector50),
-        modifier = modifier.padding(
-            paddingValues = PaddingValues(
-                start = 7.99468994140625.dp,
-                top = 3.1209564208984375.dp,
-                end = 7.701634407043457.dp,
-                bottom = 17.975016593933105.dp
+        modifier = modifier
+            .padding(
+                paddingValues = PaddingValues(
+                    start = 7.99468994140625.dp,
+                    top = 3.1209564208984375.dp,
+                    end = 7.701634407043457.dp,
+                    bottom = 17.975016593933105.dp
+                )
             )
-        ).fillMaxWidth(1.0f).fillMaxHeight(1.0f)
+            .fillMaxWidth(1.0f)
+            .fillMaxHeight(1.0f)
     )
 }
 
@@ -3416,14 +3938,17 @@ fun Vector50(modifier: Modifier = Modifier) {
 fun Vector51(modifier: Modifier = Modifier) {
     RelayVector(
         vector = painterResource(R.drawable.homepage_02_vector51),
-        modifier = modifier.padding(
-            paddingValues = PaddingValues(
-                start = 8.13299560546875.dp,
-                top = 3.06195068359375.dp,
-                end = 7.847588539123535.dp,
-                bottom = 20.819265365600586.dp
+        modifier = modifier
+            .padding(
+                paddingValues = PaddingValues(
+                    start = 8.13299560546875.dp,
+                    top = 3.06195068359375.dp,
+                    end = 7.847588539123535.dp,
+                    bottom = 20.819265365600586.dp
+                )
             )
-        ).fillMaxWidth(1.0f).fillMaxHeight(1.0f)
+            .fillMaxWidth(1.0f)
+            .fillMaxHeight(1.0f)
     )
 }
 
@@ -3431,14 +3956,17 @@ fun Vector51(modifier: Modifier = Modifier) {
 fun Vector52(modifier: Modifier = Modifier) {
     RelayVector(
         vector = painterResource(R.drawable.homepage_02_vector52),
-        modifier = modifier.padding(
-            paddingValues = PaddingValues(
-                start = 6.1734619140625.dp,
-                top = 1.3389892578125.dp,
-                end = 5.908098220825195.dp,
-                bottom = 11.054683685302734.dp
+        modifier = modifier
+            .padding(
+                paddingValues = PaddingValues(
+                    start = 6.1734619140625.dp,
+                    top = 1.3389892578125.dp,
+                    end = 5.908098220825195.dp,
+                    bottom = 11.054683685302734.dp
+                )
             )
-        ).fillMaxWidth(1.0f).fillMaxHeight(1.0f)
+            .fillMaxWidth(1.0f)
+            .fillMaxHeight(1.0f)
     )
 }
 
@@ -3451,7 +3979,9 @@ fun Class1(
         isStructured = false,
         clipToParent = false,
         content = content,
-        modifier = modifier.fillMaxWidth(1.0f).fillMaxHeight(1.0f)
+        modifier = modifier
+            .fillMaxWidth(1.0f)
+            .fillMaxHeight(1.0f)
     )
 }
 
@@ -3464,14 +3994,17 @@ fun Layer2(
         isStructured = false,
         clipToParent = false,
         content = content,
-        modifier = modifier.padding(
-            paddingValues = PaddingValues(
-                start = 0.09710693359375.dp,
-                top = 0.099090576171875.dp,
-                end = 0.0.dp,
-                bottom = 0.28289222717285156.dp
+        modifier = modifier
+            .padding(
+                paddingValues = PaddingValues(
+                    start = 0.09710693359375.dp,
+                    top = 0.099090576171875.dp,
+                    end = 0.0.dp,
+                    bottom = 0.28289222717285156.dp
+                )
             )
-        ).fillMaxWidth(1.0f).fillMaxHeight(1.0f)
+            .fillMaxWidth(1.0f)
+            .fillMaxHeight(1.0f)
     )
 }
 
@@ -3483,7 +4016,9 @@ fun Avatar(
     RelayContainer(
         isStructured = false,
         content = content,
-        modifier = modifier.requiredWidth(30.0.dp).requiredHeight(31.0.dp)
+        modifier = modifier
+            .requiredWidth(30.0.dp)
+            .requiredHeight(31.0.dp)
     )
 }
 
@@ -3497,7 +4032,10 @@ fun Profile(
         isStructured = false,
         clipToParent = false,
         content = content,
-        modifier = modifier.tappable(onTap = onProfileButtonTapped).requiredWidth(103.0.dp).requiredHeight(31.0.dp)
+        modifier = modifier
+            .tappable(onTap = onProfileButtonTapped)
+            .requiredWidth(103.0.dp)
+            .requiredHeight(31.0.dp)
     )
 }
 
@@ -3517,7 +4055,9 @@ fun NameFrame(
             blue = 0
         ),
         content = content,
-        modifier = modifier.requiredWidth(291.0.dp).requiredHeight(44.0.dp)
+        modifier = modifier
+            .requiredWidth(291.0.dp)
+            .requiredHeight(44.0.dp)
     )
 }
 
@@ -3525,7 +4065,9 @@ fun NameFrame(
 fun Vector63(modifier: Modifier = Modifier) {
     RelayVector(
         vector = painterResource(R.drawable.homepage_02_vector63),
-        modifier = modifier.fillMaxWidth(1.0f).fillMaxHeight(1.0f)
+        modifier = modifier
+            .fillMaxWidth(1.0f)
+            .fillMaxHeight(1.0f)
     )
 }
 
@@ -3538,7 +4080,9 @@ fun IconCog(
         isStructured = false,
         clipToParent = false,
         content = content,
-        modifier = modifier.requiredWidth(30.49974250793457.dp).requiredHeight(30.5.dp)
+        modifier = modifier
+            .requiredWidth(30.49974250793457.dp)
+            .requiredHeight(30.5.dp)
     )
 }
 
@@ -3559,7 +4103,10 @@ fun Setting2(
             blue = 0
         ),
         content = content,
-        modifier = modifier.tappable(onTap = onSettingButtonTapped).requiredWidth(44.0.dp).requiredHeight(44.0.dp)
+        modifier = modifier
+            .tappable(onTap = onSettingButtonTapped)
+            .requiredWidth(44.0.dp)
+            .requiredHeight(44.0.dp)
     )
 }
 
@@ -3592,7 +4139,9 @@ fun Frame33(
             blue = 0
         ),
         content = content,
-        modifier = modifier.requiredWidth(86.0.dp).requiredHeight(25.0.dp)
+        modifier = modifier
+            .requiredWidth(86.0.dp)
+            .requiredHeight(25.0.dp)
     )
 }
 
@@ -3600,7 +4149,9 @@ fun Frame33(
 fun Ellipse6(modifier: Modifier = Modifier) {
     RelayVector(
         vector = painterResource(R.drawable.homepage_02_ellipse_5),
-        modifier = modifier.requiredWidth(32.0.dp).requiredHeight(32.0.dp)
+        modifier = modifier
+            .requiredWidth(32.0.dp)
+            .requiredHeight(32.0.dp)
     )
 }
 
@@ -3632,7 +4183,9 @@ fun B1(
         isStructured = false,
         clipToParent = false,
         content = content,
-        modifier = modifier.requiredWidth(104.0.dp).requiredHeight(32.0.dp)
+        modifier = modifier
+            .requiredWidth(104.0.dp)
+            .requiredHeight(32.0.dp)
     )
 }
 
@@ -3640,7 +4193,9 @@ fun B1(
 fun Rectangle58(modifier: Modifier = Modifier) {
     RelayVector(
         vector = painterResource(R.drawable.homepage_02_rectangle_58),
-        modifier = modifier.requiredWidth(131.0.dp).requiredHeight(32.0.dp)
+        modifier = modifier
+            .requiredWidth(131.0.dp)
+            .requiredHeight(32.0.dp)
     )
 }
 
@@ -3673,7 +4228,9 @@ fun LevelFrame(
             blue = 0
         ),
         content = content,
-        modifier = modifier.requiredWidth(201.0.dp).requiredHeight(25.0.dp)
+        modifier = modifier
+            .requiredWidth(201.0.dp)
+            .requiredHeight(25.0.dp)
     )
 }
 
@@ -3681,7 +4238,9 @@ fun LevelFrame(
 fun Star1(modifier: Modifier = Modifier) {
     RelayVector(
         vector = painterResource(R.drawable.homepage_02_star_1),
-        modifier = modifier.requiredWidth(45.0.dp).requiredHeight(45.0.dp)
+        modifier = modifier
+            .requiredWidth(45.0.dp)
+            .requiredHeight(45.0.dp)
     )
 }
 
@@ -3713,7 +4272,9 @@ fun Level1(
         isStructured = false,
         clipToParent = false,
         content = content,
-        modifier = modifier.requiredWidth(219.0.dp).requiredHeight(45.0.dp)
+        modifier = modifier
+            .requiredWidth(219.0.dp)
+            .requiredHeight(45.0.dp)
     )
 }
 
@@ -3725,7 +4286,9 @@ fun TopNav(
     RelayContainer(
         isStructured = false,
         content = content,
-        modifier = modifier.requiredWidth(344.0.dp).requiredHeight(110.0.dp)
+        modifier = modifier
+            .requiredWidth(344.0.dp)
+            .requiredHeight(110.0.dp)
     )
 }
 

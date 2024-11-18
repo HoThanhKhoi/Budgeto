@@ -9,15 +9,18 @@ import com.example.budgeto.data.repository.transaction.TransactionRepository
 import com.google.firebase.Timestamp
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
+import java.text.SimpleDateFormat
+import java.util.Locale
 import javax.inject.Inject
 
 @HiltViewModel
 class TransactionViewModel @Inject constructor(
     private val authRepository: AuthRepository,
     private val transactionRepository: TransactionRepository
-):ViewModel(){
+) : ViewModel() {
 
     val userId = authRepository.getCurrentUserId()
+    var transactions: List<Transaction> = emptyList()
 
     fun addTransaction(
         accountId: String?,
@@ -28,22 +31,26 @@ class TransactionViewModel @Inject constructor(
         note: String?
     ) {
         viewModelScope.launch {
+
             val createdTime = Timestamp.now()
             val transaction = Transaction(
-                accountId = accountId ?: "",
-                categoryId = categoryId ?: "",
+                accountId = accountId?:"",
+                categoryId = categoryId?:"",
                 amount = amount,
-                description = description ?: "",
-                type = type,
-                createdTime = createdTime,
-                date = createdTime.toDate().toString(),
-                note = note?: "${type.name} at ${createdTime.toDate()}"
+                description = description?:"",
+                type = TransactionType.EXPENSE,
+                createdTime = Timestamp.now(),
+                date = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(Timestamp.now().toDate()),
+                note = note ?: "${type.name} at ${createdTime.toDate()}"
             )
 
-            if (userId != null) {
-                transactionRepository.addTransaction(userId, transaction)
-            }
+            transactionRepository.addTransaction(userId?:"", transaction)
         }
+    }
 
+    fun fetchTransactions() {
+        viewModelScope.launch {
+            transactions = transactionRepository.getAllTransactions(userId?:"")
+        }
     }
 }

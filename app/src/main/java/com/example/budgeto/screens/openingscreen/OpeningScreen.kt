@@ -1,5 +1,6 @@
 package com.example.budgeto.screens.openingscreen
 
+import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.horizontalScroll
@@ -64,8 +65,9 @@ import com.google.relay.compose.relayDropShadow
 fun OpeningScreenExpensesInputScreen(
     modifier: Modifier = Modifier,
     openingScreenViewModel: OpeningScreenViewModel = hiltViewModel<OpeningScreenViewModel>(),
-    transactionViewModel: TransactionViewModel = hiltViewModel<TransactionViewModel>(),
-    accountViewModel: AccountViewModel = hiltViewModel()
+    transactionViewModel: TransactionViewModel = hiltViewModel(),
+    accountViewModel: AccountViewModel = hiltViewModel(),
+    onCloseCalculator: () -> Unit
 ) {
     var operationText by openingScreenViewModel.operationText
     var resultText by openingScreenViewModel.resultText
@@ -123,16 +125,18 @@ fun OpeningScreenExpensesInputScreen(
         onCloseParenthesesButtonTapped = { openingScreenViewModel.appendNumber(")") },
         onDotButtonTapped = { openingScreenViewModel.appendNumber(".") },
         onDoneButtonTapped = {
+            openingScreenViewModel.calculateResult()
+            onCloseCalculator()
+            Log.d("OpeningScreenExpensesInputScreen", "onDoneButtonTapped called")
             transactionViewModel.addTransaction(
-                accountId = accountId,
+                accountId = selectedAccount?.id?:"",
                 categoryId = categoryId,
-                amount = amount,
+                amount = resultText.toDouble(),
                 description = description,
                 note = note,
                 type = selectedTransactionType
             )
         },
-
     )
     if (isAccountPopupVisible) {
         AccountSelectionDialog(

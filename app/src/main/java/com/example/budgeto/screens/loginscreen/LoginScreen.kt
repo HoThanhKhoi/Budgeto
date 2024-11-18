@@ -373,9 +373,9 @@ fun Login(
 //        }
         OrLoginWith(
             modifier = Modifier.boxAlign(
-                alignment = Alignment.TopStart,
+                alignment = Alignment.TopCenter,
                 offset = DpOffset(
-                    x = 58.0.dp,
+                    x = 0.0.dp,
                     y = 548.0.dp
                 )
             )
