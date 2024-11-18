@@ -579,6 +579,7 @@ fun Frame62(
     content: @Composable RelayContainerScope.() -> Unit
 ) {
     RelayContainer(
+        scrollable = true,
         isStructured = false,
         content = content,
         modifier = modifier.requiredWidth(346.0.dp).requiredHeight(458.0.dp)
