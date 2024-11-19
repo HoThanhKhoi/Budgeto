@@ -33,6 +33,10 @@ class TransactionViewModel @Inject constructor(
         viewModelScope.launch {
 
             val createdTime = Timestamp.now()
+            if(amount == 0.0)
+            {
+                return@launch
+            }
             val transaction = Transaction(
                 accountId = accountId?:"",
                 categoryId = categoryId?:"",

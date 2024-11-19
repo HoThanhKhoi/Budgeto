@@ -67,7 +67,8 @@ fun OpeningScreenExpensesInputScreen(
     openingScreenViewModel: OpeningScreenViewModel = hiltViewModel<OpeningScreenViewModel>(),
     transactionViewModel: TransactionViewModel = hiltViewModel(),
     accountViewModel: AccountViewModel = hiltViewModel(),
-    onCloseCalculator: () -> Unit
+    onCloseCalculator: () -> Unit = {},
+    onNavigateToHistoryScreen: () -> Unit = {}
 ) {
     var operationText by openingScreenViewModel.operationText
     var resultText by openingScreenViewModel.resultText
@@ -126,16 +127,26 @@ fun OpeningScreenExpensesInputScreen(
         onDotButtonTapped = { openingScreenViewModel.appendNumber(".") },
         onDoneButtonTapped = {
             openingScreenViewModel.calculateResult()
-            onCloseCalculator()
-            Log.d("OpeningScreenExpensesInputScreen", "onDoneButtonTapped called")
-            transactionViewModel.addTransaction(
-                accountId = selectedAccount?.id?:"",
-                categoryId = categoryId,
-                amount = resultText.toDouble(),
-                description = description,
-                note = note,
-                type = selectedTransactionType
-            )
+
+            if(!resultText.isNullOrEmpty() && resultText != "")
+            {
+
+                if(resultText.toDouble() != 0.0)
+                {
+                    onCloseCalculator()
+                    
+                    transactionViewModel.addTransaction(
+                        accountId = selectedAccount?.id?:"",
+                        categoryId = categoryId,
+                        amount = resultText.toDouble(),
+                        description = description,
+                        note = note,
+                        type = selectedTransactionType
+                    )
+
+                    onNavigateToHistoryScreen()
+                }
+            }
         },
     )
     if (isAccountPopupVisible) {

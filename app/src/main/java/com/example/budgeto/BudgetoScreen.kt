@@ -176,7 +176,8 @@ fun BudgetoApp(
                     onAccountsButtonTapped = { navController.navigate(BudgetoScreenEnum.AccountScreen.name) },
                     onSettingButtonTapped = { navController.navigate(BudgetoScreenEnum.SettingsScreen.name) },
                     showBottomSheetInitially = showBottomSheetInitially,
-                    transactionViewModel = transactionViewModel
+                    transactionViewModel = transactionViewModel,
+                    onNavigateToHistoryScreen = { navController.navigate(BudgetoScreenEnum.HistoryScreen.name) }
                 )
             }
             composable(route = BudgetoScreenEnum.ProfileScreen.name) {

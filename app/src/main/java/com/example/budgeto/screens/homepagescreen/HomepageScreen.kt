@@ -60,6 +60,7 @@ fun HomepageScreen(
     onSettingButtonTapped: () -> Unit = {},
     showBottomSheetInitially: Boolean = false,
     transactionViewModel: TransactionViewModel,
+    onNavigateToHistoryScreen: () -> Unit = {},
     modifier: Modifier = Modifier
 ) {
     val bottomSheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
@@ -107,7 +108,8 @@ fun HomepageScreen(
                 onCloseCalculator = {
                     isBottomSheetVisible = false
                 },
-                transactionViewModel = transactionViewModel
+                transactionViewModel = transactionViewModel,
+                onNavigateToHistoryScreen = onNavigateToHistoryScreen
             )
         }
     }
