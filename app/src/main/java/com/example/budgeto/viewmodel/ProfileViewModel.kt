@@ -33,8 +33,8 @@ class ProfileViewModel @Inject constructor(
             val userId = currentUser.uid
             viewModelScope.launch {
                 try {
-                    val generalInfo = userRepository.getUserGeneralInfo(userId)
-                    _userGeneralInfo.value = generalInfo
+//                    val generalInfo = userRepository.getUserGeneralInfo(userId)
+//                    _userGeneralInfo.value = generalInfo
                 } catch (e: Exception) {
                     e.printStackTrace()
                 }
@@ -56,7 +56,7 @@ class ProfileViewModel @Inject constructor(
                 val currentUserGeneralInfo = _userGeneralInfo.value ?: UserGeneralInfo()
                 val updatedGeneralInfo = updateFunction(currentUserGeneralInfo)
                 try {
-                    userRepository.updateUserGeneralInfo(userId, updatedGeneralInfo)
+//                    userRepository.updateUserGeneralInfo(userId, updatedGeneralInfo)
                     _userGeneralInfo.value = updatedGeneralInfo
                 } catch (e: Exception) {
                     e.printStackTrace()

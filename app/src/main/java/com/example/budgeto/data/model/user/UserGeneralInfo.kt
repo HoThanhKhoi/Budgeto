@@ -12,5 +12,6 @@ data class UserGeneralInfo(
     val occupation: String = "",
     val googleLink: String = "",
     val facebookLink: String = "",
-    val imgURL: String = ""
+    val imgURL: String = "",
+    val userId: String
 )

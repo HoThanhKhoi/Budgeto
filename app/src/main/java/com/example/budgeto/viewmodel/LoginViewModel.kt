@@ -77,7 +77,7 @@ class LoginViewModel @Inject constructor(
                     val firebaseUser = result.data?.user
                     firebaseUser?.let {
                         val userId = firebaseUser.uid
-                        val userInFirestore = userRepository.getUser(userId)
+                        val userInFirestore = userRepository.getById(userId)
 
                         if (userInFirestore == null) {
                             addNewUserToFirestore(firebaseUser)
@@ -107,7 +107,7 @@ class LoginViewModel @Inject constructor(
         )
 
         val user = User(userId = firebaseUser.uid)
-        userRepository.addUser(user, userGeneralInfo)
+        userRepository.add(user)
     }
 
     fun resetLoginState() {

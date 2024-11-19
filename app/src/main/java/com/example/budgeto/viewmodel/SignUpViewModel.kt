@@ -58,7 +58,8 @@ class SignUpViewModel @Inject constructor(
             fullName = fullname
         )
 
+        val userId = firebaseUser.uid
         val user = User(userId = firebaseUser.uid)
-        userRepository.addUser(user, userGeneralInfo)
+        userRepository.add(user, documentId = userId)
     }
 }

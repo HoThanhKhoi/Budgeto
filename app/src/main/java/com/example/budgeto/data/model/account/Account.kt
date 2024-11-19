@@ -10,5 +10,6 @@ data class Account(
     val expense: Double = 0.0,
     val iconLink: String = "",
     val currency: String = "",
-    val status: AccountStatus = AccountStatus.ACTIVE
+    val status: AccountStatus = AccountStatus.ACTIVE,
+    val userId: String
 )

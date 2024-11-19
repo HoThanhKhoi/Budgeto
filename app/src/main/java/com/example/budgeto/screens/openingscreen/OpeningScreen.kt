@@ -134,7 +134,7 @@ fun OpeningScreenExpensesInputScreen(
                 if(resultText.toDouble() != 0.0)
                 {
                     onCloseCalculator()
-                    
+
                     transactionViewModel.addTransaction(
                         accountId = selectedAccount?.id?:"",
                         categoryId = categoryId,

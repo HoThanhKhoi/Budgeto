@@ -50,7 +50,7 @@ class AccountViewModel @Inject constructor(
                             currency = accountCurrency
                         )
 
-                        accountRepository.addAccount(userId = userId, account = account)
+                        accountRepository.add(documentId = userId, data = account)
                         fetchAllAccounts()
                     }
                 } else {
@@ -68,7 +68,7 @@ class AccountViewModel @Inject constructor(
             try {
                 if (userId != null) {
                     // Fetch accounts from the repository and update the state
-                    accountList.value = accountRepository.getAllAccounts(userId)
+//                    accountList.value = accountRepository.getAllAccounts(userId)
                 } else {
                     Log.d("Get all accounts", "User ID is null, cannot retrieve accounts.")
                 }
@@ -84,15 +84,15 @@ class AccountViewModel @Inject constructor(
             try {
                 if (userId != null) {
                     // Fetch accounts from the repository and update the state
-                    val moneyInfo = userRepository.getUserMoneyInfo(userId)
-
-                    if (moneyInfo != null) {
-                        userMoneyInfo.value = moneyInfo
-                    }
-                    else
-                    {
-                        Log.d("Get money info", "User money info is null, cannot retrieve accounts.")
-                    }
+//                    val moneyInfo = userRepository.getUserMoneyInfo(userId)
+//
+//                    if (moneyInfo != null) {
+//                        userMoneyInfo.value = moneyInfo
+//                    }
+//                    else
+//                    {
+//                        Log.d("Get money info", "User money info is null, cannot retrieve accounts.")
+//                    }
                 } else {
                     Log.d("Get money info", "User ID is null, cannot retrieve accounts.")
                 }

@@ -13,38 +13,11 @@ import javax.inject.Inject
 class TransactionRepository @Inject constructor(
     firestore: FirebaseFirestore,
     private val userRepository: UserRepository,
-) : FirestoreRepository(firestore) {
-    private val userCollectionPath = "users"
-    private val transactionCollectionPath = "transactions"
+) : FirestoreRepository<Transaction>
+    (
+    firestore = firestore,
+    collectionPath = "transactions",
+    Transaction::class.java
+) {
 
-    suspend fun addTransaction(userId: String, transaction: Transaction) {
-        try {
-            addDocumentToSubcollection(
-                parentCollection = userCollectionPath,
-                parentId = userId,
-                subcollectionPath = transactionCollectionPath,
-                subItem = transaction
-            )
-            Log.d("TransactionRepository", "Transaction added successfully")
-        } catch (e: Exception) {
-            Log.e("TransactionRepository", "Failed to add transaction: ${e.message}")
-        }
-    }
-
-    suspend fun getAllTransactions(userId: String) :List<Transaction> {
-        try {
-            val transactions = getAllDocumentsFromSubcollection(
-                parentCollection = userCollectionPath,
-                parentId = userId,
-                subcollectionPath = transactionCollectionPath,
-                clazz = Transaction::class.java
-            )
-
-            return transactions
-            Log.d("TransactionRepository", "Transaction added successfully")
-        } catch (e: Exception) {
-            Log.e("TransactionRepository", "Failed to add transaction: ${e.message}")
-        }
-        return emptyList()
-    }
 }

@@ -13,5 +13,6 @@ data class Transaction(
     val date: String = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(Timestamp.now().toDate()),
     val type: TransactionType = TransactionType.EXPENSE,
     val createdTime: Timestamp = Timestamp.now(),
-    val note: String = "${type.name} at ${createdTime.toDate()}"
+    val note: String = "${type.name} at ${createdTime.toDate()}",
+    val userId: String
 )

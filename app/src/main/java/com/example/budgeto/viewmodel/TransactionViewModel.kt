@@ -48,13 +48,13 @@ class TransactionViewModel @Inject constructor(
                 note = note ?: "${type.name} at ${createdTime.toDate()}"
             )
 
-            transactionRepository.addTransaction(userId?:"", transaction)
+//            transactionRepository.addTransaction(userId?:"", transaction)
         }
     }
 
     fun fetchTransactions() {
         viewModelScope.launch {
-            transactions = transactionRepository.getAllTransactions(userId?:"")
+//            transactions = transactionRepository.getAllTransactions(userId?:"")
         }
     }
 }
