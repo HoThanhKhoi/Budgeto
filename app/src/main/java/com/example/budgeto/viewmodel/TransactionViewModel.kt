@@ -23,6 +23,10 @@ class TransactionViewModel @Inject constructor(
     val userId = authRepository.getCurrentUserId()
     var transactions: List<Transaction> = emptyList()
 
+    init {
+        fetchTransactions()
+    }
+
     fun addTransaction(
         accountId: String?,
         categoryId: String?,
@@ -32,35 +36,48 @@ class TransactionViewModel @Inject constructor(
         note: String?
     ) {
         viewModelScope.launch {
-            try{
-                val createdTime = Timestamp.now()
-                if(amount == 0.0)
-                {
-                    return@launch
-                }
-                val transaction = Transaction(
-                    accountId = accountId?:"",
-                    categoryId = categoryId?:"",
-                    amount = amount,
-                    description = description?:"",
-                    type = TransactionType.EXPENSE,
-                    createdTime = Timestamp.now(),
-                    date = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(Timestamp.now().toDate()),
-                    note = note ?: "${type.name} at ${createdTime.toDate()}",
-                    userId = userId?:""
-                )
 
-                transactionRepository.add(transaction, userId?:"")
-            } catch (ex: Exception){
-                Log.d("Add transaction error", ex.message?:"")
+            if(userId == null)
+            {
+                return@launch
             }
 
+            val createdTime = Timestamp.now()
+            if(amount == 0.0)
+            {
+                return@launch
+            }
+
+            val transaction = Transaction(
+                accountId = accountId?:"",
+                categoryId = categoryId?:"",
+                amount = amount,
+                description = description?:"",
+                type = TransactionType.EXPENSE,
+                createdTime = Timestamp.now(),
+                date = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(Timestamp.now().toDate()),
+                note = note ?: "${type.name} at ${createdTime.toDate()}",
+                userId = userId?:""
+            )
+
+            transactionRepository.add(transaction)
+            fetchTransactions()
         }
     }
 
     fun fetchTransactions() {
         viewModelScope.launch {
-            transactions = transactionRepository.getAllTransactions(userId?:"")
+            try {
+                if(userId != null)
+                {
+                    transactions = transactionRepository.getAllTransactions(userId)
+                }
+            }
+            catch (ex: Exception)
+            {
+                Log.d("Get all transactions","error: " + ex.message.toString())
+            }
+
         }
     }
 }
