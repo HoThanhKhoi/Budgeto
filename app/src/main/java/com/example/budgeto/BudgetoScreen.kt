@@ -220,6 +220,5 @@ fun BudgetoApp(
             }
 
         }
-
     }
 }
