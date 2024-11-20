@@ -24,7 +24,7 @@ class TransactionRepository @Inject constructor(
     {
         return query()
             .whereEqualTo("userId", userId)
-            .orderBy("createdTime", Query.Direction.DESCENDING)
+            .orderBy("createdTime", Query.Direction.ASCENDING)
             .get()
     }
 }

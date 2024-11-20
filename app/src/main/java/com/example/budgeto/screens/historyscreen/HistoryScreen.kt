@@ -1,13 +1,19 @@
 package com.example.budgeto.screens.historyscreen
 
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.requiredHeight
 import androidx.compose.foundation.layout.requiredWidth
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.wrapContentHeight
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
@@ -38,10 +44,6 @@ fun HistoryScreen(
     modifier: Modifier = Modifier,
     transactionViewModel: TransactionViewModel = hiltViewModel()
 ) {
-    LaunchedEffect(Unit) {
-        transactionViewModel.fetchTransactions()
-    }
-
     var transactions = transactionViewModel.transactions
 
     History1(
@@ -82,6 +84,8 @@ fun History1(
             )
         }
         //endregion
+
+
 
         //region expenses & incomes
         Frame46(
@@ -221,161 +225,59 @@ fun History1(
                         )
                     )
                 }
-                transactions.forEachIndexed { index, transaction ->
-                    TransactionEntry(
-                        transaction = transaction,
-                        modifier = Modifier.boxAlign(
-                            alignment = Alignment.TopCenter,
-                            offset = DpOffset(
-                                0.dp,
-                                68.dp + (index * 59).dp
-                            ) // Adjust spacing as needed
-                        )
-                    )
+                if (transactions.isEmpty()) {
+                    // Display a friendly empty state message with an icon
+                    Box(
+                        modifier = Modifier
+                            .fillMaxSize()
+                            .padding(16.dp),
+                        contentAlignment = Alignment.Center
+                    ) {
+                        Column(
+                            horizontalAlignment = Alignment.CenterHorizontally,
+                            verticalArrangement = Arrangement.Center
+                        ) {
+                            Icon(
+                                painter = painterResource(id = R.drawable.payment_1_asset_1_1), // Replace with your empty state icon resource
+                                contentDescription = "Empty",
+                                modifier = Modifier
+                                    .size(64.dp)
+                                    .padding(bottom = 8.dp),
+                                tint = MaterialTheme.colorScheme.primary.copy(alpha = 0.8f)
+                            )
+                            Text(
+                                text = "No transactions yet",
+                                style = MaterialTheme.typography.bodyLarge.copy(
+                                    color = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.8f),
+                                    fontWeight = FontWeight.Medium
+                                )
+                            )
+                            Text(
+                                text = "Start adding transactions to see them here!",
+                                style = MaterialTheme.typography.bodySmall.copy(
+                                    color = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.6f)
+                                )
+                            )
+                        }
+                    }
+                    //end region
                 }
-                //region history list
-//            Frame48(
-//                modifier = Modifier.boxAlign(
-//                    alignment = Alignment.TopCenter,
-//                    offset = DpOffset(
-//                        x = 0.0.dp,
-//                        y = 68.0.dp
-//                    )
-//                )
-//            ) {
-//                June29thSaturday(
-//                    modifier = Modifier.boxAlign(
-//                        alignment = Alignment.TopStart,
-//                        offset = DpOffset(
-//                            x = 15.0.dp,
-//                            y = 16.0.dp
-//                        )
-//                    )
-//                )
-//                TxtMinus70000VND(
-//                    modifier = Modifier.boxAlign(
-//                        alignment = Alignment.TopStart,
-//                        offset = DpOffset(
-//                            x = 223.0.dp,
-//                            y = 16.0.dp
-//                        )
-//                    )
-//                )
-//            }
-//            Frame52(
-//                modifier = Modifier.boxAlign(
-//                    alignment = Alignment.TopCenter,
-//                    offset = DpOffset(
-//                        x = 0.0.dp,
-//                        y = 127.0.dp
-//                    )
-//                )
-//            ) {
-//                June15thTuesday(
-//                    modifier = Modifier.boxAlign(
-//                        alignment = Alignment.TopStart,
-//                        offset = DpOffset(
-//                            x = 15.0.dp,
-//                            y = 16.0.dp
-//                        )
-//                    )
-//                )
-//                Txt100000VND(
-//                    modifier = Modifier.boxAlign(
-//                        alignment = Alignment.TopStart,
-//                        offset = DpOffset(
-//                            x = 211.0.dp,
-//                            y = 16.0.dp
-//                        )
-//                    )
-//                )
-//            }
-//            Frame55(
-//                modifier = Modifier.boxAlign(
-//                    alignment = Alignment.TopCenter,
-//                    offset = DpOffset(
-//                        x = 0.0.dp,
-//                        y = 186.0.dp
-//                    )
-//                )
-//            ) {
-//                June13thSunday(
-//                    modifier = Modifier.boxAlign(
-//                        alignment = Alignment.TopStart,
-//                        offset = DpOffset(
-//                            x = 15.0.dp,
-//                            y = 16.0.dp
-//                        )
-//                    )
-//                )
-//                TxtMinus330000VND(
-//                    modifier = Modifier.boxAlign(
-//                        alignment = Alignment.TopStart,
-//                        offset = DpOffset(
-//                            x = 216.0.dp,
-//                            y = 16.0.dp
-//                        )
-//                    )
-//                )
-//            }
-//            Frame53(
-//                modifier = Modifier.boxAlign(
-//                    alignment = Alignment.TopCenter,
-//                    offset = DpOffset(
-//                        x = 0.0.dp,
-//                        y = 245.0.dp
-//                    )
-//                )
-//            ) {
-//                June7thModay(
-//                    modifier = Modifier.boxAlign(
-//                        alignment = Alignment.TopStart,
-//                        offset = DpOffset(
-//                            x = 15.0.dp,
-//                            y = 16.0.dp
-//                        )
-//                    )
-//                )
-//                TxtMinus1000000VND(
-//                    modifier = Modifier.boxAlign(
-//                        alignment = Alignment.TopStart,
-//                        offset = DpOffset(
-//                            x = 200.0.dp,
-//                            y = 16.0.dp
-//                        )
-//                    )
-//                )
-//            }
-//            Frame54(
-//                modifier = Modifier.boxAlign(
-//                    alignment = Alignment.TopCenter,
-//                    offset = DpOffset(
-//                        x = 0.0.dp,
-//                        y = 304.0.dp
-//                    )
-//                )
-//            ) {
-//                June2ndModay(
-//                    modifier = Modifier.boxAlign(
-//                        alignment = Alignment.TopStart,
-//                        offset = DpOffset(
-//                            x = 15.0.dp,
-//                            y = 16.0.dp
-//                        )
-//                    )
-//                )
-//                Txt5000000VND(
-//                    modifier = Modifier.boxAlign(
-//                        alignment = Alignment.TopStart,
-//                        offset = DpOffset(
-//                            x = 194.0.dp,
-//                            y = 16.0.dp
-//                        )
-//                    )
-//                )
-//            }
+                else
+                {
+                    transactions.forEachIndexed { index, transaction ->
+                        TransactionEntry(
+                            transaction = transaction,
+                            modifier = Modifier.boxAlign(
+                                alignment = Alignment.TopCenter,
+                                offset = DpOffset(
+                                    0.dp,
+                                    68.dp + (index * 59).dp
+                                ) // Adjust spacing as needed
+                            )
+                        )
+                    }
+                }
 
-                //endregion
             }
         }
         //endregion
