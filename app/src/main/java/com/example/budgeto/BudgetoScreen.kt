@@ -1,6 +1,19 @@
 package com.example.budgeto
 
 import androidx.annotation.StringRes
+import androidx.compose.animation.ExperimentalAnimationApi
+import androidx.compose.animation.core.FastOutSlowInEasing
+import androidx.compose.animation.core.LinearOutSlowInEasing
+import androidx.compose.animation.core.tween
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.scaleIn
+import androidx.compose.animation.scaleOut
+import androidx.compose.animation.slideInHorizontally
+import androidx.compose.animation.slideInVertically
+import androidx.compose.animation.slideOutHorizontally
+import androidx.compose.animation.slideOutVertically
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
@@ -13,6 +26,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
@@ -38,6 +52,7 @@ import com.example.budgeto.viewmodel.LoginViewModel
 import com.example.budgeto.viewmodel.OpeningScreenViewModel
 import com.example.budgeto.viewmodel.ProfileViewModel
 import com.example.budgeto.viewmodel.TransactionViewModel
+import com.google.accompanist.navigation.animation.AnimatedNavHost
 
 enum class BudgetoScreenEnum(@StringRes val title: Int) {
     Start(title = R.string.SignUpLoginScreen),
@@ -54,6 +69,7 @@ enum class BudgetoScreenEnum(@StringRes val title: Int) {
     SettingsScreen(title = R.string.SettingsScreen),
 }
 
+@OptIn(ExperimentalAnimationApi::class)
 @Composable
 fun BudgetoApp(
     navController: NavHostController = rememberNavController()
@@ -87,7 +103,7 @@ fun BudgetoApp(
             if (currentScreen != null && (currentScreen.startsWith(BudgetoScreenEnum.HomepageScreen.name) || currentScreen in screensWithBottomNav)) {
                 BudgetoBottomNav(
                     navController = navController,
-                    onHomepageButtonTapped = { navController.navigate("${BudgetoScreenEnum.HomepageScreen.name}/false") },
+                    onHomepageButtonTapped = { navController.navigate(BudgetoScreenEnum.HomepageScreen.name)},
                     onStoreButtonTapped = { navController.navigate(BudgetoScreenEnum.StoreScreen.name) },
                     onInventoryButtonTapped = { navController.navigate(BudgetoScreenEnum.InventoryScreen.name) },
                     onHistoryButtonTapped = { navController.navigate(BudgetoScreenEnum.HistoryScreen.name) },
@@ -99,21 +115,74 @@ fun BudgetoApp(
         LaunchedEffect(isUserLoggedIn) {
             if (isUserLoggedIn && !hasNavigatedToHome) {
                 hasNavigatedToHome = true // Prevents repeated navigation
-                navController.navigate("${BudgetoScreenEnum.HomepageScreen.name}/true") {
+                navController.navigate(BudgetoScreenEnum.HomepageScreen.name) {
                     popUpTo(BudgetoScreenEnum.Login.name) { inclusive = true }
                 }
             }
         }
 
-        NavHost(
+        AnimatedNavHost(
             navController = navController,
-//              startDestination = BudgetoScreenEnum.Start.name,
-                startDestination = BudgetoScreenEnum.Start.name,
-//              startDestination = BudgetoScreenEnum.AccountScreen.name,
-//            startDestination = BudgetoScreenEnum.ProfileScreen.name,
+            startDestination = BudgetoScreenEnum.Start.name,
+            enterTransition = {
+                fadeIn(
+                    animationSpec = tween(
+                        durationMillis = 400, // Match duration with exit transition
+                        easing = FastOutSlowInEasing
+                    )
+                ) + scaleIn(
+                    initialScale = 0.95f, // Slight zoom-in effect for subtlety
+                    animationSpec = tween(
+                        durationMillis = 400,
+                        easing = FastOutSlowInEasing
+                    )
+                )
+            },
+            exitTransition = {
+                fadeOut(
+                    animationSpec = tween(
+                        durationMillis = 300, // Slightly shorter fade-out to overlap with enter
+                        easing = FastOutSlowInEasing // Keep easing consistent
+                    )
+                ) + scaleOut(
+                    targetScale = 1.05f, // Minor zoom-out for a cleaner effect
+                    animationSpec = tween(
+                        durationMillis = 300,
+                        easing = FastOutSlowInEasing
+                    )
+                )
+            },
+            popEnterTransition = {
+                fadeIn(
+                    animationSpec = tween(
+                        durationMillis = 400,
+                        easing = FastOutSlowInEasing
+                    )
+                ) + slideInHorizontally(
+                    initialOffsetX = { -it / 2 }, // Slide from left
+                    animationSpec = tween(
+                        durationMillis = 400,
+                        easing = FastOutSlowInEasing
+                    )
+                )
+            },
+            popExitTransition = {
+                fadeOut(
+                    animationSpec = tween(
+                        durationMillis = 300,
+                        easing = FastOutSlowInEasing
+                    )
+                ) + slideOutHorizontally(
+                    targetOffsetX = { it / 2 }, // Slide to the right
+                    animationSpec = tween(
+                        durationMillis = 300,
+                        easing = FastOutSlowInEasing
+                    )
+                )
+            },
             modifier = Modifier
                 .fillMaxSize()
-                .verticalScroll(rememberScrollState())
+                .background(Color.White) // Ensures no black background during transitions
                 .padding(innerPadding)
         ) {
             composable(route = BudgetoScreenEnum.Start.name) {
@@ -144,7 +213,7 @@ fun BudgetoApp(
                     },
 
                     onLogginSucess = {
-                        navController.navigate("${BudgetoScreenEnum.HomepageScreen.name}/true") {
+                        navController.navigate(BudgetoScreenEnum.HomepageScreen.name) {
                             popUpTo(BudgetoScreenEnum.Login.name) { inclusive = true }
                         }
                     },
@@ -167,7 +236,7 @@ fun BudgetoApp(
 //                    openingScreenViewModel = openingScreenViewModel,
 //                )
 //            }
-            composable(route = "${BudgetoScreenEnum.HomepageScreen.name}/{showBottomSheetInitially}") { backStackEntry ->
+            composable(route = BudgetoScreenEnum.HomepageScreen.name) { backStackEntry ->
                 val showBottomSheetInitially =
                     backStackEntry.arguments?.getString("showBottomSheetInitially") == "true"
 

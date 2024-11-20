@@ -16,6 +16,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.DpOffset
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
+import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.example.budgeto.R
 import com.example.budgeto.screens.accountscreen.Account1
@@ -36,7 +37,11 @@ fun BudgetoBottomNav(
     onHistoryButtonTapped: () -> Unit = {},
     onStatisticButtonTapped: () -> Unit = {}
 ) {
-    //region navigation bar
+    // Get the current route
+    val currentBackStackEntry = navController.currentBackStackEntryAsState().value
+    val currentRoute = currentBackStackEntry?.destination?.route
+
+    // Navigation Bar
     BottomNav(
         modifier = Modifier.boxAlign(
             alignment = Alignment.TopStart,
@@ -64,8 +69,14 @@ fun BudgetoBottomNav(
                 )
             )
         ) {
+            // Store Button
             Store(
-                onStoreButtonTapped = onStoreButtonTapped,
+                onStoreButtonTapped = {
+                    if (currentRoute != "StoreScreen") { // Skip if already on Store
+                        onStoreButtonTapped()
+                        navController.navigate("StoreScreen")
+                    }
+                },
                 modifier = Modifier.rowWeight(1.0f).columnWeight(1.0f)
             ) {
                 Vector(
@@ -87,8 +98,14 @@ fun BudgetoBottomNav(
                     ).rowWeight(1.0f).columnWeight(1.0f)
                 )
             }
+            // Statistics Button
             Statistic(
-                onStatisticButtonTapped = onStatisticButtonTapped,
+                onStatisticButtonTapped = {
+                    if (currentRoute != "StatisticScreen") { // Skip if already on Statistics
+                        onStatisticButtonTapped()
+                        navController.navigate("StatisticScreen")
+                    }
+                },
                 modifier = Modifier.boxAlign(
                     alignment = Alignment.TopStart,
                     offset = DpOffset(
@@ -101,8 +118,14 @@ fun BudgetoBottomNav(
                     modifier = Modifier.rowWeight(1.0f).columnWeight(1.0f)
                 )
             }
+            // Inventory Button
             Archive(
-                onInventoryButtonTapped = onInventoryButtonTapped,
+                onInventoryButtonTapped = {
+                    if (currentRoute != "InventoryScreen") { // Skip if already on Inventory
+                        onInventoryButtonTapped()
+                        navController.navigate("InventoryScreen")
+                    }
+                },
                 modifier = Modifier.boxAlign(
                     alignment = Alignment.TopStart,
                     offset = DpOffset(
@@ -118,8 +141,14 @@ fun BudgetoBottomNav(
                     modifier = Modifier.rowWeight(1.0f).columnWeight(1.0f)
                 )
             }
+            // History Button
             History(
-                onHistoryButtonTapped = onHistoryButtonTapped,
+                onHistoryButtonTapped = {
+                    if (currentRoute != "HistoryScreen") { // Skip if already on History
+                        onHistoryButtonTapped()
+                        navController.navigate("HistoryScreen")
+                    }
+                },
                 modifier = Modifier.boxAlign(
                     alignment = Alignment.TopStart,
                     offset = DpOffset(
@@ -136,8 +165,14 @@ fun BudgetoBottomNav(
                 )
             }
         }
+        // Home Button
         Frame42(
-            onHomepageButtonTapped = onHomepageButtonTapped,
+            onHomepageButtonTapped = {
+                if (currentRoute != "HomepageScreen") { // Skip if already on Homepage
+                    onHomepageButtonTapped()
+                    navController.navigate("HomepageScreen")
+                }
+            },
             modifier = Modifier
                 .align(Alignment.TopCenter)
                 .padding(top = 7.dp)
@@ -147,8 +182,8 @@ fun BudgetoBottomNav(
             )
         }
     }
-    //endregion
 }
+
 
 @Composable
 fun BudgetoBottomNavBarPreview() {
