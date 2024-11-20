@@ -1,5 +1,6 @@
 package com.example.budgeto.viewmodel
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.budgeto.data.AuthRepository
@@ -22,6 +23,10 @@ class TransactionViewModel @Inject constructor(
     val userId = authRepository.getCurrentUserId()
     var transactions: List<Transaction> = emptyList()
 
+    init {
+        fetchTransactions()
+    }
+
     fun addTransaction(
         accountId: String?,
         categoryId: String?,
@@ -32,11 +37,17 @@ class TransactionViewModel @Inject constructor(
     ) {
         viewModelScope.launch {
 
+            if(userId == null)
+            {
+                return@launch
+            }
+
             val createdTime = Timestamp.now()
             if(amount == 0.0)
             {
                 return@launch
             }
+
             val transaction = Transaction(
                 accountId = accountId?:"",
                 categoryId = categoryId?:"",
@@ -49,13 +60,24 @@ class TransactionViewModel @Inject constructor(
                 userId = userId?:""
             )
 
-            transactionRepository.add(transaction, userId?:"")
+            transactionRepository.add(transaction)
+            fetchTransactions()
         }
     }
 
     fun fetchTransactions() {
         viewModelScope.launch {
-            transactions = transactionRepository.getAllTransactions(userId?:"")
+            try {
+                if(userId != null)
+                {
+                    transactions = transactionRepository.getAllTransactions(userId)
+                }
+            }
+            catch (ex: Exception)
+            {
+                Log.d("Get all transactions","error: " + ex.message.toString())
+            }
+
         }
     }
 }
