@@ -8,7 +8,12 @@ import androidx.lifecycle.viewModelScope
 import com.example.budgeto.data.AuthRepository
 import com.example.budgeto.data.model.user.UserGeneralInfo
 import com.example.budgeto.data.model.user.User
+import com.example.budgeto.data.model.user.UserGameInfo
+import com.example.budgeto.data.model.user.UserMoneyInfo
 import com.example.budgeto.data.repository.dailySummary.DailySummaryRepository
+import com.example.budgeto.data.repository.user.UserGameInfoRepository
+import com.example.budgeto.data.repository.user.UserGeneralInfoRepository
+import com.example.budgeto.data.repository.user.UserMoneyInfoRepository
 import com.example.budgeto.data.repository.user.UserRepository
 import com.example.budgeto.state.GoogleLoginState
 import com.example.budgeto.state.LoginState
@@ -27,7 +32,10 @@ import javax.inject.Inject
 class LoginViewModel @Inject constructor(
     private val repository: AuthRepository,
     private val userRepository: UserRepository,
-    private val dailySummaryRepository: DailySummaryRepository
+    private val dailySummaryRepository: DailySummaryRepository,
+    private val userGeneralInfoRepository: UserGeneralInfoRepository,
+    private val userGameInfoRepository: UserGameInfoRepository,
+    private val userMoneyInfoRepository: UserMoneyInfoRepository
 ) : ViewModel() {
 
     private val _loginState = MutableStateFlow(LoginState())
@@ -77,7 +85,7 @@ class LoginViewModel @Inject constructor(
                     val firebaseUser = result.data?.user
                     firebaseUser?.let {
                         val userId = firebaseUser.uid
-                        val userInFirestore = userRepository.getUser(userId)
+                        val userInFirestore = userRepository.getById(userId)
 
                         if (userInFirestore == null) {
                             addNewUserToFirestore(firebaseUser)
@@ -106,8 +114,25 @@ class LoginViewModel @Inject constructor(
             imgURL = firebaseUser.photoUrl?.toString() ?: ""
         )
 
+        val userGameInfo = UserGameInfo(
+            rankPoint = 0,
+            budgetoken = 0,
+            totalExp = 0,
+            level = 0
+        )
+
+        val userMoneyInfo = UserMoneyInfo(
+            totalBalance = 0.0,
+            totalExpense = 0.0,
+            totalIncome = 0.0
+        )
+
+        val userId = firebaseUser.uid
         val user = User(userId = firebaseUser.uid)
-        userRepository.addUser(user, userGeneralInfo)
+        userRepository.add(user, documentId = userId)
+        userGeneralInfoRepository.add(userGeneralInfo, documentId = userId)
+        userGameInfoRepository.add(userGameInfo, documentId = userId)
+        userMoneyInfoRepository.add(userMoneyInfo, documentId = userId)
     }
 
     fun resetLoginState() {

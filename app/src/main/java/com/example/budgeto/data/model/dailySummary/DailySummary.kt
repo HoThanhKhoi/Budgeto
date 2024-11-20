@@ -6,5 +6,5 @@ data class DailySummary(
     val loginCount: Int = 0,
     val signUpCount: Int = 0,
     val offlineCount: Int = 0,
-    val userIds: List<String> = listOf()
+    val userIds: List<String> = listOf(),
 )

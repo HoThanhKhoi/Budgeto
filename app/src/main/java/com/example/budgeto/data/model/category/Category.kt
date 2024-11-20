@@ -8,5 +8,6 @@ data class Category(
     val iconLink: String = "",
     val description: String = "",
     val color: String = "",
-    val status: CategoryStatus = CategoryStatus.ACTIVE
+    val status: CategoryStatus = CategoryStatus.ACTIVE,
+    val userId: String = "",
 )

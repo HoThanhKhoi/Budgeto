@@ -33,6 +33,10 @@ class TransactionViewModel @Inject constructor(
         viewModelScope.launch {
 
             val createdTime = Timestamp.now()
+            if(amount == 0.0)
+            {
+                return@launch
+            }
             val transaction = Transaction(
                 accountId = accountId?:"",
                 categoryId = categoryId?:"",
@@ -41,10 +45,11 @@ class TransactionViewModel @Inject constructor(
                 type = TransactionType.EXPENSE,
                 createdTime = Timestamp.now(),
                 date = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(Timestamp.now().toDate()),
-                note = note ?: "${type.name} at ${createdTime.toDate()}"
+                note = note ?: "${type.name} at ${createdTime.toDate()}",
+                userId = userId?:""
             )
 
-            transactionRepository.addTransaction(userId?:"", transaction)
+            transactionRepository.add(transaction, userId?:"")
         }
     }
 

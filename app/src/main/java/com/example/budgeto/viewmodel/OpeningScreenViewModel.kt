@@ -37,7 +37,12 @@ class OpeningScreenViewModel: ViewModel() {
     }
 
     fun calculateResult() {
-        val rawResult = evaluateExpression(operationText.value)
+        if(operationText.value.isNullOrEmpty())
+        {
+            operationText.value = "0.00"
+        }
+
+        var rawResult = evaluateExpression(operationText.value)
         resultText.value = formatResult(rawResult)
         isResultDisplayed = true
     }
