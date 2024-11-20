@@ -1,5 +1,6 @@
 package com.example.budgeto.viewmodel
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.budgeto.data.AuthRepository
@@ -31,25 +32,29 @@ class TransactionViewModel @Inject constructor(
         note: String?
     ) {
         viewModelScope.launch {
+            try{
+                val createdTime = Timestamp.now()
+                if(amount == 0.0)
+                {
+                    return@launch
+                }
+                val transaction = Transaction(
+                    accountId = accountId?:"",
+                    categoryId = categoryId?:"",
+                    amount = amount,
+                    description = description?:"",
+                    type = TransactionType.EXPENSE,
+                    createdTime = Timestamp.now(),
+                    date = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(Timestamp.now().toDate()),
+                    note = note ?: "${type.name} at ${createdTime.toDate()}",
+                    userId = userId?:""
+                )
 
-            val createdTime = Timestamp.now()
-            if(amount == 0.0)
-            {
-                return@launch
+                transactionRepository.add(transaction, userId?:"")
+            } catch (ex: Exception){
+                Log.d("Add transaction error", ex.message?:"")
             }
-            val transaction = Transaction(
-                accountId = accountId?:"",
-                categoryId = categoryId?:"",
-                amount = amount,
-                description = description?:"",
-                type = TransactionType.EXPENSE,
-                createdTime = Timestamp.now(),
-                date = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(Timestamp.now().toDate()),
-                note = note ?: "${type.name} at ${createdTime.toDate()}",
-                userId = userId?:""
-            )
 
-            transactionRepository.add(transaction, userId?:"")
         }
     }
 

@@ -17,8 +17,10 @@ import androidx.compose.foundation.layout.requiredWidth
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.material.Divider
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -169,31 +171,58 @@ fun AccountSelectionDialog(
     AlertDialog(
         onDismissRequest = onDismissRequest,
         title = {
-            Text(text = "Select Account")
+            Text(
+                text = "Select Account",
+                style = MaterialTheme.typography.titleMedium,
+                modifier = Modifier.padding(bottom = 8.dp)
+            )
         },
         text = {
-            // Display a list of accounts
-            Column {
-                accountList.forEach { account ->
-                    Button(
-                        onClick = {
-                            onAccountSelected(account)
-                        },
-                        modifier = Modifier.fillMaxWidth().padding(vertical = 4.dp)
-                    ) {
-                        Text(text = account.name)
+            Column(
+                modifier = Modifier.fillMaxWidth()
+            ) {
+                accountList.forEachIndexed { index, account ->
+                    Column {
+                        Button(
+                            onClick = { onAccountSelected(account) },
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(vertical = 4.dp),
+                            shape = MaterialTheme.shapes.medium // Adds rounded corners
+                        ) {
+                            Text(
+                                text = account.name,
+                                style = MaterialTheme.typography.bodyMedium
+                            )
+                        }
+                        // Add divider for better separation
+                        if (index != accountList.lastIndex) {
+                            Divider(
+                                modifier = Modifier.padding(horizontal = 16.dp),
+                                color = Color.Gray.copy(alpha = 0.5f)
+                            )
+                        }
                     }
                 }
             }
         },
         confirmButton = {
-            // Optional: Add a close button or any other actions
-            Button(onClick = onDismissRequest) {
-                Text("Close")
+            Button(
+                onClick = onDismissRequest,
+                colors = ButtonDefaults.buttonColors(
+                    containerColor = MaterialTheme.colorScheme.secondaryContainer // Updated color parameter
+                )
+            ) {
+                Text("Close", style = MaterialTheme.typography.labelLarge)
             }
-        }
+        },
+        shape = MaterialTheme.shapes.large, // Rounder corners for the dialog
+        containerColor = MaterialTheme.colorScheme.surface, // Custom background color
+        tonalElevation = 8.dp, // Slight shadow effect
     )
 }
+
+
 
 fun calculateFontSize(
     textContent: String,

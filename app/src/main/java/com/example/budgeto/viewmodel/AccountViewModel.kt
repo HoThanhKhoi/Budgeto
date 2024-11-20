@@ -130,4 +130,34 @@ class AccountViewModel @Inject constructor(
             }
         }
     }
+
+    fun updateAccountInFireStore(
+        accountId: String,
+        accountName: String,
+        accountBalance: Int,
+        accountExpense: Int,
+        accountIncome: Int,
+        accountIconLink: String,
+        accountCurrency: String
+    ) {
+        viewModelScope.launch {
+            try {
+                val updatedAccount = mapOf(
+                    "name" to accountName,
+                    "balance" to accountBalance.toDouble(),
+                    "expense" to accountExpense.toDouble(),
+                    "income" to accountIncome.toDouble(),
+                    "iconLink" to accountIconLink,
+                    "currency" to accountCurrency
+                )
+                //accountRepository.updateAccount(userId, accountId, updatedAccount)
+                addAccountState.value = AddAccountState(success = true)
+                fetchAllAccounts() // Refresh the account list
+            } catch (e: Exception) {
+                addAccountState.value = AddAccountState(error = e.message)
+                Log.e("Update Account", "Error: ${e.message}")
+            }
+        }
+    }
+
 }

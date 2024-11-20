@@ -50,6 +50,7 @@ import androidx.compose.ui.unit.em
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.budgeto.R
+import com.example.budgeto.data.model.account.Account
 import com.example.budgeto.state.AddAccountState
 import com.example.budgeto.viewmodel.AccountViewModel
 import com.google.relay.compose.RelayContainer
@@ -60,17 +61,18 @@ import com.google.relay.compose.RelayVector
 
 @Composable
 fun AddAccountScreen(
+    existingAccount: Account? = null,
     onTransferButtonTapped: () -> Unit = {},
     onXButtonTapped: () -> Unit = {},
     modifier: Modifier = Modifier,
     accountViewModel: AccountViewModel = hiltViewModel()
 ){
-    var localAccountName by remember { mutableStateOf("") }
-    var localAccountBalance by remember { mutableStateOf("") }
-    var localAccountExpense by remember { mutableStateOf("") }
-    var localAccountIncome by remember { mutableStateOf("") }
-    var localAccountIconLink by remember { mutableStateOf("") }
-    var localAccountCurrency by remember { mutableStateOf("") }
+    var localAccountName by remember { mutableStateOf(existingAccount?.name ?: "") }
+    var localAccountBalance by remember { mutableStateOf(existingAccount?.balance?.toString() ?: "") }
+    var localAccountExpense by remember { mutableStateOf(existingAccount?.expense?.toString() ?: "") }
+    var localAccountIncome by remember { mutableStateOf(existingAccount?.income?.toString() ?: "") }
+    var localAccountIconLink by remember { mutableStateOf(existingAccount?.iconLink ?: "") }
+    var localAccountCurrency by remember { mutableStateOf(existingAccount?.currency ?: "VNĐ") }
 
     var addAccountState = accountViewModel.addAccountState.value
 
@@ -91,14 +93,28 @@ fun AddAccountScreen(
         onAccountIconLinkChanged = { localAccountIconLink = it },
         onAccountCurrencyChanged = { localAccountCurrency = it },
         onSaveButtonTapped = {
-            accountViewModel.addNewAccountToFireStore(
-                accountName = localAccountName,
-                accountBalance = localAccountBalance.toIntOrNull()?:0,
-                accountExpense = localAccountExpense.toIntOrNull()?:0,
-                accountIncome = localAccountIncome.toIntOrNull()?:0,
-                accountIconLink = localAccountIconLink,
-                accountCurrency = localAccountCurrency
-            )
+            if (existingAccount != null) {
+                // Update the existing account
+                accountViewModel.updateAccountInFireStore(
+                    accountId = existingAccount.id,
+                    accountName = localAccountName,
+                    accountBalance = localAccountBalance.toIntOrNull() ?: 0,
+                    accountExpense = localAccountExpense.toIntOrNull() ?: 0,
+                    accountIncome = localAccountIncome.toIntOrNull() ?: 0,
+                    accountIconLink = localAccountIconLink,
+                    accountCurrency = localAccountCurrency
+                )
+            } else {
+                // Add a new account
+                accountViewModel.addNewAccountToFireStore(
+                    accountName = localAccountName,
+                    accountBalance = localAccountBalance.toIntOrNull() ?: 0,
+                    accountExpense = localAccountExpense.toIntOrNull() ?: 0,
+                    accountIncome = localAccountIncome.toIntOrNull() ?: 0,
+                    accountIconLink = localAccountIconLink,
+                    accountCurrency = localAccountCurrency
+                )
+            }
 
             when {
                 addAccountState.error != null -> {
