@@ -49,7 +49,7 @@ class OpeningScreenViewModel: ViewModel() {
 
     private fun formatResult(result: String): String {
         return try {
-            String.format(Locale.getDefault(), "%.2f", result.toDouble())
+            String.format(Locale.US, "%.2f", result.toDouble())
         } catch (e: NumberFormatException) {
             "Error"
         }
