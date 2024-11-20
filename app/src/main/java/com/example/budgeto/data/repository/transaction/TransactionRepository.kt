@@ -8,6 +8,7 @@ import com.example.budgeto.data.repository.base.FirestoreRepository
 import com.example.budgeto.data.repository.user.UserRepository
 import com.google.firebase.Timestamp
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.Query
 import javax.inject.Inject
 
 class TransactionRepository @Inject constructor(
@@ -19,5 +20,11 @@ class TransactionRepository @Inject constructor(
     collectionPath = "transactions",
     Transaction::class.java
 ) {
-
+    suspend fun getAllTransactions(userId: String): List<Transaction>
+    {
+        return query()
+            .whereEqualTo("userId", userId)
+            .orderBy("createdTime", Query.Direction.DESCENDING)
+            .get()
+    }
 }

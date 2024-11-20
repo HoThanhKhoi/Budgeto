@@ -47,7 +47,8 @@ class AccountViewModel @Inject constructor(
                             expense = accountExpense.toDouble(),
                             income = accountIncome.toDouble(),
                             iconLink = accountIconLink,
-                            currency = accountCurrency
+                            currency = accountCurrency,
+                            userId = userId
                         )
 
                         accountRepository.add(documentId = userId, data = account)
@@ -68,7 +69,7 @@ class AccountViewModel @Inject constructor(
             try {
                 if (userId != null) {
                     // Fetch accounts from the repository and update the state
-//                    accountList.value = accountRepository.getAllAccounts(userId)
+                    accountList.value = accountRepository.getAllByField("userId", userId)?.toList() ?: emptyList()
                 } else {
                     Log.d("Get all accounts", "User ID is null, cannot retrieve accounts.")
                 }

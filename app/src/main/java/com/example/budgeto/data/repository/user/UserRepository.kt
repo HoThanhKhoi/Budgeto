@@ -1,6 +1,5 @@
 package com.example.budgeto.data.repository.user
 
-
 import com.example.budgeto.data.model.user.User
 import com.example.budgeto.data.repository.base.FirestoreRepository
 import com.google.firebase.Timestamp

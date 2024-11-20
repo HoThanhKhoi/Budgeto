@@ -45,16 +45,17 @@ class TransactionViewModel @Inject constructor(
                 type = TransactionType.EXPENSE,
                 createdTime = Timestamp.now(),
                 date = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(Timestamp.now().toDate()),
-                note = note ?: "${type.name} at ${createdTime.toDate()}"
+                note = note ?: "${type.name} at ${createdTime.toDate()}",
+                userId = userId?:""
             )
 
-//            transactionRepository.addTransaction(userId?:"", transaction)
+            transactionRepository.add(transaction, userId?:"")
         }
     }
 
     fun fetchTransactions() {
         viewModelScope.launch {
-//            transactions = transactionRepository.getAllTransactions(userId?:"")
+            transactions = transactionRepository.getAllTransactions(userId?:"")
         }
     }
 }

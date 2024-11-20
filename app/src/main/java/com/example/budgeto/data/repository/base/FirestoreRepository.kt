@@ -1,6 +1,7 @@
 package com.example.budgeto.data.repository.base
 
 import com.example.budgeto.data.repository.base.IFirestoreRepository
+import com.example.budgeto.utils.FirestoreQueryBuilder
 import com.google.firebase.firestore.CollectionReference
 import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.coroutines.tasks.await
@@ -12,6 +13,10 @@ open class FirestoreRepository<T : Any>(
 ) : IFirestoreRepository<T> {
 
     private val collection: CollectionReference = firestore.collection(collectionPath)
+
+    fun query(): FirestoreQueryBuilder<T> {
+        return FirestoreQueryBuilder(collection, clazz)
+    }
 
     override suspend fun add(data: T, documentId: String?): String? {
         return try {
@@ -49,9 +54,9 @@ open class FirestoreRepository<T : Any>(
         }
     }
 
-    override suspend fun update(id: String, data: Map<String, Any>): Boolean {
+    override suspend fun update(id: String, data: T): Boolean {
         return try {
-            collection.document(id).update(data).await()
+            collection.document(id).set(data).await()
             true
         } catch (e: Exception) {
             e.printStackTrace()
@@ -83,6 +88,16 @@ open class FirestoreRepository<T : Any>(
         return try {
             val snapshot = collection.whereEqualTo(field, value).get().await()
             snapshot.toObjects(clazz)
+        } catch (e: Exception) {
+            e.printStackTrace()
+            null
+        }
+    }
+
+    override suspend fun getAllByField(field: String, value: Any): List<T>? {
+        return try {
+            val querySnapshot = collection.whereEqualTo(field, value).get().await()
+            querySnapshot.toObjects(clazz)
         } catch (e: Exception) {
             e.printStackTrace()
             null

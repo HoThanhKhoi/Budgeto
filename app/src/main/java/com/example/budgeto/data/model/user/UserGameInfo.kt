@@ -5,5 +5,4 @@ data class UserGameInfo(
     val budgetoken: Int = 0,
     val totalExp: Int = 0,
     val level: Int = 0,
-    val userId: String
 )
