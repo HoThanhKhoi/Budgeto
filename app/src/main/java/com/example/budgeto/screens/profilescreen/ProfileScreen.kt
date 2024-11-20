@@ -5,15 +5,18 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.requiredHeight
 import androidx.compose.foundation.layout.requiredWidth
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -173,22 +176,22 @@ fun ProfileContent(
                 .fillMaxSize()
         ) {
 
-            Frame54(
-                onBackToHomepageButtonTapped = onBackToHomepageButtonTapped,
-                modifier = modifier
-                    .align(Alignment.TopEnd)
-                    .padding(top = 25.dp, end = 25.dp)
-            ) {
-                Arrow3(
-                    modifier = Modifier.boxAlign(
-                        alignment = Alignment.TopStart,
-                        offset = DpOffset(
-                            x = 7.0.dp,
-                            y = 6.6360321044921875.dp
-                        )
-                    )
-                )
-            }
+//            Frame54(
+//                onBackToHomepageButtonTapped = onBackToHomepageButtonTapped,
+//                modifier = modifier
+//                    .align(Alignment.TopEnd)
+//                    .padding(top = 25.dp, end = 25.dp)
+//            ) {
+//                Arrow3(
+//                    modifier = Modifier.boxAlign(
+//                        alignment = Alignment.TopStart,
+//                        offset = DpOffset(
+//                            x = 7.0.dp,
+//                            y = 6.6360321044921875.dp
+//                        )
+//                    )
+//                )
+//            }
 
             Avatar(
                 modifier = modifier
@@ -223,18 +226,19 @@ fun ProfileContent(
 
             Box(
                 modifier = Modifier
-                    .fillMaxSize()
+                    .fillMaxHeight()
                     .padding(
                         top = 250.dp,
-                        bottom = 150.dp
+                        bottom = 0.dp
                     ) // Apply padding to the Box, not the Column
             ) {
                 val scrollState = rememberScrollState()
 
                 Column(
                     modifier = Modifier
-                        .fillMaxWidth(), // Use fillMaxWidth to avoid vertical overflow
-//                    .verticalScroll(scrollState),
+                        .fillMaxSize() // Ensure the Column takes up the entire height
+                        .verticalScroll(scrollState) // Enable scrolling
+                        .padding(bottom = 70.dp),
                     horizontalAlignment = Alignment.CenterHorizontally,
                     verticalArrangement = Arrangement.spacedBy(14.dp),
                 ) {
@@ -278,7 +282,6 @@ fun ProfileContent(
                         onValueChange = onGenderFieldChanged,
                         modifier = Modifier.fillMaxWidth(),
                     )
-
 
                     Frame47(
                         modifier = modifier
@@ -409,21 +412,20 @@ fun ProfileContent(
                         )
                     }
 
-                    Frame50(
-                        onSignOutButtonTapped = onSignOutButtonTapped,
-                        modifier = modifier
-                            .align(Alignment.CenterHorizontally)
-                            .padding(15.dp)
-                    ) {
-                        SignOut(
-                            modifier = Modifier.boxAlign(
-                                alignment = Alignment.Center,
-                                offset = DpOffset(x = 0.dp, y = 0.dp)
-                            )
-                        )
-                    }
-                }
 
+                }
+                Frame50(
+                    onSignOutButtonTapped = onSignOutButtonTapped,
+                    modifier = modifier
+                        .align(Alignment.BottomCenter)
+                ) {
+                    SignOut(
+                        modifier = Modifier.boxAlign(
+                            alignment = Alignment.Center,
+                            offset = DpOffset(x = 0.dp, y = 0.dp)
+                        )
+                    )
+                }
             }
         }
     }

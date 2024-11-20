@@ -154,29 +154,7 @@ fun History1(
                 )
             )
         }
-        Frame35(
-            modifier = modifier
-                .align(Alignment.TopCenter)
-        ) {
-            OverallBalance(
-                modifier = Modifier.boxAlign(
-                    alignment = Alignment.TopStart,
-                    offset = DpOffset(
-                        x = 143.0.dp,
-                        y = 42.0.dp
-                    )
-                )
-            )
-            Txt101000VND(
-                modifier = Modifier.boxAlign(
-                    alignment = Alignment.TopCenter,
-                    offset = DpOffset(
-                        x = 0.5.dp,
-                        y = 68.0.dp
-                    )
-                )
-            )
-        }
+
         Box(
             modifier = Modifier
                 .fillMaxWidth()
