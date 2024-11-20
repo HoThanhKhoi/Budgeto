@@ -1,6 +1,7 @@
 package com.example.budgeto.data.model.account
 
 import com.example.budgeto.data.enums.account.AccountStatus
+import com.google.firebase.Timestamp
 
 data class Account(
     val id: String = "",
@@ -11,5 +12,6 @@ data class Account(
     val iconLink: String = "",
     val currency: String = "",
     val status: AccountStatus = AccountStatus.ACTIVE,
-    val userId: String
+    val createdTime: Timestamp = Timestamp.now(),
+    val userId: String = ""
 )

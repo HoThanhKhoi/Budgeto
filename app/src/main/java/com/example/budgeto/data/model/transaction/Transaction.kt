@@ -14,5 +14,5 @@ data class Transaction(
     val type: TransactionType = TransactionType.EXPENSE,
     val createdTime: Timestamp = Timestamp.now(),
     val note: String = "${type.name} at ${createdTime.toDate()}",
-    val userId: String
+    val userId: String = ""
 )

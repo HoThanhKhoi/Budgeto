@@ -14,9 +14,8 @@ import javax.inject.Inject
 
 @HiltViewModel
 class ProfileViewModel @Inject constructor(
-    private val userRepository: UserRepository,
-    private val userGeneralInfoRepository: UserGeneralInfoRepository,
-    private val authRepository: AuthRepository
+    private val authRepository: AuthRepository,
+    private val userGeneralInfoRepository: UserGeneralInfoRepository
 ) : ViewModel() {
 
     // State to hold user's general information

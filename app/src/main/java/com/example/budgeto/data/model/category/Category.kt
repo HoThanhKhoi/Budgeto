@@ -9,5 +9,5 @@ data class Category(
     val description: String = "",
     val color: String = "",
     val status: CategoryStatus = CategoryStatus.ACTIVE,
-    val userId: String,
+    val userId: String = "",
 )

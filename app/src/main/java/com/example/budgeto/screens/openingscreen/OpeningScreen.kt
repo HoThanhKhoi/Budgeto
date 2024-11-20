@@ -130,7 +130,6 @@ fun OpeningScreenExpensesInputScreen(
 
             if(!resultText.isNullOrEmpty() && resultText != "")
             {
-
                 if(resultText.toDouble() != 0.0)
                 {
                     onCloseCalculator()

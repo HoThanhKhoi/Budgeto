@@ -50,6 +50,7 @@ import androidx.compose.ui.unit.em
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.budgeto.R
+import com.example.budgeto.state.AddAccountState
 import com.example.budgeto.viewmodel.AccountViewModel
 import com.google.relay.compose.RelayContainer
 import com.google.relay.compose.RelayContainerScope
@@ -70,6 +71,8 @@ fun AddAccountScreen(
     var localAccountIncome by remember { mutableStateOf("") }
     var localAccountIconLink by remember { mutableStateOf("") }
     var localAccountCurrency by remember { mutableStateOf("") }
+
+    var addAccountState = accountViewModel.addAccountState.value
 
     AccountDetails(
         onTransferButtonTapped = onTransferButtonTapped,
@@ -96,6 +99,25 @@ fun AddAccountScreen(
                 accountIconLink = localAccountIconLink,
                 accountCurrency = localAccountCurrency
             )
+
+            when {
+                addAccountState.error != null -> {
+                    println("Error: ${addAccountState.error}")
+                }
+
+                addAccountState.isLoading -> {
+                    println("Loading...")
+                    // Show loading indicator
+                }
+
+                addAccountState.success -> {
+                    println("Success")
+                    // Handle success
+                    onXButtonTapped()
+
+                    addAccountState = AddAccountState(success = false)
+                }
+            }
         }
     )
 }

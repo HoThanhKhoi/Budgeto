@@ -56,11 +56,11 @@ fun ProfileScreen(
 ) {
     val generalInfo by viewModel.userGeneralInfo.collectAsState()
 
-    var localFullName by remember { mutableStateOf("") }
-    var localBirthDate by remember { mutableStateOf("") }
-    var localPhoneNumber by remember { mutableStateOf("") }
-    var localAddress by remember { mutableStateOf("") }
-    var localOccupation by remember { mutableStateOf("") }
+    var localFullName by remember { mutableStateOf(generalInfo?.fullName?:"") }
+    var localBirthDate by remember { mutableStateOf(generalInfo?.dateOfBirth?:"") }
+    var localPhoneNumber by remember { mutableStateOf(generalInfo?.phone?:"") }
+    var localAddress by remember { mutableStateOf(generalInfo?.address?:"") }
+    var localOccupation by remember { mutableStateOf(generalInfo?.occupation?:"") }
     var localGender by remember { mutableStateOf(UserGender.NONE) }
 
     LaunchedEffect(generalInfo) {
