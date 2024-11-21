@@ -41,8 +41,8 @@ class LoginViewModel @Inject constructor(
     private val _loginState = MutableStateFlow(LoginState())
     val loginState = _loginState.asStateFlow()
 
-    val _googleState = mutableStateOf(GoogleLoginState())
-    val googleState: State<GoogleLoginState> = _googleState
+    private val _googleState = MutableStateFlow(GoogleLoginState())
+    val googleState = _googleState.asStateFlow()
 
     fun isUserLoggedIn(): Boolean {
         return repository.getCurrentUser() != null
@@ -53,7 +53,14 @@ class LoginViewModel @Inject constructor(
     }
 
     fun loginUser(email: String, password: String) = viewModelScope.launch {
-        Log.d("Login", "loginUser called with email: $email and password: $password")
+        // Validate credentials
+        val validationError = validateCredentials(email, password)
+        if (validationError != null) {
+            _loginState.value = LoginState(isError = validationError)
+            return@launch
+        }
+
+        Log.d("Login success", "loginUser called with email: $email and password: $password")
         repository.login(email, password).collect { result ->
             when (result) {
                 is Resource.Success -> {
@@ -62,20 +69,34 @@ class LoginViewModel @Inject constructor(
                     userId?.let {
                         logDailyActivity(it)
                     }
+
                     _loginState.value = LoginState(isSuccess = "Login success")
                 }
 
                 is Resource.Loading -> {
-                    Log.d("Login", "Loading...")
+                    Log.d("Login loading", "Loading...")
                 }
 
                 is Resource.Error -> {
-                    Log.d("Login", "Login fail with error: ${result.message}")
-                    _loginState.value = LoginState(isError = result.message)
+                    Log.d("Login error", "Login failed with error: ${result.message}")
+
+                    // Customize error message for email and password issues
+                    val errorMessage = when {
+                        result.message?.contains("no user record") == true -> {
+                            "Email not found. Please check your email."
+                        }
+                        result.message?.contains("password is invalid") == true -> {
+                            "Incorrect password. Please try again."
+                        }
+                        else -> result.message ?: "An unknown error occurred"
+                    }
+
+                    _loginState.value = LoginState(isError = errorMessage)
                 }
             }
         }
     }
+
 
     fun googleLogin(credential: AuthCredential) = viewModelScope.launch {
         Log.d("Login with google", "Google login")
@@ -142,5 +163,15 @@ class LoginViewModel @Inject constructor(
     suspend fun logDailyActivity(userId: String) {
         userRepository.updateUserLastSignInTime(userId)
         dailySummaryRepository.incrementLoginCount(userId)
+    }
+
+    fun validateCredentials(email: String, password: String): String? {
+        if (email.isBlank() || !android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
+            return "Invalid email format"
+        }
+        if (password.length < 6) {
+            return "Password must be at least 6 characters long"
+        }
+        return null // No validation errors
     }
 }
