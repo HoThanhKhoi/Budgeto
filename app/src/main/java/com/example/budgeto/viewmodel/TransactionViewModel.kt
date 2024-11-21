@@ -55,7 +55,7 @@ class TransactionViewModel @Inject constructor(
                 categoryId = categoryId?:"",
                 amount = amount,
                 description = description?:"",
-                type = TransactionType.EXPENSE,
+                type = type,
                 createdTime = Timestamp.now(),
                 date = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(Timestamp.now().toDate()),
                 note = note ?: "${type.name} at ${createdTime.toDate()}",
@@ -95,7 +95,7 @@ class TransactionViewModel @Inject constructor(
 
                     // Pair each transaction with its account name
                     val transactionsWithAccountNames = transactionList.map { transaction ->
-                        transaction to (accountIdToNameMap[transaction.accountId] ?: "Unknown Account")
+                        transaction to (accountIdToNameMap[transaction.accountId] ?: "Default Account")
                     }
 
                     onDataReady(transactionsWithAccountNames)

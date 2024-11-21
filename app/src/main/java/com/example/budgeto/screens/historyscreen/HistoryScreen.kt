@@ -1,5 +1,6 @@
 package com.example.budgeto.screens.historyscreen
 
+import android.util.Log
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -8,7 +9,6 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.requiredHeight
 import androidx.compose.foundation.layout.requiredWidth
@@ -47,7 +47,10 @@ import com.google.relay.compose.RelayContainer
 import com.google.relay.compose.RelayContainerScope
 import com.google.relay.compose.RelayText
 import com.google.relay.compose.RelayVector
-import java.time.YearMonth
+import java.text.SimpleDateFormat
+import java.util.Calendar
+import java.util.Locale
+import java.util.TimeZone
 
 
 @Composable
@@ -55,28 +58,54 @@ fun HistoryScreen(
     modifier: Modifier = Modifier,
     transactionViewModel: TransactionViewModel = hiltViewModel()
 ) {
+    val calendar: Calendar = Calendar.getInstance(TimeZone.getDefault())
+
+    // Track current month and year
+    var currentMonth by remember { mutableStateOf(calendar.get(Calendar.MONTH) + 1) }
+    var currentYear by remember { mutableStateOf(calendar.get(Calendar.YEAR)) }
+
     var transactionsWithAccountNames by remember { mutableStateOf(emptyList<Pair<Transaction, String>>()) }
 
-    LaunchedEffect(Unit) {
+    LaunchedEffect(currentMonth, currentYear) {
         transactionViewModel.fetchTransactionsWithAccountNames { transactions ->
-            transactionsWithAccountNames = transactions
+
+            transactionsWithAccountNames = transactions.filter { transaction ->
+                val transactionDate = SimpleDateFormat("yyyy-MM-dd", Locale.US).parse(transaction.first.date)
+                val transactionCalendar = Calendar.getInstance().apply { time = transactionDate }
+
+                transactionCalendar.get(Calendar.YEAR) == currentYear &&
+                        transactionCalendar.get(Calendar.MONTH) + 1 == currentMonth
+            }
         }
     }
 
     History1(
         transactionsWithAccountNames = transactionsWithAccountNames,
+        currentMonth = currentMonth,
+        currentYear = currentYear,
+        onMonthChanged = { newMonth, newYear ->
+            currentMonth = newMonth
+            currentYear = newYear
+        },
         modifier = modifier
             .fillMaxWidth()
             .fillMaxHeight()
     )
 }
 
+fun getMonthName(month: Int): String {
+    return SimpleDateFormat("MMMM", Locale.US).format(Calendar.getInstance().apply {
+        set(Calendar.MONTH, month - 1)
+    }.time)
+}
+
 @Composable
 fun History1(
     transactionsWithAccountNames: List<Pair<Transaction, String>>,
     modifier: Modifier = Modifier,
-    currentMonth: String = "June", // Placeholder month
-    onMonthChanged: (String) -> Unit = {}
+    currentMonth: Int,
+    currentYear: Int,
+    onMonthChanged: (Int, Int) -> Unit,
 ) {
     TopLevel(modifier = modifier.fillMaxWidth()) {
 
@@ -102,7 +131,6 @@ fun History1(
             )
         }
         //endregion
-
 
         //region expenses & incomes
         Frame46(
@@ -172,62 +200,21 @@ fun History1(
             )
         }
         //endregion
-        Frame51(
+
+        MonthSelector(
+            currentMonth = currentMonth,
+            currentYear = currentYear,
+            onMonthChanged = onMonthChanged,
             modifier = Modifier
-                .fillMaxWidth()
                 .align(Alignment.TopCenter)
-                .padding(top = 256.dp) // Position below Frame46
-        ) {
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(horizontal = 16.dp, vertical = 8.dp),
-                horizontalArrangement = Arrangement.SpaceBetween,
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                // Previous Month
-                Text(
-                    text = "<",
-                    style = TextStyle(
-                        fontSize = 18.sp,
-                        fontWeight = FontWeight.Bold,
-                        textAlign = TextAlign.Center
-                    ),
-                    modifier = Modifier
-                        .clickable { onMonthChanged("Previous Month") }
-                        .padding(8.dp)
-                )
-
-                // Current Month
-                Text(
-                    text = currentMonth,
-                    style = TextStyle(
-                        fontSize = 16.sp,
-                        fontWeight = FontWeight.SemiBold,
-                        textAlign = TextAlign.Center
-                    )
-                )
-
-                // Next Month
-                Text(
-                    text = ">",
-                    style = TextStyle(
-                        fontSize = 18.sp,
-                        fontWeight = FontWeight.Bold,
-                        textAlign = TextAlign.Center
-                    ),
-                    modifier = Modifier
-                        .clickable { onMonthChanged("Next Month") }
-                        .padding(8.dp)
-                )
-            }
-        }
+                .padding(top = 256.dp)
+        )
 
         // Transaction List
         Column(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(top = 320.dp) // Ensure spacing below Frame51
+                .padding(top = 320.dp)
         ) {
             if (transactionsWithAccountNames.isEmpty()) {
                 // Empty State
@@ -292,6 +279,9 @@ private fun History1Preview() {
         RelayContainer {
             History1(
                 transactionsWithAccountNames = emptyList(),
+                currentMonth = 1,
+                currentYear = 2024,
+                onMonthChanged = { _, _ -> },
                 modifier = Modifier
                     .rowWeight(1.0f)
                     .columnWeight(1.0f)
@@ -304,7 +294,7 @@ private fun History1Preview() {
 fun TransactionEntry(
     transaction: Transaction,
     accountName: String,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
 ) {
     RelayContainer(
         backgroundColor = Color.White,
@@ -313,7 +303,7 @@ fun TransactionEntry(
         strokeWidth = 1.0,
         strokeColor = Color.Black,
         modifier = modifier
-            .requiredWidth(346.dp)
+            .fillMaxWidth()
             .requiredHeight(52.dp)
     ) {
         RelayText(
@@ -324,22 +314,87 @@ fun TransactionEntry(
         )
 
         RelayText(
-            content = accountName, // Display the account name here
+            content = accountName,
             fontFamily = com.example.budgeto.screensfonts.inter,
             fontWeight = FontWeight(500),
-            modifier = Modifier.boxAlign(Alignment.TopStart, DpOffset(100.dp, 16.dp))
+            modifier = Modifier.boxAlign(Alignment.TopStart, DpOffset(130.dp, 16.dp))
         )
 
         RelayText(
-            content = (if (transaction.type == TransactionType.EXPENSE) "- " else "+ ") + transaction.amount.toString(),
+            content = (if (transaction.type == TransactionType.EXPENSE) "- " else "+ ") + transaction.amount.toString() + " VNĐ",
             fontSize = 16.sp,
             fontFamily = com.example.budgeto.screensfonts.inter,
             height = 1.2102272510528564.em,
             fontWeight = FontWeight(500),
             textAlign = TextAlign.Right,
             color = if (transaction.type == TransactionType.EXPENSE) Color.Red else Color.Green, // color based on income/expense
-            modifier = Modifier.boxAlign(Alignment.TopStart, DpOffset(211.dp, 16.dp))
+            modifier = Modifier.boxAlign(Alignment.TopEnd, DpOffset(-15.dp, 16.dp))
         )
+    }
+}
+
+@Composable
+fun MonthSelector(
+    currentMonth: Int,
+    currentYear: Int,
+    onMonthChanged: (Int, Int) -> Unit,
+    modifier: Modifier = Modifier,
+) {
+    val monthName = getMonthName(currentMonth)
+
+    Frame51(modifier = modifier) {
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .fillMaxHeight(),
+            horizontalArrangement = Arrangement.SpaceBetween,
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+
+            Text(
+                text = "<",
+                style = TextStyle(
+                    fontSize = 24.sp,
+                    fontWeight = FontWeight.Bold,
+                    textAlign = TextAlign.Center,
+                    color = Color.Black
+                ),
+                modifier = Modifier
+                    .clickable {
+                        val previousMonth = if (currentMonth == 1) 12 else currentMonth - 1
+                        val updatedYear = if (currentMonth == 1) currentYear - 1 else currentYear
+                        onMonthChanged(previousMonth, updatedYear)
+                    }
+                    .padding(horizontal = 12.dp)
+            )
+
+            Text(
+                text = "$monthName $currentYear",
+                style = TextStyle(
+                    fontSize = 20.sp,
+                    fontWeight = FontWeight.Bold,
+                    textAlign = TextAlign.Center,
+                    color = Color.Black
+                )
+            )
+
+            Text(
+                text = ">",
+                style = TextStyle(
+                    fontSize = 24.sp,
+                    fontWeight = FontWeight.Bold,
+                    textAlign = TextAlign.Center,
+                    color = Color.Black
+                ),
+                modifier = Modifier
+                    .clickable {
+                        val nextMonth = if (currentMonth == 12) 1 else currentMonth + 1
+                        val updatedYear = if (currentMonth == 12) currentYear + 1 else currentYear
+                        onMonthChanged(nextMonth, updatedYear)
+                    }
+                    .padding(horizontal = 12.dp)
+            )
+        }
     }
 }
 
@@ -427,7 +482,7 @@ fun Rectangle63(modifier: Modifier = Modifier) {
 @Composable
 fun Frame46(
     modifier: Modifier = Modifier,
-    content: @Composable RelayContainerScope.() -> Unit
+    content: @Composable RelayContainerScope.() -> Unit,
 ) {
     RelayContainer(
         backgroundColor = Color(
@@ -494,7 +549,7 @@ fun Txt101000VND(modifier: Modifier = Modifier) {
 @Composable
 fun Frame35(
     modifier: Modifier = Modifier,
-    content: @Composable RelayContainerScope.() -> Unit
+    content: @Composable RelayContainerScope.() -> Unit,
 ) {
     RelayContainer(
         backgroundColor = Color(
@@ -519,62 +574,11 @@ fun Frame35(
 }
 //endregion
 
-//region history list
-@Composable
-fun Frame62(
-    modifier: Modifier = Modifier,
-    content: @Composable RelayContainerScope.() -> Unit
-) {
-    RelayContainer(
-        scrollable = true,
-        isStructured = false,
-        content = content,
-        modifier = modifier
-            .requiredWidth(346.0.dp)
-            .requiredHeight(400.dp)
-    )
-}
-//endregion
-
-//region select date component
-@Composable
-fun June(modifier: Modifier = Modifier) {
-    RelayText(
-        content = "June",
-        fontSize = 16.0.sp,
-        fontFamily = com.example.budgeto.screensfonts.inter,
-        height = 1.2102272510528564.em,
-        fontWeight = FontWeight(600.0.toInt()),
-        modifier = modifier
-    )
-}
-
-@Composable
-fun Vector321(modifier: Modifier = Modifier) {
-    RelayVector(
-        vector = painterResource(R.drawable.history_1_vector_321),
-        modifier = modifier
-            .requiredWidth(3.0.dp)
-            .requiredHeight(6.375.dp)
-    )
-}
-
-@Composable
-fun Vector322(modifier: Modifier = Modifier) {
-    RelayVector(
-        vector = painterResource(R.drawable.history_1_vector_322),
-        modifier = modifier
-            .requiredWidth(3.0.dp)
-            .requiredHeight(6.375.dp)
-    )
-}
-//endregion
-
 //region date list component
 @Composable
 fun Frame51(
     modifier: Modifier = Modifier,
-    content: @Composable RelayContainerScope.() -> Unit
+    content: @Composable RelayContainerScope.() -> Unit,
 ) {
     RelayContainer(
         backgroundColor = Color(
@@ -594,18 +598,17 @@ fun Frame51(
         ),
         content = content,
         modifier = modifier
-            .requiredWidth(155.0.dp)
-            .requiredHeight(31.0.dp)
+            .requiredWidth(220.0.dp)
+            .requiredHeight(50.0.dp)
     )
 }
 
 //endregion
 
-
 @Composable
 fun TopLevel(
     modifier: Modifier = Modifier,
-    content: @Composable RelayContainerScope.() -> Unit
+    content: @Composable RelayContainerScope.() -> Unit,
 ) {
     RelayContainer(
         backgroundColor = Color(
