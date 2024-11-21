@@ -1,25 +1,35 @@
 package com.example.budgeto.screens.historyscreen
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.requiredHeight
 import androidx.compose.foundation.layout.requiredWidth
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.wrapContentHeight
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
@@ -37,6 +47,7 @@ import com.google.relay.compose.RelayContainer
 import com.google.relay.compose.RelayContainerScope
 import com.google.relay.compose.RelayText
 import com.google.relay.compose.RelayVector
+import java.time.YearMonth
 
 
 @Composable
@@ -44,21 +55,28 @@ fun HistoryScreen(
     modifier: Modifier = Modifier,
     transactionViewModel: TransactionViewModel = hiltViewModel()
 ) {
-    var transactions = transactionViewModel.transactions
+    var transactionsWithAccountNames by remember { mutableStateOf(emptyList<Pair<Transaction, String>>()) }
+
+    LaunchedEffect(Unit) {
+        transactionViewModel.fetchTransactionsWithAccountNames { transactions ->
+            transactionsWithAccountNames = transactions
+        }
+    }
 
     History1(
-        transactions = transactions,
+        transactionsWithAccountNames = transactionsWithAccountNames,
         modifier = modifier
             .fillMaxWidth()
-            .fillMaxHeight(),
+            .fillMaxHeight()
     )
 }
 
-
 @Composable
 fun History1(
-    transactions: List<Transaction>,
+    transactionsWithAccountNames: List<Pair<Transaction, String>>,
     modifier: Modifier = Modifier,
+    currentMonth: String = "June", // Placeholder month
+    onMonthChanged: (String) -> Unit = {}
 ) {
     TopLevel(modifier = modifier.fillMaxWidth()) {
 
@@ -84,7 +102,6 @@ fun History1(
             )
         }
         //endregion
-
 
 
         //region expenses & incomes
@@ -154,113 +171,119 @@ fun History1(
                 )
             )
         }
-
-        Box(
+        //endregion
+        Frame51(
             modifier = Modifier
                 .fillMaxWidth()
-                .align(Alignment.BottomCenter)
+                .align(Alignment.TopCenter)
+                .padding(top = 256.dp) // Position below Frame46
         ) {
-            Frame62(
-                modifier = modifier
-                    .align(Alignment.BottomCenter)
-                    .padding(bottom = 0.dp)
+            Row(
+                modifier = Modifier
                     .fillMaxWidth()
+                    .padding(horizontal = 16.dp, vertical = 8.dp),
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.CenterVertically
             ) {
-                Frame51(
-                    modifier = Modifier.boxAlign(
-                        alignment = Alignment.TopCenter,
-                        offset = DpOffset(
-                            x = 0.0.dp,
-                            y = 6.0.dp
-                        )
-                    )
-                ) {
-                    June(
-                        modifier = Modifier.boxAlign(
-                            alignment = Alignment.TopStart,
-                            offset = DpOffset(
-                                x = 59.0.dp,
-                                y = 6.0.dp
-                            )
-                        )
-                    )
-                    Vector321(
-                        modifier = Modifier.boxAlign(
-                            alignment = Alignment.TopStart,
-                            offset = DpOffset(
-                                x = 136.0.dp,
-                                y = 12.0.dp
-                            )
-                        )
-                    )
-                    Vector322(
-                        modifier = Modifier.boxAlign(
-                            alignment = Alignment.TopStart,
-                            offset = DpOffset(
-                                x = 14.626708984375.dp,
-                                y = 12.0.dp
-                            )
-                        )
-                    )
-                }
-                if (transactions.isEmpty()) {
-                    // Display a friendly empty state message with an icon
-                    Box(
-                        modifier = Modifier
-                            .fillMaxSize()
-                            .padding(16.dp),
-                        contentAlignment = Alignment.Center
-                    ) {
-                        Column(
-                            horizontalAlignment = Alignment.CenterHorizontally,
-                            verticalArrangement = Arrangement.Center
-                        ) {
-                            Icon(
-                                painter = painterResource(id = R.drawable.payment_1_asset_1_1), // Replace with your empty state icon resource
-                                contentDescription = "Empty",
-                                modifier = Modifier
-                                    .size(64.dp)
-                                    .padding(bottom = 8.dp),
-                                tint = MaterialTheme.colorScheme.primary.copy(alpha = 0.8f)
-                            )
-                            Text(
-                                text = "No transactions yet",
-                                style = MaterialTheme.typography.bodyLarge.copy(
-                                    color = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.8f),
-                                    fontWeight = FontWeight.Medium
-                                )
-                            )
-                            Text(
-                                text = "Start adding transactions to see them here!",
-                                style = MaterialTheme.typography.bodySmall.copy(
-                                    color = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.6f)
-                                )
-                            )
-                        }
-                    }
-                    //end region
-                }
-                else
-                {
-                    transactions.forEachIndexed { index, transaction ->
-                        TransactionEntry(
-                            transaction = transaction,
-                            modifier = Modifier.boxAlign(
-                                alignment = Alignment.TopCenter,
-                                offset = DpOffset(
-                                    0.dp,
-                                    68.dp + (index * 59).dp
-                                ) // Adjust spacing as needed
-                            )
-                        )
-                    }
-                }
+                // Previous Month
+                Text(
+                    text = "<",
+                    style = TextStyle(
+                        fontSize = 18.sp,
+                        fontWeight = FontWeight.Bold,
+                        textAlign = TextAlign.Center
+                    ),
+                    modifier = Modifier
+                        .clickable { onMonthChanged("Previous Month") }
+                        .padding(8.dp)
+                )
 
+                // Current Month
+                Text(
+                    text = currentMonth,
+                    style = TextStyle(
+                        fontSize = 16.sp,
+                        fontWeight = FontWeight.SemiBold,
+                        textAlign = TextAlign.Center
+                    )
+                )
+
+                // Next Month
+                Text(
+                    text = ">",
+                    style = TextStyle(
+                        fontSize = 18.sp,
+                        fontWeight = FontWeight.Bold,
+                        textAlign = TextAlign.Center
+                    ),
+                    modifier = Modifier
+                        .clickable { onMonthChanged("Next Month") }
+                        .padding(8.dp)
+                )
             }
         }
-        //endregion
+
+        // Transaction List
+        Column(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(top = 320.dp) // Ensure spacing below Frame51
+        ) {
+            if (transactionsWithAccountNames.isEmpty()) {
+                // Empty State
+                Box(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .padding(16.dp),
+                    contentAlignment = Alignment.Center
+                ) {
+                    Column(
+                        horizontalAlignment = Alignment.CenterHorizontally,
+                        verticalArrangement = Arrangement.Center
+                    ) {
+                        Icon(
+                            painter = painterResource(id = R.drawable.payment_1_asset_1_1),
+                            contentDescription = "Empty",
+                            modifier = Modifier
+                                .size(64.dp)
+                                .padding(bottom = 8.dp),
+                            tint = MaterialTheme.colorScheme.primary.copy(alpha = 0.8f)
+                        )
+                        Text(
+                            text = "No transactions yet",
+                            style = MaterialTheme.typography.bodyLarge.copy(
+                                color = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.8f),
+                                fontWeight = FontWeight.Medium
+                            )
+                        )
+                        Text(
+                            text = "Start adding transactions to see them here!",
+                            style = MaterialTheme.typography.bodySmall.copy(
+                                color = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.6f)
+                            )
+                        )
+                    }
+                }
+            } else {
+                // Display Transaction List
+                LazyColumn(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(horizontal = 16.dp)
+                ) {
+                    items(transactionsWithAccountNames) { (transaction, accountName) ->
+                        TransactionEntry(
+                            transaction = transaction,
+                            accountName = accountName,
+                            modifier = Modifier.padding(vertical = 4.dp)
+                        )
+                    }
+                }
+            }
+        }
     }
 }
+
 
 @Preview(widthDp = 390, heightDp = 844)
 @Composable
@@ -268,7 +291,7 @@ private fun History1Preview() {
     MaterialTheme {
         RelayContainer {
             History1(
-                transactions = emptyList(),
+                transactionsWithAccountNames = emptyList(),
                 modifier = Modifier
                     .rowWeight(1.0f)
                     .columnWeight(1.0f)
@@ -280,6 +303,7 @@ private fun History1Preview() {
 @Composable
 fun TransactionEntry(
     transaction: Transaction,
+    accountName: String,
     modifier: Modifier = Modifier
 ) {
     RelayContainer(
@@ -297,6 +321,13 @@ fun TransactionEntry(
             fontFamily = com.example.budgeto.screensfonts.inter,
             fontWeight = FontWeight(500),
             modifier = Modifier.boxAlign(Alignment.TopStart, DpOffset(15.dp, 16.dp))
+        )
+
+        RelayText(
+            content = accountName, // Display the account name here
+            fontFamily = com.example.budgeto.screensfonts.inter,
+            fontWeight = FontWeight(500),
+            modifier = Modifier.boxAlign(Alignment.TopStart, DpOffset(100.dp, 16.dp))
         )
 
         RelayText(
@@ -500,9 +531,10 @@ fun Frame62(
         content = content,
         modifier = modifier
             .requiredWidth(346.0.dp)
-            .requiredHeight(458.0.dp)
+            .requiredHeight(400.dp)
     )
 }
+//endregion
 
 //region select date component
 @Composable
@@ -567,274 +599,8 @@ fun Frame51(
     )
 }
 
-@Composable
-fun June29thSaturday(modifier: Modifier = Modifier) {
-    RelayText(
-        content = "June 29th, Saturday",
-        fontFamily = com.example.budgeto.screensfonts.inter,
-        height = 1.2102272851126534.em,
-        textAlign = TextAlign.Left,
-        fontWeight = FontWeight(500.0.toInt()),
-        modifier = modifier
-    )
-}
-
-@Composable
-fun TxtMinus70000VND(modifier: Modifier = Modifier) {
-    RelayText(
-        content = "- 70.000 VNĐ",
-        fontSize = 16.0.sp,
-        fontFamily = com.example.budgeto.screensfonts.inter,
-        height = 1.2102272510528564.em,
-        textAlign = TextAlign.Right,
-        fontWeight = FontWeight(500.0.toInt()),
-        modifier = modifier
-    )
-}
-
-@Composable
-fun Frame48(
-    modifier: Modifier = Modifier,
-    content: @Composable RelayContainerScope.() -> Unit
-) {
-    RelayContainer(
-        backgroundColor = Color(
-            alpha = 255,
-            red = 255,
-            green = 255,
-            blue = 255
-        ),
-        isStructured = false,
-        radius = 5.0,
-        strokeWidth = 1.0,
-        strokeColor = Color(
-            alpha = 255,
-            red = 0,
-            green = 0,
-            blue = 0
-        ),
-        content = content,
-        modifier = modifier
-            .requiredWidth(346.0.dp)
-            .requiredHeight(52.0.dp)
-    )
-}
-
-@Composable
-fun June15thTuesday(modifier: Modifier = Modifier) {
-    RelayText(
-        content = "June 15th, Tuesday",
-        fontFamily = com.example.budgeto.screensfonts.inter,
-        height = 1.2102272851126534.em,
-        textAlign = TextAlign.Left,
-        fontWeight = FontWeight(500.0.toInt()),
-        modifier = modifier
-    )
-}
-
-@Composable
-fun Txt100000VND(modifier: Modifier = Modifier) {
-    RelayText(
-        content = "+ 100.000 VNĐ",
-        fontSize = 16.0.sp,
-        fontFamily = com.example.budgeto.screensfonts.inter,
-        height = 1.2102272510528564.em,
-        textAlign = TextAlign.Right,
-        fontWeight = FontWeight(500.0.toInt()),
-        modifier = modifier
-    )
-}
-
-@Composable
-fun Frame52(
-    modifier: Modifier = Modifier,
-    content: @Composable RelayContainerScope.() -> Unit
-) {
-    RelayContainer(
-        backgroundColor = Color(
-            alpha = 255,
-            red = 255,
-            green = 255,
-            blue = 255
-        ),
-        isStructured = false,
-        radius = 5.0,
-        strokeWidth = 1.0,
-        strokeColor = Color(
-            alpha = 255,
-            red = 0,
-            green = 0,
-            blue = 0
-        ),
-        content = content,
-        modifier = modifier
-            .requiredWidth(346.0.dp)
-            .requiredHeight(52.0.dp)
-    )
-}
-
-@Composable
-fun June13thSunday(modifier: Modifier = Modifier) {
-    RelayText(
-        content = "June 13th, Sunday",
-        fontFamily = com.example.budgeto.screensfonts.inter,
-        height = 1.2102272851126534.em,
-        textAlign = TextAlign.Left,
-        fontWeight = FontWeight(500.0.toInt()),
-        modifier = modifier
-    )
-}
-
-@Composable
-fun TxtMinus330000VND(modifier: Modifier = Modifier) {
-    RelayText(
-        content = "-330.000 VNĐ",
-        fontSize = 16.0.sp,
-        fontFamily = com.example.budgeto.screensfonts.inter,
-        height = 1.2102272510528564.em,
-        textAlign = TextAlign.Right,
-        fontWeight = FontWeight(500.0.toInt()),
-        modifier = modifier
-    )
-}
-
-@Composable
-fun Frame55(
-    modifier: Modifier = Modifier,
-    content: @Composable RelayContainerScope.() -> Unit
-) {
-    RelayContainer(
-        backgroundColor = Color(
-            alpha = 255,
-            red = 255,
-            green = 255,
-            blue = 255
-        ),
-        isStructured = false,
-        radius = 5.0,
-        strokeWidth = 1.0,
-        strokeColor = Color(
-            alpha = 255,
-            red = 0,
-            green = 0,
-            blue = 0
-        ),
-        content = content,
-        modifier = modifier
-            .requiredWidth(346.0.dp)
-            .requiredHeight(52.0.dp)
-    )
-}
-
-@Composable
-fun June7thModay(modifier: Modifier = Modifier) {
-    RelayText(
-        content = "June 7th, Moday",
-        fontFamily = com.example.budgeto.screensfonts.inter,
-        height = 1.2102272851126534.em,
-        textAlign = TextAlign.Left,
-        fontWeight = FontWeight(500.0.toInt()),
-        modifier = modifier
-    )
-}
-
-@Composable
-fun TxtMinus1000000VND(modifier: Modifier = Modifier) {
-    RelayText(
-        content = "- 1.000.000 VNĐ",
-        fontSize = 16.0.sp,
-        fontFamily = com.example.budgeto.screensfonts.inter,
-        height = 1.2102272510528564.em,
-        textAlign = TextAlign.Right,
-        fontWeight = FontWeight(500.0.toInt()),
-        modifier = modifier
-    )
-}
-
-@Composable
-fun Frame53(
-    modifier: Modifier = Modifier,
-    content: @Composable RelayContainerScope.() -> Unit
-) {
-    RelayContainer(
-        backgroundColor = Color(
-            alpha = 255,
-            red = 255,
-            green = 255,
-            blue = 255
-        ),
-        isStructured = false,
-        radius = 5.0,
-        strokeWidth = 1.0,
-        strokeColor = Color(
-            alpha = 255,
-            red = 0,
-            green = 0,
-            blue = 0
-        ),
-        content = content,
-        modifier = modifier
-            .requiredWidth(346.0.dp)
-            .requiredHeight(52.0.dp)
-    )
-}
-
-@Composable
-fun June2ndModay(modifier: Modifier = Modifier) {
-    RelayText(
-        content = "June 2nd, Moday",
-        fontFamily = com.example.budgeto.screensfonts.inter,
-        height = 1.2102272851126534.em,
-        textAlign = TextAlign.Left,
-        fontWeight = FontWeight(500.0.toInt()),
-        modifier = modifier
-    )
-}
-
-@Composable
-fun Txt5000000VND(modifier: Modifier = Modifier) {
-    RelayText(
-        content = "+ 5.000.000 VNĐ",
-        fontSize = 16.0.sp,
-        fontFamily = com.example.budgeto.screensfonts.inter,
-        height = 1.2102272510528564.em,
-        textAlign = TextAlign.Right,
-        fontWeight = FontWeight(500.0.toInt()),
-        modifier = modifier
-    )
-}
-
-@Composable
-fun Frame54(
-    modifier: Modifier = Modifier,
-    content: @Composable RelayContainerScope.() -> Unit
-) {
-    RelayContainer(
-        backgroundColor = Color(
-            alpha = 255,
-            red = 255,
-            green = 255,
-            blue = 255
-        ),
-        isStructured = false,
-        radius = 5.0,
-        strokeWidth = 1.0,
-        strokeColor = Color(
-            alpha = 255,
-            red = 0,
-            green = 0,
-            blue = 0
-        ),
-        content = content,
-        modifier = modifier
-            .requiredWidth(346.0.dp)
-            .requiredHeight(52.0.dp)
-    )
-}
-
 //endregion
 
-//endregion
 
 @Composable
 fun TopLevel(

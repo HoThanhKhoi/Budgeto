@@ -6,6 +6,7 @@ import androidx.lifecycle.viewModelScope
 import com.example.budgeto.data.AuthRepository
 import com.example.budgeto.data.enums.transaction.TransactionType
 import com.example.budgeto.data.model.transaction.Transaction
+import com.example.budgeto.data.repository.account.AccountRepository
 import com.example.budgeto.data.repository.transaction.TransactionRepository
 import com.google.firebase.Timestamp
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -17,7 +18,8 @@ import javax.inject.Inject
 @HiltViewModel
 class TransactionViewModel @Inject constructor(
     private val authRepository: AuthRepository,
-    private val transactionRepository: TransactionRepository
+    private val transactionRepository: TransactionRepository,
+    private val accountRepository: AccountRepository
 ) : ViewModel() {
 
     val userId = authRepository.getCurrentUserId()
@@ -80,4 +82,28 @@ class TransactionViewModel @Inject constructor(
 
         }
     }
+
+    fun fetchTransactionsWithAccountNames(onDataReady: (List<Pair<Transaction, String>>) -> Unit) {
+        viewModelScope.launch {
+            try {
+                if (userId != null) {
+                    val transactionList = transactionRepository.getAllTransactions(userId)
+                    val accounts = accountRepository.getAllAccount(userId)
+
+                    // Create a map of accountId -> accountName
+                    val accountIdToNameMap = accounts.associateBy({ it.id }, { it.name })
+
+                    // Pair each transaction with its account name
+                    val transactionsWithAccountNames = transactionList.map { transaction ->
+                        transaction to (accountIdToNameMap[transaction.accountId] ?: "Unknown Account")
+                    }
+
+                    onDataReady(transactionsWithAccountNames)
+                }
+            } catch (ex: Exception) {
+                Log.d("FetchTransactions", "Error: ${ex.message}")
+            }
+        }
+    }
+
 }

@@ -100,9 +100,9 @@ fun AddAccountScreen(
                 accountViewModel.updateAccount(
                     accountId = existingAccount.id,
                     accountName = localAccountName,
-                    accountBalance = localAccountBalance.toIntOrNull() ?: 0,
-                    accountExpense = localAccountExpense.toIntOrNull() ?: 0,
-                    accountIncome = localAccountIncome.toIntOrNull() ?: 0,
+                    accountBalance = localAccountBalance.toIntOrNull(),
+                    accountExpense = localAccountExpense.toIntOrNull(),
+                    accountIncome = localAccountIncome.toIntOrNull(),
                     accountIconLink = localAccountIconLink,
                     accountCurrency = localAccountCurrency
                 )
@@ -117,13 +117,15 @@ fun AddAccountScreen(
                 )
             }
 
+            onXButtonTapped()
+
             // Handle feedback
             when {
                 addAccountState.error != null -> println("Error: ${addAccountState.error}")
                 addAccountState.isLoading -> println("Loading...")
                 addAccountState.success -> {
                     println("Success")
-                    onXButtonTapped()
+
                 }
             }
         }

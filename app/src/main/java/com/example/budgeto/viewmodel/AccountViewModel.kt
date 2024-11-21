@@ -142,7 +142,6 @@ class AccountViewModel @Inject constructor(
     ) {
         viewModelScope.launch {
             try {
-                // Validation: Check if account exists
                 val existingAccount = accountRepository.getById(accountId)
                 if (existingAccount == null) {
                     println("Account with ID $accountId does not exist.")
@@ -150,7 +149,6 @@ class AccountViewModel @Inject constructor(
                     return@launch
                 }
 
-                // Prepare updates
                 val updates = mapOf(
                     "name" to accountName,
                     "balance" to accountBalance,
@@ -158,7 +156,7 @@ class AccountViewModel @Inject constructor(
                     "income" to accountIncome,
                     "iconLink" to accountIconLink,
                     "currency" to accountCurrency
-                ).filterValues { it != null } // Remove null values
+                ).filterValues { it != null }
 
                 if (updates.isEmpty()) {
                     println("No updates provided for account $accountId.")
