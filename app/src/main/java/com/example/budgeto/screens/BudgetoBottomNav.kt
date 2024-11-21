@@ -74,7 +74,6 @@ fun BudgetoBottomNav(
                 onStoreButtonTapped = {
                     if (currentRoute != "StoreScreen") { // Skip if already on Store
                         onStoreButtonTapped()
-                        navController.navigate("StoreScreen")
                     }
                 },
                 modifier = Modifier.rowWeight(1.0f).columnWeight(1.0f)
@@ -103,7 +102,6 @@ fun BudgetoBottomNav(
                 onStatisticButtonTapped = {
                     if (currentRoute != "StatisticScreen") { // Skip if already on Statistics
                         onStatisticButtonTapped()
-                        navController.navigate("StatisticScreen")
                     }
                 },
                 modifier = Modifier.boxAlign(
@@ -123,7 +121,6 @@ fun BudgetoBottomNav(
                 onInventoryButtonTapped = {
                     if (currentRoute != "InventoryScreen") { // Skip if already on Inventory
                         onInventoryButtonTapped()
-                        navController.navigate("InventoryScreen")
                     }
                 },
                 modifier = Modifier.boxAlign(
@@ -146,7 +143,6 @@ fun BudgetoBottomNav(
                 onHistoryButtonTapped = {
                     if (currentRoute != "HistoryScreen") { // Skip if already on History
                         onHistoryButtonTapped()
-                        navController.navigate("HistoryScreen")
                     }
                 },
                 modifier = Modifier.boxAlign(
@@ -170,7 +166,6 @@ fun BudgetoBottomNav(
             onHomepageButtonTapped = {
                 if (currentRoute != "HomepageScreen") { // Skip if already on Homepage
                     onHomepageButtonTapped()
-                    navController.navigate("HomepageScreen")
                 }
             },
             modifier = Modifier

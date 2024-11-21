@@ -72,8 +72,13 @@ enum class BudgetoScreenEnum(@StringRes val title: Int) {
 @OptIn(ExperimentalAnimationApi::class)
 @Composable
 fun BudgetoApp(
-    navController: NavHostController = rememberNavController()
-
+    navController: NavHostController = rememberNavController(),
+    loginViewModel: LoginViewModel = hiltViewModel(),
+    signUpViewModel: SignUpViewModel = hiltViewModel(),
+    openingScreenViewModel: OpeningScreenViewModel = hiltViewModel(),
+    accountViewModel: AccountViewModel = hiltViewModel(),
+    profileViewModel: ProfileViewModel = hiltViewModel(),
+    transactionViewModel: TransactionViewModel = hiltViewModel()
 ) {
     val screensWithBottomNav = setOf(
         BudgetoScreenEnum.HomepageScreen.name,
@@ -84,13 +89,6 @@ fun BudgetoApp(
         BudgetoScreenEnum.ProfileScreen.name,
         BudgetoScreenEnum.AccountScreen.name,
     )
-
-    val loginViewModel: LoginViewModel = hiltViewModel()
-    val signUpViewModel: SignUpViewModel = hiltViewModel()
-    val openingScreenViewModel: OpeningScreenViewModel = hiltViewModel()
-    val accountViewModel: AccountViewModel = hiltViewModel()
-    val profileViewModel: ProfileViewModel = hiltViewModel()
-    val transactionViewModel: TransactionViewModel = hiltViewModel()
 
     val isUserLoggedIn by remember { mutableStateOf(loginViewModel.isUserLoggedIn()) }
     var hasNavigatedToHome by remember { mutableStateOf(false) }
@@ -127,27 +125,29 @@ fun BudgetoApp(
             enterTransition = {
                 fadeIn(
                     animationSpec = tween(
-                        durationMillis = 400, // Match duration with exit transition
-                        easing = FastOutSlowInEasing
+                        durationMillis = 400, // Longer fade-in for smoother effect
+                        easing = LinearOutSlowInEasing,
+                        delayMillis = 150 // Delay the fade-in to allow previous screen to disappear
                     )
                 ) + scaleIn(
-                    initialScale = 0.95f, // Slight zoom-in effect for subtlety
+                    initialScale = 0.95f, // Slight zoom-in for subtle effect
                     animationSpec = tween(
                         durationMillis = 400,
-                        easing = FastOutSlowInEasing
+                        easing = LinearOutSlowInEasing,
+                        delayMillis = 150 // Match fade-in delay
                     )
                 )
             },
             exitTransition = {
                 fadeOut(
                     animationSpec = tween(
-                        durationMillis = 300, // Slightly shorter fade-out to overlap with enter
-                        easing = FastOutSlowInEasing // Keep easing consistent
+                        durationMillis = 150, // Faster fade-out to finish before the next screen starts
+                        easing = FastOutSlowInEasing
                     )
                 ) + scaleOut(
-                    targetScale = 1.05f, // Minor zoom-out for a cleaner effect
+                    targetScale = 1.10f, // Minor zoom-out for a cleaner effect
                     animationSpec = tween(
-                        durationMillis = 300,
+                        durationMillis = 150,
                         easing = FastOutSlowInEasing
                     )
                 )
@@ -156,34 +156,38 @@ fun BudgetoApp(
                 fadeIn(
                     animationSpec = tween(
                         durationMillis = 400,
-                        easing = FastOutSlowInEasing
+                        easing = LinearOutSlowInEasing,
+                        delayMillis = 150 // Delay ensures previous screen is gone
                     )
                 ) + slideInHorizontally(
-                    initialOffsetX = { -it / 2 }, // Slide from left
+                    initialOffsetX = { -it / 4 },
                     animationSpec = tween(
                         durationMillis = 400,
-                        easing = FastOutSlowInEasing
+                        easing = LinearOutSlowInEasing,
+                        delayMillis = 150
                     )
                 )
             },
             popExitTransition = {
                 fadeOut(
                     animationSpec = tween(
-                        durationMillis = 300,
+                        durationMillis = 150,
                         easing = FastOutSlowInEasing
                     )
                 ) + slideOutHorizontally(
-                    targetOffsetX = { it / 2 }, // Slide to the right
+                    targetOffsetX = { it / 4 },
                     animationSpec = tween(
-                        durationMillis = 300,
+                        durationMillis = 150,
                         easing = FastOutSlowInEasing
                     )
                 )
             },
             modifier = Modifier
                 .fillMaxSize()
-                .background(Color.White) // Ensures no black background during transitions
+                .background(Color.White) // Avoid black background flashes
                 .padding(innerPadding)
+
+
         ) {
             composable(route = BudgetoScreenEnum.Start.name) {
                 SignUpLoginScreen(
