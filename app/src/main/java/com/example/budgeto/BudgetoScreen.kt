@@ -256,6 +256,7 @@ fun BudgetoApp(
             composable(route = BudgetoScreenEnum.ProfileScreen.name) {
                 ProfileScreen(
                     viewModel = profileViewModel,
+                    onNavigateToLogin = { navController.navigate(BudgetoScreenEnum.Login.name) }
                 )
             }
             composable(route = BudgetoScreenEnum.StoreScreen.name) {

@@ -64,4 +64,8 @@ class ProfileViewModel @Inject constructor(
             }
         }
     }
+
+    fun signOut() {
+        authRepository.signOut()
+    }
 }
