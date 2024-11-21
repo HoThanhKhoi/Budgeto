@@ -69,7 +69,7 @@ class AccountViewModel @Inject constructor(
                     userId = userId
                 )
 
-                accountRepository.add(data = account)
+                accountRepository.addAccount(account = account)
                 Log.d("Add account", "Account added successfully.")
                 addAccountState.value = AddAccountState(success = true)
 
@@ -131,33 +131,57 @@ class AccountViewModel @Inject constructor(
         }
     }
 
-    fun updateAccountInFireStore(
+    fun updateAccount(
         accountId: String,
-        accountName: String,
-        accountBalance: Int,
-        accountExpense: Int,
-        accountIncome: Int,
-        accountIconLink: String,
-        accountCurrency: String
+        accountName: String? = null,
+        accountBalance: Int? = null,
+        accountExpense: Int? = null,
+        accountIncome: Int? = null,
+        accountIconLink: String? = null,
+        accountCurrency: String? = null
     ) {
         viewModelScope.launch {
             try {
-                val updatedAccount = mapOf(
+                // Validation: Check if account exists
+                val existingAccount = accountRepository.getById(accountId)
+                if (existingAccount == null) {
+                    println("Account with ID $accountId does not exist.")
+                    addAccountState.value = AddAccountState(error = "Account not found.")
+                    return@launch
+                }
+
+                // Prepare updates
+                val updates = mapOf(
                     "name" to accountName,
-                    "balance" to accountBalance.toDouble(),
-                    "expense" to accountExpense.toDouble(),
-                    "income" to accountIncome.toDouble(),
+                    "balance" to accountBalance,
+                    "expense" to accountExpense,
+                    "income" to accountIncome,
                     "iconLink" to accountIconLink,
                     "currency" to accountCurrency
-                )
-                //accountRepository.updateAccount(userId, accountId, updatedAccount)
+                ).filterValues { it != null } // Remove null values
+
+                if (updates.isEmpty()) {
+                    println("No updates provided for account $accountId.")
+                    return@launch
+                }
+
+                // Apply updates
+                println("Updating account $accountId with updates: $updates")
+                updates.forEach { (field, value) ->
+                    accountRepository.updateField(accountId, field, value!!)
+                }
+
+                // Success
+                println("Account $accountId updated successfully.")
                 addAccountState.value = AddAccountState(success = true)
-                fetchAllAccounts() // Refresh the account list
+
+                // Refresh account list
+                fetchAllAccounts()
+
             } catch (e: Exception) {
-                addAccountState.value = AddAccountState(error = e.message)
-                Log.e("Update Account", "Error: ${e.message}")
+                println("Error updating account: ${e.message}")
+                addAccountState.value = AddAccountState(error = "Failed to update account.")
             }
         }
     }
-
 }

@@ -1,5 +1,6 @@
 package com.example.budgeto.data.repository.account
 
+import android.util.Log
 import com.example.budgeto.data.model.account.Account
 import com.example.budgeto.data.repository.base.FirestoreRepository
 import com.google.firebase.firestore.FirebaseFirestore
@@ -13,6 +14,18 @@ class AccountRepository @Inject constructor(
     collectionPath = "accounts",
     Account::class.java
 ) {
+    suspend fun addAccount(account: Account) {
+        var accountId = add(account)
+        Log.d("Add account", "Account ID: $accountId")
+        if (accountId != null) {
+            updateField(
+                id = accountId,
+                field = "id",
+                value = accountId
+            )
+        }
+    }
+
     suspend fun getAllAccount(userId: String): List<Account>{
         return query()
             .whereEqualTo("userId", userId)
