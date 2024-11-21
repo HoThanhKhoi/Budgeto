@@ -1,5 +1,6 @@
 package com.example.budgeto.screens.addAccount
 
+import android.util.Log
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.Image
@@ -94,8 +95,9 @@ fun AddAccountScreen(
         onAccountCurrencyChanged = { localAccountCurrency = it },
         onSaveButtonTapped = {
             if (existingAccount != null) {
-                // Update the existing account
-                accountViewModel.updateAccountInFireStore(
+                Log.d("AddAccountScreen", "Updating Account ID: ${existingAccount.id}")
+                
+                accountViewModel.updateAccount(
                     accountId = existingAccount.id,
                     accountName = localAccountName,
                     accountBalance = localAccountBalance.toIntOrNull() ?: 0,
@@ -105,7 +107,6 @@ fun AddAccountScreen(
                     accountCurrency = localAccountCurrency
                 )
             } else {
-                // Add a new account
                 accountViewModel.addNewAccountToFireStore(
                     accountName = localAccountName,
                     accountBalance = localAccountBalance.toIntOrNull() ?: 0,
@@ -116,25 +117,17 @@ fun AddAccountScreen(
                 )
             }
 
+            // Handle feedback
             when {
-                addAccountState.error != null -> {
-                    println("Error: ${addAccountState.error}")
-                }
-
-                addAccountState.isLoading -> {
-                    println("Loading...")
-                    // Show loading indicator
-                }
-
+                addAccountState.error != null -> println("Error: ${addAccountState.error}")
+                addAccountState.isLoading -> println("Loading...")
                 addAccountState.success -> {
                     println("Success")
-                    // Handle success
                     onXButtonTapped()
-
-                    addAccountState = AddAccountState(success = false)
                 }
             }
         }
+
     )
 }
 
