@@ -1,5 +1,6 @@
 package com.example.budgeto.viewmodel
 
+import android.util.Log
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import java.util.Locale
@@ -13,38 +14,63 @@ class OpeningScreenViewModel: ViewModel() {
     private var isResultDisplayed = false
 
     fun appendNumber(value: String) {
-        if (isResultDisplayed) {
-            operationText.value = value
-            isResultDisplayed = false
-        } else {
-            operationText.value += value
+        try {
+            if (isResultDisplayed) {
+                operationText.value = value
+                isResultDisplayed = false
+            } else {
+                operationText.value += value
+            }
         }
+        catch (ex:Exception)
+        {
+            Log.d("Append number", ex.message.toString())
+        }
+
     }
 
     fun appendOperation(value: String) {
-        if (isResultDisplayed) {
-            operationText.value = resultText.value + value
-            isResultDisplayed = false
-        } else {
-            operationText.value += value
+        try {
+            if (isResultDisplayed) {
+                operationText.value = resultText.value + value
+                isResultDisplayed = false
+            } else {
+                operationText.value += value
+            }
+        } catch (ex:Exception)
+        {
+            Log.d("Append operation", ex.message.toString())
         }
+
     }
 
     fun deleteLast() {
-        if (operationText.value.isNotEmpty()) {
-            operationText.value = operationText.value.dropLast(1)
+        try{
+            if (operationText.value.isNotEmpty()) {
+                operationText.value = operationText.value.dropLast(1)
+            }
+        } catch (ex:Exception)
+        {
+            Log.d("Delete last", ex.message.toString())
         }
+
     }
 
     fun calculateResult() {
-        if(operationText.value.isNullOrEmpty())
-        {
-            operationText.value = "0.00"
-        }
+        try {
+            if(operationText.value.isNullOrEmpty())
+            {
+                operationText.value = "0.00"
+            }
 
-        var rawResult = evaluateExpression(operationText.value)
-        resultText.value = formatResult(rawResult)
-        isResultDisplayed = true
+            var rawResult = evaluateExpression(operationText.value)
+            resultText.value = formatResult(rawResult)
+            isResultDisplayed = true
+        }
+        catch (ex:Exception)
+        {
+            Log.d("Calculate result", ex.message.toString())
+        }
     }
 
     private fun formatResult(result: String): String {
@@ -71,37 +97,42 @@ class ExpressionParser {
         val values = Stack<Double>()
         val ops = Stack<Char>()
 
-        var i = 0
-        while (i < tokens.size) {
-            when {
-                tokens[i] == ' ' -> i++
-                tokens[i] in '0'..'9' || tokens[i] == '.' -> {
-                    val sb = StringBuilder()
-                    while (i < tokens.size && (tokens[i] in '0'..'9' || tokens[i] == '.')) {
-                        sb.append(tokens[i++])
+        try {
+            var i = 0
+            while (i < tokens.size) {
+                when {
+                    tokens[i] == ' ' -> i++
+                    tokens[i] in '0'..'9' || tokens[i] == '.' -> {
+                        val sb = StringBuilder()
+                        while (i < tokens.size && (tokens[i] in '0'..'9' || tokens[i] == '.')) {
+                            sb.append(tokens[i++])
+                        }
+                        values.push(sb.toString().toDouble())
                     }
-                    values.push(sb.toString().toDouble())
-                }
-                tokens[i] == '(' -> ops.push(tokens[i++])
-                tokens[i] == ')' -> {
-                    while (ops.peek() != '(') {
-                        values.push(applyOp(ops.pop(), values.pop(), values.pop()))
+                    tokens[i] == '(' -> ops.push(tokens[i++])
+                    tokens[i] == ')' -> {
+                        while (ops.peek() != '(') {
+                            values.push(applyOp(ops.pop(), values.pop(), values.pop()))
+                        }
+                        ops.pop()
+                        i++
                     }
-                    ops.pop()
-                    i++
-                }
-                tokens[i] in listOf('+', '-', '*', '/') -> {
-                    while (ops.isNotEmpty() && hasPrecedence(tokens[i], ops.peek())) {
-                        values.push(applyOp(ops.pop(), values.pop(), values.pop()))
+                    tokens[i] in listOf('+', '-', '*', '/') -> {
+                        while (ops.isNotEmpty() && hasPrecedence(tokens[i], ops.peek())) {
+                            values.push(applyOp(ops.pop(), values.pop(), values.pop()))
+                        }
+                        ops.push(tokens[i++])
                     }
-                    ops.push(tokens[i++])
+                    else -> i++
                 }
-                else -> i++
             }
-        }
 
-        while (ops.isNotEmpty()) {
-            values.push(applyOp(ops.pop(), values.pop(), values.pop()))
+            while (ops.isNotEmpty()) {
+                values.push(applyOp(ops.pop(), values.pop(), values.pop()))
+            }
+        }catch (ex:Exception)
+        {
+            Log.d("Evaluate expression", ex.message.toString())
         }
 
         return values.pop()

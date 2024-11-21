@@ -130,16 +130,16 @@ fun OpeningScreenExpensesInputScreen(
         onDoneButtonTapped = {
             openingScreenViewModel.calculateResult()
 
-            if(!resultText.isNullOrEmpty() && resultText != "")
-            {
-                if(resultText.toDouble() != 0.0)
-                {
+            if (!resultText.isNullOrEmpty()) {
+                val resultValue = resultText.toDoubleOrNull() // Attempt to convert to Double
+
+                if (resultValue != null && resultValue != 0.0) {
                     onCloseCalculator()
 
                     transactionViewModel.addTransaction(
-                        accountId = selectedAccount?.id?:"",
+                        accountId = selectedAccount?.id ?: "",
                         categoryId = categoryId,
-                        amount = resultText.toDouble(),
+                        amount = resultValue, // Use the safely parsed value
                         description = description,
                         note = note,
                         type = selectedTransactionType

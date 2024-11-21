@@ -37,31 +37,39 @@ class TransactionViewModel @Inject constructor(
     ) {
         viewModelScope.launch {
 
-            if(userId == null)
+            try
             {
-                return@launch
+                if(userId == null)
+                {
+                    return@launch
+                }
+
+                val createdTime = Timestamp.now()
+                if(amount == 0.0)
+                {
+                    return@launch
+                }
+
+                val transaction = Transaction(
+                    accountId = accountId?:"",
+                    categoryId = categoryId?:"",
+                    amount = amount,
+                    description = description?:"",
+                    type = TransactionType.EXPENSE,
+                    createdTime = Timestamp.now(),
+                    date = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(Timestamp.now().toDate()),
+                    note = note ?: "${type.name} at ${createdTime.toDate()}",
+                    userId = userId?:""
+                )
+
+                transactionRepository.add(transaction)
+                fetchTransactions()
+            }
+            catch (ex: Exception)
+            {
+                Log.d("Add transaction","error: " + ex.message.toString())
             }
 
-            val createdTime = Timestamp.now()
-            if(amount == 0.0)
-            {
-                return@launch
-            }
-
-            val transaction = Transaction(
-                accountId = accountId?:"",
-                categoryId = categoryId?:"",
-                amount = amount,
-                description = description?:"",
-                type = TransactionType.EXPENSE,
-                createdTime = Timestamp.now(),
-                date = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(Timestamp.now().toDate()),
-                note = note ?: "${type.name} at ${createdTime.toDate()}",
-                userId = userId?:""
-            )
-
-            transactionRepository.add(transaction)
-            fetchTransactions()
         }
     }
 
