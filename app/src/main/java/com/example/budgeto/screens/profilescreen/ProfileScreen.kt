@@ -32,6 +32,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -43,6 +44,7 @@ import androidx.compose.ui.unit.sp
 import com.example.budgeto.R
 import com.example.budgeto.data.enums.user.UserGender
 import com.example.budgeto.screensfonts.inter
+import com.example.budgeto.utils.ToastUtil
 import com.example.budgeto.viewmodel.ProfileViewModel
 import com.google.relay.compose.BoxScopeInstanceImpl.align
 import com.google.relay.compose.RelayContainer
@@ -70,6 +72,8 @@ fun ProfileScreen(
     var localOccupation by remember { mutableStateOf(generalInfo?.occupation?:"") }
     var localGender by remember { mutableStateOf(UserGender.NONE) }
 
+    val context = LocalContext.current
+
     LaunchedEffect(generalInfo) {
         generalInfo?.let {
             localFullName = it.fullName
@@ -92,6 +96,7 @@ fun ProfileScreen(
         onSignOutButtonTapped = {
             viewModel.signOut()
             onNavigateToLogin()
+            ToastUtil.showToastAtTop(context, "Sign out successfully.")
         },
         onGenderOptionButtonTapped = {},
         onGoogleAccountLinkButtonTapped = {},

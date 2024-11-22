@@ -37,6 +37,7 @@ import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.budgeto.R
+import com.example.budgeto.data.enums.account.AccountActionType
 import com.example.budgeto.data.model.account.Account
 import com.example.budgeto.data.model.user.UserMoneyInfo
 import com.example.budgeto.screens.addAccount.AddAccountScreen
@@ -86,6 +87,8 @@ fun Account1(
     var showAccountPopup by remember { mutableStateOf(false) }
     var selectedAccount by remember { mutableStateOf<Account?>(null) }
 
+    var accountActionType by remember { mutableStateOf(AccountActionType.ADD) }
+
     if (showAccountPopup) {
         Dialog(onDismissRequest = {
             selectedAccount = null
@@ -99,7 +102,8 @@ fun Account1(
                     selectedAccount = null
                 },
                 modifier = Modifier.height(600.dp),
-                accountViewModel = accountViewModel
+                accountViewModel = accountViewModel,
+                accountActionType = accountActionType
             )
         }
     }
@@ -225,6 +229,7 @@ fun Account1(
                     modifier = Modifier.clickable {
                         selectedAccount = account
                         showAccountPopup = true
+                        accountActionType = AccountActionType.UPDATE
                     }
                 )
             }
@@ -254,7 +259,10 @@ fun Account1(
                         )
                     )
                     .fillMaxWidth()
-                    .clickable { showAccountPopup = true }
+                    .clickable {
+                        showAccountPopup = true
+                        accountActionType = AccountActionType.ADD
+                    }
             )
         }
         //endregion

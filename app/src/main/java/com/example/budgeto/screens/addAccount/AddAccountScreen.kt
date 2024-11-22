@@ -31,6 +31,7 @@ import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.material3.VerticalDivider
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -40,6 +41,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
@@ -51,8 +53,10 @@ import androidx.compose.ui.unit.em
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.budgeto.R
+import com.example.budgeto.data.enums.account.AccountActionType
 import com.example.budgeto.data.model.account.Account
 import com.example.budgeto.state.AddAccountState
+import com.example.budgeto.utils.ToastUtil
 import com.example.budgeto.viewmodel.AccountViewModel
 import com.google.relay.compose.RelayContainer
 import com.google.relay.compose.RelayContainerScope
@@ -66,7 +70,8 @@ fun AddAccountScreen(
     onTransferButtonTapped: () -> Unit = {},
     onXButtonTapped: () -> Unit = {},
     modifier: Modifier = Modifier,
-    accountViewModel: AccountViewModel = hiltViewModel()
+    accountViewModel: AccountViewModel = hiltViewModel(),
+    accountActionType: AccountActionType
 ){
     var localAccountName by remember { mutableStateOf(existingAccount?.name ?: "") }
     var localAccountBalance by remember { mutableStateOf(existingAccount?.balance?.toString() ?: "") }
@@ -76,6 +81,24 @@ fun AddAccountScreen(
     var localAccountCurrency by remember { mutableStateOf(existingAccount?.currency ?: "VNĐ") }
 
     var addAccountState = accountViewModel.addAccountState.value
+
+    val context = LocalContext.current
+
+    LaunchedEffect(addAccountState.error) {
+        addAccountState.error?.let { errorMessage ->
+            ToastUtil.showToastAtTop(context, errorMessage)
+            accountViewModel.resetAddAccountState()
+        }
+    }
+
+
+    LaunchedEffect(addAccountState.success) {
+        addAccountState.success?.let { message ->
+            ToastUtil.showToastAtTop(context, message)
+            onXButtonTapped()
+            accountViewModel.resetAddAccountState()
+        }
+    }
 
     AccountDetails(
         onTransferButtonTapped = onTransferButtonTapped,
@@ -94,36 +117,28 @@ fun AddAccountScreen(
         onAccountIconLinkChanged = { localAccountIconLink = it },
         onAccountCurrencyChanged = { localAccountCurrency = it },
         onSaveButtonTapped = {
-            if (existingAccount != null) {
-                Log.d("AddAccountScreen", "Updating Account ID: ${existingAccount.id}")
-                
-                accountViewModel.updateAccount(
-                    accountId = existingAccount.id,
-                    accountName = localAccountName,
-                    accountBalance = localAccountBalance.toIntOrNull() ?: 0,
-                    accountExpense = localAccountExpense.toIntOrNull() ?: 0,
-                    accountIncome = localAccountIncome.toIntOrNull() ?: 0,
-                    accountIconLink = localAccountIconLink,
-                    accountCurrency = localAccountCurrency
-                )
-            } else {
-                accountViewModel.addNewAccountToFireStore(
-                    accountName = localAccountName,
-                    accountBalance = localAccountBalance.toIntOrNull() ?: 0,
-                    accountExpense = localAccountExpense.toIntOrNull() ?: 0,
-                    accountIncome = localAccountIncome.toIntOrNull() ?: 0,
-                    accountIconLink = localAccountIconLink,
-                    accountCurrency = localAccountCurrency
-                )
-            }
-
-            // Handle feedback
-            when {
-                addAccountState.error != null -> println("Error: ${addAccountState.error}")
-                addAccountState.isLoading -> println("Loading...")
-                addAccountState.success -> {
-                    println("Success")
-                    onXButtonTapped()
+            when(accountActionType) {
+                AccountActionType.ADD -> {
+                    accountViewModel.addAccount(
+                        accountName = localAccountName,
+                        accountBalance = localAccountBalance.toDoubleOrNull(),
+                        accountExpense = localAccountExpense.toDoubleOrNull(),
+                        accountIncome = localAccountIncome.toDoubleOrNull(),
+                        accountIconLink = localAccountIconLink,
+                        accountCurrency = localAccountCurrency
+                    )
+                }
+                AccountActionType.UPDATE -> {
+                    if (existingAccount != null) {
+                        accountViewModel.updateAccount(
+                            accountId = existingAccount.id,
+                            accountName = localAccountName,
+                            accountBalance = localAccountBalance.toDoubleOrNull(),
+                            accountExpense = localAccountExpense.toDoubleOrNull(),
+                            accountIncome = localAccountIncome.toDoubleOrNull(),
+                            accountIconLink = localAccountIconLink,
+                            accountCurrency = localAccountCurrency)
+                    }
                 }
             }
         }
