@@ -1,6 +1,8 @@
 package com.example.budgeto.screens.historyscreen
 
+import android.app.DatePickerDialog
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -15,10 +17,19 @@ import androidx.compose.foundation.layout.requiredHeight
 import androidx.compose.foundation.layout.requiredWidth
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.BasicTextField
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.Surface
+import androidx.compose.material3.Switch
+import androidx.compose.material3.SwitchDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -30,6 +41,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Paint
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
@@ -39,6 +51,7 @@ import androidx.compose.ui.unit.DpOffset
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.em
 import androidx.compose.ui.unit.sp
+import androidx.compose.ui.window.Dialog
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.budgeto.R
 import com.example.budgeto.data.enums.transaction.TransactionType
@@ -67,6 +80,7 @@ fun HistoryScreen(
     var currentYear by remember { mutableStateOf(calendar.get(Calendar.YEAR)) }
 
     var transactionsWithAccountNames by remember { mutableStateOf(emptyList<Pair<Transaction, String>>()) }
+    var selectedTransaction by remember { mutableStateOf<Pair<Transaction, String>?>(null) }
 
     var totalExpenses by remember { mutableStateOf(0.0) }
     var totalIncomes by remember { mutableStateOf(0.0) }
@@ -108,10 +122,31 @@ fun HistoryScreen(
             currentMonth = newMonth
             currentYear = newYear
         },
+        onTransactionClicked = { transaction ->
+            selectedTransaction = transaction
+        },
         modifier = modifier
             .fillMaxWidth()
             .fillMaxHeight()
     )
+
+    selectedTransaction?.let { (transaction, accountName) ->
+        TransactionDetailsDialog(
+            transaction = transaction,
+            accountName = accountName,
+            onDismiss = { selectedTransaction = null },
+            onSave = { updatedTransaction ->
+                // Handle save action here
+                //transactionViewModel.updateTransaction(updatedTransaction)
+                selectedTransaction = null
+            },
+            onDelete = { transactionToDelete ->
+                // Handle delete action here
+                //transactionViewModel.deleteTransaction(transactionToDelete)
+                selectedTransaction = null
+            }
+        )
+    }
 }
 
 fun getMonthName(month: Int): String {
@@ -129,6 +164,7 @@ fun History1(
     currentMonth: Int,
     currentYear: Int,
     onMonthChanged: (Int, Int) -> Unit,
+    onTransactionClicked: (Pair<Transaction, String>) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     TopLevel(modifier = modifier.fillMaxWidth()) {
@@ -218,11 +254,14 @@ fun History1(
                         .fillMaxWidth()
                         .padding(horizontal = 16.dp)
                 ) {
-                    items(transactionsWithAccountNames) { (transaction, accountName) ->
+                    items(transactionsWithAccountNames) { transactionWithAccountName ->
+                        val (transaction, accountName) = transactionWithAccountName
                         TransactionEntry(
                             transaction = transaction,
                             accountName = accountName,
-                            modifier = Modifier.padding(vertical = 4.dp)
+                            modifier = Modifier
+                                .padding(vertical = 4.dp)
+                                .clickable { onTransactionClicked(transactionWithAccountName) }
                         )
                     }
                 }
@@ -245,6 +284,7 @@ private fun History1Preview() {
                 totalExpenses = 0.0,
                 totalIncomes = 0.0,
                 overallBalance = 0.0,
+                onTransactionClicked = {},
                 modifier = Modifier
                     .rowWeight(1.0f)
                     .columnWeight(1.0f)
@@ -359,6 +399,270 @@ fun MonthSelector(
                         onMonthChanged(nextMonth, updatedYear)
                     }
                     .padding(horizontal = 12.dp)
+            )
+        }
+    }
+}
+
+@Composable
+fun TransactionDetailsDialog(
+    transaction: Transaction,
+    accountName: String,
+    onDismiss: () -> Unit,
+    onSave: (Transaction) -> Unit,
+    onDelete: (Transaction) -> Unit
+) {
+    var date by remember { mutableStateOf(transaction.date) }
+    var category by remember { mutableStateOf(transaction.categoryId) }
+    var amount by remember { mutableStateOf(transaction.amount.toString()) }
+    var isIncome by remember { mutableStateOf(transaction.type == TransactionType.INCOME) }
+
+    // For the DatePickerDialog
+    val calendar = Calendar.getInstance()
+    val datePickerDialog = DatePickerDialog(
+        LocalContext.current,
+        { _, year, month, dayOfMonth ->
+            val selectedDate = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
+                .format(calendar.apply {
+                    set(Calendar.YEAR, year)
+                    set(Calendar.MONTH, month)
+                    set(Calendar.DAY_OF_MONTH, dayOfMonth)
+                }.time)
+            date = selectedDate
+        },
+        calendar.get(Calendar.YEAR),
+        calendar.get(Calendar.MONTH),
+        calendar.get(Calendar.DAY_OF_MONTH)
+    )
+
+    Dialog(onDismissRequest = { onDismiss() }) {
+        Box(
+            contentAlignment = Alignment.Center,
+            modifier = Modifier.fillMaxSize()
+        ) {
+            Surface(
+                shape = RoundedCornerShape(16.dp),
+                color = Color.White,
+                modifier = Modifier
+                    .fillMaxWidth(0.9f)
+                    .wrapContentHeight()
+            ) {
+                Column(
+                    modifier = Modifier
+                        .padding(16.dp)
+                        .fillMaxWidth(),
+                    verticalArrangement = Arrangement.spacedBy(16.dp)
+                ) {
+                    // Header Row
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        horizontalArrangement = Arrangement.SpaceBetween,
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        Text(
+                            text = "Details",
+                            fontSize = 20.sp,
+                            fontWeight = FontWeight.Bold,
+                            color = Color.Black
+                        )
+                        Text(
+                            text = "X",
+                            fontSize = 20.sp,
+                            fontWeight = FontWeight.Bold,
+                            color = Color.Red,
+                            modifier = Modifier.clickable { onDismiss() }
+                        )
+                    }
+
+                    // Account Display
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        horizontalArrangement = Arrangement.SpaceBetween
+                    ) {
+                        Text(
+                            text = "Account",
+                            fontSize = 18.sp,
+                            fontWeight = FontWeight.Bold,
+                            color = Color.Black
+                        )
+                        Text(
+                            text = accountName,
+                            fontSize = 18.sp,
+                            fontWeight = FontWeight.Normal,
+                            color = Color.Gray
+                        )
+                    }
+
+                    // Transaction Type Toggle (Income/Expense)
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(vertical = 8.dp)
+                            .background(Color.LightGray, shape = RoundedCornerShape(8.dp)),
+                        verticalAlignment = Alignment.CenterVertically,
+                        horizontalArrangement = Arrangement.SpaceBetween
+                    ) {
+                        Box(
+                            modifier = Modifier
+                                .weight(1f)
+                                .background(
+                                    if (isIncome) Color.Green else Color.LightGray,
+                                    shape = RoundedCornerShape(8.dp)
+                                )
+                                .clickable { isIncome = true }
+                                .padding(vertical = 8.dp),
+                            contentAlignment = Alignment.Center
+                        ) {
+                            Text(
+                                text = "Income",
+                                fontSize = 16.sp,
+                                fontWeight = FontWeight.Bold,
+                                color = if (isIncome) Color.White else Color.Black
+                            )
+                        }
+
+                        Box(
+                            modifier = Modifier
+                                .weight(1f)
+                                .background(
+                                    if (!isIncome) Color.Red else Color.LightGray,
+                                    shape = RoundedCornerShape(8.dp)
+                                )
+                                .clickable { isIncome = false }
+                                .padding(vertical = 8.dp),
+                            contentAlignment = Alignment.Center
+                        ) {
+                            Text(
+                                text = "Expense",
+                                fontSize = 16.sp,
+                                fontWeight = FontWeight.Bold,
+                                color = if (!isIncome) Color.White else Color.Black
+                            )
+                        }
+                    }
+
+                    // Date Field with Label
+                    Column(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                    ) {
+                        // Label for the Date Field
+                        Text(
+                            text = "Transaction Date",
+                            fontSize = 18.sp,
+                            color = Color.Black,
+                            modifier = Modifier.padding(start = 4.dp, bottom = 8.dp) // Adjusted padding for consistency
+                        )
+
+                        // Box for the Date Field
+                        Box(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .border(1.dp, Color.Black, RoundedCornerShape(4.dp))
+                                .clickable { datePickerDialog.show() } // Show DatePickerDialog on click
+                                .padding(12.dp)
+                        ) {
+                            Text(
+                                text = date,
+                                fontSize = 16.sp,
+                                color = Color.Black
+                            )
+                        }
+                    }
+
+                    // Category Field
+                    CustomTextField(
+                        value = category,
+                        onValueChange = { category = it },
+                        label = "Category",
+                        isError = false
+                    )
+
+                    // Amount Field
+                    CustomTextField(
+                        value = amount,
+                        onValueChange = { amount = it },
+                        label = "Transaction Amount",
+                        isError = amount.toDoubleOrNull() == null
+                    )
+
+                    // Save and Delete Buttons
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        horizontalArrangement = Arrangement.SpaceBetween
+                    ) {
+                        Button(
+                            onClick = {
+                                if (amount.toDoubleOrNull() != null) {
+                                    onSave(
+                                        transaction.copy(
+                                            date = date,
+                                            categoryId = category,
+                                            amount = amount.toDouble(),
+                                            type = if (isIncome) TransactionType.INCOME else TransactionType.EXPENSE
+                                        )
+                                    )
+                                }
+                            },
+                            colors = ButtonDefaults.buttonColors(containerColor = Color.Blue)
+                        ) {
+                            Text(text = "Save", color = Color.White)
+                        }
+                        Button(
+                            onClick = { onDelete(transaction) },
+                            colors = ButtonDefaults.buttonColors(containerColor = Color.Red)
+                        ) {
+                            Text(text = "Delete", color = Color.White)
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+@Composable
+fun CustomTextField(
+    value: String,
+    onValueChange: (String) -> Unit,
+    label: String,
+    modifier: Modifier = Modifier,
+    isError: Boolean = false
+) {
+    Column(modifier = modifier) {
+        // Label for the TextField
+        Text(
+            text = label,
+            fontSize = 18.sp,
+            color = if (isError) Color.Red else Color.Black,
+            modifier = Modifier.padding(start = 4.dp, bottom = 4.dp)
+        )
+
+        // Box to wrap the BasicTextField with a black border
+        Box(
+            modifier = Modifier
+                .fillMaxWidth()
+                .border(1.dp, if (isError) Color.Red else Color.Black, RoundedCornerShape(4.dp))
+                .padding(8.dp)
+        ) {
+            BasicTextField(
+                value = value,
+                onValueChange = onValueChange,
+                modifier = Modifier.fillMaxWidth(),
+                textStyle = TextStyle(
+                    fontSize = 16.sp,
+                    color = Color.Black
+                ),
+                decorationBox = { innerTextField ->
+                    if (value.isEmpty()) {
+                        Text(
+                            text = label,
+                            fontSize = 16.sp,
+                            color = Color.Gray
+                        )
+                    }
+                    innerTextField()
+                }
             )
         }
     }

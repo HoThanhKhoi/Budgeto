@@ -586,9 +586,9 @@ fun ExpenseIncomeFrame(
                 ExpenseValue(
                     modifier = Modifier.padding(start = 15.dp, top = 8.dp)
                 )
-                AddExpenseButton(
-                    modifier = Modifier.padding(start = 15.dp, top = 8.dp)
-                )
+//                AddExpenseButton(
+//                    modifier = Modifier.padding(start = 15.dp, top = 8.dp)
+//                )
             }
 
             // Line Divider
@@ -609,9 +609,9 @@ fun ExpenseIncomeFrame(
                 IncomeValue(
                     modifier = Modifier.padding(start = 15.dp, top = 8.dp)
                 )
-                AddIncomeButton(
-                    modifier = Modifier.padding(start = 15.dp, top = 8.dp)
-                )
+//                AddIncomeButton(
+//                    modifier = Modifier.padding(start = 15.dp, top = 8.dp)
+//                )
             }
         }
     }
@@ -631,7 +631,7 @@ fun ExpensesTitle(modifier: Modifier = Modifier) {
 @Composable
 fun ExpenseValue(modifier: Modifier = Modifier) {
     Text(
-        text = "400.000 VNĐ",
+        text = "0.0 VNĐ",
         fontSize = 16.sp,
         fontFamily = com.example.budgeto.screensfonts.inter, // Replace with your custom font
         fontWeight = FontWeight.Bold,
@@ -693,7 +693,7 @@ fun IncomesTitle(modifier: Modifier = Modifier) {
 @Composable
 fun IncomeValue(modifier: Modifier = Modifier) {
     Text(
-        text = "501.000 VNĐ",
+        text = "0.0 VNĐ",
         fontSize = 16.sp,
         fontFamily = com.example.budgeto.screensfonts.inter, // Replace with your custom font
         fontWeight = FontWeight.Bold,
