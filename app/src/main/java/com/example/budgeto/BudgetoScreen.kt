@@ -108,6 +108,7 @@ fun BudgetoApp(
             if (isUserLoggedIn && !hasNavigatedToHome) {
                 hasNavigatedToHome = true // Prevents repeated navigation
                 navController.navigate(BudgetoScreenEnum.HomepageScreen.name) {
+                    loginViewModel.logDailyActivityModelScope(loginViewModel.getCurrentUser()?.uid?:"")
                     popUpTo(BudgetoScreenEnum.Login.name) { inclusive = true }
                 }
             }
