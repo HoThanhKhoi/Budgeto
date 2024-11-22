@@ -12,4 +12,5 @@
     <string name="StatisticScreen">Statistic</string>
     <string name="AccountScreen">AccountScreen</string>
     <string name="SettingsScreen">SettingsScreen\n</string>
+    <string name="app_icon">App Icon</string>
 </resources>

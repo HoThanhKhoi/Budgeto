@@ -17,6 +17,9 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonColors
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -29,6 +32,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -40,6 +44,7 @@ import androidx.compose.ui.unit.sp
 import com.example.budgeto.R
 import com.example.budgeto.data.enums.user.UserGender
 import com.example.budgeto.screensfonts.inter
+import com.example.budgeto.utils.ToastUtil
 import com.example.budgeto.viewmodel.ProfileViewModel
 import com.google.relay.compose.BoxScopeInstanceImpl.align
 import com.google.relay.compose.RelayContainer
@@ -55,6 +60,7 @@ import com.google.relay.compose.tappable
 @Composable
 fun ProfileScreen(
     viewModel: ProfileViewModel,
+    onNavigateToLogin: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     val generalInfo by viewModel.userGeneralInfo.collectAsState()
@@ -65,6 +71,8 @@ fun ProfileScreen(
     var localAddress by remember { mutableStateOf(generalInfo?.address?:"") }
     var localOccupation by remember { mutableStateOf(generalInfo?.occupation?:"") }
     var localGender by remember { mutableStateOf(UserGender.NONE) }
+
+    val context = LocalContext.current
 
     LaunchedEffect(generalInfo) {
         generalInfo?.let {
@@ -85,7 +93,11 @@ fun ProfileScreen(
         occupationTextContent = localOccupation,
         genderContent = localGender,
         onBackToHomepageButtonTapped = {},
-        onSignOutButtonTapped = {},
+        onSignOutButtonTapped = {
+            viewModel.signOut()
+            onNavigateToLogin()
+            ToastUtil.showToastAtTop(context, "Sign out successfully.")
+        },
         onGenderOptionButtonTapped = {},
         onGoogleAccountLinkButtonTapped = {},
         onFacebookAccountLinkButtonTapped = {},
@@ -175,24 +187,6 @@ fun ProfileContent(
             modifier = Modifier
                 .fillMaxSize()
         ) {
-
-//            Frame54(
-//                onBackToHomepageButtonTapped = onBackToHomepageButtonTapped,
-//                modifier = modifier
-//                    .align(Alignment.TopEnd)
-//                    .padding(top = 25.dp, end = 25.dp)
-//            ) {
-//                Arrow3(
-//                    modifier = Modifier.boxAlign(
-//                        alignment = Alignment.TopStart,
-//                        offset = DpOffset(
-//                            x = 7.0.dp,
-//                            y = 6.6360321044921875.dp
-//                        )
-//                    )
-//                )
-//            }
-
             Avatar(
                 modifier = modifier
                     .align(Alignment.TopCenter)
@@ -419,7 +413,8 @@ fun ProfileContent(
                     modifier = modifier
                         .align(Alignment.BottomCenter)
                 ) {
-                    SignOut(
+                    SignOutButton(
+                        onClick = onSignOutButtonTapped,
                         modifier = Modifier.boxAlign(
                             alignment = Alignment.Center,
                             offset = DpOffset(x = 0.dp, y = 0.dp)
@@ -1811,22 +1806,29 @@ fun Frame47(
 }
 
 @Composable
-fun SignOut(modifier: Modifier = Modifier) {
-    RelayText(
-        content = "Sign out",
-        fontSize = 16.0.sp,
-        fontFamily = inter,
-        color = Color(
-            alpha = 255,
-            red = 255,
-            green = 255,
-            blue = 255
+fun SignOutButton(
+    modifier: Modifier = Modifier,
+    onClick: () -> Unit = {}
+) {
+    Button(
+        onClick = onClick,
+        modifier = modifier,
+        colors = ButtonDefaults.buttonColors(
+            containerColor = Color.Transparent, // Transparent background
+            contentColor = Color.White // Text color
         ),
-        height = 1.2102272510528564.em,
-        textAlign = TextAlign.Left,
-        fontWeight = FontWeight(700.0.toInt()),
-        modifier = modifier
-    )
+        elevation = ButtonDefaults.buttonElevation(defaultElevation = 0.dp)
+    ) {
+        Text(
+            text = "Sign out",
+            fontSize = 16.0.sp,
+            fontFamily = inter,
+            color = Color.White, // Text color
+            lineHeight = 1.2102272510528564.em,
+            textAlign = TextAlign.Left,
+            fontWeight = FontWeight.Bold
+        )
+    }
 }
 
 @Composable

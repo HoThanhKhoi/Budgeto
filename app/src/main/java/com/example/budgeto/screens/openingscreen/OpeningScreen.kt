@@ -1,6 +1,5 @@
 package com.example.budgeto.screens.openingscreen
 
-import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.horizontalScroll
@@ -15,7 +14,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.requiredHeight
 import androidx.compose.foundation.layout.requiredWidth
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.material.Divider
 import androidx.compose.material3.AlertDialog
@@ -33,6 +31,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -46,6 +45,7 @@ import com.example.budgeto.R
 import com.example.budgeto.data.enums.transaction.TransactionType
 import com.example.budgeto.data.model.account.Account
 import com.example.budgeto.screensfonts.inter
+import com.example.budgeto.utils.ToastUtil
 import com.example.budgeto.viewmodel.AccountViewModel
 import com.example.budgeto.viewmodel.OpeningScreenViewModel
 import com.example.budgeto.viewmodel.TransactionViewModel
@@ -89,6 +89,8 @@ fun OpeningScreenExpensesInputScreen(
 
     val accountList by accountViewModel.accountList
 
+    val context = LocalContext.current
+
     LaunchedEffect(Unit) {
         accountViewModel.fetchAllAccounts()
     }
@@ -130,22 +132,33 @@ fun OpeningScreenExpensesInputScreen(
         onDoneButtonTapped = {
             openingScreenViewModel.calculateResult()
 
-            if(!resultText.isNullOrEmpty() && resultText != "")
-            {
-                if(resultText.toDouble() != 0.0)
-                {
-                    onCloseCalculator()
+            if (!resultText.isNullOrEmpty()) {
+                val resultValue = resultText.toDoubleOrNull() // Attempt to convert to Double
 
-                    transactionViewModel.addTransaction(
-                        accountId = selectedAccount?.id?:"",
-                        categoryId = categoryId,
-                        amount = resultText.toDouble(),
-                        description = description,
-                        note = note,
-                        type = selectedTransactionType
-                    )
+                if(resultValue == null){
+                    ToastUtil.showToastAtTop(context, "Invalid result.")
+                } else{
+                    if(resultValue == 0.0)
+                    {
+                        ToastUtil.showToastAtTop(context, "Result must be >0.")
+                    }
+                    else{
+                        ToastUtil.showToastAtTop(context, "Add new transaction succeeded.")
 
-                    onNavigateToHistoryScreen()
+                        onCloseCalculator()
+
+                        transactionViewModel.addTransaction(
+                            accountId = selectedAccount?.id ?: "",
+                            categoryId = categoryId,
+                            amount = resultValue, // Use the safely parsed value
+                            description = description,
+                            note = note,
+                            type = selectedTransactionType
+                        )
+
+                        onNavigateToHistoryScreen()
+                    }
+
                 }
             }
         },

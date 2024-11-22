@@ -1,16 +1,22 @@
 package com.example.budgeto.screens.loginscreen
 
+import android.content.Context
 import android.util.Log
+import android.view.Gravity
+import android.view.LayoutInflater
+import android.widget.ImageView
+import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -22,7 +28,6 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
@@ -48,17 +53,15 @@ import androidx.compose.ui.unit.em
 import androidx.compose.ui.unit.sp
 import com.example.budgeto.R
 import com.example.budgeto.data.Constant
-import com.example.budgeto.screens.signupscreen.SignUpText
 import com.example.budgeto.screensfonts.inter
 import com.example.budgeto.state.LoginState
+import com.example.budgeto.utils.ToastUtil
 import com.example.budgeto.viewmodel.LoginViewModel
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.gms.common.api.ApiException
 import com.google.firebase.auth.AuthCredential
 import com.google.firebase.auth.GoogleAuthProvider
-import com.google.relay.compose.BoxScopeInstance.columnWeight
-import com.google.relay.compose.BoxScopeInstance.rowWeight
 import com.google.relay.compose.CircularButton
 import com.google.relay.compose.ColumnScopeInstanceImpl.align
 import com.google.relay.compose.CrossAxisAlignment
@@ -74,7 +77,6 @@ import com.google.relay.compose.tappable
 
 @Composable
 fun LoginScreen(
-
     email: String = "",
     password: String = "",
     onLoginButtonTapped: () -> Unit = {},
@@ -82,24 +84,21 @@ fun LoginScreen(
     onForgotPasswordTapped: () -> Unit,
     onLoginWithGoogleTapped: (AuthCredential) -> Unit,
     onLoginWithFacebookTapped: () -> Unit,
-    onLogginSucess: () -> Unit = {},
+    onLogginSuccess: () -> Unit = {},
     modifier: Modifier = Modifier,
     loginViewModel: LoginViewModel
 ) {
-
     var localEmail by remember { mutableStateOf(email) }
     var localPassword by remember { mutableStateOf(password) }
-
     var isPasswordVisible by remember { mutableStateOf(false) }
 
-    //gg login
     val context = LocalContext.current
 
+    // Google Sign-In setup
     val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
         .requestEmail()
         .requestIdToken(Constant.ServerClient)
         .build()
-
     val googleSignInClient = GoogleSignIn.getClient(context, gso)
 
     val launcher = rememberLauncherForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
@@ -111,17 +110,28 @@ fun LoginScreen(
             loginViewModel.googleLogin(credential) // Pass the credential to ViewModel
         } catch (e: ApiException) {
             Log.e("GoogleSignIn", "Google Sign-In failed: ${e.message}", e)
+            ToastUtil.showToastAtTop(context, "Google Sign-In failed: ${e.message}")
         }
     }
 
     val loginState by loginViewModel.loginState.collectAsState(initial = LoginState())
 
-    when {
-        loginState.isLoading -> {
-            CircularProgressIndicator()
+    // Display Toast for errors
+    LaunchedEffect(loginState.isError) {
+        loginState.isError?.let { errorMessage ->
+            ToastUtil.showToastAtTop(context, errorMessage)
+            loginViewModel.resetLoginState() // Clear error after showing
         }
-        loginState.isError != null -> {
-            Text("Error: ${loginState.isError}")
+    }
+
+    // Handle navigation on success
+    LaunchedEffect(loginState.isSuccess) {
+        loginState.isSuccess?.let {
+            if (loginViewModel.isUserLoggedIn()) {
+                onLogginSuccess()
+                ToastUtil.showToastAtTop(context, "Login Successful")
+                loginViewModel.resetLoginState()
+            }
         }
     }
 
@@ -132,40 +142,40 @@ fun LoginScreen(
         }
     }
 
-    LaunchedEffect(loginState.isSuccess) {
-        loginState.isSuccess?.let {
-            if (loginViewModel.isUserLoggedIn()) {
-//                onLoginButtonTapped() // Navigate to Profile screen on success
-                onLogginSucess()
-                loginViewModel.resetLoginState() // Reset login state after navigation
-            }
+    Box(
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(16.dp)
+    ) {
+        // Main Login Content
+        Login(
+            email = localEmail,
+            password = localPassword,
+            onLoginTapped = {
+                loginViewModel.loginUser(localEmail, localPassword)
+            },
+            onEmailChanged = { localEmail = it },
+            onPasswordChange = { localPassword = it },
+            isPasswordVisible = isPasswordVisible,
+            onTogglePasswordVisibility = { isPasswordVisible = !isPasswordVisible },
+            onSignUpTapped = onSignUpTapped,
+            onForgotPasswordTapped = onForgotPasswordTapped,
+            onLoginWithGoogleTapped = {
+                Log.d("LoginScreen", "Google Sign-In button clicked")
+                initiateGoogleSignIn()
+            },
+            onLoginWithFacebookTapped = onLoginWithFacebookTapped,
+            modifier = modifier
+        )
+
+        // Loading Indicator
+        if (loginState.isLoading) {
+            CircularProgressIndicator(
+                modifier = Modifier.align(Alignment.Center)
+            )
         }
     }
-
-    Login(
-        email = localEmail,
-        password = localPassword,
-        onLoginTapped = {
-            loginViewModel.loginUser(localEmail, localPassword)
-//            onLoginButtonTapped()
-        },
-        onEmailChanged = { localEmail = it },
-        onPasswordChange = { localPassword = it },
-        isPasswordVisible = isPasswordVisible,
-        onTogglePasswordVisibility = { isPasswordVisible = !isPasswordVisible },
-        onSignUpTapped = onSignUpTapped,
-        onForgotPasswordTapped = onForgotPasswordTapped,
-        onLoginWithGoogleTapped = {
-            Log.d("LoginScreen", "Google Sign-In button clicked")
-            initiateGoogleSignIn()
-        },
-        onLoginWithFacebookTapped = onLoginWithFacebookTapped,
-        modifier = modifier
-            .rowWeight(1.0f)
-            .columnWeight(1.0f)
-    )
 }
-
 
 @Composable
 fun Login(
@@ -248,129 +258,7 @@ fun Login(
                 Spacer(modifier = Modifier.width(16.dp))
                 LoginWithFacebookButton(onclick = onLoginWithFacebookTapped)
             }
-//            EmailTextBox(modifier = Modifier.rowWeight(1.0f)) {
-//                PlaceholderRightIcon(modifier = Modifier.rowWeight(1.0f)) {
-//                    Label(
-//                        email = email,
-//                        onEmailChange = {},
-//                        modifier = Modifier.rowWeight(1.0f)
-//                    )
-//                }
-//            }
-//            PasswordWrapper(modifier = Modifier.rowWeight(1.0f)) {
-//                PasswordTextBox(modifier = Modifier.rowWeight(1.0f)) {
-//                    PlaceholderRightIcon1(modifier = Modifier.rowWeight(1.0f)) {
-//                        Label1(
-//                            password = password,
-//                            onPasswordChange = {},
-//                            modifier = Modifier.rowWeight(1.0f)
-//                        )
-//                        IconEye1(onIconEyeTapped = onIconEyeTapped) {
-//                            Vector2(modifier = Modifier
-//                                .rowWeight(1.0f)
-//                                .columnWeight(1.0f))
-//                            Vector3(modifier = Modifier
-//                                .rowWeight(1.0f)
-//                                .columnWeight(1.0f))
-//                        }
-//                    }
-//                }
-//
-//            }
         }
-
-
-//        Frame162475(
-//            onLoginTapped = onLoginTapped,
-//            modifier = Modifier.boxAlign(
-//                alignment = Alignment.TopCenter,
-//                offset = DpOffset(
-//                    x = 0.0.dp,
-//                    y = 432.0.dp
-//                )
-//            )
-//        ) {
-//            Login1(
-//                modifier = Modifier.boxAlign(
-//                    alignment = Alignment.TopStart,
-//                    offset = DpOffset(
-//                        x = 150.0.dp,
-//                        y = 13.0.dp
-//                    )
-//                )
-//            )
-//        }
-
-
-
-//        Group99(
-//            modifier = Modifier.boxAlign(
-//                alignment = Alignment.TopStart,
-//                offset = DpOffset(
-//                    x = 150.0.dp,
-//                    y = 545.0.dp
-//                )
-//            )
-//        ) {
-//            LoginWithGoogle(onLoginWithGoogleTapped = onLoginWithGoogleTapped) {
-//                Ellipse1(
-//                    modifier = Modifier.boxAlign(
-//                        alignment = Alignment.Center,
-//                        offset = DpOffset(
-//                            x = 0.0.dp,
-//                            y = 0.0.dp
-//                        )
-//                    )
-//                )
-//                Ellipse35(
-//                    modifier = Modifier.boxAlign(
-//                        alignment = Alignment.TopStart,
-//                        offset = DpOffset(
-//                            x = 10.0.dp,
-//                            y = 10.0.dp
-//                        )
-//                    )
-//                )
-//            }
-//            LoginWithFacebook(
-//                onLoginWithFacebookTapped = onLoginWithFacebookTapped,
-//                modifier = Modifier.boxAlign(
-//                    alignment = Alignment.TopStart,
-//                    offset = DpOffset(
-//                        x = 49.0.dp,
-//                        y = 0.0.dp
-//                    )
-//                )
-//            ) {
-//                Ellipse2(
-//                    modifier = Modifier.boxAlign(
-//                        alignment = Alignment.Center,
-//                        offset = DpOffset(
-//                            x = 0.0.dp,
-//                            y = 0.0.dp
-//                        )
-//                    )
-//                )
-//                Ellipse36(
-//                    modifier = Modifier.boxAlign(
-//                        alignment = Alignment.Center,
-//                        offset = DpOffset(
-//                            x = -1.0.dp,
-//                            y = -1.0.dp
-//                        )
-//                    )
-//                )
-//                Vector161(
-//                    modifier = Modifier.boxAlign(
-//                        alignment = Alignment.TopStart,
-//                        offset = DpOffset(
-//                            x = 15.0.dp,
-//                            y = 11.0.dp
-//                        )
-//                    )
-//                )
-//            }
-//        }
         OrLoginWith(
             modifier = Modifier.boxAlign(
                 alignment = Alignment.TopCenter,
@@ -382,127 +270,6 @@ fun Login(
         )
     }
 }
-//
-//@Composable
-//fun Login(
-//    modifier: Modifier = Modifier,
-//    email: String = "",
-//    password: String = "",
-//    onLoginTapped: () -> Unit = {},
-//    onSignUpTapped: () -> Unit = {},
-//    onForgotPasswordTapped: () -> Unit = {},
-//    onIconEyeTapped: () -> Unit = {},
-//    onLoginWithGoogleTapped: () -> Unit = {},
-//    onLoginWithFacebookTapped: () -> Unit = {}
-//) {
-//    // Use BoxWithConstraints to access screen dimensions dynamically
-//    BoxWithConstraints(modifier = modifier.fillMaxSize()) {
-//        val screenHeight = maxHeight
-//        val screenWidth = maxWidth
-//
-//        // Calculate dynamic offsets based on screen size
-//        val bottomNavOffsetY = screenHeight * 0.9f  // 90% from the top
-//        val signUpFormOffsetY = screenHeight * 0.35f
-//        val loginButtonOffsetY = screenHeight * 0.6f
-//        val googleLoginOffsetY = screenHeight * 0.75f
-//        val facebookLoginOffsetY = googleLoginOffsetY + 40.dp
-//
-//        Box(modifier = Modifier.fillMaxSize()) {
-//            // Statistics Section at the Top Start
-//            Statistics(
-//                modifier = Modifier
-//                    .align(Alignment.TopStart)
-//            ){}
-//
-//            // Bottom Navigation dynamically offset near the bottom
-//            BottomNav(
-//                modifier = Modifier
-//                    .align(Alignment.BottomCenter)
-//                    .offset(y = bottomNavOffsetY)
-//            ) {
-//                Line12(
-//                    modifier = Modifier.fillMaxWidth()
-//                )
-//            }
-//
-//            // Sign-Up Form dynamically centered
-//            SignUpForm(
-//                modifier = Modifier
-//                    .offset(y = signUpFormOffsetY)
-//            ) {
-//                EmailTextBox(modifier = Modifier.weight(1f)) {
-//                    PlaceholderRightIcon {
-//                        Label(email = email)
-//                    }
-//                }
-//                PasswordWrapper {
-//                    PasswordTextBox {
-//                        PlaceholderRightIcon1 {
-//                            Label1(password = password)
-//                            IconEye1(onIconEyeTapped = onIconEyeTapped){}
-//                        }
-//                    }
-//                    ForgotPasswordLink(onForgotPasswordTapped)
-//                }
-//            }
-//
-//            // Login Button with dynamic offset
-//            Frame162475(
-//                onLoginTapped = onLoginTapped,
-//                modifier = Modifier
-//                    .offset(y = loginButtonOffsetY)
-//            ) {
-//                Login1(
-//                )
-//            }
-//
-//            // Google and Facebook Login Buttons
-//            Group99(
-//                modifier = Modifier
-//                    .offset(y = googleLoginOffsetY)
-//            ) {
-//                LoginWithGoogle(onLoginWithGoogleTapped) {
-//                    Ellipse1()
-//                    Ellipse35(
-//                        modifier = Modifier
-//                            .offset(x = 10.dp, y = 10.dp)
-//                    )
-//                }
-//                LoginWithFacebook(
-//                    onLoginWithFacebookTapped = onLoginWithFacebookTapped,
-//                    modifier = Modifier
-//                        .offset(x = 49.dp)
-//                ) {
-//                    Ellipse2()
-//                    Ellipse36(
-//                        modifier = Modifier
-//                            .offset(x = -1.dp, y = -1.dp)
-//                    )
-//                    Vector161(
-//                        modifier = Modifier
-//                            .offset(x = 15.dp, y = 11.dp)
-//                    )
-//                }
-//            }
-//
-//            // Bottom Link with Sign-Up Option
-//            BottomLink(
-//                modifier = Modifier
-//                    .align(Alignment.BottomStart)
-//                    .padding(start = 31.dp, bottom = 20.dp)
-//            ) {
-//                DonTHaveAnAccount()
-//                SignUp(onSignUpTapped = onSignUpTapped)
-//            }
-//
-//            // "Or Sign-Up With" Text near Google Login
-//            OrSignUpWith(
-//                modifier = Modifier
-//                    .offset(x = 58.dp, y = googleLoginOffsetY - 30.dp)
-//            )
-//        }
-//    }
-//}
 
 @Preview(widthDp = 390, heightDp = 844)
 @Composable
@@ -976,7 +743,7 @@ fun LoginButton(
 @Composable
 fun LoginWithGoogleButton(
     onclick: () -> Unit
-){
+) {
     CircularButton(
         onClick = onclick,
         icon = painterResource(R.drawable.login_ellipse_35), // Use the appropriate icon
