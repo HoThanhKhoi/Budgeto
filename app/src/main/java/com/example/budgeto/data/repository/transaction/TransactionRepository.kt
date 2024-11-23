@@ -20,8 +20,20 @@ class TransactionRepository @Inject constructor(
     collectionPath = "transactions",
     Transaction::class.java
 ) {
-    suspend fun getAllTransactions(userId: String): List<Transaction>
-    {
+    suspend fun addTransaction(transaction: Transaction) {
+        var transactionId = add(transaction)
+        Log.d("Add transaction", "Transaction ID: $transactionId")
+
+        if (transactionId != null) {
+            updateField(
+                id = transactionId,
+                field = "id",
+                value = transactionId
+            )
+        }
+    }
+
+    suspend fun getAllTransactions(userId: String): List<Transaction> {
         return query()
             .whereEqualTo("userId", userId)
             .orderBy("createdTime", Query.Direction.ASCENDING)

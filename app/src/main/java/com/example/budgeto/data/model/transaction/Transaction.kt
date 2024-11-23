@@ -6,6 +6,7 @@ import java.text.SimpleDateFormat
 import java.util.Locale
 
 data class Transaction(
+    val id: String = "",
     val accountId: String = "",
     val categoryId: String = "",
     val amount: Double = 0.0,

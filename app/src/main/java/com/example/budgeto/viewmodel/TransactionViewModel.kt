@@ -9,6 +9,7 @@ import com.example.budgeto.data.enums.transaction.TransactionType
 import com.example.budgeto.data.model.transaction.Transaction
 import com.example.budgeto.data.repository.account.AccountRepository
 import com.example.budgeto.data.repository.transaction.TransactionRepository
+import com.example.budgeto.data.repository.user.UserMoneyInfoRepository
 import com.google.firebase.Timestamp
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
@@ -20,7 +21,8 @@ import javax.inject.Inject
 class TransactionViewModel @Inject constructor(
     private val authRepository: AuthRepository,
     private val transactionRepository: TransactionRepository,
-    private val accountRepository: AccountRepository
+    private val accountRepository: AccountRepository,
+    private val userMoneyInfoRepository: UserMoneyInfoRepository
 ) : ViewModel() {
 
     val userId = authRepository.getCurrentUserId()
@@ -42,7 +44,7 @@ class TransactionViewModel @Inject constructor(
 
             try
             {
-                if(userId == null)
+                if(userId == null || accountId == null || categoryId == null)
                 {
                     return@launch
                 }
@@ -58,14 +60,44 @@ class TransactionViewModel @Inject constructor(
                     categoryId = categoryId?:"",
                     amount = amount,
                     description = description?:"",
-                    type = TransactionType.EXPENSE,
+                    type = type,
                     createdTime = Timestamp.now(),
                     date = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(Timestamp.now().toDate()),
                     note = note ?: "${type.name} at ${createdTime.toDate()}",
                     userId = userId?:""
                 )
 
-                transactionRepository.add(transaction)
+                transactionRepository.addTransaction(transaction)
+                accountRepository.addAmountToBalance(
+                    accountId = accountId,
+                    amount = if (type == TransactionType.EXPENSE) -amount else amount
+                )
+                userMoneyInfoRepository.addAmountToBalance(
+                    userId = userId,
+                    amount = if (type == TransactionType.EXPENSE) -amount else amount
+                )
+
+                if (type == TransactionType.EXPENSE){
+                    accountRepository.addAmountToExpense(
+                        accountId = accountId,
+                        amount = amount
+                    )
+                    userMoneyInfoRepository.addAmountToExpense(
+                        userId = userId,
+                        amount = amount
+                    )
+                } else{
+                    accountRepository.addAmountToIncome(
+                        accountId = accountId,
+                        amount = amount
+                    )
+                    userMoneyInfoRepository.addAmountToIncome(
+                        userId = userId,
+                        amount = amount
+                    )
+                }
+
+
                 fetchTransactions()
             }
             catch (ex: Exception)
@@ -88,7 +120,6 @@ class TransactionViewModel @Inject constructor(
             {
                 Log.d("Get all transactions","error: " + ex.message.toString())
             }
-
         }
     }
 

@@ -165,6 +165,14 @@ class LoginViewModel @Inject constructor(
         dailySummaryRepository.incrementLoginCount(userId)
     }
 
+    fun logDailyActivityModelScope(userId: String)
+    {
+        viewModelScope.launch {
+            userRepository.updateUserLastSignInTime(userId)
+            logDailyActivity(userId)
+        }
+    }
+
     fun validateCredentials(email: String, password: String): String? {
         if (email.isBlank() || !android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
             return "Invalid email format"

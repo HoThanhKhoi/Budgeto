@@ -8,6 +8,7 @@ import com.example.budgeto.data.AuthRepository
 import com.example.budgeto.data.model.account.Account
 import com.example.budgeto.data.model.user.UserMoneyInfo
 import com.example.budgeto.data.repository.account.AccountRepository
+import com.example.budgeto.data.repository.user.UserMoneyInfoRepository
 import com.example.budgeto.state.AddAccountState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
@@ -16,7 +17,8 @@ import javax.inject.Inject
 @HiltViewModel
 class AccountViewModel @Inject constructor(
     private val accountRepository: AccountRepository,
-    private val authRepository: AuthRepository
+    private val authRepository: AuthRepository,
+    private val userMoneyInfoRepository: UserMoneyInfoRepository
 ) : ViewModel() {
 
     val userId = authRepository.getCurrentUserId()
@@ -27,6 +29,7 @@ class AccountViewModel @Inject constructor(
 
     init {
         fetchAllAccounts()
+        fetchUserMoneyInfo()
     }
 
     fun resetAddAccountState()
@@ -55,16 +58,14 @@ class AccountViewModel @Inject constructor(
         viewModelScope.launch {
             try {
                 if (userId != null) {
-                    // Fetch accounts from the repository and update the state
-//                    val moneyInfo = userRepository.getUserMoneyInfo(userId)
-//
-//                    if (moneyInfo != null) {
-//                        userMoneyInfo.value = moneyInfo
-//                    }
-//                    else
-//                    {
-//                        Log.d("Get money info", "User money info is null, cannot retrieve accounts.")
-//                    }
+                    val moneyInfo = userMoneyInfoRepository.getById(userId)
+
+                    if (moneyInfo != null) {
+                        userMoneyInfo.value = moneyInfo
+                        Log.d("Get money info", "Money info retrieved successfully.")
+                    } else {
+                        Log.d("Get money info", "Money info not found.")
+                    }
                 } else {
                     Log.d("Get money info", "User ID is null, cannot retrieve accounts.")
                 }
