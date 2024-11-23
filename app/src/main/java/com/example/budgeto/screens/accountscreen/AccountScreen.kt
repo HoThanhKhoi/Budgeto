@@ -59,19 +59,12 @@ fun AccountScreen(
     accountViewModel: AccountViewModel = hiltViewModel()
 ) {
     var accountList = accountViewModel.accountList.value
-    var userMoneyInfo = accountViewModel.userMoneyInfo.value
-
-    LaunchedEffect(Unit) {
-        accountViewModel.fetchAllAccounts()
-        accountViewModel.fetchUserMoneyInfo()
-    }
 
     Account1(
         modifier = modifier
             .rowWeight(1.0f)
             .columnWeight(1.0f),
         accountViewModel = accountViewModel,
-        userMoneyInfo = userMoneyInfo?: UserMoneyInfo(),
         accountList = accountList
     )
 }
@@ -82,12 +75,17 @@ fun Account1(
     modifier: Modifier = Modifier,
     accountViewModel: AccountViewModel = hiltViewModel(),
     accountList: List<Account> = emptyList(),
-    userMoneyInfo: UserMoneyInfo = UserMoneyInfo()
 ) {
     var showAccountPopup by remember { mutableStateOf(false) }
     var selectedAccount by remember { mutableStateOf<Account?>(null) }
 
     var accountActionType by remember { mutableStateOf(AccountActionType.ADD) }
+
+    var userMoneyInfo = accountViewModel.userMoneyInfo.value?: UserMoneyInfo()
+
+    LaunchedEffect(userMoneyInfo){
+        accountViewModel.fetchUserMoneyInfo()
+    }
 
     if (showAccountPopup) {
         Dialog(onDismissRequest = {
@@ -132,7 +130,7 @@ fun Account1(
                 )
             )
             ExpensesValue(
-                value = userMoneyInfo.totalIncome.toString(),
+                value = userMoneyInfo.totalExpense.toString(),
                 modifier = Modifier.boxAlign(
                     alignment = Alignment.TopStart,
                     offset = DpOffset(
@@ -142,7 +140,7 @@ fun Account1(
                 )
             )
             IncomesValue(
-                value = userMoneyInfo.totalExpense.toString(),
+                value = userMoneyInfo.totalIncome.toString(),
                 modifier = Modifier.boxAlign(
                     alignment = Alignment.TopStart,
                     offset = DpOffset(

@@ -12,15 +12,15 @@ class UserMoneyInfoRepository @Inject constructor(
     collectionPath = "userMoneyInfos",
     clazz = UserMoneyInfo::class.java
 ) {
-    suspend fun updateBalance(userId: String, newBalance: Double) {
-        updateField(userId, "totalBalance", newBalance)
+    suspend fun addAmountToBalance(userId: String, amount: Double): Boolean {
+        return addAmountToField(userId, "totalBalance", amount)
     }
 
-    suspend fun updateExpense(userId: String, newExpense: Double) {
-        updateField(userId, "totalExpense", newExpense)
+    suspend fun addAmountToIncome(userId: String, amount: Double): Boolean {
+        return addAmountToField(userId, "totalIncome", amount)
     }
 
-    suspend fun updateIncome(userId: String, newIncome: Double) {
-        updateField(userId, "totalIncome", newIncome)
+    suspend fun addAmountToExpense(userId: String, amount: Double): Boolean {
+        return addAmountToField(userId, "totalExpense", amount)
     }
 }

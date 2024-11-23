@@ -9,6 +9,7 @@ import com.example.budgeto.data.enums.transaction.TransactionType
 import com.example.budgeto.data.model.transaction.Transaction
 import com.example.budgeto.data.repository.account.AccountRepository
 import com.example.budgeto.data.repository.transaction.TransactionRepository
+import com.example.budgeto.data.repository.user.UserMoneyInfoRepository
 import com.google.firebase.Timestamp
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
@@ -20,7 +21,8 @@ import javax.inject.Inject
 class TransactionViewModel @Inject constructor(
     private val authRepository: AuthRepository,
     private val transactionRepository: TransactionRepository,
-    private val accountRepository: AccountRepository
+    private val accountRepository: AccountRepository,
+    private val userMoneyInfoRepository: UserMoneyInfoRepository
 ) : ViewModel() {
 
     val userId = authRepository.getCurrentUserId()
@@ -70,16 +72,31 @@ class TransactionViewModel @Inject constructor(
                     accountId = accountId,
                     amount = if (type == TransactionType.EXPENSE) -amount else amount
                 )
-                if (type == TransactionType.EXPENSE)
+                userMoneyInfoRepository.addAmountToBalance(
+                    userId = userId,
+                    amount = if (type == TransactionType.EXPENSE) -amount else amount
+                )
+
+                if (type == TransactionType.EXPENSE){
                     accountRepository.addAmountToExpense(
                         accountId = accountId,
                         amount = amount
                     )
-                else
+                    userMoneyInfoRepository.addAmountToExpense(
+                        userId = userId,
+                        amount = amount
+                    )
+                } else{
                     accountRepository.addAmountToIncome(
                         accountId = accountId,
                         amount = amount
                     )
+                    userMoneyInfoRepository.addAmountToIncome(
+                        userId = userId,
+                        amount = amount
+                    )
+                }
+
 
                 fetchTransactions()
             }
