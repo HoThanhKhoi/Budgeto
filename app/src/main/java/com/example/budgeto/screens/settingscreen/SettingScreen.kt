@@ -1,5 +1,7 @@
 package com.example.budgeto.screens.settingscreen
 
+import android.util.Log
+import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -26,10 +28,16 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.DropdownMenuItem
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowDropDown
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.OutlinedTextFieldDefaults
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -49,6 +57,7 @@ import androidx.compose.ui.unit.DpOffset
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.em
 import androidx.compose.ui.unit.sp
+import androidx.compose.ui.window.Dialog
 import com.example.budgeto.R
 import com.google.relay.compose.BoxScopeInstance.columnWeight
 import com.google.relay.compose.BoxScopeInstance.rowWeight
@@ -78,8 +87,6 @@ fun Setting1(
     modifier: Modifier = Modifier,
     onXButtonTapped: () -> Unit = {}
 ) {
-    val scrollState= rememberScrollState()
-
     val accountList = listOf("Option 1", "Option 2", "Option 3")
 
     val categoryList = listOf(
@@ -94,6 +101,12 @@ fun Setting1(
         Triple("Clothes", "0 đ", R.drawable.setting_1_clothes),
         Triple("Clothes", "0 đ", R.drawable.setting_1_clothes),
     )
+
+    var title by remember { mutableStateOf("") }
+    var type by remember { mutableStateOf("Expenses") }
+    var description by remember { mutableStateOf("") }
+
+    val scrollState= rememberScrollState()
 
     TopLevel(modifier = modifier
         .verticalScroll(scrollState)
@@ -631,6 +644,16 @@ fun Setting1(
                                 )
                             )
                         )
+                        Frame70WithDialog(
+                            title = title,
+                            onTitleChange = { title = it },
+                            type = type,
+                            onTypeChange = { type = it },
+                            description = description,
+                            onDescriptionChange = { description = it }
+                        )
+
+                        Log.d("Category Settings", "Title: $title, Type: $type, Description: $description")
                     }
                 }
                 Spacer(modifier = Modifier.height(8.dp))
@@ -659,8 +682,220 @@ private fun Setting1Preview() {
     }
 }
 
+//region category pop up
+@Composable
+fun CategoryDialog(
+    onDismissRequest: () -> Unit,
+    onSave: (String, String, String) -> Unit,
+    initialTitle: String,
+    initialType: String,
+    initialDescription: String
+) {
+    var title by remember { mutableStateOf(initialTitle) }
+    var type by remember { mutableStateOf(initialType) }
+    var description by remember { mutableStateOf(initialDescription) }
 
-//region category item
+    val typeOptions = listOf("Expenses", "Income")
+
+    Dialog(onDismissRequest = { onDismissRequest() }) {
+        Surface(
+            shape = RoundedCornerShape(16.dp),
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(24.dp),
+            color = Color.White
+        ) {
+            Column(
+                modifier = Modifier
+                    .padding(24.dp)
+                    .fillMaxWidth()
+            ) {
+                // Header
+                Text(
+                    text = "Category",
+                    style = MaterialTheme.typography.titleMedium, // Use a larger, bold font for emphasis
+                    color = Color.Black,
+                    modifier = Modifier.padding(bottom = 20.dp)
+                )
+
+                // Title Input Field
+                OutlinedTextField(
+                    value = title,
+                    onValueChange = { title = it },
+                    label = { Text("Enter the title") },
+                    colors = OutlinedTextFieldDefaults.colors(
+                        focusedBorderColor = Color.DarkGray,
+                        unfocusedBorderColor = Color.DarkGray,
+                        focusedTextColor = Color.DarkGray,
+                        unfocusedTextColor = Color.DarkGray,
+                        focusedLabelColor = Color.DarkGray,
+                        unfocusedLabelColor = Color.DarkGray,
+                        cursorColor = Color.DarkGray
+                    ),
+                    singleLine = true,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(bottom = 20.dp)
+                )
+
+                // Icon and Type Selection Row
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(bottom = 20.dp),
+                    horizontalArrangement = Arrangement.SpaceBetween,
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    // Icon Placeholder
+                    Box(
+                        modifier = Modifier
+                            .size(64.dp)
+                            .background(
+                                color = Color(0xFFF0F0F0),
+                                shape = RoundedCornerShape(12.dp)
+                            ),
+                        contentAlignment = Alignment.Center
+                    ) {
+                        Icon(
+                            painter = painterResource(id = R.drawable.setting_1_clothes),
+                            contentDescription = "Icon",
+                            modifier = Modifier.size(36.dp),
+                            tint = Color.Black // Add a subtle tint for a modern look
+                        )
+                    }
+
+                    Spacer(modifier = Modifier.width(16.dp)) // Add space between icon and dropdown
+
+                    // Type Dropdown
+                    Box(
+                        modifier = Modifier
+                            .weight(1f)
+                            .fillMaxWidth()
+                    ) {
+                        DropdownWithLabel(
+                            label = "Type",
+                            options = typeOptions,
+                            selectedOption = type,
+                            onOptionSelected = { type = it }
+                        )
+                    }
+                }
+
+                // Description Input Field
+                OutlinedTextField(
+                    value = description,
+                    onValueChange = { description = it },
+                    label = { Text("Description") },
+                    colors = OutlinedTextFieldDefaults.colors(
+                        focusedBorderColor = Color.DarkGray,
+                        unfocusedBorderColor = Color.DarkGray,
+                        focusedTextColor = Color.DarkGray,
+                        unfocusedTextColor = Color.DarkGray,
+                        focusedLabelColor = Color.DarkGray,
+                        unfocusedLabelColor = Color.DarkGray,
+                        cursorColor = Color.DarkGray
+                    ),
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(120.dp),
+                    maxLines = 4
+                )
+
+                Spacer(modifier = Modifier.height(24.dp))
+
+                // Save Button
+                Button(
+                    onClick = {
+                        onSave(title, type, description)
+                        onDismissRequest()
+                    },
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(50.dp),
+                    colors = ButtonDefaults.buttonColors(
+                        containerColor = Color.Black,
+                        contentColor = Color.White
+                    ),
+                    shape = RoundedCornerShape(12.dp)
+                ) {
+                    Text(
+                        text = "Save",
+                        style = MaterialTheme.typography.labelSmall,
+                        fontSize = 16.sp
+                    )
+                }
+            }
+        }
+    }
+}
+
+
+@Composable
+fun DropdownWithLabel(
+    label: String,
+    options: List<String>,
+    selectedOption: String,
+    onOptionSelected: (String) -> Unit
+) {
+    var expanded by remember { mutableStateOf(false) }
+
+    Column {
+        Text(
+            text = label,
+            style = MaterialTheme.typography.labelLarge,
+            color = Color.Gray,
+            modifier = Modifier.padding(bottom = 4.dp)
+        )
+
+        Box {
+            Button(
+                onClick = { expanded = true },
+                colors = ButtonDefaults.buttonColors(
+                    containerColor = Color.Yellow,
+                    contentColor = Color.Black
+                ),
+                shape = RoundedCornerShape(8.dp),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(48.dp)
+            ) {
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.SpaceBetween
+                ) {
+                    Text(text = selectedOption)
+                    Icon(
+                        imageVector = Icons.Default.ArrowDropDown,
+                        contentDescription = "Dropdown Arrow",
+                        tint = Color.Black
+                    )
+                }
+            }
+
+            DropdownMenu(
+                expanded = expanded,
+                onDismissRequest = { expanded = false }
+            ) {
+                options.forEach { option ->
+                    DropdownMenuItem(
+                        onClick = {
+                            onOptionSelected(option)
+                            expanded = false
+                        }
+                    ) {
+                        Text(text = option, color = Color.White)
+                    }
+                }
+            }
+        }
+    }
+}
+
+
+//endregion
+
+//region category item components
 @Composable
 fun CategoryItem(
     title: String,
@@ -1426,6 +1661,48 @@ fun Frame70(
         modifier = modifier.requiredWidth(84.0.dp).requiredHeight(22.0.dp)
     )
 }
+
+@Composable
+fun Frame70WithDialog(
+    title: String,
+    onTitleChange: (String) -> Unit,
+    type: String,
+    onTypeChange: (String) -> Unit,
+    description: String,
+    onDescriptionChange: (String) -> Unit
+) {
+    var showDialog by remember { mutableStateOf(false) }
+
+    // Main UI component
+    Box(
+        modifier = Modifier
+            .fillMaxWidth()
+            .height(48.dp)
+            .border(1.dp, Color.Black, shape = RoundedCornerShape(8.dp))
+            .clickable { showDialog = true }
+            .padding(horizontal = 16.dp, vertical = 8.dp)
+    )
+    // Show the dialog when `showDialog` is true
+    if (showDialog) {
+        CategoryDialog(
+            onDismissRequest = { showDialog = false },
+            onSave = { updatedTitle, updatedType, updatedDescription ->
+                // Pass updated values back to the parent component
+                onTitleChange(updatedTitle)
+                onTypeChange(updatedType)
+                onDescriptionChange(updatedDescription)
+
+                // Close the dialog
+                showDialog = false
+            },
+            initialTitle = title,
+            initialType = type,
+            initialDescription = description
+        )
+    }
+}
+
+
 
 @Composable
 fun Frame68(
