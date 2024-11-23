@@ -8,5 +8,7 @@ interface IFirestoreRepository<T> {
     suspend fun delete(id: String): Boolean
     suspend fun queryDocuments(field: String, value: Any): List<T>?
     suspend fun getAllByField(field: String, value: Any): List<T>?
+    suspend fun getFieldValue(documentId: String, fieldName: String): Any?
+    suspend fun addAmountToField(documentId: String, fieldName: String, amount: Double): Boolean
 }
 

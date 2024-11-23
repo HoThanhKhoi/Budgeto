@@ -103,4 +103,36 @@ open class FirestoreRepository<T : Any>(
             null
         }
     }
+
+    override suspend fun getFieldValue(documentId: String, fieldName: String): Any? {
+        return try {
+            val documentSnapshot = collection.document(documentId).get().await()
+            if (documentSnapshot.exists()) {
+                documentSnapshot.get(fieldName)
+            } else {
+                null // Document does not exist
+            }
+        } catch (e: Exception) {
+            e.printStackTrace()
+            null // Handle exceptions (e.g., network issues)
+        }
+    }
+
+    override suspend fun addAmountToField(documentId: String, fieldName: String, amount: Double): Boolean {
+        return try {
+            val documentRef = collection.document(documentId)
+            val documentSnapshot = documentRef.get().await()
+            if (documentSnapshot.exists()) {
+                val currentAmount = documentSnapshot.getDouble(fieldName) ?: 0.0
+                val newAmount = currentAmount + amount
+                documentRef.update(fieldName, newAmount).await()
+                true
+                } else {
+                false
+            }
+        } catch (e: Exception) {
+            e.printStackTrace()
+            false
+        }
+    }
 }

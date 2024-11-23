@@ -40,4 +40,16 @@ class AccountRepository @Inject constructor(
             .get()
             .firstOrNull()
     }
+
+    suspend fun addAmountToBalance(accountId: String, amount: Double): Boolean {
+        return addAmountToField(accountId, "balance", amount)
+    }
+
+    suspend fun addAmountToIncome(accountId: String, amount: Double): Boolean {
+        return addAmountToField(accountId, "income", amount)
+    }
+
+    suspend fun addAmountToExpense(accountId: String, amount: Double): Boolean {
+        return addAmountToField(accountId, "expense", amount)
+    }
 }

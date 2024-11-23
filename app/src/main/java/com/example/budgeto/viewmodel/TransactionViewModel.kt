@@ -42,7 +42,7 @@ class TransactionViewModel @Inject constructor(
 
             try
             {
-                if(userId == null)
+                if(userId == null || accountId == null || categoryId == null)
                 {
                     return@launch
                 }
@@ -58,7 +58,7 @@ class TransactionViewModel @Inject constructor(
                     categoryId = categoryId?:"",
                     amount = amount,
                     description = description?:"",
-                    type = TransactionType.EXPENSE,
+                    type = type,
                     createdTime = Timestamp.now(),
                     date = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(Timestamp.now().toDate()),
                     note = note ?: "${type.name} at ${createdTime.toDate()}",
@@ -66,6 +66,21 @@ class TransactionViewModel @Inject constructor(
                 )
 
                 transactionRepository.addTransaction(transaction)
+                accountRepository.addAmountToBalance(
+                    accountId = accountId,
+                    amount = if (type == TransactionType.EXPENSE) -amount else amount
+                )
+                if (type == TransactionType.EXPENSE)
+                    accountRepository.addAmountToExpense(
+                        accountId = accountId,
+                        amount = amount
+                    )
+                else
+                    accountRepository.addAmountToIncome(
+                        accountId = accountId,
+                        amount = amount
+                    )
+
                 fetchTransactions()
             }
             catch (ex: Exception)
@@ -88,7 +103,6 @@ class TransactionViewModel @Inject constructor(
             {
                 Log.d("Get all transactions","error: " + ex.message.toString())
             }
-
         }
     }
 
