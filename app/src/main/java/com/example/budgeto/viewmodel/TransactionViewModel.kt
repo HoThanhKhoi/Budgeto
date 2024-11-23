@@ -115,4 +115,28 @@ class TransactionViewModel @Inject constructor(
         }
     }
 
+//    // Update Transaction
+//    fun updateTransaction(transaction: Transaction) {
+//        viewModelScope.launch {
+//            try {
+//                transactionRepository.update(transaction.id, transaction)
+//                fetchTransactions() // Refresh the list
+//            } catch (ex: Exception) {
+//                Log.d("UpdateTransaction", "Error: ${ex.message}")
+//            }
+//        }
+//    }
+//
+//    // Delete Transaction
+//    fun deleteTransaction(transactionId: String) {
+//        viewModelScope.launch {
+//            try {
+//                transactionRepository.delete(transactionId)
+//                fetchTransactions() // Refresh the list
+//            } catch (ex: Exception) {
+//                Log.d("DeleteTransaction", "Error: ${ex.message}")
+//            }
+//        }
+//    }
+
 }
