@@ -82,6 +82,7 @@ fun BudgetoApp(
         BudgetoScreenEnum.StatisticScreen.name,
         BudgetoScreenEnum.ProfileScreen.name,
         BudgetoScreenEnum.AccountScreen.name,
+        BudgetoScreenEnum.SettingsScreen.name
     )
 
     val isUserLoggedIn by remember { mutableStateOf(loginViewModel.isUserLoggedIn()) }

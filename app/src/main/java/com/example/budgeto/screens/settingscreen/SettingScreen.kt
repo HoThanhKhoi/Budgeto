@@ -2,8 +2,11 @@ package com.example.budgeto.screens.settingscreen
 
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.requiredHeight
 import androidx.compose.foundation.layout.requiredWidth
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -34,7 +37,7 @@ import com.google.relay.compose.tappable
 @Composable
 fun SettingScreen(
     onXButtonTapped: () -> Unit = {},
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier.fillMaxHeight()
 ){
     Setting1(
         onXButtonTapped = onXButtonTapped,
@@ -48,12 +51,18 @@ fun Setting1(
     modifier: Modifier = Modifier,
     onXButtonTapped: () -> Unit = {}
 ) {
-    TopLevel(modifier = modifier) {
+    val scrollState= rememberScrollState()
+    TopLevel(modifier = modifier
+        .verticalScroll(scrollState)
+        .fillMaxHeight()
+        .fillMaxWidth()
+        .padding(bottom = 20.dp)
+    ) {
         Frame47(
             modifier = Modifier.boxAlign(
                 alignment = Alignment.TopStart,
                 offset = DpOffset(
-                    x = 23.0.dp,
+                    x = 30.0.dp,
                     y = 82.0.dp
                 )
             )
@@ -286,7 +295,7 @@ fun Setting1(
             modifier = Modifier.boxAlign(
                 alignment = Alignment.TopStart,
                 offset = DpOffset(
-                    x = 23.0.dp,
+                    x = 30.0.dp,
                     y = 681.0.dp
                 )
             )
@@ -695,7 +704,7 @@ fun Setting1(
             modifier = Modifier.boxAlign(
                 alignment = Alignment.TopStart,
                 offset = DpOffset(
-                    x = 23.0.dp,
+                    x = 30.0.dp,
                     y = 467.0.dp
                 )
             )
@@ -847,7 +856,7 @@ fun Setting1(
             modifier = Modifier.boxAlign(
                 alignment = Alignment.TopStart,
                 offset = DpOffset(
-                    x = 378.0.dp,
+                    x = 1000.0.dp,
                     y = 82.0.dp
                 )
             )
@@ -865,7 +874,7 @@ fun Setting1(
     }
 }
 
-@Preview(widthDp = 390, heightDp = 1184)
+@Preview(widthDp = 390, heightDp = 1200)
 @Composable
 private fun Setting1Preview() {
     MaterialTheme {
@@ -2043,7 +2052,7 @@ fun Frame56(
             blue = 0
         ),
         content = content,
-        modifier = modifier.requiredWidth(344.0.dp).requiredHeight(474.0.dp).relayDropShadow(
+        modifier = modifier.requiredWidth(344.0.dp).requiredHeight(500.0.dp).relayDropShadow(
             color = Color(
                 alpha = 38,
                 red = 0,
@@ -2367,6 +2376,6 @@ fun TopLevel(
         ),
         isStructured = false,
         content = content,
-        modifier = modifier.fillMaxWidth(1.0f).fillMaxHeight(1.0f)
+        modifier = modifier.fillMaxWidth(1.0f).fillMaxHeight(1.0f).requiredHeight(1190.dp)
     )
 }
