@@ -90,9 +90,22 @@ fun HistoryScreen(
     var totalIncomes by remember { mutableStateOf(0.0) }
     var overallBalance by remember { mutableStateOf(0.0) }
 
+    // Function to calculate totals dynamically
+    fun updateTotals(filteredTransactions: List<Pair<Transaction, String>>) {
+        totalExpenses = filteredTransactions
+            .filter { it.first.type == TransactionType.EXPENSE }
+            .sumOf { it.first.amount }
+
+        totalIncomes = filteredTransactions
+            .filter { it.first.type == TransactionType.INCOME }
+            .sumOf { it.first.amount }
+
+        overallBalance = totalIncomes - totalExpenses
+    }
+
+    // Fetch transactions and update totals
     LaunchedEffect(currentMonth, currentYear) {
         transactionViewModel.fetchTransactionsWithAccountNames { transactions ->
-
             val filteredTransactions = transactions.filter { transaction ->
                 val transactionDate = SimpleDateFormat("yyyy-MM-dd", Locale.US).parse(transaction.first.date)
                 val transactionCalendar = Calendar.getInstance().apply { time = transactionDate }
@@ -102,16 +115,7 @@ fun HistoryScreen(
             }
 
             transactionsWithAccountNames = filteredTransactions
-
-            totalExpenses = filteredTransactions
-                .filter { it.first.type == TransactionType.EXPENSE }
-                .sumOf { it.first.amount }
-
-            totalIncomes = filteredTransactions
-                .filter { it.first.type == TransactionType.INCOME }
-                .sumOf { it.first.amount }
-
-            overallBalance = totalIncomes - totalExpenses
+            updateTotals(filteredTransactions) // Update totals
         }
     }
 
@@ -140,13 +144,19 @@ fun HistoryScreen(
             accountName = accountName,
             onDismiss = { selectedTransaction = null },
             onSave = { updatedTransaction ->
-                // Handle save action here
-                //transactionViewModel.updateTransaction(updatedTransaction)
+                transactionViewModel.updateTransaction(transaction.id, updatedTransaction)
+                transactionViewModel.fetchTransactionsWithAccountNames { transactions ->
+                    transactionsWithAccountNames = transactions
+                    updateTotals(transactions) // Recalculate totals after update
+                }
                 selectedTransaction = null
             },
-            onDelete = { transactionToDelete ->
-                // Handle delete action here
-                //transactionViewModel.deleteTransaction(transactionToDelete)
+            onDelete = { transactionId ->
+                transactionViewModel.deleteTransaction(transactionId)
+                transactionViewModel.fetchTransactionsWithAccountNames { transactions ->
+                    transactionsWithAccountNames = transactions
+                    updateTotals(transactions) // Recalculate totals after delete
+                }
                 selectedTransaction = null
             }
         )
@@ -324,7 +334,7 @@ fun TransactionEntry(
             content = accountName,
             fontFamily = com.example.budgeto.screensfonts.inter,
             fontWeight = FontWeight(500),
-            modifier = Modifier.boxAlign(Alignment.TopStart, DpOffset(130.dp, 16.dp))
+            modifier = Modifier.boxAlign(Alignment.TopStart, DpOffset(120.dp, 16.dp))
         )
 
         val formattedAmount = String.format(Locale("vi", "VN"), "%,.2f", transaction.amount)
@@ -414,7 +424,7 @@ fun TransactionDetailsDialog(
     accountName: String,
     onDismiss: () -> Unit,
     onSave: (Transaction) -> Unit,
-    onDelete: (Transaction) -> Unit
+    onDelete: (String) -> Unit
 ) {
     var date by remember { mutableStateOf(transaction.date) }
     var category by remember { mutableStateOf(transaction.categoryId) }
@@ -555,7 +565,10 @@ fun TransactionDetailsDialog(
                             text = "Transaction Date",
                             fontSize = 18.sp,
                             color = Color.Black,
-                            modifier = Modifier.padding(start = 4.dp, bottom = 8.dp) // Adjusted padding for consistency
+                            modifier = Modifier.padding(
+                                start = 4.dp,
+                                bottom = 8.dp
+                            ) // Adjusted padding for consistency
                         )
 
                         // Box for the Date Field
@@ -598,22 +611,22 @@ fun TransactionDetailsDialog(
                         Button(
                             onClick = {
                                 if (amount.toDoubleOrNull() != null) {
-                                    onSave(
-                                        transaction.copy(
-                                            date = date,
-                                            categoryId = category,
-                                            amount = amount.toDouble(),
-                                            type = if (isIncome) TransactionType.INCOME else TransactionType.EXPENSE
-                                        )
+                                    val updatedTransaction = transaction.copy(
+                                        date = date,
+                                        categoryId = category,
+                                        amount = amount.toDouble(),
+                                        type = if (isIncome) TransactionType.INCOME else TransactionType.EXPENSE
                                     )
+                                    onSave(updatedTransaction)
                                 }
                             },
                             colors = ButtonDefaults.buttonColors(containerColor = Color.Blue)
                         ) {
                             Text(text = "Save", color = Color.White)
                         }
+
                         Button(
-                            onClick = { onDelete(transaction) },
+                            onClick = { onDelete(transaction.id) },
                             colors = ButtonDefaults.buttonColors(containerColor = Color.Red)
                         ) {
                             Text(text = "Delete", color = Color.White)
@@ -625,7 +638,7 @@ fun TransactionDetailsDialog(
     }
 }
 
-@Composable
+    @Composable
 fun CustomTextField(
     value: String,
     onValueChange: (String) -> Unit,

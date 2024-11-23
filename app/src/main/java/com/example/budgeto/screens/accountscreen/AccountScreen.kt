@@ -1,8 +1,10 @@
 package com.example.budgeto.screens.accountscreen
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -12,6 +14,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.requiredHeight
 import androidx.compose.foundation.layout.requiredWidth
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
@@ -27,6 +30,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
@@ -45,12 +49,14 @@ import com.example.budgeto.screensfonts.inter
 import com.example.budgeto.viewmodel.AccountViewModel
 import com.google.relay.compose.BoxScopeInstance.columnWeight
 import com.google.relay.compose.BoxScopeInstance.rowWeight
+import com.google.relay.compose.ColumnScopeInstanceImpl.weight
 import com.google.relay.compose.MainAxisAlignment
 import com.google.relay.compose.RelayContainer
 import com.google.relay.compose.RelayContainerArrangement
 import com.google.relay.compose.RelayContainerScope
 import com.google.relay.compose.RelayText
 import com.google.relay.compose.RelayVector
+import java.util.Locale
 
 
 @Composable
@@ -108,101 +114,33 @@ fun Account1(
 
     TopLevel(modifier = modifier.fillMaxWidth()) {
 
-        //region expenses & income
-        Frame46(
+        //region Total Balance
+        Frame35(
+            balance = userMoneyInfo.totalBalance, // Use userMoneyInfo's total balance
             modifier = Modifier
                 .boxAlign(
-                    alignment = Alignment.TopStart,
+                    alignment = Alignment.TopCenter,
+                    offset = DpOffset(0.dp, 0.dp)
+                )
+        )
+        //endregion
+
+        //region expenses & income
+        Frame46(
+            totalExpenses = userMoneyInfo.totalExpense, // Use userMoneyInfo's total expense
+            totalIncomes = userMoneyInfo.totalIncome,   // Use userMoneyInfo's total income
+            modifier = Modifier
+                .boxAlign(
+                    alignment = Alignment.TopCenter,
                     offset = DpOffset(
                         x = 0.0.dp,
-                        y = 120.0.dp
+                        y = 130.0.dp
                     )
                 )
                 .fillMaxWidth()
-        ) {
-            Expenses(
-                modifier = Modifier.boxAlign(
-                    alignment = Alignment.TopStart,
-                    offset = DpOffset(
-                        x = 62.0.dp,
-                        y = 38.0.dp
-                    )
-                )
-            )
-            ExpensesValue(
-                value = userMoneyInfo.totalExpense.toString(),
-                modifier = Modifier.boxAlign(
-                    alignment = Alignment.TopStart,
-                    offset = DpOffset(
-                        x = 31.0.dp,
-                        y = 62.0.dp
-                    )
-                )
-            )
-            IncomesValue(
-                value = userMoneyInfo.totalIncome.toString(),
-                modifier = Modifier.boxAlign(
-                    alignment = Alignment.TopStart,
-                    offset = DpOffset(
-                        x = 225.0.dp,
-                        y = 62.0.dp
-                    )
-                )
-            )
-            Incomes(
-                modifier = Modifier.boxAlign(
-                    alignment = Alignment.TopStart,
-                    offset = DpOffset(
-                        x = 258.0.dp,
-                        y = 38.0.dp
-                    )
-                )
-            )
-            Line13(
-                modifier = Modifier.boxAlign(
-                    alignment = Alignment.TopCenter,
-                    offset = DpOffset(
-                        x = 0.0000013113418617649586.dp,
-                        y = 68.0.dp
-                    )
-                )
-            )
-            Rectangle63(
-                modifier = Modifier.boxAlign(
-                    alignment = Alignment.TopStart,
-                    offset = DpOffset(
-                        x = 0.0.dp,
-                        y = 113.0.dp
-                    )
-                )
-            )
-        }
+        )
         //endregion
-
-        //region Total Balance
-        Frame35(modifier = modifier.fillMaxWidth()) {
-            TotalBalance(
-                modifier = Modifier.boxAlign(
-                    alignment = Alignment.TopStart,
-                    offset = DpOffset(
-                        x = 150.0.dp,
-                        y = 41.0.dp
-                    )
-                )
-            )
-            TotalBalanceValue(
-                value = userMoneyInfo.totalBalance.toString(),
-                modifier = Modifier.boxAlign(
-                    alignment = Alignment.TopCenter,
-                    offset = DpOffset(
-                        x = 0.5.dp,
-                        y = 68.0.dp
-                    )
-                )
-            )
-        }
-        //endregion
-
+        
         //region account section
 
         RelayContainer(
@@ -380,106 +318,106 @@ fun TopLevel(
 @Composable
 fun Frame46(
     modifier: Modifier = Modifier,
-    content: @Composable RelayContainerScope.() -> Unit
+    totalExpenses: Double,
+    totalIncomes: Double
 ) {
     RelayContainer(
-        backgroundColor = Color(
-            alpha = 255,
-            red = 255,
-            green = 255,
-            blue = 255
-        ),
+        backgroundColor = Color.White,
         isStructured = false,
         radius = 5.0,
         strokeWidth = 1.0,
-        strokeColor = Color(
-            alpha = 255,
-            red = 0,
-            green = 0,
-            blue = 0
-        ),
-        content = content,
+        strokeColor = Color.Black,
         modifier = modifier
-            .requiredWidth(390.0.dp)
-            .requiredHeight(120.0.dp)
-    )
+            .fillMaxWidth()
+            .requiredHeight(120.dp)
+    ) {
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(vertical = 10.dp),
+            horizontalArrangement = Arrangement.SpaceEvenly,
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            ExpensesColumn(totalExpenses = totalExpenses)
+            // Divider
+            Box(
+                modifier = Modifier
+                    .width(1.dp)
+                    .fillMaxHeight(0.7f) // Shorten the divider to look visually balanced
+                    .background(Color.Black)
+            )
+
+            IncomesColumn(totalIncomes = totalIncomes)
+        }
+    }
 }
 
 @Composable
-fun Expenses(modifier: Modifier = Modifier) {
-    RelayText(
-        content = "Expenses",
-        fontSize = 16.0.sp,
-        fontFamily = inter,
-        height = 1.2102272510528564.em,
-        fontWeight = FontWeight(500.0.toInt()),
-        modifier = modifier.wrapContentHeight(
-            align = Alignment.CenterVertically,
-            unbounded = true
-        )
-    )
-}
-
-@Composable
-fun ExpensesValue(
-    modifier: Modifier = Modifier,
-    value: String = ""
+fun ExpensesColumn(
+    totalExpenses: Double,
+    modifier: Modifier = Modifier
 ) {
-    RelayText(
-        content = value,
-        fontSize = 20.0.sp,
-        fontFamily = inter,
-        height = 1.2102272033691406.em,
-        fontWeight = FontWeight(700.0.toInt()),
-        modifier = modifier.wrapContentHeight(
-            align = Alignment.CenterVertically,
-            unbounded = true
-        )
-    )
-}
-
-@Composable
-fun Incomes(modifier: Modifier = Modifier) {
-    RelayText(
-        content = "Incomes",
-        fontSize = 16.0.sp,
-        fontFamily = inter,
-        height = 1.2102272510528564.em,
-        fontWeight = FontWeight(500.0.toInt()),
-        modifier = modifier.wrapContentHeight(
-            align = Alignment.CenterVertically,
-            unbounded = true
-        )
-    )
-}
-
-@Composable
-fun IncomesValue(
-    modifier: Modifier = Modifier,
-    value: String = ""
-) {
-    RelayText(
-        content = value,
-        fontSize = 20.0.sp,
-        fontFamily = inter,
-        height = 1.2102272033691406.em,
-        fontWeight = FontWeight(700.0.toInt()),
-        modifier = modifier.wrapContentHeight(
-            align = Alignment.CenterVertically,
-            unbounded = true
-        )
-    )
-}
-
-@Composable
-fun Line13(modifier: Modifier = Modifier) {
-    RelayVector(
-        vector = painterResource(R.drawable.account_1_line_13),
+    Column(
         modifier = modifier
-            .requiredWidth(60.0.dp)
-            .requiredHeight(0.0.dp)
-    )
+            .fillMaxHeight()
+            .weight(1f),
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.Center
+    ) {
+        Text(
+            text = "Expenses",
+            style = TextStyle(
+                fontSize = 16.sp,
+                fontFamily = inter,
+                fontWeight = FontWeight(500.0.toInt()),
+                color = Color.Black
+            )
+        )
+        Text(
+            text = "${String.format(Locale("vi", "VN"),"%,.2f", totalExpenses)} VNĐ",
+            style = TextStyle(
+                fontSize = 25.sp,
+                fontFamily = com.example.budgeto.screensfonts.inter,
+                fontWeight = FontWeight(700.0.toInt()),
+                color = Color.Red
+            )
+        )
+    }
 }
+
+@Composable
+fun IncomesColumn(
+    totalIncomes: Double,
+    modifier: Modifier = Modifier
+) {
+    Column(
+        modifier = modifier
+            .fillMaxHeight()
+            .weight(1f),
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.Center
+    ) {
+        Text(
+            text = "Incomes",
+            style = TextStyle(
+                fontSize = 16.sp,
+                fontFamily = com.example.budgeto.screensfonts.inter,
+                fontWeight = FontWeight(500.0.toInt()),
+                color = Color.Black
+            )
+        )
+        Text(
+            text = "${String.format(Locale("vi", "VN"),"%,.2f", totalIncomes)} VNĐ",
+            style = TextStyle(
+                fontSize = 25.sp,
+                fontFamily = com.example.budgeto.screensfonts.inter,
+                fontWeight = FontWeight(700.0.toInt()),
+                color = Color.Green
+            )
+        )
+    }
+}
+
 
 @Composable
 fun Rectangle63(modifier: Modifier = Modifier) {
@@ -495,8 +433,8 @@ fun Rectangle63(modifier: Modifier = Modifier) {
 //region total component
 @Composable
 fun Frame35(
-    modifier: Modifier = Modifier,
-    content: @Composable RelayContainerScope.() -> Unit
+    balance: Double,
+    modifier: Modifier = Modifier
 ) {
     RelayContainer(
         backgroundColor = Color(
@@ -513,20 +451,32 @@ fun Frame35(
             green = 0,
             blue = 0
         ),
-        content = content,
         modifier = modifier
-            .requiredWidth(390.0.dp)
-            .requiredHeight(136.0.dp)
-    )
+            .fillMaxWidth()
+            .requiredHeight(130.dp)
+    ) {
+        Column(
+            modifier = Modifier
+                .fillMaxWidth()
+                .fillMaxHeight(),
+            verticalArrangement = Arrangement.Center,
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            OverallBalance() // Call the label composable
+            TxtOverallBalance(
+                balance = balance,
+                modifier = Modifier.padding(top = 8.dp) // Add spacing between label and value
+            )
+        }
+    }
 }
 
+//region overall balance component
 @Composable
-fun TotalBalance(
-    modifier: Modifier = Modifier,
-) {
+fun OverallBalance(modifier: Modifier = Modifier) {
     RelayText(
-        content = "Total Balance",
-        fontFamily = inter,
+        content = "Overall Balance",
+        fontFamily = com.example.budgeto.screensfonts.inter,
         color = Color(
             alpha = 255,
             red = 255,
@@ -541,22 +491,17 @@ fun TotalBalance(
 }
 
 @Composable
-fun TotalBalanceValue(
-    modifier: Modifier = Modifier,
-    value: String = ""
+fun TxtOverallBalance(
+    balance: Double,
+    modifier: Modifier = Modifier
 ) {
     RelayText(
-        content = value,
-        fontSize = 32.0.sp,
-        fontFamily = inter,
-        color = Color(
-            alpha = 255,
-            red = 255,
-            green = 255,
-            blue = 255
-        ),
+        content = "${String.format(Locale("vi", "VN"),"%,.2f", balance)} VNĐ",
+        fontSize = 32.sp,
+        fontFamily = com.example.budgeto.screensfonts.inter,
+        color = Color.White , // Use red for negative balance
         height = 1.2102272510528564.em,
-        textAlign = TextAlign.Left,
+        textAlign = TextAlign.Center,
         fontWeight = FontWeight(700.0.toInt()),
         modifier = modifier
     )

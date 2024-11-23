@@ -146,28 +146,41 @@ class TransactionViewModel @Inject constructor(
         }
     }
 
-//    // Update Transaction
-//    fun updateTransaction(transaction: Transaction) {
-//        viewModelScope.launch {
-//            try {
-//                transactionRepository.update(transaction.id, transaction)
-//                fetchTransactions() // Refresh the list
-//            } catch (ex: Exception) {
-//                Log.d("UpdateTransaction", "Error: ${ex.message}")
-//            }
-//        }
-//    }
-//
-//    // Delete Transaction
-//    fun deleteTransaction(transactionId: String) {
-//        viewModelScope.launch {
-//            try {
-//                transactionRepository.delete(transactionId)
-//                fetchTransactions() // Refresh the list
-//            } catch (ex: Exception) {
-//                Log.d("DeleteTransaction", "Error: ${ex.message}")
-//            }
-//        }
-//    }
+    fun updateTransaction(transactionId: String, updatedTransaction: Transaction) {
+        viewModelScope.launch {
+            try {
+                if (userId == null) return@launch
+
+                val isUpdated = transactionRepository.update(transactionId, updatedTransaction)
+                if (isUpdated) {
+                    fetchTransactions() // Refresh the transaction list
+                    Log.d("UpdateTransaction", "Transaction updated successfully")
+                } else {
+                    Log.d("UpdateTransaction", "Failed to update the transaction")
+                }
+            } catch (ex: Exception) {
+                Log.d("UpdateTransaction", "Error: ${ex.message}")
+            }
+        }
+    }
+
+    fun deleteTransaction(transactionId: String) {
+        viewModelScope.launch {
+            try {
+                if (userId == null) return@launch
+
+                val isDeleted = transactionRepository.delete(transactionId)
+                if (isDeleted) {
+                    fetchTransactions() // Refresh the transaction list
+                    Log.d("DeleteTransaction", "Transaction deleted successfully")
+                } else {
+                    Log.d("DeleteTransaction", "Failed to delete the transaction")
+                }
+            } catch (ex: Exception) {
+                Log.d("DeleteTransaction", "Error: ${ex.message}")
+            }
+        }
+    }
+
 
 }
