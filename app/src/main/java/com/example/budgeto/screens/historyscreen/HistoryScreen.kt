@@ -42,12 +42,16 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Paint
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.DpOffset
+import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.em
 import androidx.compose.ui.unit.sp
@@ -668,16 +672,56 @@ fun CustomTextField(
     }
 }
 
+@Composable
+fun calculateFontSize(
+    text: String,
+    maxFontSize: TextUnit,
+    minFontSize: TextUnit,
+    maxWidth: Dp
+): TextUnit {
+    var calculatedFontSize by remember { mutableStateOf(maxFontSize) }
+    val density = LocalDensity.current
+
+    LaunchedEffect(text, maxFontSize, minFontSize, maxWidth) {
+        with(density) {
+            val maxWidthPx = maxWidth.toPx() // Convert Dp to Pixels
+            val paint = android.graphics.Paint()
+
+            // Start with maxFontSize and decrease until the text fits or reaches minFontSize
+            var currentFontSizePx = maxFontSize.toPx()
+            paint.textSize = currentFontSizePx
+
+            while (currentFontSizePx >= minFontSize.toPx()) {
+                val textWidth = paint.measureText(text)
+
+                if (textWidth <= maxWidthPx) {
+                    // If text fits within maxWidth, use current font size
+                    break
+                }
+
+                // Reduce font size incrementally
+                currentFontSizePx -= 1
+                paint.textSize = currentFontSizePx
+            }
+
+            // Coerce the result between minFontSize and maxFontSize
+            calculatedFontSize = currentFontSizePx.toSp()
+        }
+    }
+
+    return calculatedFontSize
+}
+
+
 //region expenses & Incomes component
 @Composable
 fun ExpensesColumn(
     totalExpenses: Double,
+    fontSize: TextUnit,
     modifier: Modifier = Modifier
 ) {
     Column(
-        modifier = modifier
-            .fillMaxHeight()
-            .weight(1f),
+        modifier = modifier.fillMaxSize(),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center
     ) {
@@ -685,19 +729,18 @@ fun ExpensesColumn(
             text = "Expenses",
             style = TextStyle(
                 fontSize = 16.sp,
-                fontFamily = com.example.budgeto.screensfonts.inter,
-                fontWeight = FontWeight(500.0.toInt()),
+                fontWeight = FontWeight.Medium,
                 color = Color.Black
             )
         )
         Text(
-            text = "${String.format(Locale("vi", "VN"),"%,.2f", totalExpenses)} VNĐ",
-            style = TextStyle(
-                fontSize = 25.sp,
-                fontFamily = com.example.budgeto.screensfonts.inter,
-                fontWeight = FontWeight(700.0.toInt()),
-                color = Color.Red
-            )
+            text = String.format(Locale("vi", "VN"), "%,.2f VNĐ", totalExpenses),
+            fontSize = fontSize,
+            fontWeight = FontWeight.Bold,
+            color = Color.Red,
+            maxLines = 1,
+            overflow = TextOverflow.Ellipsis,
+            textAlign = TextAlign.Center
         )
     }
 }
@@ -705,12 +748,11 @@ fun ExpensesColumn(
 @Composable
 fun IncomesColumn(
     totalIncomes: Double,
+    fontSize: TextUnit,
     modifier: Modifier = Modifier
 ) {
     Column(
-        modifier = modifier
-            .fillMaxHeight()
-            .weight(1f),
+        modifier = modifier.fillMaxSize(),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center
     ) {
@@ -718,19 +760,18 @@ fun IncomesColumn(
             text = "Incomes",
             style = TextStyle(
                 fontSize = 16.sp,
-                fontFamily = com.example.budgeto.screensfonts.inter,
-                fontWeight = FontWeight(500.0.toInt()),
+                fontWeight = FontWeight.Medium,
                 color = Color.Black
             )
         )
         Text(
-            text = "${String.format(Locale("vi", "VN"),"%,.2f", totalIncomes)} VNĐ",
-            style = TextStyle(
-                fontSize = 25.sp,
-                fontFamily = com.example.budgeto.screensfonts.inter,
-                fontWeight = FontWeight(700.0.toInt()),
-                color = Color.Green
-            )
+            text = String.format(Locale("vi", "VN"), "%,.2f VNĐ", totalIncomes),
+            fontSize = fontSize,
+            fontWeight = FontWeight.Bold,
+            color = Color.Green,
+            maxLines = 1,
+            overflow = TextOverflow.Ellipsis,
+            textAlign = TextAlign.Center
         )
     }
 }
@@ -761,25 +802,77 @@ fun Frame46(
             .fillMaxWidth()
             .requiredHeight(120.dp)
     ) {
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(vertical = 10.dp),
-            horizontalArrangement = Arrangement.SpaceEvenly,
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            ExpensesColumn(totalExpenses = totalExpenses)
-            // Divider
-            Box(
-                modifier = Modifier
-                    .width(1.dp)
-                    .fillMaxHeight(0.7f) // Shorten the divider to look visually balanced
-                    .background(Color.Black)
+        BoxWithConstraints(modifier = Modifier.fillMaxSize()) {
+            val maxWidthForEachColumn = with(LocalDensity.current) { (maxWidth - 32.dp).toPx() / 2 }
+            val expensesText = String.format(Locale("vi", "VN"), "%,.2f VNĐ", totalExpenses)
+            val incomesText = String.format(Locale("vi", "VN"), "%,.2f VNĐ", totalIncomes)
+
+            val unifiedFontSize = calculateUnifiedFontSize(
+                texts = listOf(expensesText, incomesText),
+                maxFontSize = 25.sp,
+                minFontSize = 15.sp,
+                maxWidthForEachColumn
             )
 
-            IncomesColumn(totalIncomes = totalIncomes)
+            Row(
+                modifier = Modifier
+                    .fillMaxSize(),
+                horizontalArrangement = Arrangement.SpaceEvenly,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                ExpensesColumn(
+                    totalExpenses = totalExpenses,
+                    fontSize = unifiedFontSize,
+                    modifier = Modifier.weight(1f)
+                )
+
+                Box(
+                    modifier = Modifier
+                        .width(1.dp)
+                        .fillMaxHeight(0.7f)
+                        .background(Color.Black)
+                )
+
+                IncomesColumn(
+                    totalIncomes = totalIncomes,
+                    fontSize = unifiedFontSize,
+                    modifier = Modifier.weight(1f)
+                )
+            }
         }
     }
+}
+
+@Composable
+fun calculateUnifiedFontSize(
+    texts: List<String>,
+    maxFontSize: TextUnit,
+    minFontSize: TextUnit,
+    maxWidth: Float
+): TextUnit {
+    val density = LocalDensity.current
+    var calculatedFontSize = maxFontSize
+
+    // Calculate the font size dynamically
+    with(density) {
+        val paint = android.graphics.Paint()
+        var currentFontSizePx = maxFontSize.toPx()
+
+        while (currentFontSizePx >= minFontSize.toPx()) {
+            paint.textSize = currentFontSizePx
+            val textWidths = texts.map { paint.measureText(it) }
+
+            if (textWidths.all { it <= maxWidth }) {
+                break // Found a suitable font size
+            }
+
+            currentFontSizePx -= 1 // Reduce font size incrementally
+        }
+
+        calculatedFontSize = currentFontSizePx.toSp()
+    }
+
+    return calculatedFontSize
 }
 
 
@@ -809,16 +902,22 @@ fun TxtOverallBalance(
     balance: Double,
     modifier: Modifier = Modifier
 ) {
-    RelayText(
-        content = "${String.format(Locale("vi", "VN"),"%,.2f", balance)} VNĐ",
-        fontSize = 32.sp,
-        fontFamily = com.example.budgeto.screensfonts.inter,
-        color = Color.White , // Use red for negative balance
-        height = 1.2102272510528564.em,
-        textAlign = TextAlign.Center,
-        fontWeight = FontWeight(700.0.toInt()),
-        modifier = modifier
-    )
+    BoxWithConstraints(modifier = modifier.fillMaxWidth()) {
+        val balanceText = String.format(Locale("vi", "VN"), "%,.2f VNĐ", balance)
+        val fontSize = calculateFontSize(balanceText, maxFontSize = 32.sp, minFontSize = 12.sp, maxWidth)
+
+        Text(
+            text = balanceText,
+            fontSize = fontSize,
+            fontWeight = FontWeight.Bold,
+            fontFamily = com.example.budgeto.screensfonts.inter,
+            textAlign = TextAlign.Center,
+            color = Color.White,
+            maxLines = 1,
+            overflow = TextOverflow.Ellipsis,
+            modifier = Modifier.align(Alignment.Center)
+        )
+    }
 }
 
 @Composable
