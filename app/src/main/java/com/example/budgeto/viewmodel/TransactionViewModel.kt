@@ -65,7 +65,7 @@ class TransactionViewModel @Inject constructor(
                     userId = userId?:""
                 )
 
-                transactionRepository.add(transaction)
+                transactionRepository.addTransaction(transaction)
                 fetchTransactions()
             }
             catch (ex: Exception)
