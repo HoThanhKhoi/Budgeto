@@ -273,7 +273,9 @@ fun BudgetoApp(
 
             composable(route = BudgetoScreenEnum.HistoryScreen.name) {
                 HistoryScreen(
-                    transactionViewModel = transactionViewModel
+                    transactionViewModel = transactionViewModel,
+                    categoryViewModel = categoryViewModel,
+                    accountViewModel = accountViewModel
                 )
             }
 
