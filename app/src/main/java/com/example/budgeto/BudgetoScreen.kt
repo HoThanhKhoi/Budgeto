@@ -248,6 +248,7 @@ fun BudgetoApp(
                     onSettingButtonTapped = { navController.navigate(BudgetoScreenEnum.SettingsScreen.name) },
                     showBottomSheetInitially = showBottomSheetInitially,
                     transactionViewModel = transactionViewModel,
+                    accountViewModel = accountViewModel,
                     onNavigateToHistoryScreen = { navController.navigate(BudgetoScreenEnum.HistoryScreen.name) }
                 )
             }

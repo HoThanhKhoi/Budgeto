@@ -39,6 +39,7 @@ import com.example.budgeto.R
 import com.example.budgeto.screens.openingscreen.OpeningScreenExpensesInputScreen
 import com.example.budgeto.screensfonts.inter
 import com.example.budgeto.screensfonts.kurale
+import com.example.budgeto.viewmodel.AccountViewModel
 import com.example.budgeto.viewmodel.TransactionViewModel
 import com.google.relay.compose.BoxScopeInstance.columnWeight
 import com.google.relay.compose.BoxScopeInstance.rowWeight
@@ -60,6 +61,7 @@ fun HomepageScreen(
     onSettingButtonTapped: () -> Unit = {},
     showBottomSheetInitially: Boolean = false,
     transactionViewModel: TransactionViewModel,
+    accountViewModel: AccountViewModel = hiltViewModel(),
     onNavigateToHistoryScreen: () -> Unit = {},
     modifier: Modifier = Modifier
 ) {
@@ -67,6 +69,13 @@ fun HomepageScreen(
     val coroutineScope = rememberCoroutineScope()
 
     var isBottomSheetVisible by remember { mutableStateOf(showBottomSheetInitially) }
+
+    val userMoneyInfo by accountViewModel.userMoneyInfo // Observe userMoneyInfo
+
+    LaunchedEffect(Unit) {
+        // Fetch user money info when the composable is loaded
+        accountViewModel.fetchUserMoneyInfo()
+    }
 
     LaunchedEffect(isBottomSheetVisible) {
         if (isBottomSheetVisible) {
@@ -86,6 +95,7 @@ fun HomepageScreen(
                 bottomSheetState.show()
             }
         },
+        balance = userMoneyInfo?.totalBalance ?: 0.0,
         modifier = modifier
             .rowWeight(1.0f)
             .columnWeight(1.0f),
@@ -129,7 +139,8 @@ fun Homepage02(
     onDailyMissionButtonTapped: () -> Unit = {},
     onSettingButtonTapped: () -> Unit = {},
     onRankButtonTapped: () -> Unit = {},
-    onProfileButtonTapped: () -> Unit = {}
+    onProfileButtonTapped: () -> Unit = {},
+    balance: Double
 ) {
     TopLevel(
         modifier = modifier
@@ -827,7 +838,8 @@ fun Homepage02(
                             x = 18.0.dp,
                             y = 35.0.dp
                         )
-                    )
+                    ),
+                    balance = balance
                 )
             }
             Group1(
@@ -1319,6 +1331,7 @@ private fun Homepage02Preview() {
                 onSettingButtonTapped = {},
                 onRankButtonTapped = {},
                 onProfileButtonTapped = {},
+                balance = 0.0,
                 modifier = Modifier
                     .rowWeight(1.0f)
                     .columnWeight(1.0f)
@@ -2791,9 +2804,12 @@ fun OverallBalance(modifier: Modifier = Modifier) {
 }
 
 @Composable
-fun Class101000000VN(modifier: Modifier = Modifier) {
+fun Class101000000VN(
+    balance: Double,
+    modifier: Modifier = Modifier
+) {
     RelayText(
-        content = "101.000.000 VNĐ",
+        content = "${String.format("%,.0f", balance)} VNĐ",
         fontSize = 20.0.sp,
         fontFamily = inter,
         height = 1.2102272033691406.em,
