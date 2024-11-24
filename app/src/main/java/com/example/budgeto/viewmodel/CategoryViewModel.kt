@@ -7,6 +7,7 @@ import com.example.budgeto.data.AuthRepository
 import com.example.budgeto.data.enums.category.CategoryStatus
 import com.example.budgeto.data.enums.category.CategoryType
 import com.example.budgeto.data.model.category.Category
+import com.example.budgeto.data.model.transaction.Transaction
 import com.example.budgeto.data.repository.category.CategoryRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -70,6 +71,35 @@ class CategoryViewModel @Inject constructor(
                 }
             } catch (ex: Exception) {
                 Log.d("FetchCategories", "Error: ${ex.message}")
+            }
+        }
+    }
+
+    fun updateCategory(categoryId: String, updatedCategory: Category) {
+        viewModelScope.launch {
+            try {
+                if (userId == null) return@launch
+
+                val isUpdated = categoryRepository.update(categoryId, updatedCategory)
+                if (isUpdated) {
+                    fetchCategories() // Refresh the transaction list
+                    Log.d("UpdateCategory", "Category updated successfully")
+                } else {
+                    Log.d("UpdateCategory", "Failed to update the category")
+                }
+            } catch (ex: Exception) {
+                Log.d("UpdateCategory", "Error: ${ex.message}")
+            }
+        }
+    }
+
+    fun deleteCategory(categoryId: String) {
+        viewModelScope.launch {
+            try {
+                categoryRepository.delete(categoryId)
+                fetchCategories() // Refresh the list after deletion
+            } catch (ex: Exception) {
+                Log.d("DeleteCategory", "Error: ${ex.message}")
             }
         }
     }

@@ -1,6 +1,5 @@
 package com.example.budgeto.screens.settingscreen
 
-import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
@@ -29,6 +28,7 @@ import androidx.compose.material.DropdownMenuItem
 import androidx.compose.material.IconButton
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowDropDown
+import androidx.compose.material.icons.filled.Close
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.DropdownMenu
@@ -39,10 +39,8 @@ import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
@@ -85,6 +83,8 @@ fun SettingScreen(
     categoryViewModel: CategoryViewModel = hiltViewModel()
 ){
     val categories by categoryViewModel.categories.collectAsState()
+    var selectedCategory by remember { mutableStateOf<Category?>(null) }
+    var isDialogVisible by remember { mutableStateOf(false) }
 
     Setting1(
         onXButtonTapped = onXButtonTapped,
@@ -97,9 +97,43 @@ fun SettingScreen(
             )
 
         },
+        onUpdateCategory = { category ->
+            selectedCategory = category
+            isDialogVisible = true
+        },
         modifier = modifier.rowWeight(1.0f).columnWeight(1.0f)
     )
 
+    if (isDialogVisible) {
+        selectedCategory?.let { category ->
+            CategoryDialog(
+                onDismissRequest = {
+                    isDialogVisible = false
+                },
+                onSave = { name, description ->
+                    categoryViewModel.addCategory(
+                        name = name,
+                        description = description,
+                        status = category.status
+                    )
+                    isDialogVisible = false
+                },
+                onUpdate = { name, description ->
+                    categoryViewModel.updateCategory(
+                        categoryId = category.categoryId, // Use the category ID
+                        updatedCategory = category.copy(name = name, description = description)
+                    )
+                    isDialogVisible = false
+                },
+                onDelete = {
+                    categoryViewModel.deleteCategory(category.categoryId)
+                    isDialogVisible = false
+                },
+                initialTitle = category.name,
+                initialDescription = category.description
+            )
+        }
+    }
 }
 
 @Composable
@@ -107,7 +141,8 @@ fun Setting1(
     modifier: Modifier = Modifier,
     onXButtonTapped: () -> Unit = {},
     categories: List<Category>,
-    onAddCategory: (String, String) -> Unit
+    onAddCategory: (String, String) -> Unit,
+    onUpdateCategory: (Category) -> Unit
 ) {
     val accountList = listOf("Option 1", "Option 2", "Option 3")
 
@@ -566,48 +601,51 @@ fun Setting1(
             )
 
             // Account Dropdown Section (Frame58)
-            Frame58(
-                modifier = Modifier.boxAlign(
-                    alignment = Alignment.TopStart,
-                    offset = DpOffset(
-                        x = 11.dp,
-                        y = 56.dp
-                    )
-                )
-            ) {
-                Account(
-                    modifier = Modifier.boxAlign(
-                        alignment = Alignment.TopStart,
-                        offset = DpOffset(
-                            x = 15.0.dp,
-                            y = 16.0.dp
-                        )
-                    )
-                )
-                Frame69(
-                    modifier = Modifier.boxAlign(
-                        alignment = Alignment.TopStart,
-                        offset = DpOffset(
-                            x = 175.0.dp,
-                            y = 6.0.dp
-                        )
-                    )
-                ) {
-                    Frame69WithDropdown(
-                        options = accountList,
-                        arrowColor = Color.Black// Add your options here
-                    )
-                }
-            }
+//            Frame58(
+//                modifier = Modifier.boxAlign(
+//                    alignment = Alignment.TopStart,
+//                    offset = DpOffset(
+//                        x = 11.dp,
+//                        y = 56.dp
+//                    )
+//                )
+//            ) {
+//                Account(
+//                    modifier = Modifier.boxAlign(
+//                        alignment = Alignment.TopStart,
+//                        offset = DpOffset(
+//                            x = 15.0.dp,
+//                            y = 16.0.dp
+//                        )
+//                    )
+//                )
+//                Frame69(
+//                    modifier = Modifier.boxAlign(
+//                        alignment = Alignment.TopStart,
+//                        offset = DpOffset(
+//                            x = 175.0.dp,
+//                            y = 6.0.dp
+//                        )
+//                    )
+//                ) {
+//                    Frame69WithDropdown(
+//                        options = accountList,
+//                        arrowColor = Color.Black// Add your options here
+//                    )
+//                }
+//            }
 
             // Category List Section
             Box(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(top = 120.dp) // Ensures the list starts below Frame58
+                    .padding(top = 55.dp)
             ) {
                 CategorySettingsListScrollableAligned(
-                    categoryList = categories
+                    categoryList = categories,
+                    onCategoryClick = { category ->
+                        onUpdateCategory(category)
+                    }
                 )
             }
 
@@ -682,6 +720,7 @@ private fun Setting1Preview() {
                 onXButtonTapped = {},
                 categories = emptyList(),
                 onAddCategory = { _, _ -> },
+                onUpdateCategory = {},
                 modifier = Modifier.rowWeight(1.0f).columnWeight(1.0f)
             )
         }
@@ -693,6 +732,8 @@ private fun Setting1Preview() {
 fun CategoryDialog(
     onDismissRequest: () -> Unit,
     onSave: (String, String) -> Unit,
+    onUpdate: ((String, String) -> Unit)? = null,
+    onDelete: (() -> Unit)? = null,
     initialTitle: String,
     initialDescription: String
 ) {
@@ -730,13 +771,29 @@ fun CategoryDialog(
                     .padding(24.dp)
                     .fillMaxWidth()
             ) {
-                // Header
-                Text(
-                    text = "Category",
-                    style = MaterialTheme.typography.titleMedium, // Use a larger, bold font for emphasis
-                    color = Color.Black,
-                    modifier = Modifier.padding(bottom = 20.dp)
-                )
+                // Header with Close Button
+                Box(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(start = 5.dp, bottom = 17.dp,)
+                ) {
+                    Text(
+                        text = if (onUpdate != null) "Edit Category" else "New Category",
+                        style = MaterialTheme.typography.titleMedium,
+                        color = Color.Black,
+                        modifier = Modifier.align(Alignment.CenterStart)
+                    )
+                    IconButton(
+                        onClick = { onDismissRequest() },
+                        modifier = Modifier.align(Alignment.CenterEnd)
+                    ) {
+                        Icon(
+                            imageVector = Icons.Default.Close,
+                            contentDescription = "Close",
+                            tint = Color.Gray
+                        )
+                    }
+                }
 
                 // Title Input Field
                 OutlinedTextField(
@@ -835,26 +892,44 @@ fun CategoryDialog(
                     maxLines = 4
                 )
 
-                // Save Button
-                Button(
-                    onClick = {
-                        onSave(title, description)
-                        onDismissRequest()
-                    },
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .height(50.dp),
-                    colors = ButtonDefaults.buttonColors(
-                        containerColor = Color.Black,
-                        contentColor = Color.White
-                    ),
-                    shape = RoundedCornerShape(12.dp)
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.SpaceBetween
                 ) {
-                    Text(
-                        text = "Save",
-                        style = MaterialTheme.typography.labelSmall,
-                        fontSize = 16.sp
-                    )
+                    if (onDelete != null) {
+                        Button(
+                            onClick = onDelete,
+                            modifier = Modifier.weight(1f),
+                            colors = ButtonDefaults.buttonColors(
+                                containerColor = Color.Red,
+                                contentColor = Color.White
+                            ),
+                            shape = RoundedCornerShape(12.dp)
+                        ) {
+                            Text("Delete")
+                        }
+                    }
+
+                    Spacer(modifier = Modifier.width(8.dp))
+
+                    Button(
+                        onClick = {
+                            if (onUpdate != null) {
+                                onUpdate(title, description)
+                            } else {
+                                onSave(title, description)
+                            }
+                            onDismissRequest()
+                        },
+                        modifier = Modifier.weight(1f),
+                        colors = ButtonDefaults.buttonColors(
+                            containerColor = Color.Black,
+                            contentColor = Color.White
+                        ),
+                        shape = RoundedCornerShape(12.dp)
+                    ) {
+                        Text(if (onUpdate != null) "Update" else "Save")
+                    }
                 }
             }
         }
@@ -1041,13 +1116,14 @@ fun CategoryItem(
 
 @Composable
 fun CategorySettingsListScrollableAligned(
-    categoryList: List<Category>
+    categoryList: List<Category>,
+    onCategoryClick: (Category) -> Unit
 ) {
     LazyVerticalGrid(
         columns = GridCells.Fixed(2), // Two columns
         modifier = Modifier
             .fillMaxWidth()
-            .height(280.dp)
+            .height(350.dp)
             .padding(horizontal = 16.dp), // Matches the horizontal padding of Frame58
         horizontalArrangement = Arrangement.spacedBy(8.dp), // Consistent horizontal spacing
         verticalArrangement = Arrangement.spacedBy(8.dp), // Consistent vertical spacing
@@ -1056,7 +1132,10 @@ fun CategorySettingsListScrollableAligned(
             CategoryItem(
                 name = category.name,
                 description = category.description,
-                icon = ""
+                icon = "",
+                modifier = Modifier.clickable {
+                    onCategoryClick(category)
+                }
             )
         }
     }
