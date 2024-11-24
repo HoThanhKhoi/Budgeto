@@ -167,7 +167,10 @@ class TransactionViewModel @Inject constructor(
 
     private fun recalculateAccountData(accountId: String?){
         viewModelScope.launch {
+            Log.d("Recalculate account data", "Account ID: $accountId")
             var transactionListByAccount = transactionRepository.getAllTransactionsByAccountId(accountId?:"")
+
+            Log.d("Recalculate account data", "Transaction list size: ${transactionListByAccount.size}")
 
             var accountTotalBalance = 0.0
             var accountTotalIncome = 0.0
@@ -176,12 +179,17 @@ class TransactionViewModel @Inject constructor(
             for(transaction in transactionListByAccount){
                 if(transaction.type == TransactionType.INCOME){
                     accountTotalIncome += transaction.amount
+                    accountTotalBalance += transaction.amount
                 }
                 else {
                     accountTotalExpense += transaction.amount
+                    accountTotalBalance -= transaction.amount
                 }
-                accountTotalBalance += transaction.amount
             }
+
+            Log.d("Recalculate account data", "Total balance: $accountTotalBalance")
+            Log.d("Recalculate account data", "Total income: $accountTotalIncome")
+            Log.d("Recalculate account data", "Total expense: $accountTotalExpense")
 
             accountRepository.updateField(
                 id = accountId?:"",
@@ -214,11 +222,13 @@ class TransactionViewModel @Inject constructor(
             for(transaction in transactionList){
                 if(transaction.type == TransactionType.INCOME){
                     totalIncome += transaction.amount
+                    totalBalance += transaction.amount
                 }
                 else {
                     totalExpense += transaction.amount
+                    totalBalance -= transaction.amount
                     }
-                totalBalance += transaction.amount
+
             }
 
             userMoneyInfoRepository.updateField(

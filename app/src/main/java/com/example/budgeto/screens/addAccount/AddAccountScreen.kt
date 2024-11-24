@@ -116,6 +116,11 @@ fun AddAccountScreen(
         onAccountIncomeChanged = { localAccountIncome = it.toString() },
         onAccountIconLinkChanged = { localAccountIconLink = it },
         onAccountCurrencyChanged = { localAccountCurrency = it },
+        onDeleteButtonTapped = {
+            if (existingAccount != null) {
+                accountViewModel.deleteAccount(existingAccount.id)
+            }
+        },
         onSaveButtonTapped = {
             when(accountActionType) {
                 AccountActionType.ADD -> {
@@ -163,7 +168,8 @@ fun AccountDetails(
     onAccountIncomeChanged: (String) -> Unit = {},
     onAccountIconLinkChanged: (String) -> Unit = {},
     onAccountCurrencyChanged: (String) -> Unit = {},
-    onSaveButtonTapped: () -> Unit = {}
+    onSaveButtonTapped: () -> Unit = {},
+    onDeleteButtonTapped: () -> Unit = {}
 ) {
     TopLevel(modifier = modifier) {
         //Rectangle65()
@@ -286,7 +292,7 @@ fun AccountDetails(
 
             //region delete, archive, save button
             ActionButtonsRow(
-                onDeleteClick = {},
+                onDeleteClick = onDeleteButtonTapped,
                 onArchiveClick = {},
                 onSaveClick = onSaveButtonTapped,
                 modifier = Modifier

@@ -181,6 +181,20 @@ class AccountViewModel @Inject constructor(
         }
     }
 
+    fun deleteAccount(accountId: String){
+        viewModelScope.launch {
+            try {
+                accountRepository.delete(accountId)
+                addAccountState.value = AddAccountState(success = "Delete account successfully")
+                fetchAllAccounts()
+            }
+            catch (ex: Exception)
+            {
+                addAccountState.value = AddAccountState(error = "Failed to delete account.")
+            }
+        }
+    }
+
     private fun validateAccountInput(
         accountName: String?,
         accountBalance: Double?

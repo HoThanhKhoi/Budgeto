@@ -66,6 +66,11 @@ fun AccountScreen(
 ) {
     var accountList = accountViewModel.accountList.value
 
+    LaunchedEffect(Unit) {
+        accountViewModel.fetchAllAccounts()
+        accountList = accountViewModel.accountList.value
+    }
+
     Account1(
         modifier = modifier
             .rowWeight(1.0f)
