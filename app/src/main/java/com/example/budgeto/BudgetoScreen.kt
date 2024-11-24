@@ -41,6 +41,7 @@ import com.example.budgeto.screens.signupscreen.SignUpScreen
 import com.example.budgeto.screens.statisticscreen.StatisticScreen
 import com.example.budgeto.screens.storescreen.StoreScreen
 import com.example.budgeto.viewmodel.AccountViewModel
+import com.example.budgeto.viewmodel.CategoryViewModel
 import com.example.budgeto.viewmodel.SignUpViewModel
 import com.example.budgeto.viewmodel.LoginViewModel
 import com.example.budgeto.viewmodel.OpeningScreenViewModel
@@ -72,7 +73,8 @@ fun BudgetoApp(
     openingScreenViewModel: OpeningScreenViewModel = hiltViewModel(),
     accountViewModel: AccountViewModel = hiltViewModel(),
     profileViewModel: ProfileViewModel = hiltViewModel(),
-    transactionViewModel: TransactionViewModel = hiltViewModel()
+    transactionViewModel: TransactionViewModel = hiltViewModel(),
+    categoryViewModel: CategoryViewModel = hiltViewModel()
 ) {
     val screensWithBottomNav = setOf(
         BudgetoScreenEnum.HomepageScreen.name,
@@ -286,7 +288,10 @@ fun BudgetoApp(
             }
 
             composable(route = BudgetoScreenEnum.SettingsScreen.name) {
-                SettingScreen()
+                SettingScreen(
+                    categoryViewModel = categoryViewModel,
+                    //onXButtonTapped = {}
+                )
             }
 
         }

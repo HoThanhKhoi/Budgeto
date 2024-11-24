@@ -38,14 +38,16 @@ import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.layout.ContentScale
@@ -59,7 +61,11 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.em
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.budgeto.R
+import com.example.budgeto.data.enums.category.CategoryStatus
+import com.example.budgeto.data.model.category.Category
+import com.example.budgeto.viewmodel.CategoryViewModel
 import com.google.relay.compose.BoxScopeInstance.columnWeight
 import com.google.relay.compose.BoxScopeInstance.rowWeight
 import com.google.relay.compose.RelayContainer
@@ -73,11 +79,33 @@ import com.google.relay.compose.tappable
 
 @Composable
 fun SettingScreen(
+    modifier: Modifier = Modifier,
     onXButtonTapped: () -> Unit = {},
-    modifier: Modifier = Modifier.fillMaxHeight()
+    categoryViewModel: CategoryViewModel = hiltViewModel()
 ){
+    val categories = remember { mutableStateListOf<Category>() }
+
+    LaunchedEffect(Unit) {
+        categoryViewModel.fetchCategories()
+        categories.clear()
+        categories.addAll(categoryViewModel.categories)
+    }
+
     Setting1(
         onXButtonTapped = onXButtonTapped,
+        categories = categories, // Pass the fetched categories
+        onAddCategory = { name, description ->
+            categoryViewModel.addCategory(
+                name = name,
+                description = description,
+                status = CategoryStatus.ACTIVE
+            )
+
+            // Update the UI categories list after adding
+            categoryViewModel.fetchCategories()
+            categories.clear()
+            categories.addAll(categoryViewModel.categories)
+        },
         modifier = modifier.rowWeight(1.0f).columnWeight(1.0f)
     )
 
@@ -86,7 +114,9 @@ fun SettingScreen(
 @Composable
 fun Setting1(
     modifier: Modifier = Modifier,
-    onXButtonTapped: () -> Unit = {}
+    onXButtonTapped: () -> Unit = {},
+    categories: List<Category>,
+    onAddCategory: (String, String) -> Unit
 ) {
     val accountList = listOf("Option 1", "Option 2", "Option 3")
 
@@ -102,10 +132,6 @@ fun Setting1(
         Triple("Clothes", "0 đ", R.drawable.setting_1_clothes),
         Triple("Clothes", "0 đ", null),
     )
-
-    var title by remember { mutableStateOf("") }
-    var type by remember { mutableStateOf("Expenses") }
-    var description by remember { mutableStateOf("") }
 
     val scrollState= rememberScrollState()
 
@@ -646,15 +672,14 @@ fun Setting1(
                             )
                         )
                         Frame70WithDialog(
-                            title = title,
-                            onTitleChange = { title = it },
-                            type = type,
-                            onTypeChange = { type = it },
-                            description = description,
-                            onDescriptionChange = { description = it }
+                            title = "",
+                            onTitleChange = { title -> },
+                            description = "",
+                            onDescriptionChange = { description -> },
+                            onAddCategory = { title, description ->
+                                onAddCategory(title, description)
+                            }
                         )
-
-                        Log.d("Category Settings", "Title: $title, Type: $type, Description: $description")
                     }
                 }
                 Spacer(modifier = Modifier.height(8.dp))
@@ -677,6 +702,8 @@ private fun Setting1Preview() {
         RelayContainer {
             Setting1(
                 onXButtonTapped = {},
+                categories = emptyList(),
+                onAddCategory = { _, _ -> },
                 modifier = Modifier.rowWeight(1.0f).columnWeight(1.0f)
             )
         }
@@ -687,15 +714,12 @@ private fun Setting1Preview() {
 @Composable
 fun CategoryDialog(
     onDismissRequest: () -> Unit,
-    onSave: (String, String, String) -> Unit,
+    onSave: (String, String) -> Unit,
     initialTitle: String,
-    initialType: String,
     initialDescription: String
 ) {
     var title by remember { mutableStateOf(initialTitle) }
-    var type by remember { mutableStateOf(initialType) }
     var description by remember { mutableStateOf(initialDescription) }
-    val typeOptions = listOf("Expenses", "Income")
 
     var selectedIcon by remember { mutableStateOf<Int?>(null) }
     var showIconPicker by remember { mutableStateOf(false) }
@@ -753,25 +777,33 @@ fun CategoryDialog(
                     singleLine = true,
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(bottom = 20.dp)
+                        .padding(bottom = 15.dp)
                 )
 
-                // Icon and Type Selection Row
+                // Icon
                 Row(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(bottom = 20.dp),
+                        .padding(bottom = 15.dp),
                     horizontalArrangement = Arrangement.SpaceBetween,
                     verticalAlignment = Alignment.CenterVertically
                 ) {
                     // Icon Placeholder
                     Box(
                         modifier = Modifier
-                            .size(64.dp)
+                            .fillMaxWidth()
+                            .size(70.dp)
+                            .clip(RoundedCornerShape(12.dp))
                             .background(
                                 color = Color(0xFFF0F0F0),
                                 shape = RoundedCornerShape(12.dp)
                             )
+                            .border(
+                                width = 2.dp,
+                                color = Color(0xFFDADADA), // Subtle border
+                                shape = RoundedCornerShape(12.dp)
+                            )
+                            .padding(8.dp)
                             .clickable { showIconPicker = true },
                         contentAlignment = Alignment.Center
                     ) {
@@ -786,26 +818,10 @@ fun CategoryDialog(
                             Icon(
                                 painter = painterResource(id = R.drawable.setting_1_food), // Placeholder icon
                                 contentDescription = "Add Icon",
-                                modifier = Modifier.size(24.dp),
+                                modifier = Modifier.size(36.dp),
                                 tint = Color.Gray
                             )
                         }
-                    }
-
-                    Spacer(modifier = Modifier.width(16.dp)) // Add space between icon and dropdown
-
-                    // Type Dropdown
-                    Box(
-                        modifier = Modifier
-                            .weight(1f)
-                            .fillMaxWidth()
-                    ) {
-                        DropdownWithLabel(
-                            label = "Type",
-                            options = typeOptions,
-                            selectedOption = type,
-                            onOptionSelected = { type = it }
-                        )
                     }
                 }
 
@@ -836,16 +852,15 @@ fun CategoryDialog(
                     ),
                     modifier = Modifier
                         .fillMaxWidth()
-                        .height(120.dp),
+                        .height(120.dp)
+                        .padding(bottom = 20.dp),
                     maxLines = 4
                 )
-
-                Spacer(modifier = Modifier.height(24.dp))
 
                 // Save Button
                 Button(
                     onClick = {
-                        onSave(title, type, description)
+                        onSave(title, description)
                         onDismissRequest()
                     },
                     modifier = Modifier
@@ -868,67 +883,67 @@ fun CategoryDialog(
     }
 }
 
-@Composable
-fun DropdownWithLabel(
-    label: String,
-    options: List<String>,
-    selectedOption: String,
-    onOptionSelected: (String) -> Unit
-) {
-    var expanded by remember { mutableStateOf(false) }
-
-    Column {
-        Text(
-            text = label,
-            style = MaterialTheme.typography.labelLarge,
-            color = Color.Gray,
-            modifier = Modifier.padding(bottom = 4.dp)
-        )
-
-        Box {
-            Button(
-                onClick = { expanded = true },
-                colors = ButtonDefaults.buttonColors(
-                    containerColor = Color.Yellow,
-                    contentColor = Color.Black
-                ),
-                shape = RoundedCornerShape(8.dp),
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(48.dp)
-            ) {
-                Row(
-                    modifier = Modifier.fillMaxWidth(),
-                    verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.SpaceBetween
-                ) {
-                    Text(text = selectedOption)
-                    Icon(
-                        imageVector = Icons.Default.ArrowDropDown,
-                        contentDescription = "Dropdown Arrow",
-                        tint = Color.Black
-                    )
-                }
-            }
-
-            DropdownMenu(
-                expanded = expanded,
-                onDismissRequest = { expanded = false }
-            ) {
-                options.forEach { option ->
-                    DropdownMenuItem(
-                        onClick = {
-                            onOptionSelected(option)
-                            expanded = false
-                        }
-                    ) {
-                        Text(text = option, color = Color.White)
-                    }
-                }
-            }
-        }
-    }
-}
+//@Composable
+//fun DropdownWithLabel(
+//    label: String,
+//    options: List<String>,
+//    selectedOption: String,
+//    onOptionSelected: (String) -> Unit
+//) {
+//    var expanded by remember { mutableStateOf(false) }
+//
+//    Column {
+//        Text(
+//            text = label,
+//            style = MaterialTheme.typography.labelLarge,
+//            color = Color.Gray,
+//            modifier = Modifier.padding(bottom = 4.dp)
+//        )
+//
+//        Box {
+//            Button(
+//                onClick = { expanded = true },
+//                colors = ButtonDefaults.buttonColors(
+//                    containerColor = Color.Yellow,
+//                    contentColor = Color.Black
+//                ),
+//                shape = RoundedCornerShape(8.dp),
+//                modifier = Modifier
+//                    .fillMaxWidth()
+//                    .height(48.dp)
+//            ) {
+//                Row(
+//                    modifier = Modifier.fillMaxWidth(),
+//                    verticalAlignment = Alignment.CenterVertically,
+//                    horizontalArrangement = Arrangement.SpaceBetween
+//                ) {
+//                    Text(text = selectedOption)
+//                    Icon(
+//                        imageVector = Icons.Default.ArrowDropDown,
+//                        contentDescription = "Dropdown Arrow",
+//                        tint = Color.Black
+//                    )
+//                }
+//            }
+//
+//            DropdownMenu(
+//                expanded = expanded,
+//                onDismissRequest = { expanded = false }
+//            ) {
+//                options.forEach { option ->
+//                    DropdownMenuItem(
+//                        onClick = {
+//                            onOptionSelected(option)
+//                            expanded = false
+//                        }
+//                    ) {
+//                        Text(text = option, color = Color.White)
+//                    }
+//                }
+//            }
+//        }
+//    }
+//}
 
 @Composable
 fun IconPickerDialog(
@@ -1757,10 +1772,9 @@ fun Frame70(
 fun Frame70WithDialog(
     title: String,
     onTitleChange: (String) -> Unit,
-    type: String,
-    onTypeChange: (String) -> Unit,
     description: String,
-    onDescriptionChange: (String) -> Unit
+    onDescriptionChange: (String) -> Unit,
+    onAddCategory: (String, String) -> Unit
 ) {
     var showDialog by remember { mutableStateOf(false) }
 
@@ -1777,17 +1791,16 @@ fun Frame70WithDialog(
     if (showDialog) {
         CategoryDialog(
             onDismissRequest = { showDialog = false },
-            onSave = { updatedTitle, updatedType, updatedDescription ->
+            onSave = { updatedTitle, updatedDescription ->
                 // Pass updated values back to the parent component
+                onAddCategory(updatedTitle, updatedDescription)
                 onTitleChange(updatedTitle)
-                onTypeChange(updatedType)
                 onDescriptionChange(updatedDescription)
 
                 // Close the dialog
                 showDialog = false
             },
             initialTitle = title,
-            initialType = type,
             initialDescription = description
         )
     }

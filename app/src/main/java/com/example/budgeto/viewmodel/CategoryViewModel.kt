@@ -8,9 +8,11 @@ import com.example.budgeto.data.enums.category.CategoryStatus
 import com.example.budgeto.data.enums.category.CategoryType
 import com.example.budgeto.data.model.category.Category
 import com.example.budgeto.data.repository.category.CategoryRepository
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
+@HiltViewModel
 class CategoryViewModel @Inject constructor(
     private val categoryRepository: CategoryRepository,
     private val authRepository: AuthRepository
@@ -24,7 +26,7 @@ class CategoryViewModel @Inject constructor(
         iconLink: String = "",
         description: String = "",
         color: String = "#FFFFFF",
-        type: CategoryType
+        status: CategoryStatus
     ) {
         viewModelScope.launch {
             try {
@@ -33,12 +35,11 @@ class CategoryViewModel @Inject constructor(
                 }
 
                 val category = Category(
-                    categoryId = "",
                     name = name,
                     iconLink = iconLink,
                     description = description,
                     color = color,
-                    status = CategoryStatus.ACTIVE,
+                    status = status,
                     userId = userId
                 )
 

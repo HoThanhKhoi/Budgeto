@@ -4,6 +4,7 @@ import android.util.Log
 import com.example.budgeto.data.model.category.Category
 import com.example.budgeto.data.repository.base.FirestoreRepository
 import com.google.firebase.firestore.FirebaseFirestore
+import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 
 class CategoryRepository @Inject constructor(
@@ -20,7 +21,7 @@ class CategoryRepository @Inject constructor(
         if (categoryId != null) {
             updateField(
                 id = categoryId,
-                field = "id",
+                field = "categoryId",
                 value = categoryId
             )
         }
