@@ -58,7 +58,6 @@ fun HomepageScreen(
     onProfileButtonTapped: () -> Unit = {},
     onAccountsButtonTapped: () -> Unit = {},
     onSettingButtonTapped: () -> Unit = {},
-    showBottomSheetInitially: Boolean = false,
     transactionViewModel: TransactionViewModel,
     onNavigateToHistoryScreen: () -> Unit = {},
     modifier: Modifier = Modifier
@@ -66,7 +65,7 @@ fun HomepageScreen(
     val bottomSheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
     val coroutineScope = rememberCoroutineScope()
 
-    var isBottomSheetVisible by remember { mutableStateOf(showBottomSheetInitially) }
+    var isBottomSheetVisible by remember { mutableStateOf(true) }
 
     LaunchedEffect(isBottomSheetVisible) {
         if (isBottomSheetVisible) {

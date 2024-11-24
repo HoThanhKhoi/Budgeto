@@ -239,14 +239,10 @@ fun BudgetoApp(
 //                )
 //            }
             composable(route = BudgetoScreenEnum.HomepageScreen.name) { backStackEntry ->
-                val showBottomSheetInitially =
-                    backStackEntry.arguments?.getString("showBottomSheetInitially") == "true"
-
                 HomepageScreen(
                     onProfileButtonTapped = { navController.navigate(BudgetoScreenEnum.ProfileScreen.name) },
                     onAccountsButtonTapped = { navController.navigate(BudgetoScreenEnum.AccountScreen.name) },
                     onSettingButtonTapped = { navController.navigate(BudgetoScreenEnum.SettingsScreen.name) },
-                    showBottomSheetInitially = showBottomSheetInitially,
                     transactionViewModel = transactionViewModel,
                     onNavigateToHistoryScreen = { navController.navigate(BudgetoScreenEnum.HistoryScreen.name) }
                 )
