@@ -8,6 +8,7 @@ import com.example.budgeto.data.AuthRepository
 import com.example.budgeto.data.model.account.Account
 import com.example.budgeto.data.model.user.UserMoneyInfo
 import com.example.budgeto.data.repository.account.AccountRepository
+import com.example.budgeto.data.repository.transaction.TransactionRepository
 import com.example.budgeto.data.repository.user.UserMoneyInfoRepository
 import com.example.budgeto.state.AddAccountState
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -18,7 +19,7 @@ import javax.inject.Inject
 class AccountViewModel @Inject constructor(
     private val accountRepository: AccountRepository,
     private val authRepository: AuthRepository,
-    private val userMoneyInfoRepository: UserMoneyInfoRepository
+    private val userMoneyInfoRepository: UserMoneyInfoRepository,
 ) : ViewModel() {
 
     val userId = authRepository.getCurrentUserId()
@@ -179,8 +180,6 @@ class AccountViewModel @Inject constructor(
             }
         }
     }
-
-
 
     private fun validateAccountInput(
         accountName: String?,

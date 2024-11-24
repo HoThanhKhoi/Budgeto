@@ -39,4 +39,10 @@ class TransactionRepository @Inject constructor(
             .orderBy("createdTime", Query.Direction.ASCENDING)
             .get()
     }
+
+    suspend fun getAllTransactionsByAccountId(accountId: String): List<Transaction> {
+        return query()
+            .whereEqualTo("accountId", accountId)
+            .get()
+    }
 }

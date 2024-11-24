@@ -68,35 +68,8 @@ class TransactionViewModel @Inject constructor(
                 )
 
                 transactionRepository.addTransaction(transaction)
-                accountRepository.addAmountToBalance(
-                    accountId = accountId,
-                    amount = if (type == TransactionType.EXPENSE) -amount else amount
-                )
-                userMoneyInfoRepository.addAmountToBalance(
-                    userId = userId,
-                    amount = if (type == TransactionType.EXPENSE) -amount else amount
-                )
 
-                if (type == TransactionType.EXPENSE){
-                    accountRepository.addAmountToExpense(
-                        accountId = accountId,
-                        amount = amount
-                    )
-                    userMoneyInfoRepository.addAmountToExpense(
-                        userId = userId,
-                        amount = amount
-                    )
-                } else{
-                    accountRepository.addAmountToIncome(
-                        accountId = accountId,
-                        amount = amount
-                    )
-                    userMoneyInfoRepository.addAmountToIncome(
-                        userId = userId,
-                        amount = amount
-                    )
-                }
-
+                recalculateData(accountId)
 
                 fetchTransactions()
             }
@@ -151,8 +124,13 @@ class TransactionViewModel @Inject constructor(
             try {
                 if (userId == null) return@launch
 
+                val transaction = transactionRepository.getById(transactionId)
+                val accountId = transaction?.accountId
+
                 val isUpdated = transactionRepository.update(transactionId, updatedTransaction)
+
                 if (isUpdated) {
+                    recalculateData(accountId)
                     fetchTransactions() // Refresh the transaction list
                     Log.d("UpdateTransaction", "Transaction updated successfully")
                 } else {
@@ -169,8 +147,13 @@ class TransactionViewModel @Inject constructor(
             try {
                 if (userId == null) return@launch
 
+                val transaction = transactionRepository.getById(transactionId)
+                val accountId = transaction?.accountId
+
                 val isDeleted = transactionRepository.delete(transactionId)
+
                 if (isDeleted) {
+                    recalculateData(accountId)
                     fetchTransactions() // Refresh the transaction list
                     Log.d("DeleteTransaction", "Transaction deleted successfully")
                 } else {
@@ -182,5 +165,83 @@ class TransactionViewModel @Inject constructor(
         }
     }
 
+    private fun recalculateAccountData(accountId: String?){
+        viewModelScope.launch {
+            var transactionListByAccount = transactionRepository.getAllTransactionsByAccountId(accountId?:"")
 
+            var accountTotalBalance = 0.0
+            var accountTotalIncome = 0.0
+            var accountTotalExpense = 0.0
+
+            for(transaction in transactionListByAccount){
+                if(transaction.type == TransactionType.INCOME){
+                    accountTotalIncome += transaction.amount
+                }
+                else {
+                    accountTotalExpense += transaction.amount
+                }
+                accountTotalBalance += transaction.amount
+            }
+
+            accountRepository.updateField(
+                id = accountId?:"",
+                field = "balance",
+                value = accountTotalBalance
+            )
+
+            accountRepository.updateField(
+                id = accountId?:"",
+                field = "income",
+                value = accountTotalIncome
+            )
+
+            accountRepository.updateField(
+                id = accountId?:"",
+                field = "expense",
+                value = accountTotalExpense
+            )
+        }
+    }
+
+    private fun recalculateMoneyInfoData() {
+        viewModelScope.launch {
+            var transactionList = transactionRepository.getAllTransactions(userId?:"")
+
+            var totalBalance = 0.0
+            var totalIncome = 0.0
+            var totalExpense = 0.0
+
+            for(transaction in transactionList){
+                if(transaction.type == TransactionType.INCOME){
+                    totalIncome += transaction.amount
+                }
+                else {
+                    totalExpense += transaction.amount
+                    }
+                totalBalance += transaction.amount
+            }
+
+            userMoneyInfoRepository.updateField(
+                id = userId?:"",
+                field = "totalBalance",
+                value = totalBalance
+            )
+            userMoneyInfoRepository.updateField(
+                id = userId?:"",
+                field = "totalIncome",
+                value = totalIncome
+            )
+            userMoneyInfoRepository.updateField(
+                id = userId?:"",
+                field = "totalExpense",
+                value = totalExpense
+            )
+        }
+    }
+
+    private fun recalculateData(accountId:String?)
+    {
+        recalculateAccountData(accountId)
+        recalculateMoneyInfoData()
+    }
 }
