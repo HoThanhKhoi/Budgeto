@@ -4,6 +4,7 @@ import com.example.budgeto.data.enums.category.CategoryStatus
 import com.example.budgeto.data.enums.category.CategoryType
 
 data class Category(
+    val categoryId: String = "",
     val name: String = "",
     val iconLink: String = "",
     val description: String = "",

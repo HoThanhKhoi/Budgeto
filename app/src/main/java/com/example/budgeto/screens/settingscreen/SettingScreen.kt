@@ -26,6 +26,7 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.DropdownMenuItem
+import androidx.compose.material.IconButton
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowDropDown
 import androidx.compose.material3.Button
@@ -99,7 +100,7 @@ fun Setting1(
         Triple("Pets", "0 đ", R.drawable.setting_1_pets),
         Triple("Clothes", "0 đ", R.drawable.setting_1_clothes),
         Triple("Clothes", "0 đ", R.drawable.setting_1_clothes),
-        Triple("Clothes", "0 đ", R.drawable.setting_1_clothes),
+        Triple("Clothes", "0 đ", null),
     )
 
     var title by remember { mutableStateOf("") }
@@ -694,8 +695,25 @@ fun CategoryDialog(
     var title by remember { mutableStateOf(initialTitle) }
     var type by remember { mutableStateOf(initialType) }
     var description by remember { mutableStateOf(initialDescription) }
-
     val typeOptions = listOf("Expenses", "Income")
+
+    var selectedIcon by remember { mutableStateOf<Int?>(null) }
+    var showIconPicker by remember { mutableStateOf(false) }
+
+    val iconOptions = listOf(
+        android.R.drawable.ic_menu_camera,
+        android.R.drawable.ic_menu_compass,
+        android.R.drawable.ic_menu_call,
+        android.R.drawable.ic_menu_gallery,
+        R.drawable.setting_1_food,
+        R.drawable.setting_1_cafe,
+        R.drawable.setting_1_retro_tv,
+        R.drawable.setting_1_public_transportation,
+        R.drawable.setting_1_heart_with_pulse,
+        R.drawable.setting_1_defend_family,
+        R.drawable.setting_1_pets,
+        R.drawable.setting_1_clothes
+    )
 
     Dialog(onDismissRequest = { onDismissRequest() }) {
         Surface(
@@ -753,15 +771,25 @@ fun CategoryDialog(
                             .background(
                                 color = Color(0xFFF0F0F0),
                                 shape = RoundedCornerShape(12.dp)
-                            ),
+                            )
+                            .clickable { showIconPicker = true },
                         contentAlignment = Alignment.Center
                     ) {
-                        Icon(
-                            painter = painterResource(id = R.drawable.setting_1_clothes),
-                            contentDescription = "Icon",
-                            modifier = Modifier.size(36.dp),
-                            tint = Color.Black // Add a subtle tint for a modern look
-                        )
+                        if (selectedIcon != null) {
+                            Icon(
+                                painter = painterResource(id = selectedIcon!!),
+                                contentDescription = "Selected Icon",
+                                modifier = Modifier.size(36.dp),
+                                tint = Color.Black // Tint for a subtle modern look
+                            )
+                        } else {
+                            Icon(
+                                painter = painterResource(id = R.drawable.setting_1_food), // Placeholder icon
+                                contentDescription = "Add Icon",
+                                modifier = Modifier.size(24.dp),
+                                tint = Color.Gray
+                            )
+                        }
                     }
 
                     Spacer(modifier = Modifier.width(16.dp)) // Add space between icon and dropdown
@@ -779,6 +807,17 @@ fun CategoryDialog(
                             onOptionSelected = { type = it }
                         )
                     }
+                }
+
+                if (showIconPicker) {
+                    IconPickerDialog(
+                        iconOptions = iconOptions, // Pass your icon list here
+                        onDismissRequest = { showIconPicker = false },
+                        onIconSelected = { iconResId ->
+                            selectedIcon = iconResId // Update the selected icon
+                            showIconPicker = false
+                        }
+                    )
                 }
 
                 // Description Input Field
@@ -828,7 +867,6 @@ fun CategoryDialog(
         }
     }
 }
-
 
 @Composable
 fun DropdownWithLabel(
@@ -892,6 +930,56 @@ fun DropdownWithLabel(
     }
 }
 
+@Composable
+fun IconPickerDialog(
+    iconOptions: List<Int>,
+    onDismissRequest: () -> Unit,
+    onIconSelected: (Int) -> Unit
+) {
+    Dialog(onDismissRequest = { onDismissRequest() }) {
+        Surface(
+            shape = RoundedCornerShape(12.dp),
+            modifier = Modifier.padding(16.dp),
+            color = Color.White
+        ) {
+            Column(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(16.dp)
+            ) {
+                Text(
+                    text = "Choose an Icon",
+                    style = MaterialTheme.typography.titleMedium,
+                    color = Color.Black,
+                    modifier = Modifier.padding(bottom = 16.dp)
+                )
+                LazyVerticalGrid(
+                    columns = GridCells.Fixed(4), // Show 4 icons per row
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.spacedBy(8.dp),
+                    verticalArrangement = Arrangement.spacedBy(8.dp)
+                ) {
+                    items(iconOptions) { iconResId ->
+                        IconButton(
+                            onClick = {
+                                onIconSelected(iconResId)
+                                onDismissRequest()
+                            },
+                            modifier = Modifier.size(64.dp)
+                        ) {
+                            Icon(
+                                painter = painterResource(id = iconResId),
+                                contentDescription = null,
+                                tint = Color.Unspecified,
+                                modifier = Modifier.fillMaxSize()
+                            )
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
 
 //endregion
 
@@ -900,7 +988,7 @@ fun DropdownWithLabel(
 fun CategoryItem(
     title: String,
     value: String,
-    iconResId: Int,
+    iconResId: Int?,
     modifier: Modifier = Modifier
 ) {
     RelayContainer(
@@ -922,12 +1010,15 @@ fun CategoryItem(
                 .padding(horizontal = 4.dp) // Reduced inner padding
         ) {
             // Icon
-            RelayImage(
-                image = painterResource(id = iconResId),
-                contentScale = ContentScale.Fit,
-                modifier = Modifier
-                    .size(32.dp) // Slightly smaller icon
-            )
+            if (iconResId != null) {
+                RelayImage(
+                    image = painterResource(id = iconResId),
+                    contentScale = ContentScale.Fit,
+                    modifier = Modifier
+                        .size(32.dp) // Slightly smaller icon
+                )
+                Spacer(modifier = Modifier.width(6.dp)) // Space between icon and text
+            }
 
             Spacer(modifier = Modifier.width(6.dp)) // Reduced space between icon and text
 
@@ -956,7 +1047,7 @@ fun CategoryItem(
 }
 
 @Composable
-fun CategorySettingsListScrollableAligned(categoryList: List<Triple<String, String, Int>>) {
+fun CategorySettingsListScrollableAligned(categoryList: List<Triple<String, String, Int?>>) {
     LazyVerticalGrid(
         columns = GridCells.Fixed(2), // Two columns
         modifier = Modifier
