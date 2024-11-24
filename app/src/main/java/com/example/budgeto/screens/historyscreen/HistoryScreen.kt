@@ -22,6 +22,8 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicTextField
+import androidx.compose.material.Divider
+import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Icon
@@ -33,6 +35,7 @@ import androidx.compose.material3.SwitchDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -59,7 +62,11 @@ import androidx.compose.ui.window.Dialog
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.budgeto.R
 import com.example.budgeto.data.enums.transaction.TransactionType
+import com.example.budgeto.data.model.account.Account
+import com.example.budgeto.data.model.category.Category
 import com.example.budgeto.data.model.transaction.Transaction
+import com.example.budgeto.viewmodel.AccountViewModel
+import com.example.budgeto.viewmodel.CategoryViewModel
 import com.example.budgeto.viewmodel.TransactionViewModel
 import com.google.relay.compose.BoxScopeInstanceImpl.align
 import com.google.relay.compose.ColumnScopeInstanceImpl.weight
@@ -76,7 +83,9 @@ import java.util.TimeZone
 @Composable
 fun HistoryScreen(
     modifier: Modifier = Modifier,
-    transactionViewModel: TransactionViewModel = hiltViewModel()
+    transactionViewModel: TransactionViewModel = hiltViewModel(),
+    categoryViewModel: CategoryViewModel = hiltViewModel(),
+    accountViewModel: AccountViewModel = hiltViewModel()
 ) {
     val calendar: Calendar = Calendar.getInstance(TimeZone.getDefault())
 
@@ -89,6 +98,9 @@ fun HistoryScreen(
     var totalExpenses by remember { mutableStateOf(0.0) }
     var totalIncomes by remember { mutableStateOf(0.0) }
     var overallBalance by remember { mutableStateOf(0.0) }
+
+    val categoryList by categoryViewModel.categories.collectAsState(initial = emptyList())
+    val accountList by accountViewModel.accountList
 
     // Function to calculate totals dynamically
     fun updateTotals(filteredTransactions: List<Pair<Transaction, String>>) {
@@ -142,6 +154,8 @@ fun HistoryScreen(
         TransactionDetailsDialog(
             transaction = transaction,
             accountName = accountName,
+            accountList = accountList,
+            categoryList = categoryList,
             onDismiss = { selectedTransaction = null },
             onSave = { updatedTransaction ->
                 transactionViewModel.updateTransaction(transaction.id, updatedTransaction)
@@ -422,12 +436,17 @@ fun MonthSelector(
 fun TransactionDetailsDialog(
     transaction: Transaction,
     accountName: String,
+    accountList: List<Account>,
+    categoryList: List<Category>,
     onDismiss: () -> Unit,
     onSave: (Transaction) -> Unit,
     onDelete: (String) -> Unit
 ) {
     var date by remember { mutableStateOf(transaction.date) }
-    var category by remember { mutableStateOf(transaction.categoryId) }
+    var selectedCategory by remember {
+        mutableStateOf(categoryList.find { it.categoryId == transaction.categoryId }?.name ?: "")
+    }
+    var selectedAccount by remember { mutableStateOf(accountList.find { it.id == transaction.accountId }?.name ?: accountName) }
     var amount by remember { mutableStateOf(transaction.amount.toString()) }
     var isIncome by remember { mutableStateOf(transaction.type == TransactionType.INCOME) }
 
@@ -448,6 +467,9 @@ fun TransactionDetailsDialog(
         calendar.get(Calendar.MONTH),
         calendar.get(Calendar.DAY_OF_MONTH)
     )
+
+    var isCategorySelectionVisible by remember { mutableStateOf(false) }
+    var isAccountSelectionVisible by remember { mutableStateOf(false) }
 
     Dialog(onDismissRequest = { onDismiss() }) {
         Box(
@@ -489,22 +511,27 @@ fun TransactionDetailsDialog(
                     }
 
                     // Account Display
-                    Row(
-                        modifier = Modifier.fillMaxWidth(),
-                        horizontalArrangement = Arrangement.SpaceBetween
-                    ) {
+                    Column {
                         Text(
                             text = "Account",
                             fontSize = 18.sp,
+                            color = Color.Black,
                             fontWeight = FontWeight.Bold,
-                            color = Color.Black
+                            modifier = Modifier.padding(bottom = 4.dp)
                         )
-                        Text(
-                            text = accountName,
-                            fontSize = 18.sp,
-                            fontWeight = FontWeight.Normal,
-                            color = Color.Gray
-                        )
+                        Box(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .border(1.dp, Color.Black, RoundedCornerShape(8.dp))
+                                .clickable { isAccountSelectionVisible = true }
+                                .padding(12.dp)
+                        ) {
+                            Text(
+                                text = selectedAccount.ifEmpty { "Select Account" },
+                                fontSize = 16.sp,
+                                color = Color.Black
+                            )
+                        }
                     }
 
                     // Transaction Type Toggle (Income/Expense)
@@ -588,12 +615,27 @@ fun TransactionDetailsDialog(
                     }
 
                     // Category Field
-                    CustomTextField(
-                        value = category,
-                        onValueChange = { category = it },
-                        label = "Category",
-                        isError = false
-                    )
+                    Column {
+                        Text(
+                            text = "Category",
+                            fontSize = 18.sp,
+                            fontWeight = FontWeight.Bold,
+                            color = Color.Black,
+                            modifier = Modifier.padding(bottom = 4.dp)
+                        )
+                        Box(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .border(1.dp, Color.Black, RoundedCornerShape(8.dp))
+                                .clickable { isCategorySelectionVisible = true }
+                                .padding(12.dp)
+                        ) {
+                            Text(
+                                text = selectedCategory.ifEmpty { "Select Category" },
+                                color = Color.Black
+                            )
+                        }
+                    }
 
                     // Amount Field
                     CustomTextField(
@@ -613,7 +655,8 @@ fun TransactionDetailsDialog(
                                 if (amount.toDoubleOrNull() != null) {
                                     val updatedTransaction = transaction.copy(
                                         date = date,
-                                        categoryId = category,
+                                        accountId = accountList.find { it.name == selectedAccount }?.id ?: "",
+                                        categoryId = categoryList.find { it.name == selectedCategory }?.categoryId ?: "",
                                         amount = amount.toDouble(),
                                         type = if (isIncome) TransactionType.INCOME else TransactionType.EXPENSE
                                     )
@@ -636,9 +679,165 @@ fun TransactionDetailsDialog(
             }
         }
     }
+    if (isAccountSelectionVisible) {
+        AccountSelectionDialog(
+            accountList = accountList,
+            onAccountSelected = { account ->
+                selectedAccount = account.name
+                isAccountSelectionVisible = false
+            },
+            onDismissRequest = { isAccountSelectionVisible = false }
+        )
+    }
+    if (isCategorySelectionVisible) {
+        CategorySelectionDialog(
+            categoryList = categoryList,
+            onCategorySelected = { category ->
+                selectedCategory = category.name
+                isCategorySelectionVisible = false
+            },
+            onDismissRequest = { isCategorySelectionVisible = false }
+        )
+    }
 }
 
-    @Composable
+@Composable
+fun AccountSelectionDialog(
+    accountList: List<Account>,
+    onAccountSelected: (Account) -> Unit,
+    onDismissRequest: () -> Unit
+) {
+    AlertDialog(
+        onDismissRequest = onDismissRequest,
+        title = {
+            Text(
+                text = "Select Account",
+                style = MaterialTheme.typography.titleMedium,
+                color = Color.Black,
+                modifier = Modifier.padding(bottom = 8.dp)
+            )
+        },
+        text = {
+            Column(
+                modifier = Modifier.fillMaxWidth()
+            ) {
+                accountList.forEachIndexed { index, account ->
+                    Column {
+                        Button(
+                            onClick = { onAccountSelected(account) },
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(vertical = 4.dp),
+                            colors = ButtonDefaults.buttonColors(
+                                containerColor = Color.Yellow, // Button background
+                                contentColor = Color.Black // Text color
+                            ),
+                            shape = RoundedCornerShape(8.dp) // Adds rounded corners
+                        ) {
+                            Text(
+                                text = account.name,
+                                style = MaterialTheme.typography.bodyMedium,
+                                color = Color.Black
+                            )
+                        }
+                        // Add divider for better separation
+                        if (index != accountList.lastIndex) {
+                            Divider(
+                                modifier = Modifier.padding(horizontal = 8.dp),
+                                color = Color.Black
+                            )
+                        }
+                    }
+                }
+            }
+        },
+        confirmButton = {
+            Button(
+                onClick = onDismissRequest,
+                colors = ButtonDefaults.buttonColors(
+                    containerColor = Color.Black, // Dark button for contrast
+                    contentColor = Color.White // Updated color parameter
+                ),
+                shape = RoundedCornerShape(8.dp)
+            ) {
+                Text("Close", style = MaterialTheme.typography.labelLarge)
+            }
+        },
+        shape = RoundedCornerShape(16.dp), // Modern rounded corners
+        containerColor = Color.White, // Clean white background
+        tonalElevation = 8.dp
+    )
+}
+
+@Composable
+fun CategorySelectionDialog(
+    categoryList: List<Category>,
+    onCategorySelected: (Category) -> Unit,
+    onDismissRequest: () -> Unit
+) {
+    AlertDialog(
+        onDismissRequest = onDismissRequest,
+        title = {
+            Text(
+                text = "Select Category",
+                style = MaterialTheme.typography.titleMedium,
+                color = Color.Black,
+                modifier = Modifier.padding(bottom = 8.dp)
+            )
+        },
+        text = {
+            Column(
+                modifier = Modifier.fillMaxWidth()
+            ) {
+                categoryList.forEachIndexed { index, category ->
+                    Column {
+                        Button(
+                            onClick = { onCategorySelected(category) },
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(vertical = 4.dp),
+                            colors = ButtonDefaults.buttonColors(
+                                containerColor = Color.Yellow, // Button background
+                                contentColor = Color.Black // Text color
+                            ),
+                            shape = RoundedCornerShape(8.dp)
+                        ) {
+                            Text(
+                                text = category.name,
+                                style = MaterialTheme.typography.bodyMedium,
+                                color = Color.Black
+                            )
+                        }
+                        // Add divider for better separation
+                        if (index != categoryList.lastIndex) {
+                            Divider(
+                                modifier = Modifier.padding(horizontal = 8.dp),
+                                color = Color.Black
+                            )
+                        }
+                    }
+                }
+            }
+        },
+        confirmButton = {
+            Button(
+                onClick = onDismissRequest,
+                colors = ButtonDefaults.buttonColors(
+                    containerColor = Color.Black, // Dark button for contrast
+                    contentColor = Color.White // Updated color parameter
+                ),
+                shape = RoundedCornerShape(8.dp)
+            ) {
+                Text("Close", style = MaterialTheme.typography.labelLarge)
+            }
+        },
+        shape = RoundedCornerShape(16.dp), // Modern rounded corners
+        containerColor = Color.White, // Clean white background
+        tonalElevation = 8.dp
+    )
+}
+
+@Composable
 fun CustomTextField(
     value: String,
     onValueChange: (String) -> Unit,

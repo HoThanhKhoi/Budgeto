@@ -273,7 +273,9 @@ fun BudgetoApp(
 
             composable(route = BudgetoScreenEnum.HistoryScreen.name) {
                 HistoryScreen(
-                    transactionViewModel = transactionViewModel
+                    transactionViewModel = transactionViewModel,
+                    categoryViewModel = categoryViewModel,
+                    accountViewModel = accountViewModel
                 )
             }
 
@@ -290,7 +292,7 @@ fun BudgetoApp(
             composable(route = BudgetoScreenEnum.SettingsScreen.name) {
                 SettingScreen(
                     categoryViewModel = categoryViewModel,
-                    //onXButtonTapped = {}
+                    onXButtonTapped = { navController.navigate(BudgetoScreenEnum.HomepageScreen.name) }
                 )
             }
 

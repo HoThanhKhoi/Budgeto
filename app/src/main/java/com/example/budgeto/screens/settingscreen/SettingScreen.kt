@@ -156,71 +156,30 @@ fun Setting1(
     ) {
 
         //region Setting header
-        Setting(
-            modifier = Modifier.boxAlign(
-                alignment = Alignment.TopStart,
-                offset = DpOffset(
-                    x = 23.0.dp,
-                    y = 33.0.dp
-                )
-            )
-        )
-        Frame54(
-            onXButtonTapped = onXButtonTapped,
-            modifier = Modifier.boxAlign(
-                alignment = Alignment.TopStart,
-                offset = DpOffset(
-                    x = 339.0.dp,
-                    y = 29.0.dp
-                )
-            )
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 16.dp, vertical = 25.dp),
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.SpaceBetween
         ) {
-            Group2(
-                modifier = Modifier.boxAlign(
-                    alignment = Alignment.Center,
-                    offset = DpOffset(
-                        x = 0.30330076813697815.dp,
-                        y = 0.3033008575439453.dp
-                    )
-                )
+            // Return Button
+            IconButton(
+                onClick = { onXButtonTapped() }, // Callback to close the screen
+                modifier = Modifier.size(32.dp)
             ) {
-                Vector319(
-                    modifier = Modifier.boxAlign(
-                        alignment = Alignment.TopStart,
-                        offset = DpOffset(
-                            x = 1.6513671875.dp,
-                            y = 1.6516436636447906.dp
-                        )
-                    )
-                )
-                Vector320(
-                    modifier = Modifier.boxAlign(
-                        alignment = Alignment.TopStart,
-                        offset = DpOffset(
-                            x = 2.75.dp,
-                            y = -0.9999978989412046.dp
-                        )
-                    )
+                Icon(
+                    painter = painterResource(id = R.drawable.account_4_arrow_3), // Replace with your back icon
+                    contentDescription = "Return",
+                    tint = Color.Black
                 )
             }
-        }
-        Frame64(
-            modifier = Modifier.boxAlign(
-                alignment = Alignment.TopStart,
-                offset = DpOffset(
-                    x = 1000.0.dp,
-                    y = 82.0.dp
-                )
-            )
-        ) {
-            Rectangle73(
-                modifier = Modifier.boxAlign(
-                    alignment = Alignment.TopStart,
-                    offset = DpOffset(
-                        x = 0.0.dp,
-                        y = 6.0.dp
-                    )
-                )
+
+            Text(
+                text = "Settings",
+                style = MaterialTheme.typography.titleMedium,
+                color = Color.Black,
+                modifier = Modifier.weight(1f)
             )
         }
         //endregion
