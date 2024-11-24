@@ -49,8 +49,6 @@ class AuthRepositoryImplement(
         }
     }
 
-
-
     override fun signUp(email: String, password: String): Flow<Resource<AuthResult>> {
         return flow {
             emit(Resource.Loading()) // Emit loading state
@@ -75,10 +73,6 @@ class AuthRepositoryImplement(
             emit(Resource.Error(errorMessage))
         }
     }
-
-
-
-
 
     override fun googleSignIn(credential: AuthCredential): Flow<Resource<AuthResult>> {
         return flow {

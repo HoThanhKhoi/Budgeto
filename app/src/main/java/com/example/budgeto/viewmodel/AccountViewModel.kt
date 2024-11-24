@@ -21,8 +21,6 @@ class AccountViewModel @Inject constructor(
     private val authRepository: AuthRepository,
     private val userMoneyInfoRepository: UserMoneyInfoRepository,
 ) : ViewModel() {
-
-    val userId = authRepository.getCurrentUserId()
     var accountList = mutableStateOf<List<Account>>(emptyList())
     var userMoneyInfo = mutableStateOf<UserMoneyInfo?>(null)
 
@@ -41,10 +39,10 @@ class AccountViewModel @Inject constructor(
     fun fetchAllAccounts() {
         viewModelScope.launch {
             try {
-                if (userId != null) {
+                if (authRepository.getCurrentUserId() != null) {
                     // Fetch accounts from the repository and update the state
                     Log.d("Get all accounts", "User ID is not null, retrieving accounts.")
-                    accountList.value = accountRepository.getAllAccount(userId) ?: emptyList()
+                    accountList.value = accountRepository.getAllAccount(authRepository.getCurrentUserId()?:"") ?: emptyList()
                 } else {
                     Log.d("Get all accounts", "User ID is null, cannot retrieve accounts.")
                 }
@@ -58,8 +56,8 @@ class AccountViewModel @Inject constructor(
     fun fetchUserMoneyInfo() {
         viewModelScope.launch {
             try {
-                if (userId != null) {
-                    val moneyInfo = userMoneyInfoRepository.getById(userId)
+                if (authRepository.getCurrentUserId() != null) {
+                    val moneyInfo = userMoneyInfoRepository.getById(authRepository.getCurrentUserId()?:"")
 
                     if (moneyInfo != null) {
                         userMoneyInfo.value = moneyInfo
@@ -91,7 +89,7 @@ class AccountViewModel @Inject constructor(
     ) {
         viewModelScope.launch {
             try {
-                if (userId == null) {
+                if (authRepository.getCurrentUserId() == null) {
                     addAccountState.value = AddAccountState(error = "User ID not found.")
                     return@launch
                 }
@@ -103,7 +101,7 @@ class AccountViewModel @Inject constructor(
                     return@launch
                 }
 
-                val existingAccount = accountRepository.getAccountByName(userId, accountName)
+                val existingAccount = accountRepository.getAccountByName(authRepository.getCurrentUserId()?:"", accountName)
                 if (existingAccount != null && existingAccount.name == accountName) {
                     addAccountState.value = AddAccountState(error = "Account name already exists.")
                     return@launch
@@ -116,7 +114,7 @@ class AccountViewModel @Inject constructor(
                     income = accountIncome ?: 0.0,
                     iconLink = accountIconLink,
                     currency = accountCurrency,
-                    userId = userId
+                    userId = authRepository.getCurrentUserId()?:""
                 )
 
                 accountRepository.addAccount(account)

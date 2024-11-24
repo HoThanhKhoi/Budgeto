@@ -22,8 +22,6 @@ class ProfileViewModel @Inject constructor(
     private val _userGeneralInfo = MutableStateFlow<UserGeneralInfo?>(null)
     val userGeneralInfo: StateFlow<UserGeneralInfo?> = _userGeneralInfo
 
-    private val userId = authRepository.getCurrentUserId()
-
     // Initialize and fetch user's general info
     init {
         fetchUserGeneralInfo()
@@ -31,10 +29,10 @@ class ProfileViewModel @Inject constructor(
 
     // Fetch user general info from repository
     fun fetchUserGeneralInfo() {
-        if (userId != null) {
+        if (authRepository.getCurrentUserId() != null) {
             viewModelScope.launch {
                 try {
-                    val generalInfo = userGeneralInfoRepository.getById(userId)
+                    val generalInfo = userGeneralInfoRepository.getById(authRepository.getCurrentUserId()?:"")
                     _userGeneralInfo.value = generalInfo
 
                 } catch (e: Exception) {
@@ -51,12 +49,12 @@ class ProfileViewModel @Inject constructor(
     fun updateUserGeneralInfoField(
         updateFunction: (UserGeneralInfo) -> UserGeneralInfo
     ) {
-        if(userId != null) {
+        if(authRepository.getCurrentUserId() != null) {
             viewModelScope.launch {
                 val currentUserGeneralInfo = _userGeneralInfo.value ?: UserGeneralInfo()
                 val updatedGeneralInfo = updateFunction(currentUserGeneralInfo)
                 try {
-                    userGeneralInfoRepository.update(userId, updatedGeneralInfo)
+                    userGeneralInfoRepository.update(authRepository.getCurrentUserId()?:"", updatedGeneralInfo)
                     _userGeneralInfo.value = updatedGeneralInfo
                 } catch (e: Exception) {
                     e.printStackTrace()

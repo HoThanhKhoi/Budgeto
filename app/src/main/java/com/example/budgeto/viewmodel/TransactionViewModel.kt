@@ -25,7 +25,6 @@ class TransactionViewModel @Inject constructor(
     private val userMoneyInfoRepository: UserMoneyInfoRepository
 ) : ViewModel() {
 
-    val userId = authRepository.getCurrentUserId()
     var transactions: List<Transaction> = emptyList()
 
     init {
@@ -44,7 +43,7 @@ class TransactionViewModel @Inject constructor(
 
             try
             {
-                if(userId == null || accountId == null || categoryId == null)
+                if(authRepository.getCurrentUserId() == null || accountId == null || categoryId == null)
                 {
                     return@launch
                 }
@@ -64,7 +63,7 @@ class TransactionViewModel @Inject constructor(
                     createdTime = Timestamp.now(),
                     date = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(Timestamp.now().toDate()),
                     note = note ?: "${type.name} at ${createdTime.toDate()}",
-                    userId = userId?:""
+                    userId = authRepository.getCurrentUserId()?:""
                 )
 
                 transactionRepository.addTransaction(transaction)
@@ -84,9 +83,9 @@ class TransactionViewModel @Inject constructor(
     fun fetchTransactions() {
         viewModelScope.launch {
             try {
-                if(userId != null)
+                if(authRepository.getCurrentUserId() != null)
                 {
-                    transactions = transactionRepository.getAllTransactions(userId)
+                    transactions = transactionRepository.getAllTransactions(authRepository.getCurrentUserId()?:"")
                 }
             }
             catch (ex: Exception)
@@ -99,9 +98,9 @@ class TransactionViewModel @Inject constructor(
     fun fetchTransactionsWithAccountNames(onDataReady: (List<Pair<Transaction, String>>) -> Unit) {
         viewModelScope.launch {
             try {
-                if (userId != null) {
-                    val transactionList = transactionRepository.getAllTransactions(userId)
-                    val accounts = accountRepository.getAllAccount(userId)
+                if (authRepository.getCurrentUserId() != null) {
+                    val transactionList = transactionRepository.getAllTransactions(authRepository.getCurrentUserId()?:"")
+                    val accounts = accountRepository.getAllAccount(authRepository.getCurrentUserId()?:"")
 
                     // Create a map of accountId -> accountName
                     val accountIdToNameMap = accounts.associateBy({ it.id }, { it.name })
@@ -122,7 +121,7 @@ class TransactionViewModel @Inject constructor(
     fun updateTransaction(transactionId: String, updatedTransaction: Transaction) {
         viewModelScope.launch {
             try {
-                if (userId == null) return@launch
+                if (authRepository.getCurrentUserId() == null) return@launch
 
                 val transaction = transactionRepository.getById(transactionId)
                 val accountId = transaction?.accountId
@@ -145,7 +144,7 @@ class TransactionViewModel @Inject constructor(
     fun deleteTransaction(transactionId: String) {
         viewModelScope.launch {
             try {
-                if (userId == null) return@launch
+                if (authRepository.getCurrentUserId() == null) return@launch
 
                 val transaction = transactionRepository.getById(transactionId)
                 val accountId = transaction?.accountId
@@ -213,7 +212,7 @@ class TransactionViewModel @Inject constructor(
 
     private fun recalculateMoneyInfoData() {
         viewModelScope.launch {
-            var transactionList = transactionRepository.getAllTransactions(userId?:"")
+            var transactionList = transactionRepository.getAllTransactions(authRepository.getCurrentUserId()?:"")
 
             var totalBalance = 0.0
             var totalIncome = 0.0
@@ -232,17 +231,17 @@ class TransactionViewModel @Inject constructor(
             }
 
             userMoneyInfoRepository.updateField(
-                id = userId?:"",
+                id = authRepository.getCurrentUserId()?:"",
                 field = "totalBalance",
                 value = totalBalance
             )
             userMoneyInfoRepository.updateField(
-                id = userId?:"",
+                id = authRepository.getCurrentUserId()?:"",
                 field = "totalIncome",
                 value = totalIncome
             )
             userMoneyInfoRepository.updateField(
-                id = userId?:"",
+                id = authRepository.getCurrentUserId()?:"",
                 field = "totalExpense",
                 value = totalExpense
             )

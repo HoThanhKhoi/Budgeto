@@ -20,9 +20,6 @@ class CategoryViewModel @Inject constructor(
     private val categoryRepository: CategoryRepository,
     private val authRepository: AuthRepository
 ) : ViewModel() {
-
-    val userId = authRepository.getCurrentUserId()
-
     private val _categories = MutableStateFlow<List<Category>>(emptyList())
     val categories: StateFlow<List<Category>> = _categories
     init {
@@ -38,7 +35,7 @@ class CategoryViewModel @Inject constructor(
     ) {
         viewModelScope.launch {
             try {
-                if (userId == null || name.isBlank()) {
+                if (authRepository.getCurrentUserId() == null || name.isBlank()) {
                     return@launch
                 }
 
@@ -48,7 +45,7 @@ class CategoryViewModel @Inject constructor(
                     description = description,
                     color = color,
                     status = status,
-                    userId = userId
+                    userId = authRepository.getCurrentUserId()?:""
                 )
 
 
@@ -64,8 +61,8 @@ class CategoryViewModel @Inject constructor(
     fun fetchCategories() {
         viewModelScope.launch {
             try {
-                if (userId != null) {
-                    val fetchedCategories = categoryRepository.getAllCategories(userId)
+                if (authRepository.getCurrentUserId() != null) {
+                    val fetchedCategories = categoryRepository.getAllCategories(authRepository.getCurrentUserId()?:"")
                     _categories.value = fetchedCategories // Update StateFlow
                     Log.d("FetchCategories", "Fetched categories: $fetchedCategories")
                 }
@@ -78,7 +75,7 @@ class CategoryViewModel @Inject constructor(
     fun updateCategory(categoryId: String, updatedCategory: Category) {
         viewModelScope.launch {
             try {
-                if (userId == null) return@launch
+                if (authRepository.getCurrentUserId() == null) return@launch
 
                 val isUpdated = categoryRepository.update(categoryId, updatedCategory)
                 if (isUpdated) {
