@@ -292,7 +292,7 @@ fun BudgetoApp(
             composable(route = BudgetoScreenEnum.SettingsScreen.name) {
                 SettingScreen(
                     categoryViewModel = categoryViewModel,
-                    //onXButtonTapped = {}
+                    onXButtonTapped = { navController.navigate(BudgetoScreenEnum.HomepageScreen.name) }
                 )
             }
 
