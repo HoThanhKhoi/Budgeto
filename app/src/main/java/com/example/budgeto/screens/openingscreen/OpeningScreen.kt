@@ -15,6 +15,7 @@ import androidx.compose.foundation.layout.requiredHeight
 import androidx.compose.foundation.layout.requiredWidth
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Divider
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
@@ -23,6 +24,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -44,9 +46,11 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.budgeto.R
 import com.example.budgeto.data.enums.transaction.TransactionType
 import com.example.budgeto.data.model.account.Account
+import com.example.budgeto.data.model.category.Category
 import com.example.budgeto.screensfonts.inter
 import com.example.budgeto.utils.ToastUtil
 import com.example.budgeto.viewmodel.AccountViewModel
+import com.example.budgeto.viewmodel.CategoryViewModel
 import com.example.budgeto.viewmodel.OpeningScreenViewModel
 import com.example.budgeto.viewmodel.TransactionViewModel
 import com.google.relay.compose.BoxScopeInstance.columnWeight
@@ -69,6 +73,7 @@ fun OpeningScreenExpensesInputScreen(
     openingScreenViewModel: OpeningScreenViewModel = hiltViewModel<OpeningScreenViewModel>(),
     transactionViewModel: TransactionViewModel = hiltViewModel(),
     accountViewModel: AccountViewModel = hiltViewModel(),
+    categoryViewModel: CategoryViewModel = hiltViewModel(),
     onCloseCalculator: () -> Unit = {},
     onNavigateToHistoryScreen: () -> Unit = {}
 ) {
@@ -83,18 +88,22 @@ fun OpeningScreenExpensesInputScreen(
     var note by remember { mutableStateOf("") }
     var type by remember { mutableStateOf(TransactionType.EXPENSE) }
 
-    //region account selection
+    //account selection
     var isAccountPopupVisible by remember { mutableStateOf(false) }
     var selectedAccount by remember { mutableStateOf<Account?>(null) }
-
     val accountList by accountViewModel.accountList
+
+    //category selection
+    var isCategoryPopupVisible by remember { mutableStateOf(false) }
+    var selectedCategory by remember { mutableStateOf<Category?>(null) }
+    val categoryList by categoryViewModel.categories.collectAsState()
 
     val context = LocalContext.current
 
     LaunchedEffect(Unit) {
         accountViewModel.fetchAllAccounts()
+        categoryViewModel.fetchCategories()
     }
-    //endregion
 
     var selectedTransactionType by remember { mutableStateOf(TransactionType.EXPENSE) }
 
@@ -103,6 +112,8 @@ fun OpeningScreenExpensesInputScreen(
         operationTextContent = operationText,
         resultTextContent = resultText,
         selectedAccount = selectedAccount?.name ?: "No Account Selected",
+        selectedCategory = selectedCategory?.name ?: "No Category Selected",
+        onCategoryButtonTapped = { isCategoryPopupVisible = true },
         onNumberButtonTapped = { number -> openingScreenViewModel.appendNumber(number) },
         selectedTransactionType = selectedTransactionType,
 
@@ -149,7 +160,7 @@ fun OpeningScreenExpensesInputScreen(
 
                         transactionViewModel.addTransaction(
                             accountId = selectedAccount?.id ?: "",
-                            categoryId = categoryId,
+                            categoryId = selectedCategory?.categoryId?:"",
                             amount = resultValue, // Use the safely parsed value
                             description = description,
                             note = note,
@@ -173,8 +184,20 @@ fun OpeningScreenExpensesInputScreen(
             onDismissRequest = { isAccountPopupVisible = false } // Close dialog on outside tap
         )
     }
+
+    if (isCategoryPopupVisible) {
+        CategorySelectionDialog(
+            categoryList = categoryList,
+            onCategorySelected = { category ->
+                selectedCategory = category
+                isCategoryPopupVisible = false
+            },
+            onDismissRequest = { isCategoryPopupVisible = false }
+        )
+    }
 }
 
+//region popup dialog
 @Composable
 fun AccountSelectionDialog(
     accountList: List<Account>,
@@ -187,6 +210,7 @@ fun AccountSelectionDialog(
             Text(
                 text = "Select Account",
                 style = MaterialTheme.typography.titleMedium,
+                color = Color.Black,
                 modifier = Modifier.padding(bottom = 8.dp)
             )
         },
@@ -201,18 +225,23 @@ fun AccountSelectionDialog(
                             modifier = Modifier
                                 .fillMaxWidth()
                                 .padding(vertical = 4.dp),
-                            shape = MaterialTheme.shapes.medium // Adds rounded corners
+                            colors = ButtonDefaults.buttonColors(
+                                containerColor = Color.Yellow, // Button background
+                                contentColor = Color.Black // Text color
+                            ),
+                            shape = RoundedCornerShape(8.dp) // Adds rounded corners
                         ) {
                             Text(
                                 text = account.name,
-                                style = MaterialTheme.typography.bodyMedium
+                                style = MaterialTheme.typography.bodyMedium,
+                                color = Color.Black
                             )
                         }
                         // Add divider for better separation
                         if (index != accountList.lastIndex) {
                             Divider(
-                                modifier = Modifier.padding(horizontal = 16.dp),
-                                color = Color.Gray.copy(alpha = 0.5f)
+                                modifier = Modifier.padding(horizontal = 8.dp),
+                                color = Color.Black
                             )
                         }
                     }
@@ -223,49 +252,101 @@ fun AccountSelectionDialog(
             Button(
                 onClick = onDismissRequest,
                 colors = ButtonDefaults.buttonColors(
-                    containerColor = MaterialTheme.colorScheme.secondaryContainer // Updated color parameter
-                )
+                    containerColor = Color.Black, // Dark button for contrast
+                    contentColor = Color.White // Updated color parameter
+                ),
+                shape = RoundedCornerShape(8.dp)
             ) {
                 Text("Close", style = MaterialTheme.typography.labelLarge)
             }
         },
-        shape = MaterialTheme.shapes.large, // Rounder corners for the dialog
-        containerColor = MaterialTheme.colorScheme.surface, // Custom background color
-        tonalElevation = 8.dp, // Slight shadow effect
+        shape = RoundedCornerShape(16.dp), // Modern rounded corners
+        containerColor = Color.White, // Clean white background
+        tonalElevation = 8.dp
     )
 }
 
-
-
-fun calculateFontSize(
-    textContent: String,
-    maxFontSize: TextUnit = 24.sp,
-    minFontSize: TextUnit = 12.sp
-): TextUnit {
-    val length = textContent.length
-
-    // Convert TextUnit to Float for calculation
-    val fontSize = when {
-        length < 10 -> maxFontSize
-        length < 20 -> (maxFontSize.value - (maxFontSize.value - minFontSize.value) * 0.3f).sp
-        length < 30 -> (maxFontSize.value - (maxFontSize.value - minFontSize.value) * 0.6f).sp
-        else -> minFontSize
-    }
-    return fontSize
+@Composable
+fun CategorySelectionDialog(
+    categoryList: List<Category>,
+    onCategorySelected: (Category) -> Unit,
+    onDismissRequest: () -> Unit
+) {
+    AlertDialog(
+        onDismissRequest = onDismissRequest,
+        title = {
+            Text(
+                text = "Select Category",
+                style = MaterialTheme.typography.titleMedium,
+                color = Color.Black,
+                modifier = Modifier.padding(bottom = 8.dp)
+            )
+        },
+        text = {
+            Column(
+                modifier = Modifier.fillMaxWidth()
+            ) {
+                categoryList.forEachIndexed { index, category ->
+                    Column {
+                        Button(
+                            onClick = { onCategorySelected(category) },
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(vertical = 4.dp),
+                            colors = ButtonDefaults.buttonColors(
+                                containerColor = Color.Yellow, // Button background
+                                contentColor = Color.Black // Text color
+                            ),
+                            shape = RoundedCornerShape(8.dp)
+                        ) {
+                            Text(
+                                text = category.name,
+                                style = MaterialTheme.typography.bodyMedium,
+                                color = Color.Black
+                            )
+                        }
+                        // Add divider for better separation
+                        if (index != categoryList.lastIndex) {
+                            Divider(
+                                modifier = Modifier.padding(horizontal = 8.dp),
+                                color = Color.Black
+                            )
+                        }
+                    }
+                }
+            }
+        },
+        confirmButton = {
+            Button(
+                onClick = onDismissRequest,
+                colors = ButtonDefaults.buttonColors(
+                    containerColor = Color.Black, // Dark button for contrast
+                    contentColor = Color.White // Updated color parameter
+                ),
+                shape = RoundedCornerShape(8.dp)
+            ) {
+                Text("Close", style = MaterialTheme.typography.labelLarge)
+            }
+        },
+        shape = RoundedCornerShape(16.dp), // Modern rounded corners
+        containerColor = Color.White, // Clean white background
+        tonalElevation = 8.dp
+    )
 }
+
+//endregion
 
 @Composable
 fun OpeningScreenExpensesInput(
     modifier: Modifier = Modifier,
 
-    categoryTextContent: String = "",
     operationTextContent: String = "",
     resultTextContent: String = "",
-    dateTextContent: String = "",
-    noteTextContent: String = "",
 
     onNumberButtonTapped: (String) -> Unit = {},
-    selectedAccount: String = "No Account Selected",
+    selectedAccount: String,
+    selectedCategory: String,
+    onCategoryButtonTapped: () -> Unit = {},
     selectedTransactionType: TransactionType,
 
     //Row 1
@@ -314,27 +395,13 @@ fun OpeningScreenExpensesInput(
                         .clickable(onClick = onAccountButtonTapped)
                 )
 
-                Category(
+                CategoryFrame(
+                    selectedCategory = selectedCategory,
                     modifier = Modifier
                         .weight(1f)
                         .padding(end = 16.dp)
-                ) {
-                    FrameCategory(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(top = 31.dp)
-                    ) {
-                        TxtDefault(
-                            categoryTextContent = categoryTextContent,
-                            modifier = Modifier
-                                .padding(start = 36.dp, top = 11.dp)
-                        )
-                    }
-                    Category1(
-                        modifier = Modifier
-                            .padding(start = 40.dp, top = 7.dp)
-                    )
-                }
+                        .clickable(onClick = onCategoryButtonTapped)
+                )
             }
 
 
@@ -475,95 +542,6 @@ fun OpeningScreenExpensesInput(
             }
         }
 
-//        Note(
-//            modifier = modifier
-//                .align(Alignment.TopStart)
-//                .padding(start = 30.dp, end = 0.dp, top = 157.dp, bottom = 0.dp)
-//        ) {
-//            Rectangle60(
-//                modifier = Modifier.boxAlign(
-//                    alignment = Alignment.TopStart,
-//                    offset = DpOffset(
-//                        x = 0.0.dp,
-//                        y = 137.0.dp
-//                    )
-//                )
-//            )
-//            June14th2024(
-//                dateTextContent = dateTextContent,
-//                modifier = Modifier.boxAlign(
-//                    alignment = Alignment.TopStart,
-//                    offset = DpOffset(
-//                        x = 36.0.dp,
-//                        y = 147.0.dp
-//                    )
-//                )
-//            )
-//            NOTE(
-//                modifier = Modifier.boxAlign(
-//                    alignment = Alignment.TopStart,
-//                    offset = DpOffset(
-//                        x = 69.0.dp,
-//                        y = 16.0.dp
-//                    )
-//                )
-//            )
-//            ExpensesAt1435(
-//                noteTextContent = noteTextContent,
-//                modifier = Modifier.boxAlign(
-//                    alignment = Alignment.TopStart,
-//                    offset = DpOffset(
-//                        x = 12.0.dp,
-//                        y = 43.0.dp
-//                    )
-//                )
-//            )
-//            ExpensesAt2120(
-//                modifier = Modifier.boxAlign(
-//                    alignment = Alignment.TopStart,
-//                    offset = DpOffset(
-//                        x = 12.0.dp,
-//                        y = 61.0.dp
-//                    )
-//                )
-//            )
-//            Line8(
-//                modifier = Modifier.boxAlign(
-//                    alignment = Alignment.TopStart,
-//                    offset = DpOffset(
-//                        x = 17.0.dp,
-//                        y = 57.5.dp
-//                    )
-//                )
-//            )
-//            Line9(
-//                modifier = Modifier.boxAlign(
-//                    alignment = Alignment.TopStart,
-//                    offset = DpOffset(
-//                        x = 17.0.dp,
-//                        y = 75.5.dp
-//                    )
-//                )
-//            )
-//            Line10(
-//                modifier = Modifier.boxAlign(
-//                    alignment = Alignment.TopStart,
-//                    offset = DpOffset(
-//                        x = 17.0.dp,
-//                        y = 92.5.dp
-//                    )
-//                )
-//            )
-//            Line11(
-//                modifier = Modifier.boxAlign(
-//                    alignment = Alignment.TopStart,
-//                    offset = DpOffset(
-//                        x = 17.0.dp,
-//                        y = 110.5.dp
-//                    )
-//                )
-//            )
-//        }
     }
 }
 
@@ -573,7 +551,10 @@ private fun OpeningScreenExpensesInputPreview() {
     MaterialTheme {
         RelayContainer {
             OpeningScreenExpensesInput(
-                categoryTextContent = "Default",
+                onCategoryButtonTapped = {},
+                onNumberButtonTapped = {},
+                selectedAccount = "Account",
+                selectedCategory = "Category",
                 onTaxButtonTapped = {},
                 onPercentButtonTapped = {},
                 onAccountButtonTapped = {},
@@ -591,11 +572,78 @@ private fun OpeningScreenExpensesInputPreview() {
                 onOutputButtonTapped = {},
                 operationTextContent = "1.000 + 1.000",
                 resultTextContent = "2.000",
-                dateTextContent = "June, 14th 2024",
-                noteTextContent = "Expenses at 14:35’",
                 selectedTransactionType = TransactionType.INCOME,
                 modifier = Modifier.rowWeight(1.0f).columnWeight(1.0f)
             )
+        }
+    }
+}
+
+fun calculateFontSize(
+    textContent: String,
+    maxFontSize: TextUnit = 24.sp,
+    minFontSize: TextUnit = 12.sp
+): TextUnit {
+    val length = textContent.length
+
+    // Convert TextUnit to Float for calculation
+    val fontSize = when {
+        length < 10 -> maxFontSize
+        length < 20 -> (maxFontSize.value - (maxFontSize.value - minFontSize.value) * 0.3f).sp
+        length < 30 -> (maxFontSize.value - (maxFontSize.value - minFontSize.value) * 0.6f).sp
+        else -> minFontSize
+    }
+    return fontSize
+}
+
+@Composable
+fun CategoryFrame(
+    selectedCategory: String,
+    modifier: Modifier = Modifier
+) {
+    RelayContainer(
+        backgroundColor = Color(0xFF181818),
+        isStructured = false,
+        radius = 5.0,
+        modifier = modifier.requiredWidth(147.dp).requiredHeight(79.dp)
+    ) {
+        Column(
+            horizontalAlignment = Alignment.CenterHorizontally,
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(vertical = 8.dp)
+        ) {
+            RelayText(
+                content = "CATEGORY",
+                fontSize = 12.sp,
+                fontFamily = inter,
+                color = Color.White,
+                fontWeight = FontWeight.Bold,
+                textAlign = TextAlign.Center,
+                modifier = Modifier.padding(bottom = 8.dp)
+            )
+
+            RelayContainer(
+                backgroundColor = Color.White,
+                radius = 4.dp.value.toDouble(),
+                modifier = Modifier
+                    .padding(horizontal = 8.dp)
+                    .fillMaxWidth()
+                    .width(110.dp)
+                    .height(45.dp)
+            ) {
+                RelayText(
+                    content = selectedCategory,
+                    fontSize = 16.sp,
+                    fontFamily = inter,
+                    color = Color.Black,
+                    fontWeight = FontWeight.Bold,
+                    textAlign = TextAlign.Center,
+                    modifier = Modifier
+                        .padding(vertical = 4.dp)
+                        .fillMaxWidth()
+                )
+            }
         }
     }
 }
