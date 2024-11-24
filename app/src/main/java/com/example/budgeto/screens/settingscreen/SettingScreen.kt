@@ -40,6 +40,7 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
@@ -83,13 +84,7 @@ fun SettingScreen(
     onXButtonTapped: () -> Unit = {},
     categoryViewModel: CategoryViewModel = hiltViewModel()
 ){
-    val categories = remember { mutableStateListOf<Category>() }
-
-    LaunchedEffect(Unit) {
-        categoryViewModel.fetchCategories()
-        categories.clear()
-        categories.addAll(categoryViewModel.categories)
-    }
+    val categories by categoryViewModel.categories.collectAsState()
 
     Setting1(
         onXButtonTapped = onXButtonTapped,
@@ -101,10 +96,6 @@ fun SettingScreen(
                 status = CategoryStatus.ACTIVE
             )
 
-            // Update the UI categories list after adding
-            categoryViewModel.fetchCategories()
-            categories.clear()
-            categories.addAll(categoryViewModel.categories)
         },
         modifier = modifier.rowWeight(1.0f).columnWeight(1.0f)
     )
@@ -119,19 +110,6 @@ fun Setting1(
     onAddCategory: (String, String) -> Unit
 ) {
     val accountList = listOf("Option 1", "Option 2", "Option 3")
-
-    val categoryList = listOf(
-        Triple("Food", "100.000 đ", R.drawable.setting_1_food),
-        Triple("Cafe", "0 đ", R.drawable.setting_1_cafe),
-        Triple("Entertainment", "0 đ", R.drawable.setting_1_retro_tv),
-        Triple("Transport", "0 đ", R.drawable.setting_1_public_transportation),
-        Triple("Health", "0 đ", R.drawable.setting_1_heart_with_pulse),
-        Triple("Family", "0 đ", R.drawable.setting_1_defend_family),
-        Triple("Pets", "0 đ", R.drawable.setting_1_pets),
-        Triple("Clothes", "0 đ", R.drawable.setting_1_clothes),
-        Triple("Clothes", "0 đ", R.drawable.setting_1_clothes),
-        Triple("Clothes", "0 đ", null),
-    )
 
     val scrollState= rememberScrollState()
 
@@ -629,7 +607,7 @@ fun Setting1(
                     .padding(top = 120.dp) // Ensures the list starts below Frame58
             ) {
                 CategorySettingsListScrollableAligned(
-                    categoryList = categoryList
+                    categoryList = categories
                 )
             }
 
@@ -1001,9 +979,9 @@ fun IconPickerDialog(
 //region category item components
 @Composable
 fun CategoryItem(
-    title: String,
-    value: String,
-    iconResId: Int?,
+    name: String,
+    description: String,
+    icon: String,
     modifier: Modifier = Modifier
 ) {
     RelayContainer(
@@ -1024,10 +1002,10 @@ fun CategoryItem(
                 .fillMaxSize()
                 .padding(horizontal = 4.dp) // Reduced inner padding
         ) {
-            // Icon
-            if (iconResId != null) {
+             //Icon
+            if (icon != null) {
                 RelayImage(
-                    image = painterResource(id = iconResId),
+                    image = painterResource(id = R.drawable.account_3_asset_1_4),
                     contentScale = ContentScale.Fit,
                     modifier = Modifier
                         .size(32.dp) // Slightly smaller icon
@@ -1044,13 +1022,13 @@ fun CategoryItem(
                 modifier = Modifier.fillMaxHeight()
             ) {
                 RelayText(
-                    content = title,
+                    content = name,
                     fontSize = 14.sp,
                     fontWeight = FontWeight.Bold,
                     textAlign = TextAlign.Start
                 )
                 RelayText(
-                    content = value,
+                    content = description,
                     fontSize = 12.sp,
                     fontWeight = FontWeight.Normal,
                     color = Color.Gray,
@@ -1062,7 +1040,9 @@ fun CategoryItem(
 }
 
 @Composable
-fun CategorySettingsListScrollableAligned(categoryList: List<Triple<String, String, Int?>>) {
+fun CategorySettingsListScrollableAligned(
+    categoryList: List<Category>
+) {
     LazyVerticalGrid(
         columns = GridCells.Fixed(2), // Two columns
         modifier = Modifier
@@ -1072,12 +1052,11 @@ fun CategorySettingsListScrollableAligned(categoryList: List<Triple<String, Stri
         horizontalArrangement = Arrangement.spacedBy(8.dp), // Consistent horizontal spacing
         verticalArrangement = Arrangement.spacedBy(8.dp), // Consistent vertical spacing
     ) {
-        items(categoryList) { (title, value, iconResId) ->
+        items(categoryList) { category ->
             CategoryItem(
-                title = title,
-                value = value,
-                iconResId = iconResId,
-                modifier = Modifier.fillMaxWidth()
+                name = category.name,
+                description = category.description,
+                icon = ""
             )
         }
     }

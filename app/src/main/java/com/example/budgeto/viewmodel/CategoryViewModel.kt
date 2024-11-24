@@ -9,6 +9,8 @@ import com.example.budgeto.data.enums.category.CategoryType
 import com.example.budgeto.data.model.category.Category
 import com.example.budgeto.data.repository.category.CategoryRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -19,7 +21,12 @@ class CategoryViewModel @Inject constructor(
 ) : ViewModel() {
 
     val userId = authRepository.getCurrentUserId()
-    var categories: List<Category> = emptyList()
+
+    private val _categories = MutableStateFlow<List<Category>>(emptyList())
+    val categories: StateFlow<List<Category>> = _categories
+    init {
+        fetchCategories()
+    }
 
     fun addCategory(
         name: String,
@@ -57,7 +64,9 @@ class CategoryViewModel @Inject constructor(
         viewModelScope.launch {
             try {
                 if (userId != null) {
-                    categories = categoryRepository.getAllCategories(userId)
+                    val fetchedCategories = categoryRepository.getAllCategories(userId)
+                    _categories.value = fetchedCategories // Update StateFlow
+                    Log.d("FetchCategories", "Fetched categories: $fetchedCategories")
                 }
             } catch (ex: Exception) {
                 Log.d("FetchCategories", "Error: ${ex.message}")
